@@ -17,5 +17,21 @@ dependencies {
   implementation("de.undercouch:gradle-download-task:3.4.3")
 
   testImplementation(gradleTestKit())
+}
 
+pluginBundle {
+  website = "https://github.com/runningcode/fladle"
+  vcsUrl = "https://github.com/runningcode/fladle"
+  tags = listOf("flank", "testing", "android")
+}
+
+gradlePlugin {
+  plugins {
+    create("fladle") {
+      id = "com.osacky.fladle"
+      displayName = "Fladle"
+      description = "The Gradle Plugin for Flank"
+      implementationClass = "com.osacky.flank.gradle.FlankGradlePlugin"
+    }
+  }
 }
