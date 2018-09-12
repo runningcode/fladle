@@ -16,27 +16,6 @@ class FlankGradlePlugin : Plugin<Project> {
     project.afterEvaluate {
       project.tasks.apply {
 
-        create("downloadGcloud", Download::class.java) {
-          description = "Download Gcloud command line tools."
-          src("https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${extension.gcloudVersion}-linux-x86_64.tar.gz")
-          dest("${project.buildDir}/fladle/gcloud.tar.gz")
-          onlyIfModified(true)
-        }
-
-        create("unzipGcloud", Copy::class.java) {
-          description = "Unzip downloaded gcloud command line tools."
-          from(project.tarTree("${project.buildDir}/fladle/gcloud.tar.gz"))
-          into("${project.buildDir}/fladle/gcloud")
-          dependsOn("downloadGcloud")
-        }
-
-        create("setGcloudProject", Exec::class.java) {
-          description = "Set Gcloud projectId based on FlankGradleExtension."
-          workingDir("${project.buildDir}/fladle/gcloud/google-cloud-sdk/bin")
-          commandLine("./gcloud", "config", "set", "project", extension.projectId!!)
-          dependsOn("unzipGcloud")
-        }
-
         create("downloadFlank", Download::class.java) {
           src("https://github.com/TestArmada/flank/releases/download/v${extension.flankVersion}/flank.jar")
           dest("${project.buildDir}/fladle/flank.jar")
@@ -46,7 +25,6 @@ class FlankGradlePlugin : Plugin<Project> {
         create("writeConfigProps") {
           doLast {
             file("${project.buildDir}/fladle/flank.yml").writeText(createConfigProps(extension, project))
-
           }
         }
 
@@ -54,6 +32,13 @@ class FlankGradlePlugin : Plugin<Project> {
           workingDir("${project.buildDir}/fladle/")
           // java -jar Flank-2.0.3.jar -a path/to/debug.apk -t path/to/test-debug.apk
           commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "run")
+          environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to "${extension.serviceAccountCredentials}"))
+          dependsOn("downloadFlank", "writeConfigProps")
+        }
+
+        create("flankDoctor", Exec::class.java) {
+          workingDir("${project.buildDir}/fladle/")
+          commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "doctor")
           dependsOn("downloadFlank", "writeConfigProps")
 
         }
@@ -71,8 +56,7 @@ class FlankGradlePlugin : Plugin<Project> {
     return """gcloud:
       |  app: ${project.buildDir}/outputs/apk/debug/app-debug.apk
       |  test: ${project.buildDir}/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-      |flank:
-      |
+      |  project: ${extension.projectId}
     """.trimMargin()
   }
 }
