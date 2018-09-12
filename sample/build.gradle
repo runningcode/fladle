@@ -13,19 +13,13 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
 }
 
 fladle {
     projectId("flank-gradle")
     serviceAccountCredentials("${project.file("flank-gradle-5cf02dc90531.json")}")
-    debugApk("$buildDir/outputs/apk/debug/app-debug.apk")
-    instrumentationApk("$buildDir/outputs/apk/androidTest/debug/app-debug-androidTest.apk")
+    debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
+    instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk")
 }
 
 dependencies {

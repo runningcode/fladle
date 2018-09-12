@@ -6,4 +6,6 @@ open class FlankGradleExtension {
   var serviceAccountCredentials: String? = null
   var debugApk: String? = null
   var instrumentationApk: String? = null
+  var useOrchestrator: Boolean = false
+  var autoGoogleLogin: Boolean = false
 }

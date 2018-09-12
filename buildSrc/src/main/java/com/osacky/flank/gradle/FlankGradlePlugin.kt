@@ -51,6 +51,8 @@ class FlankGradlePlugin : Plugin<Project> {
       |  app: ${extension.debugApk}
       |  test: ${extension.instrumentationApk}
       |  project: ${extension.projectId}
+      |  use-orchestrator: ${extension.useOrchestrator}
+      |  auto-google-login: ${extension.autoGoogleLogin}
     """.trimMargin()
   }
 }
