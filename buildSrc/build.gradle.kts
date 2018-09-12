@@ -9,6 +9,7 @@ plugins {
   `kotlin-dsl`
   id("java-gradle-plugin")
   id("com.gradle.plugin-publish") version "0.10.0"
+  id("org.jmailen.kotlinter") version "1.17.0"
 }
 
 dependencies {
@@ -17,6 +18,10 @@ dependencies {
   implementation("de.undercouch:gradle-download-task:3.4.3")
 
   testImplementation(gradleTestKit())
+}
+
+kotlinter {
+  indentSize = 2
 }
 
 pluginBundle {
