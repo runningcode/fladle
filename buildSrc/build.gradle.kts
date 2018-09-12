@@ -8,6 +8,7 @@ repositories {
 plugins {
   `kotlin-dsl`
   id("java-gradle-plugin")
+  id("com.gradle.plugin-publish") version "0.10.0"
 }
 
 dependencies {
