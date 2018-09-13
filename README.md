@@ -11,11 +11,16 @@ Also read this [medium post](https://medium.com/walmartlabs/flank-smart-test-run
 # Usage
 
 Using Fladle takes 3 steps:
-1. Apply the Fladle plugin.
+
+1. Apply the Fladle plugin. Follow instructions [here](https://plugins.gradle.org/plugin/com.osacky.fladle)
 ``` groovy
-plugins {
-  id "com.osacky.fladle" version '0.2.2'
+buildscript {
+  dependencies {
+    classpath "gradle.plugin.com.osacky.flank.gradle:buildSrc:0.2.2"
+  }
 }
+
+apply plugin: "com.osacky.fladle"
 ```
 2. Configure the Fladle extension.
 ``` groovy
