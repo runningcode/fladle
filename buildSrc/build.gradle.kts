@@ -2,6 +2,7 @@ group = "com.osacky.flank.gradle"
 version = "0.2.1"
 
 repositories {
+  google()
   jcenter()
 }
 
@@ -14,6 +15,7 @@ plugins {
 
 dependencies {
   compileOnly(gradleApi())
+  implementation("com.android.tools.build:gradle:3.1.4")
 
   implementation("de.undercouch:gradle-download-task:3.4.3")
 

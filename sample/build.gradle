@@ -18,7 +18,6 @@ android {
 }
 
 fladle {
-    projectId("flank-gradle")
     serviceAccountCredentials("${project.file("flank-gradle-5cf02dc90531.json")}")
     debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
     instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk")

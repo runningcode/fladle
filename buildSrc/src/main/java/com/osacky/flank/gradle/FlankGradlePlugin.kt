@@ -12,6 +12,11 @@ class FlankGradlePlugin : Plugin<Project> {
   }
 
   private fun configureTasks(project: Project, extension: FlankGradleExtension) {
+    project.pluginManager.withPlugin("com.android.application") {
+//      val baseExtension = project.extensions.findByType(AppExtension::class.java)!!
+//      val testVariant = baseExtension.buildTypes.all {
+//      }
+    }
     project.tasks.apply {
 
       register("downloadFlank", Download::class.java) {
@@ -21,12 +26,14 @@ class FlankGradlePlugin : Plugin<Project> {
         onlyIfModified(true)
       }
 
-      register("writeConfigProps") {
-        description = "Writes a flank.yml file based on the current FlankGradleExtension configuration."
+      register("printYaml") {
+        description = "Print the flank.yml file to the console."
         doLast {
-          project.file("${project.fladleDir}/flank.yml").writeText(YamlWriter().createConfigProps(extension))
+          println(YamlWriter().createConfigProps(extension))
         }
       }
+
+      register("writeConfigProps", YamlConfigWriterTask::class.java, extension)
 
       register("runFlank", Exec::class.java) {
         description = "Runs instrumentation tests using flank on firebase test lab."
@@ -44,7 +51,4 @@ class FlankGradlePlugin : Plugin<Project> {
       }
     }
   }
-
-  private val Project.fladleDir: String
-    get() = "$buildDir/fladle"
 }

@@ -9,15 +9,22 @@ internal class YamlWriter {
 
     checkNotNull(extension.debugApk) { "debugApk cannot be null" }
     checkNotNull(extension.instrumentationApk) { "instrumentationApk cannot be null" }
-    checkNotNull(extension.projectId) { "projectId cannot be null" }
     return """gcloud:
       |  app: ${extension.debugApk}
       |  test: ${extension.instrumentationApk}
-      |  project: ${extension.projectId}
       |  use-orchestrator: ${extension.useOrchestrator}
       |  auto-google-login: ${extension.autoGoogleLogin}
+      |${createProjectIdString(extension)}
       |$deviceString
     """.trimMargin()
+  }
+
+  internal fun createProjectIdString(extension: FlankGradleExtension): String {
+    return if (extension.projectId != null) {
+      "  project: ${extension.projectId}"
+    } else {
+      "# projectId will be automatically discovered"
+    }
   }
 
   @VisibleForTesting

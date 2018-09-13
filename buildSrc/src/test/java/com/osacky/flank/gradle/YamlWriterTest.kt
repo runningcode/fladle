@@ -84,18 +84,4 @@ class YamlWriterTest {
       assertEquals("instrumentationApk cannot be null", expected.message)
     }
   }
-
-  @Test
-  fun verifyProjectId() {
-    val extension = FlankGradleExtension().apply {
-      debugApk = "path"
-      instrumentationApk = "fake path"
-    }
-    try {
-      yamlWriter.createConfigProps(extension)
-      fail()
-    } catch (expected: IllegalStateException) {
-      assertEquals("projectId cannot be null", expected.message)
-    }
-  }
 }
