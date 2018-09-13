@@ -12,37 +12,39 @@ class FlankGradlePlugin : Plugin<Project> {
   }
 
   private fun configureTasks(project: Project, extension: FlankGradleExtension) {
-    project.afterEvaluate {
-      project.tasks.apply {
+    project.tasks.apply {
 
-        create("downloadFlank", Download::class.java) {
-          src("https://github.com/TestArmada/flank/releases/download/v${extension.flankVersion}/flank.jar")
-          dest("${project.fladleDir}/flank.jar")
-          onlyIfModified(true)
-        }
+      register("downloadFlank", Download::class.java) {
+        description = "Downloads flank to the build/fladle directory in the current project."
+        src("https://github.com/TestArmada/flank/releases/download/v${extension.flankVersion}/flank.jar")
+        dest("${project.fladleDir}/flank.jar")
+        onlyIfModified(true)
+      }
 
-        create("writeConfigProps") {
-          doLast {
-            file("${project.fladleDir}/flank.yml").writeText(YamlWriter().createConfigProps(extension))
-          }
+      register("writeConfigProps") {
+        description = "Writes a flank.yml file based on the current FlankGradleExtension configuration."
+        doLast {
+          project.file("${project.fladleDir}/flank.yml").writeText(YamlWriter().createConfigProps(extension))
         }
+      }
 
-        create("runFlank", Exec::class.java) {
-          workingDir("${project.fladleDir}/")
-          commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "run")
-          environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to "${extension.serviceAccountCredentials}"))
-          dependsOn("downloadFlank", "writeConfigProps")
-        }
+      register("runFlank", Exec::class.java) {
+        description = "Runs instrumentation tests using flank on firebase test lab."
+        workingDir("${project.fladleDir}/")
+        commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "run")
+        environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to "${extension.serviceAccountCredentials}"))
+        dependsOn(named("downloadFlank"), named("writeConfigProps"))
+      }
 
-        create("flankDoctor", Exec::class.java) {
-          workingDir("${project.fladleDir}/")
-          commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "doctor")
-          dependsOn("downloadFlank", "writeConfigProps")
-        }
+      register("flankDoctor", Exec::class.java) {
+        description = "Finds problems with the current configuration."
+        workingDir("${project.fladleDir}/")
+        commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "doctor")
+        dependsOn(named("downloadFlank"), named("writeConfigProps"))
       }
     }
   }
 
-  val Project.fladleDir: String
+  private val Project.fladleDir: String
     get() = "$buildDir/fladle"
 }
