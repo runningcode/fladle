@@ -12,19 +12,19 @@ Also read this [medium post](https://medium.com/walmartlabs/flank-smart-test-run
 
 Using Fladle takes 3 steps:
 1. Apply the Fladle plugin.
-```
+``` groovy
 plugins {
   id "com.osacky.fladle" version '0.2.2'
 }
 ```
 2. Configure the Fladle extension.
-```
+``` groovy
 fladle {
     serviceAccountCredentials("${project.file("flank-gradle-service-account.json")}")
 }
 ```
 3. Run the flank gradle task.
-```
+``` bash
 ./gradlew runFlank
 ```
 
@@ -49,4 +49,6 @@ See the sample module for an example usage.
 
 # Publishing
 
-`./gradlew -b buildSrc/build.gradle.kts publishPlugins`
+``` bash
+./gradlew -b buildSrc/build.gradle.kts publishPlugins
+```
