@@ -21,8 +21,6 @@ plugins {
 ```
 fladle {
     serviceAccountCredentials("${project.file("flank-gradle-service-account.json")}")
-    debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
-    instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk")
 }
 ```
 3. Run the flank gradle task.
@@ -36,6 +34,8 @@ fladle {
 The service account credential is a file which contains authentication credentials for a service account created in the Google Cloud Platform Console.
 It can be created with the editor role [here](https://console.cloud.google.com/iam-admin/serviceaccounts/).
 
+
+## Optional Configuration
 ### debugApk
 This is the path to the app's debug apk.
 

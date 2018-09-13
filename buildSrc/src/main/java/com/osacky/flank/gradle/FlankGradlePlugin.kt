@@ -1,5 +1,6 @@
 package com.osacky.flank.gradle
 
+import com.android.build.gradle.AppExtension
 import de.undercouch.gradle.tasks.download.Download
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -13,9 +14,9 @@ class FlankGradlePlugin : Plugin<Project> {
 
   private fun configureTasks(project: Project, extension: FlankGradleExtension) {
     project.pluginManager.withPlugin("com.android.application") {
-//      val baseExtension = project.extensions.findByType(AppExtension::class.java)!!
-//      val testVariant = baseExtension.buildTypes.all {
-//      }
+      if (extension.debugApk == null || extension.instrumentationApk == null) {
+        findDebugAndInstrumentationApk(project, extension)
+      }
     }
     project.tasks.apply {
 
@@ -26,7 +27,7 @@ class FlankGradlePlugin : Plugin<Project> {
         onlyIfModified(true)
       }
 
-      register("printYaml") {
+      register("printYml") {
         description = "Print the flank.yml file to the console."
         doLast {
           println(YamlWriter().createConfigProps(extension))
@@ -48,6 +49,20 @@ class FlankGradlePlugin : Plugin<Project> {
         workingDir("${project.fladleDir}/")
         commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "doctor")
         dependsOn(named("downloadFlank"), named("writeConfigProps"))
+      }
+    }
+  }
+
+  private fun findDebugAndInstrumentationApk(project: Project, extension: FlankGradleExtension) {
+    val baseExtension = project.extensions.findByType(AppExtension::class.java)!!
+    baseExtension.applicationVariants.all {
+      if (testVariant != null) {
+        outputs.all debug@{
+          testVariant.outputs.all test@{
+            extension.debugApk = this@debug.outputFile.absolutePath
+            extension.instrumentationApk = this@test.outputFile.absolutePath
+          }
+        }
       }
     }
   }
