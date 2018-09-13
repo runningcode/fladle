@@ -14,7 +14,7 @@ Using Fladle takes 3 steps:
 1. Apply the Fladle plugin.
 ```
 plugins {
-  id "com.osacky.fladle" version '0.2.0'
+  id "com.osacky.fladle" version '0.2.2'
 }
 ```
 2. Configure the Fladle extension.
