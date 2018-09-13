@@ -44,7 +44,6 @@ This is the path to the app's instrumentation apk.
 
 See the sample module for an example usage.
 
-
-### Publishing
+# Publishing
 
 `./gradlew -b buildSrc/build.gradle.kts publishPlugins`
