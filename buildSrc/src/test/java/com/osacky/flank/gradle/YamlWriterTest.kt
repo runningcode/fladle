@@ -1,6 +1,7 @@
 package com.osacky.flank.gradle
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.fail
 import org.junit.Test
 
 class YamlWriterTest {
@@ -13,13 +14,13 @@ class YamlWriterTest {
         Device("NexusLowRes", 28)
     )
     val deviceString = yamlWriter.createDeviceString(devices)
-    val result = """
+    val expected = """
       |  device:
       |  - model: NexusLowRes
       |    version: 28
       |
     """.trimMargin()
-    assertEquals(result, deviceString)
+    assertEquals(expected, deviceString)
   }
 
   @Test
@@ -29,7 +30,7 @@ class YamlWriterTest {
         Device("Nexus5", 23)
     )
     val deviceString = yamlWriter.createDeviceString(devices)
-    val result = """
+    val expected = """
       |  device:
       |  - model: NexusLowRes
       |    version: 28
@@ -37,7 +38,7 @@ class YamlWriterTest {
       |    version: 23
       |
     """.trimMargin()
-    assertEquals(result, deviceString)
+    assertEquals(expected, deviceString)
   }
 
   @Test
@@ -47,7 +48,7 @@ class YamlWriterTest {
         Device("Nexus5", orientation = "landscape", version = 28)
     )
     val deviceString = yamlWriter.createDeviceString(devices)
-    val result = """
+    val expected = """
       |  device:
       |  - model: NexusLowRes
       |    version: 23
@@ -57,6 +58,44 @@ class YamlWriterTest {
       |    orientation: landscape
       |
     """.trimMargin()
-    assertEquals(result, deviceString)
+    assertEquals(expected, deviceString)
+  }
+
+  @Test
+  fun verifyDebugApkThrowsError() {
+    val extension = FlankGradleExtension()
+    try {
+      yamlWriter.createConfigProps(extension)
+      fail()
+    } catch (expected: IllegalStateException) {
+      assertEquals("debugApk cannot be null", expected.message)
+    }
+  }
+
+  @Test
+  fun verifyInstrumentationApkThrowsError() {
+    val extension = FlankGradleExtension().apply {
+      debugApk = "path"
+    }
+    try {
+      yamlWriter.createConfigProps(extension)
+      fail()
+    } catch (expected: IllegalStateException) {
+      assertEquals("instrumentationApk cannot be null", expected.message)
+    }
+  }
+
+  @Test
+  fun verifyProjectId() {
+    val extension = FlankGradleExtension().apply {
+      debugApk = "path"
+      instrumentationApk = "fake path"
+    }
+    try {
+      yamlWriter.createConfigProps(extension)
+      fail()
+    } catch (expected: IllegalStateException) {
+      assertEquals("projectId cannot be null", expected.message)
+    }
   }
 }
