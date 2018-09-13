@@ -23,7 +23,7 @@ class FlankGradlePlugin : Plugin<Project> {
 
         create("writeConfigProps") {
           doLast {
-            file("${project.fladleDir}/flank.yml").writeText(createConfigProps(extension))
+            file("${project.fladleDir}/flank.yml").writeText(YamlWriter().createConfigProps(extension))
           }
         }
 
@@ -45,14 +45,4 @@ class FlankGradlePlugin : Plugin<Project> {
 
   val Project.fladleDir: String
     get() = "$buildDir/fladle"
-
-  private fun createConfigProps(extension: FlankGradleExtension): String {
-    return """gcloud:
-      |  app: ${extension.debugApk}
-      |  test: ${extension.instrumentationApk}
-      |  project: ${extension.projectId}
-      |  use-orchestrator: ${extension.useOrchestrator}
-      |  auto-google-login: ${extension.autoGoogleLogin}
-    """.trimMargin()
-  }
 }

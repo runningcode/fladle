@@ -1,3 +1,5 @@
+import com.osacky.flank.gradle.Device
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.osacky.fladle'
@@ -20,6 +22,11 @@ fladle {
     serviceAccountCredentials("${project.file("flank-gradle-5cf02dc90531.json")}")
     debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
     instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk")
+    useOrchestrator = true
+    devices = [
+            new Device("NexusLowRes", 28, null, null),
+            new Device("Nexus5", 23, null, null)
+    ]
 }
 
 dependencies {

@@ -8,4 +8,5 @@ open class FlankGradleExtension {
   var instrumentationApk: String? = null
   var useOrchestrator: Boolean = false
   var autoGoogleLogin: Boolean = false
+  var devices: List<Device> = listOf(Device("NexusLowRes", 28))
 }

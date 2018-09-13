@@ -1,5 +1,5 @@
 group = "com.osacky.flank.gradle"
-version = "0.1-SNAPSHOT"
+version = "0.2.0"
 
 repositories {
   jcenter()
@@ -18,6 +18,7 @@ dependencies {
   implementation("de.undercouch:gradle-download-task:3.4.3")
 
   testImplementation(gradleTestKit())
+  testImplementation("junit:junit:4.12")
 }
 
 kotlinter {
@@ -39,4 +40,8 @@ gradlePlugin {
       implementationClass = "com.osacky.flank.gradle.FlankGradlePlugin"
     }
   }
+}
+
+kotlinDslPluginOptions {
+  experimentalWarning.set(false)
 }
