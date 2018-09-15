@@ -1,5 +1,5 @@
 group = "com.osacky.flank.gradle"
-version = "0.2.3"
+version = "0.2.5"
 
 repositories {
   google()
@@ -31,6 +31,10 @@ pluginBundle {
   website = "https://github.com/runningcode/fladle"
   vcsUrl = "https://github.com/runningcode/fladle"
   tags = listOf("flank", "testing", "android")
+
+  mavenCoordinates {
+    artifactId = "fladle"
+  }
 }
 
 gradlePlugin {
