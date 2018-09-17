@@ -6,6 +6,7 @@ internal class YamlWriter {
 
   internal fun createConfigProps(extension: FlankGradleExtension): String {
     val deviceString = createDeviceString(extension.devices)
+    val additionalProperties = writeAdditionalProperties(extension)
 
     checkNotNull(extension.debugApk) { "debugApk cannot be null" }
     checkNotNull(extension.instrumentationApk) { "instrumentationApk cannot be null" }
@@ -16,7 +17,18 @@ internal class YamlWriter {
       |  auto-google-login: ${extension.autoGoogleLogin}
       |${createProjectIdString(extension)}
       |$deviceString
+      |$additionalProperties
     """.trimMargin()
+  }
+
+  internal fun writeAdditionalProperties(extension: FlankGradleExtension): String {
+    val builder = StringBuilder()
+    if (extension.testTargets != null) {
+      builder.append("""  test-targets:
+        |  - ${extension.testTargets}
+      """.trimMargin())
+    }
+    return builder.toString()
   }
 
   internal fun createProjectIdString(extension: FlankGradleExtension): String {

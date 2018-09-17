@@ -1,5 +1,5 @@
 group = "com.osacky.flank.gradle"
-version = "0.2.5"
+version = "0.2.7"
 
 repositories {
   google()
@@ -34,6 +34,7 @@ pluginBundle {
 
   mavenCoordinates {
     artifactId = "fladle"
+    groupId = group
   }
 }
 

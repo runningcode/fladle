@@ -84,4 +84,14 @@ class YamlWriterTest {
       assertEquals("instrumentationApk cannot be null", expected.message)
     }
   }
+
+  @Test
+  fun writeTestTargets() {
+    val extension = FlankGradleExtension().apply {
+      testTargets = "class com.example.Foo#testThing"
+    }
+
+    assertEquals("  test-targets:\n" +
+        "  - class com.example.Foo#testThing", yamlWriter.writeAdditionalProperties(extension))
+  }
 }
