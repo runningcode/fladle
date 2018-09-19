@@ -12,5 +12,5 @@ open class FlankGradleExtension {
   var devices: List<Device> = listOf(Device("NexusLowRes", 28))
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
-  var testTargets: String? = null
+  var testTargets: List<String>? = null
 }
