@@ -8,7 +8,7 @@ buildscript {
         maven { url = 'http://dl.bintray.com/kotlin/kotlin-eap'}
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0-alpha10'
+        classpath 'com.android.tools.build:gradle:3.3.0-alpha11'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -40,5 +40,5 @@ buildScan {
 
 wrapper {
     distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = '4.10.1'
+    gradleVersion = '4.10.2'
 }
