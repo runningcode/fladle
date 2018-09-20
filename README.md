@@ -47,6 +47,9 @@ This is the path to the app's debug apk.
 ### instrumentationApk
 This is the path to the app's instrumentation apk.
 
+### testTargets
+Set multiple testTargets to be run by flank.
+See [Google Cloud Firebase docs](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run) for more information.
 
 See the sample module for an example usage.
 

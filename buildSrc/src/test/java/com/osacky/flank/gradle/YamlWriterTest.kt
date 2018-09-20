@@ -86,12 +86,24 @@ class YamlWriterTest {
   }
 
   @Test
-  fun writeTestTargets() {
+  fun writeSingleTestTargets() {
     val extension = FlankGradleExtension().apply {
-      testTargets = "class com.example.Foo#testThing"
+      testTargets = listOf("class com.example.Foo#testThing")
     }
 
     assertEquals("  test-targets:\n" +
         "  - class com.example.Foo#testThing", yamlWriter.writeAdditionalProperties(extension))
+  }
+
+  @Test
+  fun writeMultipleTestTargets() {
+    val extension = FlankGradleExtension().apply {
+      testTargets = listOf("class com.example.Foo#testThing", "class com.example.Foo#testThing2")
+    }
+
+    assertEquals("  test-targets:\n" +
+        "  - class com.example.Foo#testThing\n" +
+        "  - class com.example.Foo#testThing2",
+      yamlWriter.writeAdditionalProperties(extension))
   }
 }

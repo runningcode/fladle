@@ -23,10 +23,15 @@ internal class YamlWriter {
 
   internal fun writeAdditionalProperties(extension: FlankGradleExtension): String {
     val builder = StringBuilder()
-    if (extension.testTargets != null) {
-      builder.append("""  test-targets:
-        |  - ${extension.testTargets}
-      """.trimMargin())
+    val testTargets = extension.testTargets
+    if (testTargets != null) {
+      builder.appendln("  test-targets:")
+      testTargets.forEachIndexed { index, target ->
+        builder.append("  - $target")
+        if (index < testTargets.size - 1) {
+          builder.appendln()
+        }
+      }
     }
     return builder.toString()
   }
