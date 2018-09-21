@@ -86,6 +86,15 @@ class YamlWriterTest {
   }
 
   @Test
+  fun writeNoTestTargets() {
+    val extension = FlankGradleExtension().apply {
+      testTargets = listOf()
+    }
+
+    assertEquals("", yamlWriter.writeAdditionalProperties(extension))
+  }
+
+  @Test
   fun writeSingleTestTargets() {
     val extension = FlankGradleExtension().apply {
       testTargets = listOf("class com.example.Foo#testThing")
