@@ -32,7 +32,7 @@ fladle {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.0-rc02'
-    implementation('android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha05'){
+    implementation('android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha06'){
         exclude group: 'com.android.support'
     }
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
