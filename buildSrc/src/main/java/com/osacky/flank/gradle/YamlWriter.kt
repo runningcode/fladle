@@ -24,7 +24,7 @@ internal class YamlWriter {
   internal fun writeAdditionalProperties(extension: FlankGradleExtension): String {
     val builder = StringBuilder()
     val testTargets = extension.testTargets
-    if (testTargets != null) {
+    if (testTargets.isNotEmpty()) {
       builder.appendln("  test-targets:")
       testTargets.forEachIndexed { index, target ->
         builder.append("  - $target")
