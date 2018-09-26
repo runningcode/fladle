@@ -59,6 +59,7 @@ fladle {
             new Device("Nexus5", 23, null, null)
     ]
     projectId("flank-gradle")
+    flankVersion("v3.1.1")
     debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
     instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     autoGoogleLogin = true
@@ -81,6 +82,12 @@ A list of devices to run the tests against. When list is empty, a default device
 ### projectId
 The projectId is a unique identifier which can be found in the project's URL: `https://console.firebase.google.com/project/<projectId>`
 This is automatically discovered based on the service credential by default.
+
+### flankVersion
+`flankVersion("flank_snapshot")` to specify a Flank snapshot.
+
+`flankVersion("v3.1.1")` to specify a specific Flank version.
+
 
 ### debugApk
 This is the path to the app's debug apk.

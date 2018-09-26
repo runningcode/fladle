@@ -22,7 +22,7 @@ class FlankGradlePlugin : Plugin<Project> {
 
       register("downloadFlank", Download::class.java) {
         description = "Downloads flank to the build/fladle directory in the current project."
-        src("https://github.com/TestArmada/flank/releases/download/v${extension.flankVersion}/flank.jar")
+        src("https://github.com/TestArmada/flank/releases/download/${extension.flankVersion}/flank.jar")
         dest("${project.fladleDir}/flank.jar")
         onlyIfModified(true)
       }

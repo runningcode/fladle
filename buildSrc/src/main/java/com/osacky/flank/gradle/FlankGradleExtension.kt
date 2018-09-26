@@ -1,7 +1,7 @@
 package com.osacky.flank.gradle
 
 open class FlankGradleExtension {
-  var flankVersion: String = "3.1.1"
+  var flankVersion: String = "v3.1.1"
   // Project id is automatically discovered by default. Use this to override the project id.
   var projectId: String? = null
   var serviceAccountCredentials: String? = null
