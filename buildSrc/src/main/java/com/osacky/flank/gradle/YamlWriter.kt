@@ -7,6 +7,7 @@ internal class YamlWriter {
   internal fun createConfigProps(extension: FlankGradleExtension): String {
     val deviceString = createDeviceString(extension.devices)
     val additionalProperties = writeAdditionalProperties(extension)
+    val flankProperties = writeFlankProperties(extension)
 
     checkNotNull(extension.debugApk) { "debugApk cannot be null" }
     checkNotNull(extension.instrumentationApk) { "instrumentationApk cannot be null" }
@@ -18,7 +19,24 @@ internal class YamlWriter {
       |${createProjectIdString(extension)}
       |$deviceString
       |$additionalProperties
+      |$flankProperties
     """.trimMargin()
+  }
+
+  internal fun writeFlankProperties(extension: FlankGradleExtension): String {
+    val builder = StringBuilder()
+    val testShards = extension.testShards
+    val repeatTests = extension.repeatTests
+    if (testShards != null || repeatTests != null) {
+      builder.appendln("flank:")
+    }
+    if (testShards != null) {
+      builder.appendln("  testShards: $testShards")
+    }
+    if (repeatTests != null) {
+      builder.appendln("  repeatTests: $repeatTests")
+    }
+    return builder.toString()
   }
 
   internal fun writeAdditionalProperties(extension: FlankGradleExtension): String {
@@ -26,13 +44,11 @@ internal class YamlWriter {
     val testTargets = extension.testTargets
     if (testTargets.isNotEmpty()) {
       builder.appendln("  test-targets:")
-      testTargets.forEachIndexed { index, target ->
-        builder.append("  - $target")
-        if (index < testTargets.size - 1) {
-          builder.appendln()
-        }
+      testTargets.forEach { target ->
+        builder.appendln("  - $target")
       }
     }
+
     return builder.toString()
   }
 

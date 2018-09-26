@@ -13,4 +13,7 @@ open class FlankGradleExtension {
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
   var testTargets: List<String> = emptyList()
+
+  var testShards: Int? = null
+  var repeatTests: Int? = null
 }

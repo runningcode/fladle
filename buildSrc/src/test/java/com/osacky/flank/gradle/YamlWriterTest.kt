@@ -86,6 +86,55 @@ class YamlWriterTest {
   }
 
   @Test
+  fun writeNoTestShards() {
+    val extension = FlankGradleExtension().apply {
+    }
+
+    assertEquals("", yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
+  fun writeTestShardOption() {
+    val extension = FlankGradleExtension().apply {
+      testShards = 5
+    }
+
+    assertEquals("flank:\n" +
+        "  testShards: 5\n", yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
+  fun writeNoTestRepeats() {
+    val extension = FlankGradleExtension().apply {
+      repeatTests = null
+    }
+
+    assertEquals("", yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
+  fun writeTestRepeats() {
+    val extension = FlankGradleExtension().apply {
+      repeatTests = 5
+    }
+
+    assertEquals("flank:\n" +
+        "  repeatTests: 5\n", yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
+  fun writeTestShardAndRepeatOption() {
+    val extension = FlankGradleExtension().apply {
+      testShards = 5
+      repeatTests = 2
+    }
+
+    assertEquals("flank:\n" +
+        "  testShards: 5\n" +
+        "  repeatTests: 2\n", yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
   fun writeNoTestTargets() {
     val extension = FlankGradleExtension().apply {
       testTargets = listOf()
@@ -101,7 +150,7 @@ class YamlWriterTest {
     }
 
     assertEquals("  test-targets:\n" +
-        "  - class com.example.Foo#testThing", yamlWriter.writeAdditionalProperties(extension))
+        "  - class com.example.Foo#testThing\n", yamlWriter.writeAdditionalProperties(extension))
   }
 
   @Test
@@ -112,7 +161,7 @@ class YamlWriterTest {
 
     assertEquals("  test-targets:\n" +
         "  - class com.example.Foo#testThing\n" +
-        "  - class com.example.Foo#testThing2",
+        "  - class com.example.Foo#testThing2\n",
       yamlWriter.writeAdditionalProperties(extension))
   }
 }
