@@ -8,6 +8,8 @@ Flank is a parallel test runner for Firebase Test Lab.
 More information about Flank can be found [here](https://github.com/testArmada/flank).
 Also read this [medium post](https://medium.com/walmartlabs/flank-smart-test-runner-for-firebase-cf65e1b1eca7).
 
+Fladle's feature list is bare and doesn't yet support all the options that Flank does as this project is quite new. We welcome feature requests and contributions. We'd like to adapt it to more use cases to make it helpful for everyone.
+
 # Usage
 
 Using Fladle takes 3 steps:
@@ -41,17 +43,52 @@ It can be created with the editor role [here](https://console.cloud.google.com/i
 
 
 ## Optional Configuration
+
+``` groovy
+fladle {
+    // Required parameters
+    serviceAccountCredentials("${project.file("flank-gradle-5cf02dc90531.json")}")
+
+    // Optional parameters
+    useOrchestrator = false
+    testTargets = [
+            "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
+    ]
+    devices = [
+            new Device("NexusLowRes", 28, null, null),
+            new Device("Nexus5", 23, null, null)
+    ]
+    projectId("flank-gradle")
+    debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
+    instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
+    autoGoogleLogin = true
+}
+```
+
+
+### useOrchestrator
+Whether or not we should use the android test orchestrator to run this tests.
+Set this to true when the build.gradle file includes `testOptions.execution 'ANDROID_TEST_ORCHESTRATOR'`
+
+### testTargets
+Set multiple testTargets to be run by flank.
+See [Google Cloud Firebase docs](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run) for more information.
+
+### devices
+A list of devices to run the tests against. When list is empty, a default device will be used. When the Device parameter is null, a default value will be used.
+
+### projectId
+The projectId is a unique identifier which can be found in the project's URL: `https://console.firebase.google.com/project/<projectId>`
+This is automatically discovered based on the service credential by default.
+
 ### debugApk
 This is the path to the app's debug apk.
 
 ### instrumentationApk
 This is the path to the app's instrumentation apk.
 
-### testTargets
-Set multiple testTargets to be run by flank.
-See [Google Cloud Firebase docs](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run) for more information.
-
-See the sample module for an example usage.
+### autoGoogleLogin
+Whether or not to automatically log in using a preconfigured google account. [More Info](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run#--auto-google-login)
 
 ---
 
