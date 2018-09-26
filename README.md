@@ -99,10 +99,10 @@ This is the path to the app's instrumentation apk.
 Whether or not to automatically log in using a preconfigured google account. [More Info](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run#--auto-google-login)
 
 ### testShards
-Overrides the number of automatically determined test shards for Flank to use.
+Overrides the number of automatically determined test shards for Flank to use. Uses Flanks default value when not specified.
 
 ### repeatTests
-The number of times to repeat each test. Defaults to 1.
+The number of times to repeat each test. Uses Flanks default value when not specified.
 
 ---
 
