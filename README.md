@@ -1,6 +1,6 @@
-# Fladle - The Gradle Plugin for Flank
+# Fladle - The Gradle Plugin for Firebase Test Lab and Flank
 
-Fladle is a Gradle plugin which reduces the configuration necessary to use Flank.
+Fladle is a Gradle plugin which simplifies the configuration necessary to use Firebase Test Lab and Flank.
 
 
 Flank is a parallel test runner for Firebase Test Lab.
