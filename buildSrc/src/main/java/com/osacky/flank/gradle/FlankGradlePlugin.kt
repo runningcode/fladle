@@ -45,14 +45,16 @@ class FlankGradlePlugin : Plugin<Project> {
         }
       }
 
-      register("runFlank", RunFlankTask::class.java, extension)
+      val writeConfigProps = project.tasks.register("writeConfigProps", YamlConfigWriterTask::class.java, extension)
 
-      register("flankDoctor", Exec::class.java) {
+      project.tasks.register("flankDoctor", Exec::class.java) {
         description = "Finds problems with the current configuration."
         workingDir("${project.fladleDir}/")
         commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "doctor")
-        dependsOn(named("downloadFlank"), named("writeConfigProps"))
+        dependsOn(named("downloadFlank"), writeConfigProps)
       }
+
+      register("runFlank", RunFlankTask::class.java, extension)
     }
   }
 
