@@ -45,16 +45,6 @@ class FlankGradlePlugin : Plugin<Project> {
         }
       }
 
-      register("writeConfigProps", YamlConfigWriterTask::class.java, extension)
-
-      register("execFlank", Exec::class.java) {
-        description = "Runs instrumentation tests using flank on firebase test lab."
-        workingDir("${project.fladleDir}/")
-        commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "run")
-        environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to "${extension.serviceAccountCredentials}"))
-        dependsOn(named("downloadFlank"), named("writeConfigProps"))
-      }
-
       register("runFlank", RunFlankTask::class.java, extension)
 
       register("flankDoctor", Exec::class.java) {
