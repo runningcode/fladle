@@ -2,14 +2,25 @@ package com.osacky.flank.gradle
 
 import com.android.build.gradle.AppExtension
 import de.undercouch.gradle.tasks.download.Download
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Exec
+import org.gradle.util.GradleVersion
 
 class FlankGradlePlugin : Plugin<Project> {
+
   override fun apply(target: Project) {
+    checkMinimumGradleVersion()
     val extension = target.extensions.create("fladle", FlankGradleExtension::class.java)
     configureTasks(target, extension)
+  }
+
+  private fun checkMinimumGradleVersion() {
+    // Gradle 4.9 is required because we use the lazy task configuration API.
+    if (GRADLE_MIN_VERSION > GradleVersion.current()) {
+      throw GradleException("Fladle requires at minimum version $GRADLE_MIN_VERSION. Detected version ${GradleVersion.current()}.")
+    }
   }
 
   private fun configureTasks(project: Project, extension: FlankGradleExtension) {
@@ -67,5 +78,9 @@ class FlankGradlePlugin : Plugin<Project> {
         }
       }
     }
+  }
+
+  companion object {
+    val GRADLE_MIN_VERSION = GradleVersion.version("4.9")
   }
 }

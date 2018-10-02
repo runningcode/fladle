@@ -15,12 +15,13 @@ plugins {
 
 dependencies {
   compileOnly(gradleApi())
-  implementation("com.android.tools.build:gradle:3.1.4")
+  implementation("com.android.tools.build:gradle:3.2.0")
 
   implementation("de.undercouch:gradle-download-task:3.4.3")
 
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.12")
+  testImplementation("com.google.truth:truth:0.42")
 }
 
 kotlinter {

@@ -8,3 +8,7 @@
 ## 0.2.10
 
 * Add support for specifying Flank snapshot versions. See README for configuration options.
+
+## 0.2.11
+
+* Add minimum Gradle version check. (4.9 is required because we use the lazy task configuration API))
