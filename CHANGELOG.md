@@ -12,3 +12,8 @@
 ## 0.2.11
 
 * Add minimum Gradle version check. (4.9 is required because we use the lazy task configuration API))
+
+## 0.2.12
+
+* Fix broken flankDoctor task.
+
