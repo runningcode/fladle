@@ -19,7 +19,7 @@ android {
 
 fladle {
     serviceAccountCredentials("${project.file("flank-gradle-5cf02dc90531.json")}")
-    useOrchestrator = false
+    useOrchestrator = true
     testTargets = [
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
     ]
@@ -27,6 +27,14 @@ fladle {
             new Device("NexusLowRes", 28, null, null),
             new Device("Nexus5", 23, null, null)
     ]
+    targets {
+        oranges {
+            useOrchestrator = false
+            testTargets = [
+                    "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
+            ]
+        }
+    }
 }
 
 dependencies {

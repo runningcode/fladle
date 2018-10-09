@@ -1,12 +1,22 @@
 package com.osacky.flank.gradle
 
+import org.gradle.api.Project
+import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
+import org.junit.Before
 import org.junit.Test
 
 class YamlWriterTest {
 
   internal val yamlWriter = YamlWriter()
+
+  private lateinit var project: Project
+
+  @Before
+  fun setup() {
+    project = ProjectBuilder.builder().withName("project").build()
+  }
 
   @Test
   fun testWriteSingleDevice() {
@@ -63,9 +73,9 @@ class YamlWriterTest {
 
   @Test
   fun verifyDebugApkThrowsError() {
-    val extension = FlankGradleExtension()
+    val extension = FlankGradleExtension(project)
     try {
-      yamlWriter.createConfigProps(extension)
+      yamlWriter.createConfigProps(extension, extension)
       fail()
     } catch (expected: IllegalStateException) {
       assertEquals("debugApk cannot be null", expected.message)
@@ -74,11 +84,11 @@ class YamlWriterTest {
 
   @Test
   fun verifyInstrumentationApkThrowsError() {
-    val extension = FlankGradleExtension().apply {
+    val extension = FlankGradleExtension(project).apply {
       debugApk = "path"
     }
     try {
-      yamlWriter.createConfigProps(extension)
+      yamlWriter.createConfigProps(extension, extension)
       fail()
     } catch (expected: IllegalStateException) {
       assertEquals("instrumentationApk cannot be null", expected.message)
@@ -87,7 +97,7 @@ class YamlWriterTest {
 
   @Test
   fun writeNoTestShards() {
-    val extension = FlankGradleExtension().apply {
+    val extension = FlankGradleExtension(project).apply {
     }
 
     assertEquals("", yamlWriter.writeFlankProperties(extension))
@@ -95,7 +105,7 @@ class YamlWriterTest {
 
   @Test
   fun writeTestShardOption() {
-    val extension = FlankGradleExtension().apply {
+    val extension = FlankGradleExtension(project).apply {
       testShards = 5
     }
 
@@ -105,7 +115,7 @@ class YamlWriterTest {
 
   @Test
   fun writeNoTestRepeats() {
-    val extension = FlankGradleExtension().apply {
+    val extension = FlankGradleExtension(project).apply {
       repeatTests = null
     }
 
@@ -114,7 +124,7 @@ class YamlWriterTest {
 
   @Test
   fun writeTestRepeats() {
-    val extension = FlankGradleExtension().apply {
+    val extension = FlankGradleExtension(project).apply {
       repeatTests = 5
     }
 
@@ -124,7 +134,7 @@ class YamlWriterTest {
 
   @Test
   fun writeTestShardAndRepeatOption() {
-    val extension = FlankGradleExtension().apply {
+    val extension = FlankGradleExtension(project).apply {
       testShards = 5
       repeatTests = 2
     }
@@ -136,7 +146,7 @@ class YamlWriterTest {
 
   @Test
   fun writeNoTestTargets() {
-    val extension = FlankGradleExtension().apply {
+    val extension = FlankGradleExtension(project).apply {
       testTargets = listOf()
     }
 
@@ -145,7 +155,7 @@ class YamlWriterTest {
 
   @Test
   fun writeSingleTestTargets() {
-    val extension = FlankGradleExtension().apply {
+    val extension = FlankGradleExtension(project).apply {
       testTargets = listOf("class com.example.Foo#testThing")
     }
 
@@ -155,7 +165,7 @@ class YamlWriterTest {
 
   @Test
   fun writeMultipleTestTargets() {
-    val extension = FlankGradleExtension().apply {
+    val extension = FlankGradleExtension(project).apply {
       testTargets = listOf("class com.example.Foo#testThing", "class com.example.Foo#testThing2")
     }
 
