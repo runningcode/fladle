@@ -15,7 +15,7 @@ plugins {
 
 dependencies {
   compileOnly(gradleApi())
-  implementation("com.android.tools.build:gradle:3.2.0")
+  implementation("com.android.tools.build:gradle:3.2.1")
 
   implementation("de.undercouch:gradle-download-task:3.4.3")
 
