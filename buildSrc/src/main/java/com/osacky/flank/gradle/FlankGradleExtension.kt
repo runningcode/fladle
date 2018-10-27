@@ -22,11 +22,11 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   var debugApk: String? = null
   var instrumentationApk: String? = null
 
-  val targets: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
+  val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
     FladleConfigImpl(it, flankVersion, projectId, serviceAccountCredentials, useOrchestrator, autoGoogleLogin, devices, testTargets, testShards, repeatTests)
   }
 
   fun targets(closure: Closure<*>) {
-    targets.configure(closure)
+    configs.configure(closure)
   }
 }

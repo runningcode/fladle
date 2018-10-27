@@ -44,7 +44,7 @@ class FlankGradlePlugin : Plugin<Project> {
       tasks.apply {
         createTasksForConfig(extension, extension, project, "")
 
-        extension.targets.forEach {
+        extension.configs.forEach {
           createTasksForConfig(extension, it, project, it.name)
         }
       }
