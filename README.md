@@ -52,11 +52,11 @@ fladle {
     // Optional parameters
     useOrchestrator = false
     testTargets = [
-            "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
+        "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
     ]
     devices = [
-            new Device("NexusLowRes", 28, null, null),
-            new Device("Nexus5", 23, null, null)
+        new Device("NexusLowRes", 28, null, null),
+        new Device("Nexus5", 23, null, null)
     ]
     projectId("flank-gradle")
     flankVersion("v3.1.1")
@@ -64,6 +64,14 @@ fladle {
     instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     autoGoogleLogin = true
     testShards = 5
+    configs {
+        oranges {
+            useOrchestrator = false
+            testTargets = [
+                "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
+            ]
+        }
+    }
 }
 ```
 
@@ -103,6 +111,9 @@ Overrides the number of automatically determined test shards for Flank to use. U
 
 ### repeatTests
 The number of times to repeat each test. Uses Flanks default value when not specified.
+
+### configs
+Give a name to a custom flank task and configure its options. The name is appended to the end of the flank task. For example `runFlank` becomes `runFlank<name>`.
 
 ---
 

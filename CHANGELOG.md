@@ -17,3 +17,7 @@
 
 * Fix broken flankDoctor task.
 
+## 0.3.0
+
+* Add support for multiple test configurations.
+
