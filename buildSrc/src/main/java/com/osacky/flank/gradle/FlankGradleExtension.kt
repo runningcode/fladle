@@ -26,7 +26,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
     FladleConfigImpl(it, flankVersion, projectId, serviceAccountCredentials, useOrchestrator, autoGoogleLogin, devices, testTargets, testShards, repeatTests)
   }
 
-  fun targets(closure: Closure<*>) {
+  fun configs(closure: Closure<*>) {
     configs.configure(closure)
   }
 }
