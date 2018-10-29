@@ -4,26 +4,26 @@ import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesti
 
 internal class YamlWriter {
 
-  internal fun createConfigProps(extension: FlankGradleExtension): String {
-    val deviceString = createDeviceString(extension.devices)
-    val additionalProperties = writeAdditionalProperties(extension)
-    val flankProperties = writeFlankProperties(extension)
+  internal fun createConfigProps(config: FladleConfig, extension: FlankGradleExtension): String {
+    val deviceString = createDeviceString(config.devices)
+    val additionalProperties = writeAdditionalProperties(config)
+    val flankProperties = writeFlankProperties(config)
 
     checkNotNull(extension.debugApk) { "debugApk cannot be null" }
     checkNotNull(extension.instrumentationApk) { "instrumentationApk cannot be null" }
     return """gcloud:
       |  app: ${extension.debugApk}
       |  test: ${extension.instrumentationApk}
-      |  use-orchestrator: ${extension.useOrchestrator}
-      |  auto-google-login: ${extension.autoGoogleLogin}
-      |${createProjectIdString(extension)}
+      |  use-orchestrator: ${config.useOrchestrator}
+      |  auto-google-login: ${config.autoGoogleLogin}
+      |${createProjectIdString(config)}
       |$deviceString
       |$additionalProperties
       |$flankProperties
     """.trimMargin()
   }
 
-  internal fun writeFlankProperties(extension: FlankGradleExtension): String {
+  internal fun writeFlankProperties(extension: FladleConfig): String {
     val builder = StringBuilder()
     val testShards = extension.testShards
     val repeatTests = extension.repeatTests
@@ -39,7 +39,7 @@ internal class YamlWriter {
     return builder.toString()
   }
 
-  internal fun writeAdditionalProperties(extension: FlankGradleExtension): String {
+  internal fun writeAdditionalProperties(extension: FladleConfig): String {
     val builder = StringBuilder()
     val testTargets = extension.testTargets
     if (testTargets.isNotEmpty()) {
@@ -52,7 +52,7 @@ internal class YamlWriter {
     return builder.toString()
   }
 
-  internal fun createProjectIdString(extension: FlankGradleExtension): String {
+  internal fun createProjectIdString(extension: FladleConfig): String {
     return if (extension.projectId != null) {
       "  project: ${extension.projectId}"
     } else {

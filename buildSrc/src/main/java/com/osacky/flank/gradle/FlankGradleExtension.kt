@@ -1,19 +1,32 @@
 package com.osacky.flank.gradle
 
-open class FlankGradleExtension {
-  var flankVersion: String = "v3.2.1"
+import groovy.lang.Closure
+import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
+
+open class FlankGradleExtension(project: Project) : FladleConfig {
+  override var flankVersion: String = "v3.2.1"
   // Project id is automatically discovered by default. Use this to override the project id.
-  var projectId: String? = null
-  var serviceAccountCredentials: String? = null
-  var debugApk: String? = null
-  var instrumentationApk: String? = null
-  var useOrchestrator: Boolean = false
-  var autoGoogleLogin: Boolean = false
-  var devices: List<Device> = listOf(Device("NexusLowRes", 28))
+  override var projectId: String? = null
+  override var serviceAccountCredentials: String? = null
+  override var useOrchestrator: Boolean = false
+  override var autoGoogleLogin: Boolean = false
+  override var devices: List<Device> = listOf(Device("NexusLowRes", 28))
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
-  var testTargets: List<String> = emptyList()
+  override var testTargets: List<String> = emptyList()
 
-  var testShards: Int? = null
-  var repeatTests: Int? = null
+  override var testShards: Int? = null
+  override var repeatTests: Int? = null
+
+  var debugApk: String? = null
+  var instrumentationApk: String? = null
+
+  val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
+    FladleConfigImpl(it, flankVersion, projectId, serviceAccountCredentials, useOrchestrator, autoGoogleLogin, devices, testTargets, testShards, repeatTests)
+  }
+
+  fun configs(closure: Closure<*>) {
+    configs.configure(closure)
+  }
 }

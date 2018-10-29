@@ -6,13 +6,14 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Exec
+import org.gradle.api.tasks.TaskContainer
 import org.gradle.util.GradleVersion
 
 class FlankGradlePlugin : Plugin<Project> {
 
   override fun apply(target: Project) {
     checkMinimumGradleVersion()
-    val extension = target.extensions.create("fladle", FlankGradleExtension::class.java)
+    val extension = target.extensions.create("fladle", FlankGradleExtension::class.java, target)
     configureTasks(target, extension)
   }
 
@@ -37,24 +38,46 @@ class FlankGradlePlugin : Plugin<Project> {
         dest("${project.fladleDir}/flank.jar")
         onlyIfModified(true)
       }
+    }
 
-      register("printYml") {
-        description = "Print the flank.yml file to the console."
-        doLast {
-          println(YamlWriter().createConfigProps(extension))
+    project.afterEvaluate {
+      tasks.apply {
+        createTasksForConfig(extension, extension, project, "")
+
+        extension.configs.forEach {
+          createTasksForConfig(extension, it, project, it.name)
         }
       }
+    }
+  }
 
-      val writeConfigProps = project.tasks.register("writeConfigProps", YamlConfigWriterTask::class.java, extension)
-
-      project.tasks.register("flankDoctor", Exec::class.java) {
-        description = "Finds problems with the current configuration."
-        workingDir("${project.fladleDir}/")
-        commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "doctor")
-        dependsOn(named("downloadFlank"), writeConfigProps)
+  private fun TaskContainer.createTasksForConfig(extension: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
+    register("printYml$name") {
+      description = "Print the flank.yml file to the console."
+      doLast {
+        println(YamlWriter().createConfigProps(config, extension))
       }
+    }
 
-      register("runFlank", RunFlankTask::class.java, extension)
+    val writeConfigProps = project.tasks.register("writeConfigProps$name", YamlConfigWriterTask::class.java, config, extension)
+
+    project.tasks.register("flankDoctor$name", Exec::class.java) {
+      description = "Finds problems with the current configuration."
+      workingDir("${project.fladleDir}/")
+      commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "doctor")
+      dependsOn(named("downloadFlank"), writeConfigProps)
+    }
+
+    val execFlank = project.tasks.register("execFlank$name", Exec::class.java) {
+      description = "Runs instrumentation tests using flank on firebase test lab."
+      workingDir("${project.fladleDir}/")
+      commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "run")
+      environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to "${config.serviceAccountCredentials}"))
+      dependsOn(named("downloadFlank"), named("writeConfigProps$name"))
+    }
+
+    register("runFlank$name", RunFlankTask::class.java, config).configure {
+      dependsOn(execFlank)
     }
   }
 
