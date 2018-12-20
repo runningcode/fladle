@@ -21,3 +21,7 @@
 
 * Add support for multiple test configurations.
 
+## 0.3.1
+
+* Maybe fix bug similar to: https://github.com/michel-kraemer/gradle-download-task/issues/58
+

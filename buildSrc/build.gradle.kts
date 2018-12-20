@@ -1,5 +1,5 @@
 group = "com.osacky.flank.gradle"
-version = "0.3.0"
+version = "0.3.1"
 
 repositories {
   google()
@@ -18,6 +18,7 @@ dependencies {
   implementation("com.android.tools.build:gradle:3.2.1")
 
   implementation("de.undercouch:gradle-download-task:3.4.3")
+  implementation("org.apache.httpcomponents:httpclient:4.5.5")
 
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.12")
