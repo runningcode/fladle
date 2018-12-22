@@ -145,6 +145,26 @@ class YamlWriterTest {
   }
 
   @Test
+  fun writeResultsHistoryName() {
+    val extension = FlankGradleExtension(project).apply {
+      resultsHistoryName = "androidtest"
+    }
+
+    assertEquals("  results-history-name: androidtest\n", yamlWriter.writeAdditionalProperties(extension))
+  }
+
+  @Test
+  fun writeTestTargetsAndResultsHistoryName() {
+    val extension = FlankGradleExtension(project).apply {
+      resultsHistoryName = "androidtest"
+      testTargets = listOf("class com.example.Foo")
+    }
+
+    assertEquals("  results-history-name: androidtest\n" +
+        "  test-targets:\n" +
+        "  - class com.example.Foo\n", yamlWriter.writeAdditionalProperties(extension))
+  }
+  @Test
   fun writeNoTestTargets() {
     val extension = FlankGradleExtension(project).apply {
       testTargets = listOf()

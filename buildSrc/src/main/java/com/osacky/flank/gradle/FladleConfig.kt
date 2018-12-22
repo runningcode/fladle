@@ -16,4 +16,6 @@ interface FladleConfig {
   var repeatTests: Int?
 
   var smartFlankGcsPath: String?
+
+  var resultsHistoryName: String?
 }

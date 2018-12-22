@@ -46,6 +46,9 @@ internal class YamlWriter {
   internal fun writeAdditionalProperties(extension: FladleConfig): String {
     val builder = StringBuilder()
     val testTargets = extension.testTargets
+    extension.resultsHistoryName?.let {
+      builder.appendln("  results-history-name: $it")
+    }
     if (testTargets.isNotEmpty()) {
       builder.appendln("  test-targets:")
       testTargets.forEach { target ->
