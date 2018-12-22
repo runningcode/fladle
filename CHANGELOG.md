@@ -33,3 +33,8 @@
 
 * Add support for setting smartFlankGcsPath
 * Capitalize task names.
+
+## 0.3.4
+
+* Add support for setting results-history-name.
+* Add support for selecting variant to test instead of apk path.
