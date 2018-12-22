@@ -81,15 +81,26 @@ class FlankGradlePlugin : Plugin<Project> {
     }
   }
 
+  private fun automaticallyConfigureTestOrchestrator(project: Project, extension: FlankGradleExtension, androidExtension: AppExtension) {
+    project.afterEvaluate {
+      val useOrchestrator = androidExtension.testOptions.execution == "android_test_orchestrator"
+      if (useOrchestrator) {
+        log("Automatically detected the use of Android Test Orchestrator")
+      }
+      extension.useOrchestrator = useOrchestrator
+    }
+  }
+
   private fun findDebugAndInstrumentationApk(project: Project, extension: FlankGradleExtension) {
     val baseExtension = project.extensions.findByType(AppExtension::class.java)!!
+    automaticallyConfigureTestOrchestrator(project, extension, baseExtension)
     baseExtension.applicationVariants.all {
       if (testVariant != null) {
         outputs.all debug@{
           if (extension.variant == null || (extension.variant != null && extension.variant == name)) {
             testVariant.outputs.all test@{
-              println("Configuring fladle.debugApk from variant ${this@debug.name}")
-              println("Configuring fladle.instrumentationApk from variant ${this@test.name}")
+              log("Configuring fladle.debugApk from variant ${this@debug.name}")
+              log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
               extension.debugApk = this@debug.outputFile.absolutePath
               extension.instrumentationApk = this@test.outputFile.absolutePath
             }
@@ -101,5 +112,8 @@ class FlankGradlePlugin : Plugin<Project> {
 
   companion object {
     val GRADLE_MIN_VERSION = GradleVersion.version("4.9")
+    fun log(message: String) {
+      println("Fladle: $message")
+    }
   }
 }
