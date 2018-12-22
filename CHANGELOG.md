@@ -38,3 +38,7 @@
 
 * Add support for setting results-history-name.
 * Add support for selecting variant to test instead of apk path.
+
+## 0.3.5
+
+* Automatically configure the use of test orchestrator.
