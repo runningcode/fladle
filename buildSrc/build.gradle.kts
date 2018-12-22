@@ -1,9 +1,12 @@
 group = "com.osacky.flank.gradle"
-version = "0.3.1"
+version = "0.3.2"
 
 repositories {
   google()
   jcenter()
+  maven {
+    url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+  }
 }
 
 plugins {
@@ -17,8 +20,7 @@ dependencies {
   compileOnly(gradleApi())
   implementation("com.android.tools.build:gradle:3.2.1")
 
-  implementation("de.undercouch:gradle-download-task:3.4.3")
-  implementation("org.apache.httpcomponents:httpclient:4.5.5")
+  implementation("de.undercouch:gradle-download-task:4.0.0-SNAPSHOT")
 
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.12")
