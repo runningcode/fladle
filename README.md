@@ -119,6 +119,9 @@ Give a name to a custom flank task and configure its options. The name is append
 ### smartFlankGcsPath
 Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
 
+### variant
+Which variant and buildType to use for testing. For example: 'debug' or 'devDebug'.
+
 ---
 
 # Publishing

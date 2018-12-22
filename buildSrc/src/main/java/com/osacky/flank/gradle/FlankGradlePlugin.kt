@@ -86,9 +86,13 @@ class FlankGradlePlugin : Plugin<Project> {
     baseExtension.applicationVariants.all {
       if (testVariant != null) {
         outputs.all debug@{
-          testVariant.outputs.all test@{
-            extension.debugApk = this@debug.outputFile.absolutePath
-            extension.instrumentationApk = this@test.outputFile.absolutePath
+          if (extension.variant == null || (extension.variant != null && extension.variant == name)) {
+            testVariant.outputs.all test@{
+              println("Configuring fladle.debugApk from variant ${this@debug.name}")
+              println("Configuring fladle.instrumentationApk from variant ${this@test.name}")
+              extension.debugApk = this@debug.outputFile.absolutePath
+              extension.instrumentationApk = this@test.outputFile.absolutePath
+            }
           }
         }
       }

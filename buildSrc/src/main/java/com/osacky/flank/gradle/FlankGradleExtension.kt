@@ -22,11 +22,14 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   // Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
   override var smartFlankGcsPath: String? = null
 
+  // Variant to use for configuring output APK.
+  var variant: String? = null
+
   var debugApk: String? = null
   var instrumentationApk: String? = null
 
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
-    FladleConfigImpl(it, flankVersion, projectId, serviceAccountCredentials, useOrchestrator, autoGoogleLogin, devices, testTargets, testShards, repeatTests)
+    FladleConfigImpl(it, flankVersion, projectId, serviceAccountCredentials, useOrchestrator, autoGoogleLogin, devices, testTargets, testShards, repeatTests, smartFlankGcsPath)
   }
 
   fun configs(closure: Closure<*>) {
