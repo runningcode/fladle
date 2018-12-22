@@ -174,4 +174,15 @@ class YamlWriterTest {
         "  - class com.example.Foo#testThing2\n",
       yamlWriter.writeAdditionalProperties(extension))
   }
+
+  @Test
+  fun writeSmartFlankGcsPath() {
+    val extension = FlankGradleExtension(project).apply {
+      smartFlankGcsPath = "gs://test/fakepath.xml"
+    }
+
+    assertEquals("flank:\n" +
+        "  smartFlankGcsPath: gs://test/fakepath.xml\n",
+        yamlWriter.writeFlankProperties(extension))
+  }
 }

@@ -19,6 +19,9 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   override var testShards: Int? = null
   override var repeatTests: Int? = null
 
+  // Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
+  override var smartFlankGcsPath: String? = null
+
   var debugApk: String? = null
   var instrumentationApk: String? = null
 

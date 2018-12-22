@@ -18,7 +18,7 @@ Using Fladle takes 3 steps:
 ``` groovy
 buildscript {
   dependencies {
-    classpath "gradle.plugin.com.osacky.flank.gradle:fladle:0.3.2"
+    classpath "gradle.plugin.com.osacky.flank.gradle:fladle:0.3.3"
   }
 }
 
@@ -64,6 +64,7 @@ fladle {
     instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     autoGoogleLogin = true
     testShards = 5
+    smartFlankGcsPath = gs://tmp_flank/flank/test_app_android.xml
     configs {
         oranges {
             useOrchestrator = false
@@ -114,6 +115,9 @@ The number of times to repeat each test. Uses Flanks default value when not spec
 
 ### configs
 Give a name to a custom flank task and configure its options. The name is appended to the end of the flank task. For example `runFlank` becomes `runFlank<name>`.
+
+### smartFlankGcsPath
+Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
 
 ---
 

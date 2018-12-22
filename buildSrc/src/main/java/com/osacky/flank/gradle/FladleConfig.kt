@@ -14,4 +14,6 @@ interface FladleConfig {
 
   var testShards: Int?
   var repeatTests: Int?
+
+  var smartFlankGcsPath: String?
 }

@@ -10,5 +10,6 @@ data class FladleConfigImpl(
   override var devices: List<Device> = listOf(Device("NexusLowRes", 28)),
   override var testTargets: List<String> = emptyList(),
   override var testShards: Int? = null,
-  override var repeatTests: Int? = null
+  override var repeatTests: Int? = null,
+  override var smartFlankGcsPath: String? = null
 ) : FladleConfig

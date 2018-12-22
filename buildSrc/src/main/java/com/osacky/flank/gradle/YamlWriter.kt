@@ -27,14 +27,18 @@ internal class YamlWriter {
     val builder = StringBuilder()
     val testShards = extension.testShards
     val repeatTests = extension.repeatTests
-    if (testShards != null || repeatTests != null) {
+    val smartFlankGcsPath = extension.smartFlankGcsPath
+    if (testShards != null || repeatTests != null || smartFlankGcsPath != null) {
       builder.appendln("flank:")
     }
-    if (testShards != null) {
+    testShards?.let {
       builder.appendln("  testShards: $testShards")
     }
-    if (repeatTests != null) {
+    repeatTests?.let {
       builder.appendln("  repeatTests: $repeatTests")
+    }
+    smartFlankGcsPath?.let {
+      builder.appendln("  smartFlankGcsPath: $it")
     }
     return builder.toString()
   }

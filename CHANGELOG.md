@@ -25,3 +25,11 @@
 
 * Maybe fix bug similar to: https://github.com/michel-kraemer/gradle-download-task/issues/58
 
+## 0.3.2
+
+* Actually fix gradle download task bug.
+
+## 0.3.3
+
+* Add support for setting smartFlankGcsPath
+* Capitalize task names.
