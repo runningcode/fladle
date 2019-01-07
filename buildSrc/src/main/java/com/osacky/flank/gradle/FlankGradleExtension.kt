@@ -11,6 +11,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   override var serviceAccountCredentials: String? = null
   override var useOrchestrator: Boolean = false
   override var autoGoogleLogin: Boolean = false
+  override var clearPackageData: Boolean = false
   override var devices: List<Device> = listOf(Device("NexusLowRes", 28))
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
@@ -31,7 +32,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   var instrumentationApk: String? = null
 
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
-    FladleConfigImpl(it, flankVersion, projectId, serviceAccountCredentials, useOrchestrator, autoGoogleLogin, devices, testTargets, testShards, repeatTests, smartFlankGcsPath, resultsHistoryName)
+    FladleConfigImpl(it, flankVersion, projectId, serviceAccountCredentials, useOrchestrator, autoGoogleLogin, clearPackageData, devices, testTargets, testShards, repeatTests, smartFlankGcsPath, resultsHistoryName)
   }
 
   fun configs(closure: Closure<*>) {

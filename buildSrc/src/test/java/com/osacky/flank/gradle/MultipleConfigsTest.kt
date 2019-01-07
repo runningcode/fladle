@@ -43,6 +43,8 @@ class MultipleConfigsTest {
       |  test: instrument.apk
       |  use-orchestrator: false
       |  auto-google-login: false
+      |  environment-variables:
+      |    clearPackageData: false
       |# projectId will be automatically discovered
       |  device:
       |  - model: NexusLowRes
