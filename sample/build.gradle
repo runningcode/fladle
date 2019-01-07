@@ -23,6 +23,7 @@ android {
 fladle {
     serviceAccountCredentials("${project.file("flank-gradle-5cf02dc90531.json")}")
     useOrchestrator = true
+    clearPackageData = true
     testTargets = [
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
     ]

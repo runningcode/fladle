@@ -16,6 +16,8 @@ internal class YamlWriter {
       |  test: ${extension.instrumentationApk}
       |  use-orchestrator: ${config.useOrchestrator}
       |  auto-google-login: ${config.autoGoogleLogin}
+      |  environment-variables:
+      |    clearPackageData: ${config.clearPackageData}
       |${createProjectIdString(config)}
       |$deviceString
       |$additionalProperties

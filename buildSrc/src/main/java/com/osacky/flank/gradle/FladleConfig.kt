@@ -7,6 +7,7 @@ interface FladleConfig {
   var serviceAccountCredentials: String?
   var useOrchestrator: Boolean
   var autoGoogleLogin: Boolean
+  var clearPackageData: Boolean
   var devices: List<Device>
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
