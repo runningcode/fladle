@@ -42,3 +42,7 @@
 ## 0.3.5
 
 * Automatically configure the use of test orchestrator.
+
+## 0.3.6
+
+* Add support for environment variable clearPackageData. Thanks @anderssu !
