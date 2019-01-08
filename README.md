@@ -63,6 +63,7 @@ fladle {
     debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
     instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     autoGoogleLogin = true
+    clearPackageData = true
     testShards = 5
     smartFlankGcsPath = gs://tmp_flank/flank/test_app_android.xml
     configs {
@@ -106,6 +107,9 @@ This is the path to the app's instrumentation apk.
 
 ### autoGoogleLogin
 Whether or not to automatically log in using a preconfigured google account. [More Info](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run#--auto-google-login)
+
+### clearPackageData
+Whether or not to remove all shared state from your device's CPU and memory after each test. [More info](https://developer.android.com/training/testing/junit-runner)
 
 ### testShards
 Overrides the number of automatically determined test shards for Flank to use. Uses Flanks default value when not specified.
