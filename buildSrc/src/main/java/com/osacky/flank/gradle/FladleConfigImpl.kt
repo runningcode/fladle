@@ -13,5 +13,6 @@ data class FladleConfigImpl(
   override var testShards: Int? = null,
   override var repeatTests: Int? = null,
   override var smartFlankGcsPath: String? = null,
-  override var resultsHistoryName: String? = null
+  override var resultsHistoryName: String? = null,
+  override var flakyTestAttempts: Int
 ) : FladleConfig

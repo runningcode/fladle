@@ -126,6 +126,9 @@ Shard Android tests by time using historical run data. The amount of shards used
 ### variant
 Which variant and buildType to use for testing. For example: 'debug' or 'devDebug'.
 
+### flakyTestAttempts
+The number of times to retry failed tests. Default is 0. Max is 10.
+
 ---
 
 # Publishing

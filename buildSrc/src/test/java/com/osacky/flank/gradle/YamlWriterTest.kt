@@ -150,7 +150,9 @@ class YamlWriterTest {
       resultsHistoryName = "androidtest"
     }
 
-    assertEquals("  results-history-name: androidtest\n", yamlWriter.writeAdditionalProperties(extension))
+    assertEquals("  results-history-name: androidtest\n" +
+        "  flaky-test-attempts: 0\n",
+        yamlWriter.writeAdditionalProperties(extension))
   }
 
   @Test
@@ -162,7 +164,9 @@ class YamlWriterTest {
 
     assertEquals("  results-history-name: androidtest\n" +
         "  test-targets:\n" +
-        "  - class com.example.Foo\n", yamlWriter.writeAdditionalProperties(extension))
+        "  - class com.example.Foo\n" +
+        "  flaky-test-attempts: 0\n",
+        yamlWriter.writeAdditionalProperties(extension))
   }
   @Test
   fun writeNoTestTargets() {
@@ -170,7 +174,7 @@ class YamlWriterTest {
       testTargets = listOf()
     }
 
-    assertEquals("", yamlWriter.writeAdditionalProperties(extension))
+    assertEquals("  flaky-test-attempts: 0\n", yamlWriter.writeAdditionalProperties(extension))
   }
 
   @Test
@@ -180,7 +184,9 @@ class YamlWriterTest {
     }
 
     assertEquals("  test-targets:\n" +
-        "  - class com.example.Foo#testThing\n", yamlWriter.writeAdditionalProperties(extension))
+        "  - class com.example.Foo#testThing\n" +
+        "  flaky-test-attempts: 0\n",
+        yamlWriter.writeAdditionalProperties(extension))
   }
 
   @Test
@@ -191,7 +197,8 @@ class YamlWriterTest {
 
     assertEquals("  test-targets:\n" +
         "  - class com.example.Foo#testThing\n" +
-        "  - class com.example.Foo#testThing2\n",
+        "  - class com.example.Foo#testThing2\n" +
+        "  flaky-test-attempts: 0\n",
       yamlWriter.writeAdditionalProperties(extension))
   }
 

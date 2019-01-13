@@ -57,6 +57,7 @@ internal class YamlWriter {
         builder.appendln("  - $target")
       }
     }
+    builder.appendln("  flaky-test-attempts: ${extension.flakyTestAttempts}")
 
     return builder.toString()
   }
