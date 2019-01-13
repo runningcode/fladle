@@ -46,3 +46,7 @@
 ## 0.3.6
 
 * Add support for environment variable clearPackageData. Thanks @anderssu !
+
+## 0.3.7
+
+* Add support for flakyTestAttempts.

@@ -19,4 +19,7 @@ interface FladleConfig {
   var smartFlankGcsPath: String?
 
   var resultsHistoryName: String?
+
+  // The number of times to retry failed tests. Default is 0. Max is 10.
+  var flakyTestAttempts: Int
 }

@@ -5,7 +5,7 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
 open class FlankGradleExtension(project: Project) : FladleConfig {
-  override var flankVersion: String = "v4.1.1"
+  override var flankVersion: String = "v4.2.0"
   // Project id is automatically discovered by default. Use this to override the project id.
   override var projectId: String? = null
   override var serviceAccountCredentials: String? = null
@@ -25,6 +25,8 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
 
   override var resultsHistoryName: String? = null
 
+  override var flakyTestAttempts = 0
+
   // Variant to use for configuring output APK.
   var variant: String? = null
 
@@ -32,7 +34,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   var instrumentationApk: String? = null
 
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
-    FladleConfigImpl(it, flankVersion, projectId, serviceAccountCredentials, useOrchestrator, autoGoogleLogin, clearPackageData, devices, testTargets, testShards, repeatTests, smartFlankGcsPath, resultsHistoryName)
+    FladleConfigImpl(it, flankVersion, projectId, serviceAccountCredentials, useOrchestrator, autoGoogleLogin, clearPackageData, devices, testTargets, testShards, repeatTests, smartFlankGcsPath, resultsHistoryName, flakyTestAttempts)
   }
 
   fun configs(closure: Closure<*>) {
