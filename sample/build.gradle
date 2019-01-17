@@ -38,8 +38,10 @@ fladle {
             testTargets = [
                     "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
             ]
+            flakyTestAttempts = 3
         }
     }
+    flakyTestAttempts 1
 }
 
 dependencies {

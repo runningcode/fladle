@@ -50,3 +50,7 @@
 ## 0.3.7
 
 * Add support for flakyTestAttempts.
+
+## 0.3.8
+
+* Fix broken flakyTestAttempts.
