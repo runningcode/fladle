@@ -41,18 +41,19 @@ class MultipleConfigsTest {
       |gcloud:
       |  app: foo.apk
       |  test: instrument.apk
-      |  use-orchestrator: false
-      |  auto-google-login: false
-      |  environment-variables:
-      |    clearPackageData: false
       |# projectId will be automatically discovered
       |  device:
       |  - model: NexusLowRes
       |    version: 28
       |
+      |  use-orchestrator: false
+      |  auto-google-login: false
+      |  record-video: true
+      |  performance-metrics: true
+      |  timeout: 15m
       |  test-targets:
       |  - override
-      |
+      |  flaky-test-attempts: 0
     """.trimMargin())
   }
 }

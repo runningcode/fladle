@@ -54,3 +54,15 @@
 ## 0.3.8
 
 * Fix broken flakyTestAttempts.
+
+## 0.4.0
+
+* Add support for all configuration options. Thanks [PR](https://github.com/runningcode/fladle/pull/26/) [winterDroid](https://github.com/winterDroid).
+
+### Breaking Changes:
+Previous users of `clearPackageData = true` will now need to use:
+```
+environmentVariables = [
+  "clearPackageData": "true"
+]
+```

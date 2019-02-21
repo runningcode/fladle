@@ -58,7 +58,7 @@ internal class YamlWriter {
     }
     val environmentVariables = config.environmentVariables
     if (environmentVariables.isNotEmpty()) {
-      appendln( "  environment-variables:")
+      appendln("  environment-variables:")
       environmentVariables.forEach { key, value ->
         appendln("    $key: $value")
       }
