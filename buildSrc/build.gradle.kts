@@ -12,13 +12,13 @@ repositories {
 plugins {
   `kotlin-dsl`
   id("java-gradle-plugin")
-  id("com.gradle.plugin-publish") version "0.10.0"
-  id("org.jmailen.kotlinter") version "1.17.0"
+  id("com.gradle.plugin-publish") version "0.10.1"
+  id("org.jmailen.kotlinter") version "1.21.0"
 }
 
 dependencies {
   compileOnly(gradleApi())
-  implementation("com.android.tools.build:gradle:3.2.1")
+  implementation("com.android.tools.build:gradle:3.3.1")
 
   implementation("de.undercouch:gradle-download-task:4.0.0-SNAPSHOT")
 
