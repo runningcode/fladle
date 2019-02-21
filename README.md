@@ -51,9 +51,21 @@ fladle {
 
     // Optional parameters
     useOrchestrator = false
+    environmentVariables = [
+        "clearPackageData": "true"
+    ]
+    directoriesToPull = [
+        "/sdcard/screenshots"
+    ]
+    filesToDownload = [
+        ".*/screenshots/.*"
+    ]
     testTargets = [
         "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
     ]
+    timeoutMin = 15
+    recordVideo = false
+    performanceMetrics = false
     devices = [
         new Device("NexusLowRes", 28, null, null),
         new Device("Nexus5", 23, null, null)
@@ -63,7 +75,6 @@ fladle {
     debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
     instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     autoGoogleLogin = true
-    clearPackageData = true
     testShards = 5
     smartFlankGcsPath = gs://tmp_flank/flank/test_app_android.xml
     configs {
@@ -108,8 +119,13 @@ This is the path to the app's instrumentation apk.
 ### autoGoogleLogin
 Whether or not to automatically log in using a preconfigured google account. [More Info](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run#--auto-google-login)
 
-### clearPackageData
-Whether or not to remove all shared state from your device's CPU and memory after each test. [More info](https://developer.android.com/training/testing/junit-runner)
+### environmentVariables
+Environment variables are mirrored as extra options to the am instrument -e KEY1 VALUE1 … command and passed to your test runner (typically AndroidJUnitRunner). Examples
+```
+environmentVariables = [
+    "clearPackageData": "true" // Whether or not to remove all shared state from your device's CPU and memory after each test. [More info](https://developer.android.com/training/testing/junit-runner)
+]
+```
 
 ### testShards
 Overrides the number of automatically determined test shards for Flank to use. Uses Flanks default value when not specified.
@@ -128,6 +144,21 @@ Which variant and buildType to use for testing. For example: 'debug' or 'devDebu
 
 ### flakyTestAttempts
 The number of times to retry failed tests. Default is 0. Max is 10.
+
+### directoriesToPull
+A list of paths that will be copied from the device's storage to the designated results bucket after the test is complete. These must be absolute paths under /sdcard or /data/local/tmp. Path names are restricted to the characters a-zA-Z0-9_-./+. The paths /sdcard and /data will be made available and treated as implicit path substitutions. E.g. if /sdcard on a particular device does not map to external storage, the system will replace it with the external storage path prefix for that device.
+
+### filesToDownload
+List of regex that is matched against bucket paths (for example: 2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt) for files to be downloaded after a flank run.
+
+### timeoutMin
+The max time in minutes this test execution can run before it is cancelled (default: 15 min). It does not include any time necessary to prepare and clean up the target device. The maximum possible testing time is 30m on physical devices and 60m on virtual devices. 
+
+### recordVideo
+Enable video recording during the test. Enabled by default.
+
+### performanceMetrics
+Monitor and record performance metrics: CPU, memory, network usage, and FPS (game-loop only). Enabled by default.
 
 ---
 

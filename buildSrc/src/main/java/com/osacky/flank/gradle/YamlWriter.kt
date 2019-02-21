@@ -14,10 +14,6 @@ internal class YamlWriter {
     return """gcloud:
       |  app: ${extension.debugApk}
       |  test: ${extension.instrumentationApk}
-      |  use-orchestrator: ${config.useOrchestrator}
-      |  auto-google-login: ${config.autoGoogleLogin}
-      |  environment-variables:
-      |    clearPackageData: ${config.clearPackageData}
       |${createProjectIdString(config)}
       |$deviceString
       |$additionalProperties
@@ -25,64 +21,85 @@ internal class YamlWriter {
     """.trimMargin()
   }
 
-  internal fun writeFlankProperties(extension: FladleConfig): String {
-    val builder = StringBuilder()
-    val testShards = extension.testShards
-    val repeatTests = extension.repeatTests
-    val smartFlankGcsPath = extension.smartFlankGcsPath
-    if (testShards != null || repeatTests != null || smartFlankGcsPath != null) {
-      builder.appendln("flank:")
+  internal fun writeFlankProperties(config: FladleConfig): String = buildString {
+    val testShards = config.testShards
+    val repeatTests = config.repeatTests
+    val smartFlankGcsPath = config.smartFlankGcsPath
+    val filesToDownload = config.filesToDownload
+    if (testShards != null || repeatTests != null || smartFlankGcsPath != null || filesToDownload.isNotEmpty()) {
+      appendln("flank:")
     }
     testShards?.let {
-      builder.appendln("  testShards: $testShards")
+      appendln("  testShards: $testShards")
     }
     repeatTests?.let {
-      builder.appendln("  repeatTests: $repeatTests")
+      appendln("  repeatTests: $repeatTests")
     }
     smartFlankGcsPath?.let {
-      builder.appendln("  smartFlankGcsPath: $it")
+      appendln("  smartFlankGcsPath: $it")
     }
-    return builder.toString()
-  }
-
-  internal fun writeAdditionalProperties(extension: FladleConfig): String {
-    val builder = StringBuilder()
-    val testTargets = extension.testTargets
-    extension.resultsHistoryName?.let {
-      builder.appendln("  results-history-name: $it")
-    }
-    if (testTargets.isNotEmpty()) {
-      builder.appendln("  test-targets:")
-      testTargets.forEach { target ->
-        builder.appendln("  - $target")
+    if (filesToDownload.isNotEmpty()) {
+      appendln("  files-to-download:")
+      filesToDownload.forEach { file ->
+        appendln("  - $file")
       }
     }
-    builder.appendln("  flaky-test-attempts: ${extension.flakyTestAttempts}")
-
-    return builder.toString()
   }
 
-  internal fun createProjectIdString(extension: FladleConfig): String {
-    return if (extension.projectId != null) {
-      "  project: ${extension.projectId}"
+  internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
+    appendln("  use-orchestrator: ${config.useOrchestrator}")
+    appendln("  auto-google-login: ${config.autoGoogleLogin}")
+    appendln("  record-video: ${config.recordVideo}")
+    appendln("  performance-metrics: ${config.performanceMetrics}")
+    appendln("  timeout: ${config.timeoutMin}m")
+
+    config.resultsHistoryName?.let {
+      appendln("  results-history-name: $it")
+    }
+    val environmentVariables = config.environmentVariables
+    if (environmentVariables.isNotEmpty()) {
+      appendln( "  environment-variables:")
+      environmentVariables.forEach { key, value ->
+        appendln("    $key: $value")
+      }
+    }
+    val testTargets = config.testTargets
+    if (testTargets.isNotEmpty()) {
+      appendln("  test-targets:")
+      testTargets.forEach { target ->
+        appendln("  - $target")
+      }
+    }
+    val directoriesToPull = config.directoriesToPull
+    if (directoriesToPull.isNotEmpty()) {
+      appendln("  directories-to-pull:")
+      directoriesToPull.forEach { dir ->
+        appendln("  - $dir")
+      }
+    }
+    appendln("  flaky-test-attempts: ${config.flakyTestAttempts}")
+  }
+
+  internal fun createProjectIdString(config: FladleConfig): String {
+    return if (config.projectId != null) {
+      "  project: ${config.projectId}"
     } else {
       "# projectId will be automatically discovered"
     }
   }
 
   @VisibleForTesting
-  internal fun createDeviceString(devices: List<Device>): String {
-    val builder = StringBuilder("  device:\n")
+  internal fun createDeviceString(devices: List<Device>): String = buildString {
+    appendln("  device:")
     for (device in devices) {
-      builder.append("  - model: ${device.model}\n")
-      builder.append("    version: ${device.version}\n")
-      if (device.orientation != null) {
-        builder.append("    orientation: ${device.orientation}\n")
+      appendln("  - model: ${device.model}")
+      appendln("    version: ${device.version}")
+      device.orientation?.let {
+        appendln("    orientation: $it")
       }
-      if (device.locale != null) {
-        builder.append("    locale: ${device.version}\n")
+      device.locale?.let {
+        appendln("    locale: $it")
       }
     }
-    return builder.toString()
   }
 }

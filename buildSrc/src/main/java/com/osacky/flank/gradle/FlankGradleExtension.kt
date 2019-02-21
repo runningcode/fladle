@@ -11,7 +11,6 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   override var serviceAccountCredentials: String? = null
   override var useOrchestrator: Boolean = false
   override var autoGoogleLogin: Boolean = false
-  override var clearPackageData: Boolean = false
   override var devices: List<Device> = listOf(Device("NexusLowRes", 28))
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
@@ -33,8 +32,40 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   var debugApk: String? = null
   var instrumentationApk: String? = null
 
+  override var directoriesToPull: List<String> = emptyList()
+
+  override var filesToDownload: List<String> = emptyList()
+
+  override var environmentVariables: Map<String, String> = emptyMap()
+
+  override var timeoutMin: Int = 15
+
+  override var recordVideo: Boolean = true
+
+  override var performanceMetrics: Boolean = true
+
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
-    FladleConfigImpl(it, flankVersion, projectId, serviceAccountCredentials, useOrchestrator, autoGoogleLogin, clearPackageData, devices, testTargets, testShards, repeatTests, smartFlankGcsPath, resultsHistoryName, flakyTestAttempts)
+    FladleConfigImpl(
+      name = it,
+      flankVersion = flankVersion,
+      projectId = projectId,
+      serviceAccountCredentials = serviceAccountCredentials,
+      useOrchestrator = useOrchestrator,
+      autoGoogleLogin = autoGoogleLogin,
+      devices = devices,
+      testTargets = testTargets,
+      testShards = testShards,
+      repeatTests = repeatTests,
+      smartFlankGcsPath = smartFlankGcsPath,
+      resultsHistoryName = resultsHistoryName,
+      flakyTestAttempts = flakyTestAttempts,
+      directoriesToPull = directoriesToPull,
+      filesToDownload = filesToDownload,
+      environmentVariables = environmentVariables,
+      timeoutMin = timeoutMin,
+      recordVideo = recordVideo,
+      performanceMetrics = performanceMetrics
+    )
   }
 
   fun configs(closure: Closure<*>) {

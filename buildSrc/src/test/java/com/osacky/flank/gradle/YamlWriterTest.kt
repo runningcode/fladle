@@ -150,7 +150,12 @@ class YamlWriterTest {
       resultsHistoryName = "androidtest"
     }
 
-    assertEquals("  results-history-name: androidtest\n" +
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  results-history-name: androidtest\n" +
         "  flaky-test-attempts: 0\n",
         yamlWriter.writeAdditionalProperties(extension))
   }
@@ -162,19 +167,30 @@ class YamlWriterTest {
       testTargets = listOf("class com.example.Foo")
     }
 
-    assertEquals("  results-history-name: androidtest\n" +
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  results-history-name: androidtest\n" +
         "  test-targets:\n" +
         "  - class com.example.Foo\n" +
         "  flaky-test-attempts: 0\n",
         yamlWriter.writeAdditionalProperties(extension))
   }
+
   @Test
   fun writeNoTestTargets() {
     val extension = FlankGradleExtension(project).apply {
       testTargets = listOf()
     }
 
-    assertEquals("  flaky-test-attempts: 0\n", yamlWriter.writeAdditionalProperties(extension))
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  flaky-test-attempts: 0\n", yamlWriter.writeAdditionalProperties(extension))
   }
 
   @Test
@@ -183,7 +199,12 @@ class YamlWriterTest {
       testTargets = listOf("class com.example.Foo#testThing")
     }
 
-    assertEquals("  test-targets:\n" +
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  test-targets:\n" +
         "  - class com.example.Foo#testThing\n" +
         "  flaky-test-attempts: 0\n",
         yamlWriter.writeAdditionalProperties(extension))
@@ -195,7 +216,12 @@ class YamlWriterTest {
       testTargets = listOf("class com.example.Foo#testThing", "class com.example.Foo#testThing2")
     }
 
-    assertEquals("  test-targets:\n" +
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  test-targets:\n" +
         "  - class com.example.Foo#testThing\n" +
         "  - class com.example.Foo#testThing2\n" +
         "  flaky-test-attempts: 0\n",
@@ -211,5 +237,147 @@ class YamlWriterTest {
     assertEquals("flank:\n" +
         "  smartFlankGcsPath: gs://test/fakepath.xml\n",
         yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
+  fun writeNoDirectoriesToPull() {
+    val extension = FlankGradleExtension(project).apply {
+      directoriesToPull = listOf()
+    }
+
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  flaky-test-attempts: 0\n", yamlWriter.writeAdditionalProperties(extension))
+  }
+
+  @Test
+  fun writeSingleDirectoriesToPull() {
+    val extension = FlankGradleExtension(project).apply {
+      directoriesToPull = listOf("/sdcard/screenshots")
+    }
+
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  directories-to-pull:\n" +
+        "  - /sdcard/screenshots\n" +
+        "  flaky-test-attempts: 0\n",
+      yamlWriter.writeAdditionalProperties(extension))
+  }
+
+  @Test
+  fun writeMultipleDirectoriesToPull() {
+    val extension = FlankGradleExtension(project).apply {
+      directoriesToPull = listOf("/sdcard/screenshots", "/sdcard/reports")
+    }
+
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  directories-to-pull:\n" +
+        "  - /sdcard/screenshots\n" +
+        "  - /sdcard/reports\n" +
+        "  flaky-test-attempts: 0\n",
+      yamlWriter.writeAdditionalProperties(extension))
+  }
+
+  @Test
+  fun writeNoFilesToDownload() {
+    val extension = FlankGradleExtension(project).apply {
+      filesToDownload = listOf()
+    }
+
+    assertEquals("", yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
+  fun writeSingleFilesToDownload() {
+    val extension = FlankGradleExtension(project).apply {
+      filesToDownload = listOf(".*/screenshots/.*")
+    }
+
+    assertEquals("flank:\n" +
+        "  files-to-download:\n" +
+        "  - .*/screenshots/.*\n",
+      yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
+  fun writeMultipleFilesToDownload() {
+    val extension = FlankGradleExtension(project).apply {
+      filesToDownload = listOf(".*/screenshots/.*", ".*/reports/.*")
+    }
+
+    assertEquals("flank:\n" +
+        "  files-to-download:\n" +
+        "  - .*/screenshots/.*\n" +
+        "  - .*/reports/.*\n",
+      yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
+  fun writeSingleEnvironmentVariables() {
+    val extension = FlankGradleExtension(project).apply {
+      environmentVariables = mapOf(
+        "listener" to "com.osacky.flank.sample.Listener"
+      )
+    }
+
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  environment-variables:\n" +
+        "    listener: com.osacky.flank.sample.Listener\n" +
+        "  flaky-test-attempts: 0\n",
+      yamlWriter.writeAdditionalProperties(extension))
+  }
+
+  @Test
+  fun writeMultipleEnvironmentVariables() {
+    val extension = FlankGradleExtension(project).apply {
+      environmentVariables = mapOf(
+        "clearPackageData" to "true",
+        "listener" to "com.osacky.flank.sample.Listener"
+      )
+    }
+
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  environment-variables:\n" +
+        "    clearPackageData: true\n" +
+        "    listener: com.osacky.flank.sample.Listener\n" +
+        "  flaky-test-attempts: 0\n",
+      yamlWriter.writeAdditionalProperties(extension))
+  }
+
+  @Test
+  fun writeDefaultProperties() {
+    val extension = FlankGradleExtension(project).apply {
+      useOrchestrator = true
+      autoGoogleLogin = true
+      recordVideo = false
+      performanceMetrics = false
+      timeoutMin = 45
+    }
+
+    assertEquals("  use-orchestrator: true\n" +
+        "  auto-google-login: true\n" +
+        "  record-video: false\n" +
+        "  performance-metrics: false\n" +
+        "  timeout: 45m\n" +
+        "  flaky-test-attempts: 0\n",
+      yamlWriter.writeAdditionalProperties(extension))
   }
 }
