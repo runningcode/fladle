@@ -7,7 +7,6 @@ interface FladleConfig {
   var serviceAccountCredentials: String?
   var useOrchestrator: Boolean
   var autoGoogleLogin: Boolean
-  var clearPackageData: Boolean
   var devices: List<Device>
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
@@ -19,6 +18,18 @@ interface FladleConfig {
   var smartFlankGcsPath: String?
 
   var resultsHistoryName: String?
+
+  var timeoutMin: Int
+
+  var directoriesToPull: List<String>
+
+  var filesToDownload: List<String>
+
+  var environmentVariables: Map<String, String>
+
+  var recordVideo: Boolean
+
+  var performanceMetrics: Boolean
 
   // The number of times to retry failed tests. Default is 0. Max is 10.
   var flakyTestAttempts: Int
