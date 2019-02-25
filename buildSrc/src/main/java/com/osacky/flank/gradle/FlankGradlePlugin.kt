@@ -26,11 +26,6 @@ class FlankGradlePlugin : Plugin<Project> {
   }
 
   private fun configureTasks(project: Project, extension: FlankGradleExtension) {
-    project.pluginManager.withPlugin("com.android.application") {
-      if (extension.debugApk == null || extension.instrumentationApk == null) {
-        findDebugAndInstrumentationApk(project, extension)
-      }
-    }
     project.tasks.apply {
 
       register("downloadFlank", Download::class.java) {
@@ -42,6 +37,12 @@ class FlankGradlePlugin : Plugin<Project> {
     }
 
     project.afterEvaluate {
+      // Only use automatic apk path detection for 'com.android.application' projects.
+      project.pluginManager.withPlugin("com.android.application") {
+        if (extension.debugApk == null || extension.instrumentationApk == null) {
+          findDebugAndInstrumentationApk(project, extension)
+        }
+      }
       tasks.apply {
         createTasksForConfig(extension, extension, project, "")
 
@@ -93,7 +94,7 @@ class FlankGradlePlugin : Plugin<Project> {
   }
 
   private fun findDebugAndInstrumentationApk(project: Project, extension: FlankGradleExtension) {
-    val baseExtension = project.extensions.findByType(AppExtension::class.java)!!
+    val baseExtension = requireNotNull(project.extensions.findByType(AppExtension::class.java)) { "Could not find AppExtension in ${project.name}" }
     automaticallyConfigureTestOrchestrator(project, extension, baseExtension)
     baseExtension.applicationVariants.all {
       if (testVariant != null) {
