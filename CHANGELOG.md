@@ -66,3 +66,8 @@ environmentVariables = [
   "clearPackageData": "true"
 ]
 ```
+
+## 0.4.1
+
+* Detect AndroidX test orchestrator
+* Fix detection of debug and instrumentation apk paths.
