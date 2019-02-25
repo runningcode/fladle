@@ -1,6 +1,7 @@
 package com.osacky.flank.gradle
 
 import com.android.build.gradle.AppExtension
+import com.android.builder.model.TestOptions
 import de.undercouch.gradle.tasks.download.Download
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
@@ -83,7 +84,7 @@ class FlankGradlePlugin : Plugin<Project> {
 
   private fun automaticallyConfigureTestOrchestrator(project: Project, extension: FlankGradleExtension, androidExtension: AppExtension) {
     project.afterEvaluate {
-      val useOrchestrator = androidExtension.testOptions.execution == "android_test_orchestrator"
+      val useOrchestrator = androidExtension.testOptions.executionEnum == TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR || androidExtension.testOptions.executionEnum == TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR
       if (useOrchestrator) {
         log("Automatically detected the use of Android Test Orchestrator")
       }
