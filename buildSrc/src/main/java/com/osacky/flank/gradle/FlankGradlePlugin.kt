@@ -33,6 +33,7 @@ class FlankGradlePlugin : Plugin<Project> {
         src("https://github.com/TestArmada/flank/releases/download/${extension.flankVersion}/flank.jar")
         dest("${project.fladleDir}/flank.jar")
         onlyIfModified(true)
+        group = TASK_GROUP
       }
     }
 
@@ -56,6 +57,7 @@ class FlankGradlePlugin : Plugin<Project> {
   private fun TaskContainer.createTasksForConfig(extension: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
     register("printYml$name") {
       description = "Print the flank.yml file to the console."
+      group = TASK_GROUP
       doLast {
         println(YamlWriter().createConfigProps(config, extension))
       }
@@ -65,6 +67,7 @@ class FlankGradlePlugin : Plugin<Project> {
 
     project.tasks.register("flankDoctor$name", Exec::class.java) {
       description = "Finds problems with the current configuration."
+      group = TASK_GROUP
       workingDir("${project.fladleDir}/")
       commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "doctor")
       dependsOn(named("downloadFlank"), writeConfigProps)
@@ -72,6 +75,7 @@ class FlankGradlePlugin : Plugin<Project> {
 
     val execFlank = project.tasks.register("execFlank$name", Exec::class.java) {
       description = "Runs instrumentation tests using flank on firebase test lab."
+      group = TASK_GROUP
       workingDir("${project.fladleDir}/")
       commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "run")
       environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to "${config.serviceAccountCredentials}"))
@@ -114,6 +118,7 @@ class FlankGradlePlugin : Plugin<Project> {
 
   companion object {
     val GRADLE_MIN_VERSION = GradleVersion.version("4.9")
+    const val TASK_GROUP = "fladle"
     fun log(message: String) {
       println("Fladle: $message")
     }

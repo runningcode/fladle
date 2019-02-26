@@ -7,6 +7,7 @@ open class RunFlankTask @Inject constructor(private val extension: FladleConfig)
 
   init {
     description = "Runs instrumentation tests using flank on firebase test lab."
+    group = FlankGradlePlugin.TASK_GROUP
   }
 
   private fun named(taskName: String) = project.tasks.named(taskName)
