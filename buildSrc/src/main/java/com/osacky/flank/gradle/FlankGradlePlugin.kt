@@ -2,19 +2,32 @@ package com.osacky.flank.gradle
 
 import com.android.build.gradle.AppExtension
 import com.android.builder.model.TestOptions
-import de.undercouch.gradle.tasks.download.Download
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.Exec
 import org.gradle.api.tasks.TaskContainer
+import org.gradle.kotlin.dsl.repositories
 import org.gradle.util.GradleVersion
 
 class FlankGradlePlugin : Plugin<Project> {
 
   override fun apply(target: Project) {
     checkMinimumGradleVersion()
+    // Add Flank maven repo.
+    target.repositories {
+      maven { url = target.uri("https://dl.bintray.com/flank/maven") }
+    }
+
+    // Create Configuration to store flank dependency
+    target.configurations.create(FLADLE_CONFIG)
+
     val extension = target.extensions.create("fladle", FlankGradleExtension::class.java, target)
+
+    // Add Flank dependency to Fladle Configuration
+    target.dependencies.add(FLADLE_CONFIG, "flank:flank:${extension.flankVersion}")
+
     configureTasks(target, extension)
   }
 
@@ -26,17 +39,6 @@ class FlankGradlePlugin : Plugin<Project> {
   }
 
   private fun configureTasks(project: Project, extension: FlankGradleExtension) {
-    project.tasks.apply {
-
-      register("downloadFlank", Download::class.java) {
-        description = "Downloads flank to the build/fladle directory in the current project."
-        src("https://github.com/TestArmada/flank/releases/download/${extension.flankVersion}/flank.jar")
-        dest("${project.fladleDir}/flank.jar")
-        onlyIfModified(true)
-        group = TASK_GROUP
-      }
-    }
-
     project.afterEvaluate {
       // Only use automatic apk path detection for 'com.android.application' projects.
       project.pluginManager.withPlugin("com.android.application") {
@@ -69,17 +71,17 @@ class FlankGradlePlugin : Plugin<Project> {
       description = "Finds problems with the current configuration."
       group = TASK_GROUP
       workingDir("${project.fladleDir}/")
-      commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "doctor")
-      dependsOn(named("downloadFlank"), writeConfigProps)
+      commandLine("java", "-jar", project.fladleConfig.singleFile.absolutePath, "firebase", "test", "android", "doctor")
+      dependsOn(writeConfigProps)
     }
 
     val execFlank = project.tasks.register("execFlank$name", Exec::class.java) {
       description = "Runs instrumentation tests using flank on firebase test lab."
       group = TASK_GROUP
       workingDir("${project.fladleDir}/")
-      commandLine("java", "-jar", "flank.jar", "firebase", "test", "android", "run")
+      commandLine("java", "-jar", project.fladleConfig.singleFile.absolutePath, "firebase", "test", "android", "run")
       environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to "${config.serviceAccountCredentials}"))
-      dependsOn(named("downloadFlank"), named("writeConfigProps$name"))
+      dependsOn(named("writeConfigProps$name"))
     }
 
     register("runFlank$name", RunFlankTask::class.java, config).configure {
@@ -116,9 +118,13 @@ class FlankGradlePlugin : Plugin<Project> {
     }
   }
 
+  private val Project.fladleConfig: Configuration
+    get() = configurations.getByName(FLADLE_CONFIG)
+
   companion object {
     val GRADLE_MIN_VERSION = GradleVersion.version("4.9")
     const val TASK_GROUP = "fladle"
+    const val FLADLE_CONFIG = "fladle"
     fun log(message: String) {
       println("Fladle: $message")
     }

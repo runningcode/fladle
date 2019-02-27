@@ -4,9 +4,6 @@ version = "0.4.1"
 repositories {
   google()
   jcenter()
-  maven {
-    url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-  }
 }
 
 plugins {
@@ -20,8 +17,6 @@ dependencies {
   compileOnly(gradleApi())
   implementation("com.android.tools.build:gradle:3.3.1")
 
-  implementation("de.undercouch:gradle-download-task:4.0.0-SNAPSHOT")
-
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.12")
   testImplementation("com.google.truth:truth:0.42")
@@ -34,7 +29,7 @@ kotlinter {
 pluginBundle {
   website = "https://github.com/runningcode/fladle"
   vcsUrl = "https://github.com/runningcode/fladle"
-  tags = listOf("flank", "testing", "android")
+  tags = listOf("flank", "testing", "android", "fladle")
 
   mavenCoordinates {
     artifactId = "fladle"
