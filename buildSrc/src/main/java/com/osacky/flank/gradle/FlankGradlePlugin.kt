@@ -6,7 +6,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.tasks.Exec
+import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.kotlin.dsl.repositories
 import org.gradle.util.GradleVersion
@@ -67,19 +67,21 @@ class FlankGradlePlugin : Plugin<Project> {
 
     val writeConfigProps = project.tasks.register("writeConfigProps$name", YamlConfigWriterTask::class.java, config, extension)
 
-    project.tasks.register("flankDoctor$name", Exec::class.java) {
+    project.tasks.register("flankDoctor$name", JavaExec::class.java) {
       description = "Finds problems with the current configuration."
       group = TASK_GROUP
       workingDir("${project.fladleDir}/")
-      commandLine("java", "-jar", project.fladleConfig.singleFile.absolutePath, "firebase", "test", "android", "doctor")
+      main = "-jar"
+      args = listOf(project.fladleConfig.singleFile.absolutePath, "firebase", "test", "android", "doctor")
       dependsOn(writeConfigProps)
     }
 
-    val execFlank = project.tasks.register("execFlank$name", Exec::class.java) {
+    val execFlank = project.tasks.register("execFlank$name", JavaExec::class.java) {
       description = "Runs instrumentation tests using flank on firebase test lab."
       group = TASK_GROUP
       workingDir("${project.fladleDir}/")
-      commandLine("java", "-jar", project.fladleConfig.singleFile.absolutePath, "firebase", "test", "android", "run")
+      main = "-jar"
+      args = listOf(project.fladleConfig.singleFile.absolutePath, "firebase", "test", "android", "run")
       environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to "${config.serviceAccountCredentials}"))
       dependsOn(named("writeConfigProps$name"))
     }
