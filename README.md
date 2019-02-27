@@ -72,7 +72,7 @@ fladle {
         new Device("Nexus5", 23, null, null)
     ]
     projectId("flank-gradle")
-    flankVersion("v3.1.1")
+    flankVersion("4.4.0")
     debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
     instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     autoGoogleLogin = true
@@ -108,7 +108,7 @@ This is automatically discovered based on the service credential by default.
 ### flankVersion
 `flankVersion("flank_snapshot")` to specify a Flank snapshot.
 
-`flankVersion("v3.1.1")` to specify a specific Flank version.
+`flankVersion("4.4.0")` to specify a specific Flank version.
 
 
 ### debugApk
