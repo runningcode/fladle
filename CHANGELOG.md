@@ -71,3 +71,8 @@ environmentVariables = [
 
 * Detect AndroidX test orchestrator
 * Fix detection of debug and instrumentation apk paths.
+
+## 0.5.0
+
+* Use flank as a maven artifact.
+* Group Fladle Tasks
