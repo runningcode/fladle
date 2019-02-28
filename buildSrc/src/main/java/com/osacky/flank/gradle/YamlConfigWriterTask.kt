@@ -18,6 +18,10 @@ open class YamlConfigWriterTask @Inject constructor(private val config: FladleCo
 
   @TaskAction
   fun writeFile() {
-    project.file("${project.fladleDir}/flank.yml").writeText(yamlWriter.createConfigProps(config, extension))
+    val fladleDir = project.file(project.fladleDir)
+    if (!fladleDir.exists()) {
+      fladleDir.mkdirs()
+    }
+    fladleDir.resolve("flank.yml").writeText(yamlWriter.createConfigProps(config, extension))
   }
 }

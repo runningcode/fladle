@@ -71,8 +71,9 @@ class FlankGradlePlugin : Plugin<Project> {
       description = "Finds problems with the current configuration."
       group = TASK_GROUP
       workingDir("${project.fladleDir}/")
-      main = "-jar"
-      args = listOf(project.fladleConfig.singleFile.absolutePath, "firebase", "test", "android", "doctor")
+      classpath = project.fladleConfig
+      main = "ftl.Main"
+      args = listOf("firebase", "test", "android", "doctor")
       dependsOn(writeConfigProps)
     }
 
@@ -80,8 +81,9 @@ class FlankGradlePlugin : Plugin<Project> {
       description = "Runs instrumentation tests using flank on firebase test lab."
       group = TASK_GROUP
       workingDir("${project.fladleDir}/")
-      main = "-jar"
-      args = listOf(project.fladleConfig.singleFile.absolutePath, "firebase", "test", "android", "run")
+      classpath = project.fladleConfig
+      main = "ftl.Main"
+      args = listOf("firebase", "test", "android", "run")
       environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to "${config.serviceAccountCredentials}"))
       dependsOn(named("writeConfigProps$name"))
     }
