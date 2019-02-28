@@ -31,13 +31,15 @@ class MultipleConfigsTest {
       |  }
       |}
     """.trimMargin())
-    val result = GradleRunner.create()
+
+      GradleRunner.create()
         .withPluginClasspath()
-        .withArguments("printYmlOrange")
+        .withArguments("writeConfigPropsOrange")
         .withProjectDir(testProjectRoot.root)
         .build()
 
-    assertThat(result.output).contains("""
+      val writtenYmlFile = testProjectRoot.root.resolve("build/fladle/flank.yml")
+      assertThat(writtenYmlFile.readText()).contains("""
       |gcloud:
       |  app: foo.apk
       |  test: instrument.apk
