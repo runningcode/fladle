@@ -76,3 +76,10 @@ environmentVariables = [
 
 * Use flank as a maven artifact.
 * Group Fladle Tasks
+
+## 0.5.1
+
+* Test multipleconfig to actually write yml Thanks [PR](https://github.com/runningcode/fladle/pull/40/) [winterDroid](https://github.com/winterDroid).
+* JavaExec uses classpath instead of jar directly. Thanks [PR](https://github.com/runningcode/fladle/pull/37/) [winterDroid](https://github.com/winterDroid).
+
+
