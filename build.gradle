@@ -7,7 +7,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.android.tools.build:gradle:3.3.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -17,7 +17,7 @@ buildscript {
 
 plugins {
     id "com.github.ben-manes.versions" version "0.21.0"
-    id 'com.gradle.build-scan' version '2.2'
+    id 'com.gradle.build-scan' version '2.2.1'
 }
 
 allprojects {
@@ -39,5 +39,5 @@ buildScan {
 
 wrapper {
     distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = '5.2.1'
+    gradleVersion = '5.3.1'
 }
