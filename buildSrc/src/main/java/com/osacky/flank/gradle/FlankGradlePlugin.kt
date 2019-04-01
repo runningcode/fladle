@@ -38,34 +38,34 @@ class FlankGradlePlugin : Plugin<Project> {
     }
   }
 
-  private fun configureTasks(project: Project, extension: FlankGradleExtension) {
+  private fun configureTasks(project: Project, base: FlankGradleExtension) {
     project.afterEvaluate {
       // Only use automatic apk path detection for 'com.android.application' projects.
       project.pluginManager.withPlugin("com.android.application") {
-        if (extension.debugApk == null || extension.instrumentationApk == null) {
-          findDebugAndInstrumentationApk(project, extension)
+        if (base.debugApk == null || base.instrumentationApk == null) {
+          findDebugAndInstrumentationApk(project, base)
         }
       }
       tasks.apply {
-        createTasksForConfig(extension, extension, project, "")
+        createTasksForConfig(base, base, project, "")
 
-        extension.configs.forEach {
-          createTasksForConfig(extension, it, project, it.name.capitalize())
+        base.configs.forEach { config ->
+          createTasksForConfig(base, config, project, config.name.capitalize())
         }
       }
     }
   }
 
-  private fun TaskContainer.createTasksForConfig(extension: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
+  private fun TaskContainer.createTasksForConfig(base: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
     register("printYml$name") {
       description = "Print the flank.yml file to the console."
       group = TASK_GROUP
       doLast {
-        println(YamlWriter().createConfigProps(config, extension))
+        println(YamlWriter().createConfigProps(config, base))
       }
     }
 
-    val writeConfigProps = project.tasks.register("writeConfigProps$name", YamlConfigWriterTask::class.java, config, extension)
+    val writeConfigProps = project.tasks.register("writeConfigProps$name", YamlConfigWriterTask::class.java, config, base)
 
     project.tasks.register("flankDoctor$name", JavaExec::class.java) {
       description = "Finds problems with the current configuration."

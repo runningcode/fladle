@@ -15,7 +15,7 @@ plugins {
 
 dependencies {
   compileOnly(gradleApi())
-  implementation("com.android.tools.build:gradle:3.3.1")
+  implementation("com.android.tools.build:gradle:3.3.2")
 
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.12")
