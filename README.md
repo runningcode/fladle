@@ -38,9 +38,10 @@ fladle {
 
 ## Required Fields
 
-### serviceAccountCredentials 
+### serviceAccountCredentials
 The service account credential is a file which contains authentication credentials for a service account created in the Google Cloud Platform Console.
 It can be created with the editor role [here](https://console.cloud.google.com/iam-admin/serviceaccounts/).
+Instructions on how to create this account can be found [here](https://firebase.google.com/docs/test-lab/android/continuous).
 
 
 ## Optional Configuration
@@ -77,7 +78,7 @@ fladle {
     instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     autoGoogleLogin = true
     testShards = 5
-    smartFlankGcsPath = gs://tmp_flank/flank/test_app_android.xml
+    smartFlankGcsPath = "gs://tmp_flank/flank/test_app_android.xml"
     configs {
         oranges {
             useOrchestrator = false
@@ -150,7 +151,7 @@ The number of times to retry failed tests. Default is 0. Max is 10.
 A list of paths that will be copied from the device's storage to the designated results bucket after the test is complete. These must be absolute paths under /sdcard or /data/local/tmp. Path names are restricted to the characters a-zA-Z0-9_-./+. The paths /sdcard and /data will be made available and treated as implicit path substitutions. E.g. if /sdcard on a particular device does not map to external storage, the system will replace it with the external storage path prefix for that device.
 
 ### filesToDownload
-List of regex that is matched against bucket paths (for example: 2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt) for files to be downloaded after a flank run.
+List of regex that is matched against bucket paths (for example:   2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt`) for files to be downloaded after a flank run.
 
 ### timeoutMin
 The max time in minutes this test execution can run before it is cancelled (default: 15 min). It does not include any time necessary to prepare and clean up the target device. The maximum possible testing time is 30m on physical devices and 60m on virtual devices. 
