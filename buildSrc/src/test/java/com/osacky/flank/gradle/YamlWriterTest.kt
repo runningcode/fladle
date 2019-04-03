@@ -72,8 +72,21 @@ class YamlWriterTest {
   }
 
   @Test
-  fun verifyDebugApkThrowsError() {
+  fun verifyMissingServiceThrowsError() {
     val extension = FlankGradleExtension(project)
+    try {
+      yamlWriter.createConfigProps(extension, extension)
+      fail()
+    } catch (expected: IllegalStateException) {
+      assertEquals("ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials", expected.message)
+    }
+  }
+
+  @Test
+  fun verifyDebugApkThrowsError() {
+    val extension = FlankGradleExtension(project).apply {
+      serviceAccountCredentials = "fake.json"
+    }
     try {
       yamlWriter.createConfigProps(extension, extension)
       fail()
@@ -85,6 +98,7 @@ class YamlWriterTest {
   @Test
   fun verifyInstrumentationApkThrowsError() {
     val extension = FlankGradleExtension(project).apply {
+      serviceAccountCredentials = "fake.json"
       debugApk = "path"
     }
     try {
