@@ -13,6 +13,15 @@ interface FladleConfig {
   var testTargets: List<String>
 
   var testShards: Int?
+
+  /**
+   * shardTime - the amount of time tests within a shard should take
+   * when set to > 0, the shard count is dynamically set based on time up to the maximmum limit defined by maxTestShards
+   * 2 minutes (120) is recommended.
+   * default: -1 (unlimited)
+   */
+  var shardTime: Int?
+
   var repeatTests: Int?
 
   var smartFlankGcsPath: String?

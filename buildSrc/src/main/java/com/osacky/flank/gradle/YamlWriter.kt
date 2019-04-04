@@ -14,7 +14,6 @@ internal class YamlWriter {
     return """gcloud:
       |  app: ${base.debugApk}
       |  test: ${base.instrumentationApk}
-      |${createProjectIdString(config)}
       |$deviceString
       |$additionalProperties
       |$flankProperties
@@ -26,17 +25,21 @@ internal class YamlWriter {
     val repeatTests = config.repeatTests
     val smartFlankGcsPath = config.smartFlankGcsPath
     val filesToDownload = config.filesToDownload
-    if (testShards != null || repeatTests != null || smartFlankGcsPath != null || filesToDownload.isNotEmpty()) {
+    val projectId = config.projectId
+    if (testShards != null || repeatTests != null || smartFlankGcsPath != null || filesToDownload.isNotEmpty() || projectId != null) {
       appendln("flank:")
     }
     testShards?.let {
-      appendln("  testShards: $testShards")
+      appendln("  max-test-shards: $testShards")
     }
     repeatTests?.let {
-      appendln("  repeatTests: $repeatTests")
+      appendln("  repeat-tests: $repeatTests")
     }
     smartFlankGcsPath?.let {
-      appendln("  smartFlankGcsPath: $it")
+      appendln("  smart-flank-gcs-path: $it")
+    }
+    projectId?.let {
+      appendln("    project: $it")
     }
     if (filesToDownload.isNotEmpty()) {
       appendln("  files-to-download:")
@@ -78,14 +81,6 @@ internal class YamlWriter {
       }
     }
     appendln("  flaky-test-attempts: ${config.flakyTestAttempts}")
-  }
-
-  internal fun createProjectIdString(config: FladleConfig): String {
-    return if (config.projectId != null) {
-      "  project: ${config.projectId}"
-    } else {
-      "# projectId will be automatically discovered"
-    }
   }
 
   @VisibleForTesting

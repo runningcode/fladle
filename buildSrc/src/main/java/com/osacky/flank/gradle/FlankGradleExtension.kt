@@ -5,7 +5,7 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
 open class FlankGradleExtension(project: Project) : FladleConfig {
-  override var flankVersion: String = "4.4.0"
+  override var flankVersion: String = "5.0.1"
   // Project id is automatically discovered by default. Use this to override the project id.
   override var projectId: String? = null
   override var serviceAccountCredentials: String? = null
@@ -17,6 +17,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   override var testTargets: List<String> = emptyList()
 
   override var testShards: Int? = null
+  override var shardTime: Int? = null
   override var repeatTests: Int? = null
 
   // Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
