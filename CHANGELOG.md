@@ -82,4 +82,7 @@ environmentVariables = [
 * Test multipleconfig to actually write yml Thanks [PR](https://github.com/runningcode/fladle/pull/40/) [winterDroid](https://github.com/winterDroid).
 * JavaExec uses classpath instead of jar directly. Thanks [PR](https://github.com/runningcode/fladle/pull/37/) [winterDroid](https://github.com/winterDroid).
 
+## 0.5.2
+
+* Improve error messages for missing arguments in the fladle extension.
 
