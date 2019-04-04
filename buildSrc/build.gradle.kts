@@ -3,14 +3,14 @@ version = "0.5.1"
 
 repositories {
   google()
-  jcenter()
+  mavenCentral()
 }
 
 plugins {
   `kotlin-dsl`
   id("java-gradle-plugin")
   id("com.gradle.plugin-publish") version "0.10.1"
-  id("org.jmailen.kotlinter") version "1.21.0"
+  id("org.jmailen.kotlinter") version "1.22.0"
 }
 
 dependencies {
