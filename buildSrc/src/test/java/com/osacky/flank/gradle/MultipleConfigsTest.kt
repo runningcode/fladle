@@ -43,7 +43,6 @@ class MultipleConfigsTest {
       |gcloud:
       |  app: foo.apk
       |  test: instrument.apk
-      |# projectId will be automatically discovered
       |  device:
       |  - model: NexusLowRes
       |    version: 28

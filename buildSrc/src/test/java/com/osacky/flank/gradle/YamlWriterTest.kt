@@ -118,13 +118,23 @@ class YamlWriterTest {
   }
 
   @Test
+  fun writeProjectIdOption() {
+    val extension = FlankGradleExtension(project).apply {
+      projectId = "foo"
+    }
+
+    assertEquals("flank:\n" +
+        "    project: foo\n", yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
   fun writeTestShardOption() {
     val extension = FlankGradleExtension(project).apply {
       testShards = 5
     }
 
     assertEquals("flank:\n" +
-        "  testShards: 5\n", yamlWriter.writeFlankProperties(extension))
+        "  max-test-shards: 5\n", yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -143,7 +153,7 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
-        "  repeatTests: 5\n", yamlWriter.writeFlankProperties(extension))
+        "  repeat-tests: 5\n", yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -154,8 +164,8 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
-        "  testShards: 5\n" +
-        "  repeatTests: 2\n", yamlWriter.writeFlankProperties(extension))
+        "  max-test-shards: 5\n" +
+        "  repeat-tests: 2\n", yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -249,7 +259,7 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
-        "  smartFlankGcsPath: gs://test/fakepath.xml\n",
+        "  smart-flank-gcs-path: gs://test/fakepath.xml\n",
         yamlWriter.writeFlankProperties(extension))
   }
 
