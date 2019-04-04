@@ -19,7 +19,7 @@ Using Fladle takes 3 steps:
 ``` groovy
 buildscript {
   dependencies {
-    classpath "gradle.plugin.com.osacky.flank.gradle:fladle:0.5.2"
+    classpath "gradle.plugin.com.osacky.flank.gradle:fladle:0.6.0"
   }
 }
 
@@ -131,6 +131,12 @@ environmentVariables = [
 
 ### testShards
 Overrides the number of automatically determined test shards for Flank to use. Uses Flanks default value when not specified.
+
+### shardTime
+The amount of time tests within a shard should take.
+When set to > 0, the shard count is dynamically set based on time up to the maximmum limit defined by maxTestShards
+2 minutes (120) is recommended.
+default: -1 (unlimited)
 
 ### repeatTests
 The number of times to repeat each test. Uses Flanks default value when not specified.

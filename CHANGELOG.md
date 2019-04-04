@@ -86,3 +86,9 @@ environmentVariables = [
 
 * Improve error messages for missing arguments in the fladle extension.
 
+## 0.6.0
+
+* Default flank version 5.0.1
+* Rename yaml output to match new flank version.
+* Add support for shard time.
+
