@@ -5,12 +5,13 @@ import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesti
 internal class YamlWriter {
 
   internal fun createConfigProps(config: FladleConfig, base: FlankGradleExtension): String {
+    checkNotNull(base.serviceAccountCredentials) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
+    checkNotNull(base.debugApk) { "debugApk cannot be null" }
+    checkNotNull(base.instrumentationApk) { "instrumentationApk cannot be null" }
+
     val deviceString = createDeviceString(config.devices)
     val additionalProperties = writeAdditionalProperties(config)
     val flankProperties = writeFlankProperties(config)
-
-    checkNotNull(base.debugApk) { "debugApk cannot be null" }
-    checkNotNull(base.instrumentationApk) { "instrumentationApk cannot be null" }
     return """gcloud:
       |  app: ${base.debugApk}
       |  test: ${base.instrumentationApk}

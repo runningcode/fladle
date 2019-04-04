@@ -86,11 +86,20 @@ class FlankGradlePlugin : Plugin<Project> {
       args = listOf("firebase", "test", "android", "run")
       environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to "${config.serviceAccountCredentials}"))
       dependsOn(named("writeConfigProps$name"))
+      doFirst {
+        checkFilesExist(base, project)
+      }
     }
 
-    register("runFlank$name", RunFlankTask::class.java, config).configure {
+    register("runFlank$name", RunFlankTask::class.java).configure {
       dependsOn(execFlank)
     }
+  }
+
+  private fun checkFilesExist(base: FlankGradleExtension, project: Project) {
+    check(project.file(base.serviceAccountCredentials!!).exists()) { "serviceAccountCredential file doesn't exist ${base.serviceAccountCredentials}" }
+    check(project.file(base.debugApk!!).exists()) { "debugApk file doesn't exist ${base.debugApk}" }
+    check(project.file(base.instrumentationApk!!).exists()) { "instrumentationApk file doesn't exist ${base.instrumentationApk}" }
   }
 
   private fun automaticallyConfigureTestOrchestrator(project: Project, extension: FlankGradleExtension, androidExtension: AppExtension) {
