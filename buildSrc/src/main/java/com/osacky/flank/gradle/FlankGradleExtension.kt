@@ -5,7 +5,7 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
 open class FlankGradleExtension(project: Project) : FladleConfig {
-  override var flankVersion: String = "5.0.1"
+  override var flankVersion: String = "5.1.0"
   // Project id is automatically discovered by default. Use this to override the project id.
   override var projectId: String? = null
   override var serviceAccountCredentials: String? = null
