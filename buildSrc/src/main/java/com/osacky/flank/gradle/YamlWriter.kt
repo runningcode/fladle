@@ -40,7 +40,7 @@ internal class YamlWriter {
       appendln("  smart-flank-gcs-path: $it")
     }
     projectId?.let {
-      appendln("    project: $it")
+      appendln("  project: $it")
     }
     if (filesToDownload.isNotEmpty()) {
       appendln("  files-to-download:")

@@ -124,7 +124,7 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
-        "    project: foo\n", yamlWriter.writeFlankProperties(extension))
+        "  project: foo\n", yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
