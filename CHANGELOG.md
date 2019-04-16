@@ -92,3 +92,5 @@ environmentVariables = [
 * Rename yaml output to match new flank version.
 * Add support for shard time.
 
+## 0.6.1
+* Fix project id [spacing](https://github.com/runningcode/fladle/issues/49) Thanks [andersu](https://github.com/andersu) for reporting.
