@@ -23,15 +23,19 @@ internal class YamlWriter {
 
   internal fun writeFlankProperties(config: FladleConfig): String = buildString {
     val testShards = config.testShards
+    val shardTime = config.shardTime
     val repeatTests = config.repeatTests
     val smartFlankGcsPath = config.smartFlankGcsPath
     val filesToDownload = config.filesToDownload
     val projectId = config.projectId
-    if (testShards != null || repeatTests != null || smartFlankGcsPath != null || filesToDownload.isNotEmpty() || projectId != null) {
+    if (testShards != null || shardTime != null || repeatTests != null || smartFlankGcsPath != null || filesToDownload.isNotEmpty() || projectId != null) {
       appendln("flank:")
     }
     testShards?.let {
       appendln("  max-test-shards: $testShards")
+    }
+    shardTime?.let {
+      appendln("  shard-time: $shardTime")
     }
     repeatTests?.let {
       appendln("  repeat-tests: $repeatTests")

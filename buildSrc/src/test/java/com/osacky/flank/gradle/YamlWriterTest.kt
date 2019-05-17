@@ -138,6 +138,16 @@ class YamlWriterTest {
   }
 
   @Test
+  fun writeShardTimeOption() {
+    val extension = FlankGradleExtension(project).apply {
+      shardTime = 120
+    }
+
+    assertEquals("flank:\n" +
+            "  shard-time: 120\n", yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
   fun writeNoTestRepeats() {
     val extension = FlankGradleExtension(project).apply {
       repeatTests = null
