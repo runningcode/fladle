@@ -94,3 +94,7 @@ environmentVariables = [
 
 ## 0.6.1
 * Fix project id [spacing](https://github.com/runningcode/fladle/issues/49) Thanks [andersu](https://github.com/andersu) for reporting.
+
+## 0.6.2
+* [Fix shardTime config property not written to flank.yml](https://github.com/runningcode/fladle/pull/53) Thanks [nnoel-grubhub](https://github.com/nnoel-grubhub)
+
