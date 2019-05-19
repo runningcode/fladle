@@ -56,6 +56,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
       devices = devices,
       testTargets = testTargets,
       testShards = testShards,
+      shardTime = shardTime,
       repeatTests = repeatTests,
       smartFlankGcsPath = smartFlankGcsPath,
       resultsHistoryName = resultsHistoryName,
