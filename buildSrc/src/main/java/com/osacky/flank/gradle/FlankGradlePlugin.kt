@@ -25,9 +25,6 @@ class FlankGradlePlugin : Plugin<Project> {
 
     val extension = target.extensions.create("fladle", FlankGradleExtension::class.java, target)
 
-    // Add Flank dependency to Fladle Configuration
-    target.dependencies.add(FLADLE_CONFIG, "flank:flank:${extension.flankVersion}")
-
     configureTasks(target, extension)
   }
 
@@ -40,6 +37,9 @@ class FlankGradlePlugin : Plugin<Project> {
 
   private fun configureTasks(project: Project, base: FlankGradleExtension) {
     project.afterEvaluate {
+      // Add Flank dependency to Fladle Configuration
+      project.dependencies.add(FLADLE_CONFIG, "flank:flank:${base.flankVersion}")
+
       // Only use automatic apk path detection for 'com.android.application' projects.
       project.pluginManager.withPlugin("com.android.application") {
         if (base.debugApk == null || base.instrumentationApk == null) {
