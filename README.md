@@ -19,7 +19,7 @@ Using Fladle takes 3 steps:
 ``` groovy
 buildscript {
   dependencies {
-    classpath "gradle.plugin.com.osacky.flank.gradle:fladle:0.6.2"
+    classpath "gradle.plugin.com.osacky.flank.gradle:fladle:0.6.3"
   }
 }
 
@@ -42,6 +42,7 @@ fladle {
 The service account credential is a file which contains authentication credentials for a service account created in the Google Cloud Platform Console.
 It can be created with the editor role [here](https://console.cloud.google.com/iam-admin/serviceaccounts/).
 Instructions on how to create this account can be found [here](https://firebase.google.com/docs/test-lab/android/continuous).
+  Optionally, the serviceAccountCredentials can be set with [environment variables](https://github.com/TestArmada/flank#authenticate-with-a-service-account) but then the projectId parameter must be set.
 
 
 ## Optional Configuration

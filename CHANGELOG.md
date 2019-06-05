@@ -98,3 +98,6 @@ environmentVariables = [
 ## 0.6.2
 * [Fix shardTime config property not written to flank.yml](https://github.com/runningcode/fladle/pull/53) Thanks [nnoel-grubhub](https://github.com/nnoel-grubhub)
 
+## 0.6.3
+* Allow service credentials to be set [using environment variables](https://github.com/runningcode/fladle/pull/58). [Fixes #55](https://github.com/runningcode/fladle/issues/55)
+* Fix not being able to [set flankVersion](https://github.com/runningcode/fladle/pull/57). [Fixes #56](https://github.com/runningcode/fladle/issues/56)
