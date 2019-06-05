@@ -49,6 +49,27 @@ class FlankGradlePluginIntegrationTest {
             .build()
     }
 
+  @Test
+  fun testMissingServiceAccountWithProjectId() {
+    writeBuildGradle(
+        """plugins {
+             |  id "com.osacky.fladle"
+             |}
+             |
+             |fladle {
+             |  projectId = "foo-project"
+             |  debugApk = "foo"
+             |  instrumentationApk = "fakeInstrument.apk"
+             |}""".trimMargin()
+    )
+    GradleRunner.create()
+        .withProjectDir(testProjectRoot.root)
+        .withPluginClasspath()
+        .withGradleVersion("5.3.1")
+        .withArguments("printYml")
+        .build()
+  }
+
     @Test
     fun testMissingServiceAccountFailsBuild() {
         writeBuildGradle(

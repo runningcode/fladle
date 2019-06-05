@@ -83,6 +83,32 @@ class YamlWriterTest {
   }
 
   @Test
+  fun verifyMissingServiceDoesntThrowErrorIfProjectIdSet() {
+    val extension = FlankGradleExtension(project).apply {
+      projectId = "set"
+      debugApk = "path"
+      instrumentationApk = "instrument"
+    }
+    val yaml = yamlWriter.createConfigProps(extension, extension)
+    assertEquals("gcloud:\n" +
+        "  app: path\n" +
+        "  test: instrument\n" +
+        "  device:\n" +
+        "  - model: NexusLowRes\n" +
+        "    version: 28\n" +
+        "\n" +
+        "  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  flaky-test-attempts: 0\n" +
+        "\n" +
+        "flank:\n" +
+        "  project: set\n", yaml)
+  }
+
+  @Test
   fun verifyDebugApkThrowsError() {
     val extension = FlankGradleExtension(project).apply {
       serviceAccountCredentials = "fake.json"
