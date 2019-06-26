@@ -1,4 +1,7 @@
 # Changelog
+
+## 0.6.4
+* Allow setting android version number as string to allow for preview versions. [PR](https://github.com/runningcode/fladle/pull/590)Thanks [JeroenMols](https://github.com/JeroenMols).
 ## 0.6.3
 * Allow service credentials to be set [using environment variables](https://github.com/runningcode/fladle/pull/58). [Fixes #55](https://github.com/runningcode/fladle/issues/55)
 * Fix not being able to [set flankVersion](https://github.com/runningcode/fladle/pull/57). [Fixes #56](https://github.com/runningcode/fladle/issues/56)
