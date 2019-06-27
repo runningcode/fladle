@@ -171,6 +171,10 @@ Monitor and record performance metrics: CPU, memory, network usage, and FPS (gam
 
 ---
 
+Fladle is mentioned in the [Fragmented Podcast #163](https://fragmentedpodcast.com/episodes/163/). Skip to ~29 minutes.
+
+You can point Fladle to whatever version of Flank you like using the [flankVersion](#flankVersion) argument. You can even point to snapshot builds.
+
 # Publishing
 
 ``` bash
