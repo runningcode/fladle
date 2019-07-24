@@ -15,11 +15,11 @@ plugins {
 
 dependencies {
   compileOnly(gradleApi())
-  implementation("com.android.tools.build:gradle:3.4.1")
+  implementation("com.android.tools.build:gradle:3.4.2")
 
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.12")
-  testImplementation("com.google.truth:truth:0.44")
+  testImplementation("com.google.truth:truth:1.0")
 }
 
 kotlinter {
