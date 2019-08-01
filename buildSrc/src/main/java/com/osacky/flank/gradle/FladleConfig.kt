@@ -42,4 +42,6 @@ interface FladleConfig {
 
   // The number of times to retry failed tests. Default is 0. Max is 10.
   var flakyTestAttempts: Int
+
+  var resultsBucket: String?
 }

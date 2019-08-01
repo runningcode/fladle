@@ -66,6 +66,9 @@ internal class YamlWriter {
     config.resultsHistoryName?.let {
       appendln("  results-history-name: $it")
     }
+    config.resultsBucket?.let {
+      appendln("  results-bucket: $it")
+    }
     val environmentVariables = config.environmentVariables
     if (environmentVariables.isNotEmpty()) {
       appendln("  environment-variables:")
