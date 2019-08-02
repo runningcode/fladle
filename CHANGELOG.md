@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.5 - Unreleased
+* Add support for results-bucket gcloud config option. [PR](https://github.com/runningcode/fladle/pull/62) Thanks [c-moss](https://github.com/c-moss)
+* Default flank version 6.2.3
+* Lower build logging level
+
 ## 0.6.4
 * Allow setting android version number as string to allow for preview versions. [PR](https://github.com/runningcode/fladle/pull/590)Thanks [JeroenMols](https://github.com/JeroenMols).
 ## 0.6.3
