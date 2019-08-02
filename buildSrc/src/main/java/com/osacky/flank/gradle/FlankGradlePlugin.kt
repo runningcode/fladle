@@ -124,8 +124,8 @@ class FlankGradlePlugin : Plugin<Project> {
         outputs.all debug@{
           if (extension.variant == null || (extension.variant != null && extension.variant == name)) {
             testVariant.outputs.all test@{
-              log("Configuring fladle.debugApk from variant ${this@debug.name}")
-              log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
+              project.log("Configuring fladle.debugApk from variant ${this@debug.name}")
+              project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
               extension.debugApk = this@debug.outputFile.absolutePath
               extension.instrumentationApk = this@test.outputFile.absolutePath
             }
@@ -142,8 +142,8 @@ class FlankGradlePlugin : Plugin<Project> {
     val GRADLE_MIN_VERSION = GradleVersion.version("4.9")
     const val TASK_GROUP = "fladle"
     const val FLADLE_CONFIG = "fladle"
-    fun log(message: String) {
-      println("Fladle: $message")
+    fun Project.log(message: String) {
+      logger.info("Fladle: $message")
     }
   }
 }
