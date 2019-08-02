@@ -221,6 +221,22 @@ class YamlWriterTest {
   }
 
   @Test
+  fun writeResultsBucket() {
+    val extension = FlankGradleExtension(project).apply {
+      resultsBucket = "fake-project.appspot.com"
+    }
+
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  results-bucket: fake-project.appspot.com\n" +
+        "  flaky-test-attempts: 0\n",
+        yamlWriter.writeAdditionalProperties(extension))
+  }
+
+  @Test
   fun writeTestTargetsAndResultsHistoryName() {
     val extension = FlankGradleExtension(project).apply {
       resultsHistoryName = "androidtest"

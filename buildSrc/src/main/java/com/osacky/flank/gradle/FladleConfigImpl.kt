@@ -20,5 +20,6 @@ data class FladleConfigImpl(
   override var environmentVariables: Map<String, String> = emptyMap(),
   override var timeoutMin: Int = 15,
   override var recordVideo: Boolean = true,
-  override var performanceMetrics: Boolean = true
+  override var performanceMetrics: Boolean = true,
+  override var resultsBucket: String? = null
 ) : FladleConfig
