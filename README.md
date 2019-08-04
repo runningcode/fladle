@@ -88,6 +88,7 @@ fladle {
             ]
         }
     }
+    resultsBucket("my-results-bucket-name")
 }
 ```
 
@@ -168,6 +169,9 @@ Enable video recording during the test. Enabled by default.
 
 ### performanceMetrics
 Monitor and record performance metrics: CPU, memory, network usage, and FPS (game-loop only). Enabled by default.
+
+### resultsBucket
+The name of a Google Cloud Storage bucket where raw test results will be stored.
 
 ---
 
