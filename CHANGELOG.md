@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.6.5 - Unreleased
+## 0.6.5
 * Add support for results-bucket gcloud config option. [PR](https://github.com/runningcode/fladle/pull/62) Thanks [c-moss](https://github.com/c-moss)
 * Default flank version 6.2.3
 * Lower build logging level
