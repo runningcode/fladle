@@ -181,6 +181,11 @@ You can point Fladle to whatever version of Flank you like using the [flankVersi
 
 # Publishing
 
+## Gradle Plugin Portal
 ``` bash
 ./gradlew -b buildSrc/build.gradle.kts publishPlugins
+```
+## Maven Central
+``` bash
+./gradlew -b buildSrc/build.gradle.kts publishMavenJavaPublicationToMavenRepository
 ```
