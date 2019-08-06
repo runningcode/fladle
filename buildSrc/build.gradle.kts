@@ -10,7 +10,7 @@ plugins {
   `kotlin-dsl`
   id("java-gradle-plugin")
   id("com.gradle.plugin-publish") version "0.10.1"
-  id("org.jmailen.kotlinter") version "1.25.2"
+  id("org.jmailen.kotlinter") version "1.26.0"
   `maven-publish`
   signing
 }
