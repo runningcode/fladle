@@ -1,7 +1,7 @@
 package com.osacky.flank.gradle
 
-import org.gradle.api.DefaultTask
 import javax.inject.Inject
+import org.gradle.api.DefaultTask
 
 open class RunFlankTask @Inject constructor() : DefaultTask() {
 
