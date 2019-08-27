@@ -174,6 +174,18 @@ Monitor and record performance metrics: CPU, memory, network usage, and FPS (gam
 The name of a Google Cloud Storage bucket where raw test results will be stored.
 
 ---
+### Error APK file not found
+The app APK and the instrumentation apk are expected to have already been generated before calling runFlank.
+If you would like the flank task to automatically create the APKs, you can add the following to your application's build.gradle.
+```
+afterEvaluate {
+    tasks.named("execFlank").configure {
+        dependsOn("assembleDebugAndroidTest")
+    }
+}
+```
+
+---
 
 Fladle is mentioned in the [Fragmented Podcast #163](https://fragmentedpodcast.com/episodes/163/). Skip to ~29 minutes.
 
