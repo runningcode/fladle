@@ -30,7 +30,8 @@ internal class YamlWriter {
     val smartFlankGcsPath = config.smartFlankGcsPath
     val filesToDownload = config.filesToDownload
     val projectId = config.projectId
-    if (testShards != null || shardTime != null || repeatTests != null || smartFlankGcsPath != null || filesToDownload.isNotEmpty() || projectId != null) {
+    val additionalTestApks = config.additionalTestApks
+    if (testShards != null || shardTime != null || repeatTests != null || smartFlankGcsPath != null || filesToDownload.isNotEmpty() || projectId != null || additionalTestApks.isNotEmpty()) {
       appendln("flank:")
     }
     testShards?.let {
@@ -52,6 +53,13 @@ internal class YamlWriter {
       appendln("  files-to-download:")
       filesToDownload.forEach { file ->
         appendln("  - $file")
+      }
+    }
+    if (additionalTestApks.isNotEmpty()) {
+      appendln("  additional-app-test-apks:")
+      additionalTestApks.forEach { pair ->
+        appendln("    - app: ${pair.first}")
+        appendln("      test: ${pair.second}")
       }
     }
   }

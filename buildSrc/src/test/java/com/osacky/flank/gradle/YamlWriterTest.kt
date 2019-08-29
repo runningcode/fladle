@@ -205,6 +205,26 @@ class YamlWriterTest {
   }
 
   @Test
+  fun writeAdditionalTestApks() {
+    val extension = FlankGradleExtension(project).apply {
+      additionalTestApks = listOf(
+        "../orange/build/output/app.apk" to "../orange/build/output/app-test.apk",
+        "../bob/build/output/app.apk" to "../bob/build/output/app-test.apk"
+      )
+    }
+
+    assertEquals(
+      "flank:\n" +
+              "  additional-app-test-apks:\n" +
+              "    - app: ../orange/build/output/app.apk\n" +
+              "      test: ../orange/build/output/app-test.apk\n" +
+              "    - app: ../bob/build/output/app.apk\n" +
+              "      test: ../bob/build/output/app-test.apk\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
+  }
+
+  @Test
   fun writeResultsHistoryName() {
     val extension = FlankGradleExtension(project).apply {
       resultsHistoryName = "androidtest"

@@ -47,6 +47,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
 
   override var resultsBucket: String? = null
 
+  override var additionalTestApks: List<Pair<String, String>> = emptyList()
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
     FladleConfigImpl(
       name = it,
@@ -69,7 +70,8 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
       timeoutMin = timeoutMin,
       recordVideo = recordVideo,
       performanceMetrics = performanceMetrics,
-      resultsBucket = resultsBucket
+      resultsBucket = resultsBucket,
+      additionalTestApks = additionalTestApks
     )
   }
 

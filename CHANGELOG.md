@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.0
+ * Add support for additional test apks.
+ * Bump flank version to 7.0.2
+
 ## 0.6.6
 * Bump flank version to 7.0.0
 * Publish to mavenCentral()
