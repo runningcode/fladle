@@ -2,7 +2,7 @@
 
 
 ## 0.6.7
-* Allow using wildcards in debugApk or instrumentationApk path by not checking that file exists.
+* Allow using wildcards in debugApk or instrumentationApk path by not checking that file exists. [PR](https://github.com/runningcode/fladle/pull/72)
 
 ## 0.6.6
 * Bump flank version to 7.0.0
