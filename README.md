@@ -19,7 +19,7 @@ Using Fladle takes 3 steps:
 ``` groovy
 buildscript {
   dependencies {
-    classpath "com.osacky.flank.gradle:fladle:0.6.6"
+    classpath "com.osacky.flank.gradle:fladle:0.6.7"
   }
 }
 
