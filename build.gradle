@@ -16,8 +16,8 @@ buildscript {
 }
 
 plugins {
-    id "com.github.ben-manes.versions" version "0.22.0"
-    id 'com.gradle.build-scan' version '2.4.1'
+    id "com.github.ben-manes.versions" version "0.25.0"
+    id 'com.gradle.build-scan' version '2.4.2'
 }
 
 allprojects {
@@ -39,5 +39,5 @@ buildScan {
 
 wrapper {
     distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = '5.6'
+    gradleVersion = '5.6.2'
 }
