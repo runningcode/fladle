@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 0.6.7
+* Allow using wildcards in debugApk or instrumentationApk path by not checking that file exists.
+
 ## 0.6.6
 * Bump flank version to 7.0.0
 * Publish to mavenCentral()
