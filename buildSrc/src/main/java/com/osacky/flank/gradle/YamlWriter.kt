@@ -1,7 +1,7 @@
 package com.osacky.flank.gradle
 
-import org.gradle.api.GradleException
 import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesting
+import org.gradle.util.VersionNumber
 
 internal class YamlWriter {
 
@@ -120,18 +120,6 @@ internal class YamlWriter {
   }
 
   private fun isFlankVersionAtLeast(flankVersion: String, major: Int): Boolean {
-    val matchResult = FLANK_VERSION_REGEX.matchEntire(flankVersion)
-        ?: throw GradleException("Unsupported flank version $flankVersion")
-
-    if (matchResult.groupValues.size <= 1) throw GradleException("Unsupported flank version $flankVersion")
-
-    val actualMajorVersion = matchResult.groupValues[1].toIntOrNull()
-        ?: throw GradleException("Unsupported flank version $flankVersion")
-
-    return actualMajorVersion >= major
-  }
-
-  companion object {
-    private val FLANK_VERSION_REGEX = Regex("(\\d+)\\.\\d+\\.\\d+.*")
+    return VersionNumber.parse(flankVersion).major >= major
   }
 }
