@@ -193,6 +193,17 @@ class YamlWriterTest {
   }
 
   @Test
+  fun writeTestRepeatsForOlderFlankVersions() {
+    val extension = FlankGradleExtension(project).apply {
+      flankVersion = "7.0.2"
+      repeatTests = 5
+    }
+
+    assertEquals("flank:\n" +
+        "  repeat-tests: 5\n", yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
   fun writeTestShardAndRepeatOption() {
     val extension = FlankGradleExtension(project).apply {
       testShards = 5
@@ -454,6 +465,21 @@ class YamlWriterTest {
         "  performance-metrics: false\n" +
         "  timeout: 45m\n" +
         "  num-flaky-test-attempts: 0\n",
+      yamlWriter.writeAdditionalProperties(extension))
+  }
+
+  @Test
+  fun writeFlakyTestAttemptsForOldFlankVersion() {
+    val extension = FlankGradleExtension(project).apply {
+      flankVersion = "7.0.2"
+      flakyTestAttempts = 3
+    }
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  flaky-test-attempts: 3\n",
       yamlWriter.writeAdditionalProperties(extension))
   }
 }
