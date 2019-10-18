@@ -1,5 +1,6 @@
 package com.osacky.flank.gradle
 
+import org.gradle.api.GradleException
 import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesting
 
 internal class YamlWriter {
@@ -40,7 +41,7 @@ internal class YamlWriter {
       appendln("  shard-time: $shardTime")
     }
     repeatTests?.let {
-      appendln("  repeat-tests: $repeatTests")
+      appendln(repeatTestsLine(config.flankVersion, repeatTests))
     }
     smartFlankGcsPath?.let {
       appendln("  smart-flank-gcs-path: $it")
@@ -90,7 +91,17 @@ internal class YamlWriter {
         appendln("  - $dir")
       }
     }
-    appendln("  flaky-test-attempts: ${config.flakyTestAttempts}")
+    appendln(flakyTestAttemptsLine(config.flankVersion, config.flakyTestAttempts))
+  }
+
+  private fun flakyTestAttemptsLine(flankVersion: String, flakyTestAttempts: Int): String {
+    val label = if (isFlankVersionAtLeast(flankVersion, 8)) "num-flaky-test-attempts" else "flaky-test-attempts"
+    return "  $label: $flakyTestAttempts"
+  }
+
+  private fun repeatTestsLine(flankVersion: String, repeatTests: Int): String {
+    val label = if (isFlankVersionAtLeast(flankVersion, 8)) "num-test-runs" else "repeat-tests"
+    return "  $label: $repeatTests"
   }
 
   @VisibleForTesting
@@ -106,5 +117,21 @@ internal class YamlWriter {
         appendln("    locale: $it")
       }
     }
+  }
+
+  private fun isFlankVersionAtLeast(flankVersion: String, major: Int): Boolean {
+    val matchResult = FLANK_VERSION_REGEX.matchEntire(flankVersion)
+        ?: throw GradleException("Unsupported flank version $flankVersion")
+
+    if (matchResult.groupValues.size <= 1) throw GradleException("Unsupported flank version $flankVersion")
+
+    val actualMajorVersion = matchResult.groupValues[1].toIntOrNull()
+        ?: throw GradleException("Unsupported flank version $flankVersion")
+
+    return actualMajorVersion >= major
+  }
+
+  companion object {
+    private val FLANK_VERSION_REGEX = Regex("(\\d+)\\.\\d+\\.\\d+.*")
   }
 }
