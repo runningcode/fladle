@@ -54,7 +54,7 @@ class MultipleConfigsTest {
       |  timeout: 15m
       |  test-targets:
       |  - override
-      |  flaky-test-attempts: 0
+      |  num-flaky-test-attempts: 0
     """.trimMargin())
   }
 }

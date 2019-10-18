@@ -102,7 +102,7 @@ class YamlWriterTest {
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
-        "  flaky-test-attempts: 0\n" +
+        "  num-flaky-test-attempts: 0\n" +
         "\n" +
         "flank:\n" +
         "  project: set\n", yaml)
@@ -189,6 +189,17 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
+        "  num-test-runs: 5\n", yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
+  fun writeTestRepeatsForOlderFlankVersions() {
+    val extension = FlankGradleExtension(project).apply {
+      flankVersion = "7.0.2"
+      repeatTests = 5
+    }
+
+    assertEquals("flank:\n" +
         "  repeat-tests: 5\n", yamlWriter.writeFlankProperties(extension))
   }
 
@@ -201,7 +212,7 @@ class YamlWriterTest {
 
     assertEquals("flank:\n" +
         "  max-test-shards: 5\n" +
-        "  repeat-tests: 2\n", yamlWriter.writeFlankProperties(extension))
+        "  num-test-runs: 2\n", yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -216,7 +227,7 @@ class YamlWriterTest {
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
         "  results-history-name: androidtest\n" +
-        "  flaky-test-attempts: 0\n",
+        "  num-flaky-test-attempts: 0\n",
         yamlWriter.writeAdditionalProperties(extension))
   }
 
@@ -232,7 +243,7 @@ class YamlWriterTest {
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
         "  results-bucket: fake-project.appspot.com\n" +
-        "  flaky-test-attempts: 0\n",
+        "  num-flaky-test-attempts: 0\n",
         yamlWriter.writeAdditionalProperties(extension))
   }
 
@@ -251,7 +262,7 @@ class YamlWriterTest {
         "  results-history-name: androidtest\n" +
         "  test-targets:\n" +
         "  - class com.example.Foo\n" +
-        "  flaky-test-attempts: 0\n",
+        "  num-flaky-test-attempts: 0\n",
         yamlWriter.writeAdditionalProperties(extension))
   }
 
@@ -266,7 +277,7 @@ class YamlWriterTest {
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
-        "  flaky-test-attempts: 0\n", yamlWriter.writeAdditionalProperties(extension))
+        "  num-flaky-test-attempts: 0\n", yamlWriter.writeAdditionalProperties(extension))
   }
 
   @Test
@@ -282,7 +293,7 @@ class YamlWriterTest {
         "  timeout: 15m\n" +
         "  test-targets:\n" +
         "  - class com.example.Foo#testThing\n" +
-        "  flaky-test-attempts: 0\n",
+        "  num-flaky-test-attempts: 0\n",
         yamlWriter.writeAdditionalProperties(extension))
   }
 
@@ -300,7 +311,7 @@ class YamlWriterTest {
         "  test-targets:\n" +
         "  - class com.example.Foo#testThing\n" +
         "  - class com.example.Foo#testThing2\n" +
-        "  flaky-test-attempts: 0\n",
+        "  num-flaky-test-attempts: 0\n",
       yamlWriter.writeAdditionalProperties(extension))
   }
 
@@ -326,7 +337,7 @@ class YamlWriterTest {
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
-        "  flaky-test-attempts: 0\n", yamlWriter.writeAdditionalProperties(extension))
+        "  num-flaky-test-attempts: 0\n", yamlWriter.writeAdditionalProperties(extension))
   }
 
   @Test
@@ -342,7 +353,7 @@ class YamlWriterTest {
         "  timeout: 15m\n" +
         "  directories-to-pull:\n" +
         "  - /sdcard/screenshots\n" +
-        "  flaky-test-attempts: 0\n",
+        "  num-flaky-test-attempts: 0\n",
       yamlWriter.writeAdditionalProperties(extension))
   }
 
@@ -360,7 +371,7 @@ class YamlWriterTest {
         "  directories-to-pull:\n" +
         "  - /sdcard/screenshots\n" +
         "  - /sdcard/reports\n" +
-        "  flaky-test-attempts: 0\n",
+        "  num-flaky-test-attempts: 0\n",
       yamlWriter.writeAdditionalProperties(extension))
   }
 
@@ -413,7 +424,7 @@ class YamlWriterTest {
         "  timeout: 15m\n" +
         "  environment-variables:\n" +
         "    listener: com.osacky.flank.sample.Listener\n" +
-        "  flaky-test-attempts: 0\n",
+        "  num-flaky-test-attempts: 0\n",
       yamlWriter.writeAdditionalProperties(extension))
   }
 
@@ -434,7 +445,7 @@ class YamlWriterTest {
         "  environment-variables:\n" +
         "    clearPackageData: true\n" +
         "    listener: com.osacky.flank.sample.Listener\n" +
-        "  flaky-test-attempts: 0\n",
+        "  num-flaky-test-attempts: 0\n",
       yamlWriter.writeAdditionalProperties(extension))
   }
 
@@ -453,7 +464,22 @@ class YamlWriterTest {
         "  record-video: false\n" +
         "  performance-metrics: false\n" +
         "  timeout: 45m\n" +
-        "  flaky-test-attempts: 0\n",
+        "  num-flaky-test-attempts: 0\n",
+      yamlWriter.writeAdditionalProperties(extension))
+  }
+
+  @Test
+  fun writeFlakyTestAttemptsForOldFlankVersion() {
+    val extension = FlankGradleExtension(project).apply {
+      flankVersion = "7.0.2"
+      flakyTestAttempts = 3
+    }
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  flaky-test-attempts: 3\n",
       yamlWriter.writeAdditionalProperties(extension))
   }
 }
