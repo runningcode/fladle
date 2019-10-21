@@ -1,5 +1,7 @@
 # Changelog
 
+## 0.7.0
+* Add support for Flank 8 and bump version. [PR](https://github.com/runningcode/fladle/pull/75) Thanks [francescocervone](https://github.com/francescocervone)
 
 ## 0.6.7
 * Allow using wildcards in debugApk or instrumentationApk path by not checking that file exists. [PR](https://github.com/runningcode/fladle/pull/72)

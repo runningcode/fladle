@@ -11,14 +11,14 @@ plugins {
   `kotlin-dsl` version "1.2.10"
   id("java-gradle-plugin")
   id("com.gradle.plugin-publish") version "0.10.1"
-  id("org.jmailen.kotlinter") version "2.1.1"
+  id("org.jmailen.kotlinter") version "2.1.2"
   `maven-publish`
   signing
 }
 
 dependencies {
   compileOnly(gradleApi())
-  implementation("com.android.tools.build:gradle:3.5.0")
+  implementation("com.android.tools.build:gradle:3.5.1")
 
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.12")
