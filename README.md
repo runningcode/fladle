@@ -76,8 +76,8 @@ fladle {
     ]
     // Or, use map devices
     mapDevices = [
-        [ "model": NexusLowRes", "version": "28" ],
-        [ "model": Nexus5", "version": "23" ]
+        [ "model": "NexusLowRes", "version": "28" ],
+        [ "model": "Nexus5", "version": "23" ]
     ]
     projectId("flank-gradle")
     flankVersion("4.4.0")
