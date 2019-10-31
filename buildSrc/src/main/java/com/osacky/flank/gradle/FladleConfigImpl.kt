@@ -8,6 +8,7 @@ data class FladleConfigImpl(
   override var useOrchestrator: Boolean = false,
   override var autoGoogleLogin: Boolean = false,
   override var devices: List<Device> = listOf(Device("NexusLowRes", 28)),
+  override var mapDevices: List<Map<String, String?>> = listOf(mapOf("model" to "NexusLowRes", "version" to "28")),
   override var testTargets: List<String> = emptyList(),
   override var shardTime: Int? = null,
   override var testShards: Int? = null,

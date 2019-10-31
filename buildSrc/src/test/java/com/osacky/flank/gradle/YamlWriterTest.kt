@@ -18,12 +18,87 @@ class YamlWriterTest {
     project = ProjectBuilder.builder().withName("project").build()
   }
 
+    @Test
+    fun testWriteSingleDevice() {
+        val devices = listOf(
+                Device("NexusLowRes", 28)
+        )
+        val deviceString = yamlWriter.createDeviceString(devices)
+        val expected = """
+      |  device:
+      |  - model: NexusLowRes
+      |    version: 28
+      |
+    """.trimMargin()
+        assertEquals(expected, deviceString)
+    }
+
+    @Test
+    fun testWriteTwoDevices() {
+        val devices = listOf(
+                Device("NexusLowRes", 28),
+                Device("Nexus5", 23)
+        )
+        val deviceString = yamlWriter.createDeviceString(devices)
+        val expected = """
+      |  device:
+      |  - model: NexusLowRes
+      |    version: 28
+      |  - model: Nexus5
+      |    version: 23
+      |
+    """.trimMargin()
+        assertEquals(expected, deviceString)
+    }
+
+    @Test
+    fun testWriteTwoCustomDevices() {
+        val devices = listOf(
+                Device("NexusLowRes", 23, orientation = "portrait"),
+                Device("Nexus5", orientation = "landscape", version = 28)
+        )
+        val deviceString = yamlWriter.createDeviceString(devices)
+        val expected = """
+      |  device:
+      |  - model: NexusLowRes
+      |    version: 23
+      |    orientation: portrait
+      |  - model: Nexus5
+      |    version: 28
+      |    orientation: landscape
+      |
+    """.trimMargin()
+        assertEquals(expected, deviceString)
+    }
+
+    @Test
+    fun testWriteTwoCustomDevicesWithLocale() {
+        val devices = listOf(
+                Device("NexusLowRes", 23, orientation = "portrait", locale = "en"),
+                Device("Nexus5", orientation = "landscape", locale = "es_ES", version = 28)
+        )
+        val deviceString = yamlWriter.createDeviceString(devices)
+        val expected = """
+      |  device:
+      |  - model: NexusLowRes
+      |    version: 23
+      |    orientation: portrait
+      |    locale: en
+      |  - model: Nexus5
+      |    version: 28
+      |    orientation: landscape
+      |    locale: es_ES
+      |
+    """.trimMargin()
+        assertEquals(expected, deviceString)
+    }
+
   @Test
-  fun testWriteSingleDevice() {
+  fun testWriteSingleMapDevice() {
     val devices = listOf(
-        Device("NexusLowRes", 28)
+        mapOf("model" to "NexusLowRes", "version" to "28")
     )
-    val deviceString = yamlWriter.createDeviceString(devices)
+    val deviceString = yamlWriter.createMapDeviceString(devices)
     val expected = """
       |  device:
       |  - model: NexusLowRes
@@ -34,12 +109,12 @@ class YamlWriterTest {
   }
 
   @Test
-  fun testWriteTwoDevices() {
+  fun testWriteTwoMapDevices() {
     val devices = listOf(
-        Device("NexusLowRes", 28),
-        Device("Nexus5", 23)
+        mapOf("model" to "NexusLowRes", "version" to "28"),
+        mapOf("model" to "Nexus5", "version" to "23")
     )
-    val deviceString = yamlWriter.createDeviceString(devices)
+    val deviceString = yamlWriter.createMapDeviceString(devices)
     val expected = """
       |  device:
       |  - model: NexusLowRes
@@ -52,12 +127,12 @@ class YamlWriterTest {
   }
 
   @Test
-  fun testWriteTwoCustomDevices() {
+  fun testWriteTwoCustomMapDevices() {
     val devices = listOf(
-        Device("NexusLowRes", 23, orientation = "portrait"),
-        Device("Nexus5", orientation = "landscape", version = 28)
+        mapOf("model" to "NexusLowRes", "version" to "23", "orientation" to "portrait"),
+        mapOf("model" to "Nexus5", "orientation" to "landscape", "version" to "28")
     )
-    val deviceString = yamlWriter.createDeviceString(devices)
+    val deviceString = yamlWriter.createMapDeviceString(devices)
     val expected = """
       |  device:
       |  - model: NexusLowRes
@@ -66,6 +141,28 @@ class YamlWriterTest {
       |  - model: Nexus5
       |    version: 28
       |    orientation: landscape
+      |
+    """.trimMargin()
+    assertEquals(expected, deviceString)
+  }
+
+  @Test
+  fun testWriteTwoCustomMapDevicesWithLocale() {
+    val devices = listOf(
+            mapOf("model" to "NexusLowRes", "version" to "23", "orientation" to "portrait", "locale" to "en"),
+            mapOf("model" to "Nexus5", "orientation" to "landscape", "locale" to "es_ES", "version" to "28")
+    )
+    val deviceString = yamlWriter.createMapDeviceString(devices)
+    val expected = """
+      |  device:
+      |  - model: NexusLowRes
+      |    version: 23
+      |    orientation: portrait
+      |    locale: en
+      |  - model: Nexus5
+      |    version: 28
+      |    orientation: landscape
+      |    locale: es_ES
       |
     """.trimMargin()
     assertEquals(expected, deviceString)

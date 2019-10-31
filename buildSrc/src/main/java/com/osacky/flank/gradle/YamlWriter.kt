@@ -106,18 +106,34 @@ internal class YamlWriter {
   }
 
   @VisibleForTesting
-  internal fun createDeviceString(devices: List<Device>): String = buildString {
+  internal fun createMapDeviceString(mapDevices: List<Map<String, String?>>): String = buildString {
     appendln("  device:")
-    for (device in devices) {
-      appendln("  - model: ${device.model}")
-      appendln("    version: ${device.version}")
-      device.orientation?.let {
+    for (device in mapDevices) {
+      val model = device["model"]
+      val version = device["version"]
+      val orientation = device["orientation"]
+      val locale = device["locale"]
+      appendln("  - model: $model")
+      appendln("    version: $version")
+      orientation?.let {
         appendln("    orientation: $it")
       }
-      device.locale?.let {
+      locale?.let {
         appendln("    locale: $it")
       }
     }
+  }
+
+  @VisibleForTesting
+  internal fun createDeviceString(devices: List<Device>): String {
+    val mapDevices = devices.map { device ->
+      mapOf(
+        "model" to device.model,
+        "version" to device.version,
+        "orientation" to device.orientation,
+        "locale" to device.locale)
+    }
+    return createMapDeviceString(mapDevices)
   }
 
   private fun isFlankVersionAtLeast(flankVersion: String, major: Int): Boolean {
