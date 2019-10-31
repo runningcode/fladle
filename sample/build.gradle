@@ -1,5 +1,3 @@
-import com.osacky.flank.gradle.Device
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.osacky.fladle'
@@ -31,9 +29,9 @@ fladle {
     testTargets = [
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
     ]
-    devices = [
-            new Device("NexusLowRes", 28, null, null),
-            new Device("Nexus5", 23, null, null)
+    mapDevices = [
+            [ "model": "Pixel2", "version": "26" ],
+            [ "model": "Nexus5", "version": "23" ]
     ]
     smartFlankGcsPath = "gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml"
     configs {

@@ -69,9 +69,15 @@ fladle {
     timeoutMin = 15
     recordVideo = false
     performanceMetrics = false
-    devices = [
-        new Device("NexusLowRes", 28, null, null),
-        new Device("Nexus5", 23, null, null)
+//    // Use device list based on Device class
+//    devices = [
+//        new Device("NexusLowRes", 28, null, null),
+//        new Device("Nexus5", 23, null, null)
+    ]
+    // Or, use map devices
+    mapDevices = [
+        [ "model": NexusLowRes", "version": "28" ],
+        [ "model": Nexus5", "version": "23" ]
     ]
     projectId("flank-gradle")
     flankVersion("4.4.0")
@@ -104,6 +110,9 @@ See [Google Cloud Firebase docs](https://cloud.google.com/sdk/gcloud/reference/f
 
 ### devices
 A list of devices to run the tests against. When list is empty, a default device will be used. When the Device parameter is null, a default value will be used.
+
+### mapDevices
+Similar to `devices` but instead is a list of `HashMap` values correlating to devices to run the tests against. When list is empty, a default device will be used. The keys in each map are `model`, `version`, `orientation`, and `locale`.  When the a key is not set or is null, a default value will be used.
 
 ### projectId
 The projectId is a unique identifier which can be found in the project's URL: `https://console.firebase.google.com/project/<projectId>`

@@ -12,7 +12,11 @@ internal class YamlWriter {
     checkNotNull(base.debugApk) { "debugApk cannot be null" }
     checkNotNull(base.instrumentationApk) { "instrumentationApk cannot be null" }
 
-    val deviceString = createDeviceString(config.devices)
+    val deviceString = if (config.mapDevices.isNotEmpty()) {
+      createMapDeviceString(config.mapDevices)
+    } else {
+      createDeviceString(config.devices)
+    }
     val additionalProperties = writeAdditionalProperties(config)
     val flankProperties = writeFlankProperties(config)
     return """gcloud:
