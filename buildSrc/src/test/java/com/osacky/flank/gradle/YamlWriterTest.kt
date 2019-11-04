@@ -500,4 +500,24 @@ class YamlWriterTest {
         "  flaky-test-attempts: 3\n",
       yamlWriter.writeAdditionalProperties(extension))
   }
+
+  @Test
+  fun writeNoKeepFilePath() {
+    val extension = FlankGradleExtension(project)
+
+    assertEquals("flank:\n" +
+        "  keep-file-path: false\n",
+      yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
+  fun writeKeepFilePath() {
+    val extension = FlankGradleExtension(project).apply {
+      keepFilePath = true
+    }
+
+    assertEquals("flank:\n" +
+        "  keep-file-path: true\n",
+      yamlWriter.writeFlankProperties(extension))
+  }
 }
