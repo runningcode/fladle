@@ -89,6 +89,7 @@ fladle {
         }
     }
     resultsBucket("my-results-bucket-name")
+    keepFilePath = true
 }
 ```
 
@@ -172,6 +173,9 @@ Monitor and record performance metrics: CPU, memory, network usage, and FPS (gam
 
 ### resultsBucket
 The name of a Google Cloud Storage bucket where raw test results will be stored.
+
+### keepFilePath
+Keeps the full path of downloaded files from a Google Cloud Storage bucket. Required when file names are not unique. Disabled by default.
 
 ---
 ### Error APK file not found
