@@ -105,7 +105,8 @@ class YamlWriterTest {
         "  num-flaky-test-attempts: 0\n" +
         "\n" +
         "flank:\n" +
-        "  project: set\n", yaml)
+        "  project: set\n" +
+        "  keep-file-path: false\n", yaml)
   }
 
   @Test
@@ -140,7 +141,9 @@ class YamlWriterTest {
     val extension = FlankGradleExtension(project).apply {
     }
 
-    assertEquals("", yamlWriter.writeFlankProperties(extension))
+    assertEquals("flank:\n" +
+        "  keep-file-path: false\n",
+      yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -150,7 +153,9 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
-        "  project: foo\n", yamlWriter.writeFlankProperties(extension))
+        "  project: foo\n" +
+        "  keep-file-path: false\n",
+      yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -160,7 +165,8 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
-        "  max-test-shards: 5\n", yamlWriter.writeFlankProperties(extension))
+        "  max-test-shards: 5\n" +
+        "  keep-file-path: false\n", yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -170,7 +176,9 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
-            "  shard-time: 120\n", yamlWriter.writeFlankProperties(extension))
+        "  shard-time: 120\n" +
+        "  keep-file-path: false\n",
+      yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -179,7 +187,9 @@ class YamlWriterTest {
       repeatTests = null
     }
 
-    assertEquals("", yamlWriter.writeFlankProperties(extension))
+    assertEquals("flank:\n" +
+        "  keep-file-path: false\n",
+      yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -189,7 +199,8 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
-        "  num-test-runs: 5\n", yamlWriter.writeFlankProperties(extension))
+        "  num-test-runs: 5\n" +
+        "  keep-file-path: false\n", yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -200,7 +211,8 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
-        "  repeat-tests: 5\n", yamlWriter.writeFlankProperties(extension))
+        "  repeat-tests: 5\n" +
+        "  keep-file-path: false\n", yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -212,7 +224,8 @@ class YamlWriterTest {
 
     assertEquals("flank:\n" +
         "  max-test-shards: 5\n" +
-        "  num-test-runs: 2\n", yamlWriter.writeFlankProperties(extension))
+        "  num-test-runs: 2\n" +
+        "  keep-file-path: false\n", yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -322,7 +335,8 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
-        "  smart-flank-gcs-path: gs://test/fakepath.xml\n",
+        "  smart-flank-gcs-path: gs://test/fakepath.xml\n" +
+        "  keep-file-path: false\n",
         yamlWriter.writeFlankProperties(extension))
   }
 
@@ -381,7 +395,9 @@ class YamlWriterTest {
       filesToDownload = listOf()
     }
 
-    assertEquals("", yamlWriter.writeFlankProperties(extension))
+    assertEquals("flank:\n" +
+        "  keep-file-path: false\n",
+      yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
@@ -391,6 +407,7 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
+        "  keep-file-path: false\n" +
         "  files-to-download:\n" +
         "  - .*/screenshots/.*\n",
       yamlWriter.writeFlankProperties(extension))
@@ -403,6 +420,7 @@ class YamlWriterTest {
     }
 
     assertEquals("flank:\n" +
+        "  keep-file-path: false\n" +
         "  files-to-download:\n" +
         "  - .*/screenshots/.*\n" +
         "  - .*/reports/.*\n",

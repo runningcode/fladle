@@ -5,7 +5,7 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
 open class FlankGradleExtension(project: Project) : FladleConfig {
-  override var flankVersion: String = "8.0.1"
+  override var flankVersion: String = "8.1.0"
   // Project id is automatically discovered by default. Use this to override the project id.
   override var projectId: String? = null
   override var serviceAccountCredentials: String? = null
@@ -47,6 +47,8 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
 
   override var resultsBucket: String? = null
 
+  override var keepFilePath: Boolean = false
+
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
     FladleConfigImpl(
       name = it,
@@ -69,7 +71,8 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
       timeoutMin = timeoutMin,
       recordVideo = recordVideo,
       performanceMetrics = performanceMetrics,
-      resultsBucket = resultsBucket
+      resultsBucket = resultsBucket,
+      keepFilePath = keepFilePath
     )
   }
 

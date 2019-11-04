@@ -55,6 +55,8 @@ class MultipleConfigsTest {
       |  test-targets:
       |  - override
       |  num-flaky-test-attempts: 0
+      |flank:
+      |  keep-file-path: false
     """.trimMargin())
   }
 }
