@@ -106,7 +106,7 @@ internal class YamlWriter {
   }
 
   @VisibleForTesting
-  internal fun createDeviceString(devices: List<Map<String, String?>>): String = buildString {
+  internal fun createDeviceString(devices: List<Map<String, String>>): String = buildString {
     appendln("  device:")
     for (device in devices) {
       if (device["model"] == null) throw RequiredDeviceKeyMissingException("model")
