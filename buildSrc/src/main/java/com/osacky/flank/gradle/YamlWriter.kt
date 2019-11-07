@@ -12,11 +12,7 @@ internal class YamlWriter {
     checkNotNull(base.debugApk) { "debugApk cannot be null" }
     checkNotNull(base.instrumentationApk) { "instrumentationApk cannot be null" }
 
-    val deviceString = if (config.mapDevices.isNotEmpty()) {
-      createMapDeviceString(config.mapDevices)
-    } else {
-      createDeviceString(config.devices)
-    }
+    val deviceString = createDeviceString(config.devices)
     val additionalProperties = writeAdditionalProperties(config)
     val flankProperties = writeFlankProperties(config)
     return """gcloud:
@@ -110,9 +106,9 @@ internal class YamlWriter {
   }
 
   @VisibleForTesting
-  internal fun createMapDeviceString(mapDevices: List<Map<String, String?>>): String = buildString {
+  internal fun createDeviceString(devices: List<Map<String, String?>>): String = buildString {
     appendln("  device:")
-    for (device in mapDevices) {
+    for (device in devices) {
       val model = device["model"]
       val version = device["version"]
       val orientation = device["orientation"]
@@ -126,18 +122,6 @@ internal class YamlWriter {
         appendln("    locale: $it")
       }
     }
-  }
-
-  @VisibleForTesting
-  internal fun createDeviceString(devices: List<Device>): String {
-    val mapDevices = devices.map { device ->
-      mapOf(
-        "model" to device.model,
-        "version" to device.version,
-        "orientation" to device.orientation,
-        "locale" to device.locale)
-    }
-    return createMapDeviceString(mapDevices)
   }
 
   private fun isFlankVersionAtLeast(flankVersion: String, major: Int): Boolean {

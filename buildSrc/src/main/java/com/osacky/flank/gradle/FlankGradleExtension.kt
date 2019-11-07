@@ -11,8 +11,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   override var serviceAccountCredentials: String? = null
   override var useOrchestrator: Boolean = false
   override var autoGoogleLogin: Boolean = false
-  override var devices: List<Device> = listOf(Device("NexusLowRes", 28))
-  override var mapDevices: List<Map<String, String?>> = listOf(mapOf("model" to "NexusLowRes", "version" to "28"))
+  override var devices: List<Map<String, String?>> = listOf(mapOf("model" to "NexusLowRes", "version" to "28"))
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
   override var testTargets: List<String> = emptyList()

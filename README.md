@@ -19,7 +19,7 @@ Using Fladle takes 3 steps:
 ``` groovy
 buildscript {
   dependencies {
-    classpath "com.osacky.flank.gradle:fladle:0.7.2"
+    classpath "com.osacky.flank.gradle:fladle:0.8.0"
   }
 }
 
@@ -69,13 +69,7 @@ fladle {
     timeoutMin = 15
     recordVideo = false
     performanceMetrics = false
-//    // Use device list based on Device class
-//    devices = [
-//        new Device("NexusLowRes", 28, null, null),
-//        new Device("Nexus5", 23, null, null)
-    ]
-    // Or, use map devices
-    mapDevices = [
+    devices = [
         [ "model": "NexusLowRes", "version": "28" ],
         [ "model": "Nexus5", "version": "23" ]
     ]
@@ -109,10 +103,7 @@ Set multiple testTargets to be run by flank.
 See [Google Cloud Firebase docs](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run) for more information.
 
 ### devices
-A list of devices to run the tests against. When list is empty, a default device will be used. When the Device parameter is null, a default value will be used.
-
-### mapDevices
-Similar to `devices` but instead is a list of `HashMap` values correlating to devices to run the tests against. When list is empty, a default device will be used. The keys in each map are `model`, `version`, `orientation`, and `locale`.  When the a key is not set or is null, a default value will be used.
+A list of devices to run the tests against. When list is empty, a default device will be used. Each device entry is a map.  The valid keys in the map are `model`, `version`, `orientation`, and `locale`.  When a key is not set or is null, a default value will be used.
 
 ### projectId
 The projectId is a unique identifier which can be found in the project's URL: `https://console.firebase.google.com/project/<projectId>`

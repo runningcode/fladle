@@ -29,7 +29,7 @@ fladle {
     testTargets = [
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
     ]
-    mapDevices = [
+    devices = [
             [ "model": "Pixel2", "version": "26" ],
             [ "model": "Nexus5", "version": "23" ]
     ]
