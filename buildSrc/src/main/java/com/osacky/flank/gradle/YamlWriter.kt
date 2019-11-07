@@ -31,9 +31,9 @@ internal class YamlWriter {
     val smartFlankGcsPath = config.smartFlankGcsPath
     val filesToDownload = config.filesToDownload
     val projectId = config.projectId
-    if (testShards != null || shardTime != null || repeatTests != null || smartFlankGcsPath != null || filesToDownload.isNotEmpty() || projectId != null) {
-      appendln("flank:")
-    }
+
+    appendln("flank:")
+
     testShards?.let {
       appendln("  max-test-shards: $testShards")
     }
@@ -49,6 +49,7 @@ internal class YamlWriter {
     projectId?.let {
       appendln("  project: $it")
     }
+    appendln("  keep-file-path: ${config.keepFilePath}")
     if (filesToDownload.isNotEmpty()) {
       appendln("  files-to-download:")
       filesToDownload.forEach { file ->

@@ -44,4 +44,6 @@ interface FladleConfig {
   var flakyTestAttempts: Int
 
   var resultsBucket: String?
+
+  var keepFilePath: Boolean
 }
