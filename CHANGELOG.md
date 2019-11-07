@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.0
+* BREAKING: devices now takes a `Map<String, String>` instead of a `List<Device>`. See the [#README.md] for an example. [PR](https://github.com/runningcode/fladle/pull/76) Thanks [zlippard](https://github.com/zlippard).
+* Add support for `keep-file-path`. [PR](https://github.com/runningcode/fladle/pull/77) Thanks [tahirhajizada](https://github.com/tahirhajizada).
+
 ## 0.7.0
 * Add support for Flank 8 and bump version. [PR](https://github.com/runningcode/fladle/pull/75) Thanks [francescocervone](https://github.com/francescocervone)
 
