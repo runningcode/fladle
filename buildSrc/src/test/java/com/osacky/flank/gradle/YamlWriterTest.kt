@@ -21,7 +21,7 @@ class YamlWriterTest {
   @Test
   fun testWriteSingleDevice() {
     val devices = listOf(
-        Device("NexusLowRes", 28)
+        mapOf("model" to "NexusLowRes", "version" to "28")
     )
     val deviceString = yamlWriter.createDeviceString(devices)
     val expected = """
@@ -36,8 +36,8 @@ class YamlWriterTest {
   @Test
   fun testWriteTwoDevices() {
     val devices = listOf(
-        Device("NexusLowRes", 28),
-        Device("Nexus5", 23)
+        mapOf("model" to "NexusLowRes", "version" to "28"),
+        mapOf("model" to "Nexus5", "version" to "23")
     )
     val deviceString = yamlWriter.createDeviceString(devices)
     val expected = """
@@ -54,8 +54,8 @@ class YamlWriterTest {
   @Test
   fun testWriteTwoCustomDevices() {
     val devices = listOf(
-        Device("NexusLowRes", 23, orientation = "portrait"),
-        Device("Nexus5", orientation = "landscape", version = 28)
+        mapOf("model" to "NexusLowRes", "version" to "23", "orientation" to "portrait"),
+        mapOf("model" to "Nexus5", "orientation" to "landscape", "version" to "28")
     )
     val deviceString = yamlWriter.createDeviceString(devices)
     val expected = """
@@ -69,6 +69,54 @@ class YamlWriterTest {
       |
     """.trimMargin()
     assertEquals(expected, deviceString)
+  }
+
+  @Test
+  fun testWriteTwoCustomDevicesWithLocale() {
+    val devices = listOf(
+            mapOf("model" to "NexusLowRes", "version" to "23", "orientation" to "portrait", "locale" to "en"),
+            mapOf("model" to "Nexus5", "orientation" to "landscape", "locale" to "es_ES", "version" to "28")
+    )
+    val deviceString = yamlWriter.createDeviceString(devices)
+    val expected = """
+      |  device:
+      |  - model: NexusLowRes
+      |    version: 23
+      |    orientation: portrait
+      |    locale: en
+      |  - model: Nexus5
+      |    version: 28
+      |    orientation: landscape
+      |    locale: es_ES
+      |
+    """.trimMargin()
+    assertEquals(expected, deviceString)
+  }
+
+  @Test
+  fun testThrowsExceptionWhenMissingModelKeyInDevice() {
+    val devices = listOf(
+            mapOf("version" to "23", "orientation" to "portrait", "locale" to "en")
+    )
+    try {
+      yamlWriter.createDeviceString(devices)
+      fail()
+    } catch (expected: RequiredDeviceKeyMissingException) {
+      assertEquals("Device should have 'model' key set to a value.", expected.message)
+    }
+  }
+
+  @Test
+  fun testThrowsExceptionWhenMissingVersionKeyInDevice() {
+    val devices = listOf(
+            mapOf("model" to "NexusLowRes", "orientation" to "portrait", "locale" to "en")
+    )
+    try {
+      yamlWriter.createDeviceString(devices)
+      fail()
+    } catch (expected: RequiredDeviceKeyMissingException) {
+      assertEquals("Device should have 'version' key set to a value.", expected.message)
+    }
   }
 
   @Test
