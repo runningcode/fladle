@@ -94,6 +94,32 @@ class YamlWriterTest {
   }
 
   @Test
+  fun testThrowsExceptionWhenMissingModelKeyInDevice() {
+    val devices = listOf(
+            mapOf("version" to "23", "orientation" to "portrait", "locale" to "en")
+    )
+    try {
+      yamlWriter.createDeviceString(devices)
+      fail()
+    } catch (expected: RequiredDeviceKeyMissingException) {
+      assertEquals("Device should have 'model' key set to a value.", expected.message)
+    }
+  }
+
+  @Test
+  fun testThrowsExceptionWhenMissingVersionKeyInDevice() {
+    val devices = listOf(
+            mapOf("model" to "NexusLowRes", "orientation" to "portrait", "locale" to "en")
+    )
+    try {
+      yamlWriter.createDeviceString(devices)
+      fail()
+    } catch (expected: RequiredDeviceKeyMissingException) {
+      assertEquals("Device should have 'version' key set to a value.", expected.message)
+    }
+  }
+
+  @Test
   fun verifyMissingServiceThrowsError() {
     val extension = FlankGradleExtension(project)
     try {

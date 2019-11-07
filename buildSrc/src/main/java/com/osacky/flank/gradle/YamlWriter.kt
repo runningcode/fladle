@@ -109,7 +109,9 @@ internal class YamlWriter {
   internal fun createDeviceString(devices: List<Map<String, String?>>): String = buildString {
     appendln("  device:")
     for (device in devices) {
+      if (device["model"] == null) throw RequiredDeviceKeyMissingException("model")
       val model = device["model"]
+      if (device["version"] == null) throw RequiredDeviceKeyMissingException("version")
       val version = device["version"]
       val orientation = device["orientation"]
       val locale = device["locale"]
