@@ -177,6 +177,9 @@ The name of a Google Cloud Storage bucket where raw test results will be stored.
 ### keepFilePath
 Keeps the full path of downloaded files from a Google Cloud Storage bucket. Required when file names are not unique. Disabled by default.
 
+### resultsDir
+The name of a unique Google Cloud Storage object within the results bucket where raw test results will be stored. The default is a timestamp with a random suffix.
+
 ---
 ### Error APK file not found
 The app APK and the instrumentation apk are expected to have already been generated before calling runFlank.

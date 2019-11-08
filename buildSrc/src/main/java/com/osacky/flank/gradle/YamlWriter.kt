@@ -93,6 +93,9 @@ internal class YamlWriter {
       }
     }
     appendln(flakyTestAttemptsLine(config.flankVersion, config.flakyTestAttempts))
+    config.resultsDir?.let {
+      appendln("  results-dir: $it")
+    }
   }
 
   private fun flakyTestAttemptsLine(flankVersion: String, flakyTestAttempts: Int): String {

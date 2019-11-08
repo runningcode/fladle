@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.1
+Add support for resultsDir. [PR](https://github.com/runningcode/fladle/pull/80)
+
 ## 0.8.0
 * BREAKING: devices now takes a `List<Map<String, String>>` instead of a `List<Device>`. See the [#README.md] for an example. [PR](https://github.com/runningcode/fladle/pull/76) Thanks [zlippard](https://github.com/zlippard).
 * Add support for `keep-file-path`. [PR](https://github.com/runningcode/fladle/pull/77) Thanks [tahirhajizada](https://github.com/tahirhajizada).

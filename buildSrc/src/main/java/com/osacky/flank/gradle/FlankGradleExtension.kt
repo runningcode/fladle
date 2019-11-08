@@ -49,6 +49,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
 
   override var keepFilePath: Boolean = false
 
+  override var resultsDir: String? = null
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
     FladleConfigImpl(
       name = it,
@@ -72,7 +73,8 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
       recordVideo = recordVideo,
       performanceMetrics = performanceMetrics,
       resultsBucket = resultsBucket,
-      keepFilePath = keepFilePath
+      keepFilePath = keepFilePath,
+      resultsDir = resultsDir
     )
   }
 
