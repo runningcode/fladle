@@ -46,4 +46,10 @@ interface FladleConfig {
   var resultsBucket: String?
 
   var keepFilePath: Boolean
+
+  /**
+   * The name of a unique Google Cloud Storage object within the results bucket where raw test results will be stored
+   * (default: a timestamp with a random suffix).
+   */
+  var resultsDir: String?
 }

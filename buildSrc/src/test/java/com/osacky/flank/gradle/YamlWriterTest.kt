@@ -309,6 +309,22 @@ class YamlWriterTest {
   }
 
   @Test
+  fun writeResultsDir() {
+    val extension = FlankGradleExtension(project).apply {
+      resultsDir = "resultsGoHere"
+    }
+
+    assertEquals("  use-orchestrator: false\n" +
+        "  auto-google-login: false\n" +
+        "  record-video: true\n" +
+        "  performance-metrics: true\n" +
+        "  timeout: 15m\n" +
+        "  num-flaky-test-attempts: 0\n" +
+        "  results-dir: resultsGoHere\n",
+        yamlWriter.writeAdditionalProperties(extension))
+  }
+
+  @Test
   fun writeTestTargetsAndResultsHistoryName() {
     val extension = FlankGradleExtension(project).apply {
       resultsHistoryName = "androidtest"

@@ -22,5 +22,6 @@ data class FladleConfigImpl(
   override var recordVideo: Boolean = true,
   override var performanceMetrics: Boolean = true,
   override var resultsBucket: String? = null,
-  override var keepFilePath: Boolean = false
+  override var keepFilePath: Boolean = false,
+  override var resultsDir: String?
 ) : FladleConfig
