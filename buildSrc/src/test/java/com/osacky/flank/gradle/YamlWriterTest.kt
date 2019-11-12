@@ -2,6 +2,8 @@ package com.osacky.flank.gradle
 
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Before
@@ -583,5 +585,30 @@ class YamlWriterTest {
     assertEquals("flank:\n" +
         "  keep-file-path: true\n",
       yamlWriter.writeFlankProperties(extension))
+  }
+
+  @Test
+  fun writeAdditionalTestApks() {
+    val extension = FlankGradleExtension(project).apply {
+      debugApk = "../orange/build/output/app.apk"
+      instrumentationApk = "../orange/build/output/app-test.apk"
+      additionalTestApks = mapOf(
+        "../orange/build/output/app.apk" to listOf("../orange/build/output/app-test2.apk"),
+        "../bob/build/output/app.apk" to listOf("../bob/build/output/app-test.apk")
+      )
+    }
+
+    assertThat(
+      yamlWriter.writeFlankProperties(extension),
+      equalTo(
+"flank:\n" +
+        "  keep-file-path: false\n" +
+        "  additional-app-test-apks:\n" +
+        "    - app: ../orange/build/output/app.apk\n" +
+        "      test: ../orange/build/output/app-test2.apk\n" +
+        "    - app: ../bob/build/output/app.apk\n" +
+        "      test: ../bob/build/output/app-test.apk\n"
+      )
+    )
   }
 }

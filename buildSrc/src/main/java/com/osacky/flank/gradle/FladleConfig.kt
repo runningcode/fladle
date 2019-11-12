@@ -52,4 +52,6 @@ interface FladleConfig {
    * (default: a timestamp with a random suffix).
    */
   var resultsDir: String?
+
+  var additionalTestApks: Map<String, List<String>>
 }

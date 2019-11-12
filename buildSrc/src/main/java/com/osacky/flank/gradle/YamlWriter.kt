@@ -56,6 +56,17 @@ internal class YamlWriter {
         appendln("  - $file")
       }
     }
+    val testApks = config.additionalTestApks.flatMap { (debugApk, instrumentationApks) ->
+      instrumentationApks.map { debugApk to it }
+    }
+
+    if (testApks.isNotEmpty()) {
+      appendln("  additional-app-test-apks:")
+      testApks.forEach {
+        appendln("    - app: ${it.first}")
+        appendln("      test: ${it.second}")
+      }
+    }
   }
 
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {

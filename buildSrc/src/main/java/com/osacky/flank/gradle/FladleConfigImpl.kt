@@ -23,5 +23,6 @@ data class FladleConfigImpl(
   override var performanceMetrics: Boolean = true,
   override var resultsBucket: String? = null,
   override var keepFilePath: Boolean = false,
-  override var resultsDir: String?
+  override var resultsDir: String?,
+  override var additionalTestApks: Map<String, List<String>> = emptyMap()
 ) : FladleConfig

@@ -77,6 +77,7 @@ fladle {
     flankVersion("4.4.0")
     debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
     instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
+    additionalTestApks = ["$buildDir/outputs/apk/debug/sample-debug.apk": ["$buildDir/outputs/apk/androidTest/debug/sample2-debug-androidTest.apk"]]
     autoGoogleLogin = true
     testShards = 5
     smartFlankGcsPath = "gs://tmp_flank/flank/test_app_android.xml"
@@ -120,6 +121,9 @@ This is the path to the app's debug apk.
 
 ### instrumentationApk
 This is the path to the app's instrumentation apk.
+
+### additionalTestApks
+Paths to additional test configurations.
 
 ### autoGoogleLogin
 Whether or not to automatically log in using a preconfigured google account. [More Info](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run#--auto-google-login)

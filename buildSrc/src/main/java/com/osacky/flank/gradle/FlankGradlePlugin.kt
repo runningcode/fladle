@@ -104,6 +104,9 @@ class FlankGradlePlugin : Plugin<Project> {
     }
     checkNotNull(base.debugApk!!) { "debugApk file cannot be null ${base.debugApk}" }
     checkNotNull(base.instrumentationApk!!) { "instrumentationApk file cannot be null ${base.instrumentationApk}" }
+    base.additionalTestApks.forEach {
+      check(it.value.isNotEmpty()) { "must provide at least one instrumentation apk for ${it.key}" }
+    }
   }
 
   private fun automaticallyConfigureTestOrchestrator(project: Project, extension: FlankGradleExtension, androidExtension: AppExtension) {
