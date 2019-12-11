@@ -1,6 +1,8 @@
 # Changelog
 
+
 ## 0.8.1
+Add support for additionalTestApks. [PR](https://github.com/runningcode/fladle/pull/83) Thanks [japplin](https://github.com/japplin).
 Add support for resultsDir. [PR](https://github.com/runningcode/fladle/pull/80)
 
 ## 0.8.0
