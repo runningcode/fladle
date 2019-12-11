@@ -8,17 +8,17 @@ repositories {
 }
 
 plugins {
-  `kotlin-dsl` version "1.2.10"
+  `kotlin-dsl`
   id("java-gradle-plugin")
   id("com.gradle.plugin-publish") version "0.10.1"
-  id("org.jmailen.kotlinter") version "2.1.2"
+  id("org.jmailen.kotlinter") version "2.2.0"
   `maven-publish`
   signing
 }
 
 dependencies {
   compileOnly(gradleApi())
-  implementation("com.android.tools.build:gradle:3.5.2")
+  implementation("com.android.tools.build:gradle:3.5.3")
 
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.12")
