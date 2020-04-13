@@ -60,6 +60,28 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
 
   override var additionalTestApks: Map<String, List<String>> = emptyMap()
 
+  override var runTimeout: String? = null
+
+  override var ignoreFailedTests: Boolean = false
+
+  override var disableSharding: Boolean = false
+
+  override var smartFlankDisableUpload: Boolean = false
+
+  override var testRunnerClass: String? = null
+
+  override var localResultsDir: String? = null
+
+  override var numUniformShards: Int? = null
+
+  override var clientDetails: Map<String, String> = emptyMap()
+
+  override var testTargetsAlwaysRun: List<String> = emptyList()
+
+  override var otherFiles: Map<String, String> = emptyMap()
+
+  override var networkProfile: String? = null
+
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
     FladleConfigImpl(
       name = it,
@@ -84,7 +106,18 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
       resultsBucket = resultsBucket,
       keepFilePath = keepFilePath,
       resultsDir = resultsDir,
-      additionalTestApks = additionalTestApks
+      additionalTestApks = additionalTestApks,
+      runTimeout = runTimeout,
+      ignoreFailedTests = ignoreFailedTests,
+      disableSharding = disableSharding,
+      smartFlankDisableUpload = smartFlankDisableUpload,
+      testRunnerClass = testRunnerClass,
+      localResultsDir = localResultsDir,
+      numUniformShards = numUniformShards,
+      clientDetails = clientDetails,
+      testTargetsAlwaysRun = testTargetsAlwaysRun,
+      otherFiles = otherFiles,
+      networkProfile = networkProfile
     )
   }
 

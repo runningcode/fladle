@@ -85,7 +85,7 @@ fladle {
     instrumentationApk = "$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     additionalTestApks = ["$buildDir/outputs/apk/debug/sample-debug.apk": ["$buildDir/outputs/apk/androidTest/debug/sample2-debug-androidTest.apk"]]
     autoGoogleLogin = true
-    testShards = 5
+    testShards = 5 //or numUniformShards=5 cannot use both
     shardTime = 120
     smartFlankGcsPath = "gs://tmp_flank/flank/test_app_android.xml"
     configs {
@@ -98,6 +98,25 @@ fladle {
     }
     resultsBucket("my-results-bucket-name")
     keepFilePath = true
+    runTimout = 45m
+    ignoreFailedTests = false
+    disableSharding = false
+    smartFlankDisableUpload = false
+    testRunnerClass = "com.foo.TestRunner"
+    localResultsDir = "flank"
+    clientDetails = [
+      "key1": "value1",
+      "key2": "value2"
+    ]
+    testTargetsAlwaysRun = [
+      "com.example.TestSuite#test1",
+      "com.example.TestSuite#test2"
+    ]
+    otherFiles = [
+      "/sdcard/dir1/file1.txt": "/my/example/path/file1.txt",
+      "/sdcard/dir2/file2.txt": "/my/example/path/file2.txt"
+    ]
+    networkProfile = "LTE"
 }
 ```
 
@@ -176,7 +195,7 @@ A list of paths that will be copied from the device's storage to the designated 
 List of regex that is matched against bucket paths (for example: `2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt`) for files to be downloaded after a flank run.
 
 ### timeoutMin
-The max time in minutes this test execution can run before it is cancelled (default: 15 min). It does not include any time necessary to prepare and clean up the target device. The maximum possible testing time is 30m on physical devices and 60m on virtual devices. 
+The max time in minutes this test execution can run before it is cancelled (default: 15 min). It does not include any time necessary to prepare and clean up the target device. The maximum possible testing time is 30m on physical devices and 60m on virtual devices.
 
 ### recordVideo
 Enable video recording during the test. Enabled by default.
@@ -193,6 +212,38 @@ Keeps the full path of downloaded files from a Google Cloud Storage bucket. Requ
 ### resultsDir
 The name of a unique Google Cloud Storage object within the results bucket where raw test results will be stored. The default is a timestamp with a random suffix.
 
+### runTimeout
+The max time this test run can execute before it is cancelled. s (seconds), m (minutes), h (hours) suffixes are acceptable (default: unlimited).
+
+### ignoreFailedTests
+Terminate with exit code 0 when there are failed tests. Useful for Fladle and other gradle plugins that don't expect the process to have a non-zero exit code. The JUnit XML is used to determine failure. (default: false)
+
+### disableSharding
+Disables sharding. Useful for parameterized tests. (default: false)
+
+### smartFlankDisableUpload
+Disables smart flank JUnit XML uploading. Useful for preventing timing data from being updated. (default: false)
+
+### testRunnerClass
+The fully-qualified Java class name of the instrumentation test runner (default: the last name extracted from the APK manifest).
+
+### localResultsDir
+Local folder to store the test result. Folder is DELETED before each run to ensure only artifacts from the new run are saved.
+
+### numUniformShards
+Specifies the number of shards into which you want to evenly distribute test cases. The shards are run in parallel on separate devices. For example, if your test execution contains 20 test cases and you specify four shards, each shard executes five test cases. The number of shards should be less than the total number of test cases. The number of shards specified must be >= 1 and <= 50. This option cannot be used along max-test-shards and is not compatible with smart sharding. If you want to take benefits of smart sharding use max-test-shards instead. (default: null)
+
+### clientDetails
+A key-value map of additional details to attach to the test matrix. Arbitrary key-value pairs may be attached to a test matrix to provide additional context about the tests being run. When consuming the test results, such as in Cloud Functions or a CI system, these details can add additional context such as a link to the corresponding pull request.
+
+### testTargetsAlwaysRun
+Always run - these tests are inserted at the beginning of every shard useful if you need to grant permissions or login before other tests run
+
+### otherFiles
+A list of device-path: file-path pairs that indicate the device paths to push files to the device before starting tests, and the paths of files to push. Device paths must be under absolute, whitelisted paths (${EXTERNAL_STORAGE}, or ${ANDROID_DATA}/local/tmp). Source file paths may be in the local filesystem or in Google Cloud Storage (gs://…).
+
+### networkProfile
+The name of the network traffic profile, for example LTE, HSPA, etc, which consists of a set of parameters to emulate network conditions when running the test (default: no network shaping; see available profiles listed by the `flank test network-profiles list` command). This feature only works on physical devices.
 ---
 ## Results
 By default, results are placed in the `build/fladle/results/<matrix name>` directly.

@@ -55,4 +55,79 @@ interface FladleConfig {
   var resultsDir: String?
 
   var additionalTestApks: Map<String, List<String>>
+
+  /**
+   * The max time this test run can execute before it is cancelled (default: unlimited).
+   */
+  var runTimeout: String?
+
+  /**
+   * Terminate with exit code 0 when there are failed tests.
+   * Useful for Fladle and other gradle plugins that don't expect the process to have a non-zero exit code.
+   * The JUnit XML is used to determine failure. (default: false)
+   */
+  var ignoreFailedTests: Boolean
+
+  /**
+   * Disables sharding. Useful for parameterized tests. (default: false)
+   */
+  var disableSharding: Boolean
+
+  /**
+   * Disables smart flank JUnit XML uploading. Useful for preventing timing data from being updated. (default: false)
+   */
+  var smartFlankDisableUpload: Boolean
+
+  /**
+   * The fully-qualified Java class name of the instrumentation test runner
+   * (default: the last name extracted from the APK manifest).
+   */
+  var testRunnerClass: String?
+
+  /**
+   * Local folder to store the test result.
+   * Folder is DELETED before each run to ensure only artifacts from the new run are saved.
+   */
+  var localResultsDir: String?
+
+  /**
+   * Specifies the number of shards into which you want to evenly distribute test cases.
+   * The shards are run in parallel on separate devices. For example,
+   * if your test execution contains 20 test cases and you specify four shards, each shard executes five test cases.
+   * The number of shards should be less than the total number of test cases.
+   * The number of shards specified must be >= 1 and <= 50.
+   * This option cannot be used along max-test-shards and is not compatible with smart sharding.
+   * If you want to take benefits of smart sharding use max-test-shards instead.
+   * (default: null)
+   */
+  var numUniformShards: Int?
+
+  /**
+   * A key-value map of additional details to attach to the test matrix.
+   * Arbitrary key-value pairs may be attached to a test matrix to provide additional context about the tests being run.
+   * When consuming the test results, such as in Cloud Functions or a CI system,
+   * these details can add additional context such as a link to the corresponding pull request.
+   */
+  var clientDetails: Map<String, String>
+
+  /**
+   * Always run - these tests are inserted at the beginning of every shard
+   * useful if you need to grant permissions or login before other tests run
+   */
+  var testTargetsAlwaysRun: List<String>
+
+  /**
+   * A list of device-path: file-path pairs that indicate the device paths to push files to the device before starting tests, and the paths of files to push.
+   * Device paths must be under absolute, whitelisted paths (${EXTERNAL_STORAGE}, or ${ANDROID_DATA}/local/tmp).
+   * Source file paths may be in the local filesystem or in Google Cloud Storage (gs://…).
+   */
+  var otherFiles: Map<String, String>
+
+  /**
+   * The name of the network traffic profile, for example LTE, HSPA, etc,
+   * which consists of a set of parameters to emulate network conditions when running the test
+   * (default: no network shaping; see available profiles listed by the `flank test network-profiles list` command).
+   * This feature only works on physical devices.
+   */
+  var networkProfile: String?
 }

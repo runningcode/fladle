@@ -30,6 +30,12 @@ internal class YamlWriter {
     val smartFlankGcsPath = config.smartFlankGcsPath
     val filesToDownload = config.filesToDownload
     val projectId = config.projectId
+    val runTimeout = config.runTimeout
+    val ignoreFailedTests = config.ignoreFailedTests
+    val disableSharding = config.disableSharding
+    val smartFlankDisableUpload = config.smartFlankDisableUpload
+    val localResultsDir = config.localResultsDir
+    val testTargetsAlwaysRun = config.testTargetsAlwaysRun
 
     appendln("flank:")
 
@@ -64,6 +70,22 @@ internal class YamlWriter {
       testApks.forEach {
         appendln("    - app: ${it.first}")
         appendln("      test: ${it.second}")
+      }
+    }
+
+    runTimeout?.let {
+      appendln("  run-timeout: $it")
+    }
+    appendln("  ignore-failed-tests: $ignoreFailedTests")
+    appendln("  disable-sharding: $disableSharding")
+    appendln("  smart-flank-disable-upload: $smartFlankDisableUpload")
+    localResultsDir?.let {
+      appendln("  local-result-dir: $localResultsDir")
+    }
+    if (testTargetsAlwaysRun.isNotEmpty()) {
+      appendln("  test-targets-always-run:")
+      testTargetsAlwaysRun.forEach {
+        appendln("  - class $it")
       }
     }
   }
@@ -105,6 +127,32 @@ internal class YamlWriter {
     appendln(flakyTestAttemptsLine(config.flakyTestAttempts))
     config.resultsDir?.let {
       appendln("  results-dir: $it")
+    }
+
+    config.testRunnerClass?.let {
+      appendln("  test-runner-class: $it")
+    }
+
+    config.numUniformShards?.let {
+      appendln("  num-uniform-shards: $it")
+    }
+
+    if (config.clientDetails.isNotEmpty()) {
+      appendln("  client-details:")
+      config.clientDetails.forEach {
+        appendln("    ${it.key}: ${it.value}")
+      }
+    }
+
+    if (config.otherFiles.isNotEmpty()) {
+      appendln("  other-files:")
+      config.otherFiles.forEach {
+        appendln("    ${it.key} ${it.value}")
+      }
+    }
+
+    config.networkProfile?.let {
+      appendln("  network-profile: $it")
     }
   }
 
