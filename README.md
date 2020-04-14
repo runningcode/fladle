@@ -216,7 +216,7 @@ The name of a unique Google Cloud Storage object within the results bucket where
 The max time this test run can execute before it is cancelled. s (seconds), m (minutes), h (hours) suffixes are acceptable (default: unlimited).
 
 ### ignoreFailedTests
-Terminate with exit code 0 when there are failed tests. Useful for Fladle and other gradle plugins that don't expect the process to have a non-zero exit code. The JUnit XML is used to determine failure. (default: false)
+Always return successful task completion even when there are failed tests. Useful when parsing JUnit XML to determine failure. (default: false)
 
 ### disableSharding
 Disables sharding. Useful for parameterized tests. (default: false)
