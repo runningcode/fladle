@@ -1,5 +1,7 @@
 # Fladle - The Gradle Plugin for Firebase Test Lab and Flank
 
+![Fladle](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Frittatensuppe.jpg/250px-Frittatensuppe.jpg)
+
 Fladle is a Gradle plugin which simplifies the configuration necessary to use Firebase Test Lab and Flank.
 
 [![CircleCI](https://circleci.com/gh/runningcode/fladle.svg?style=svg)](https://circleci.com/gh/runningcode/fladle)
