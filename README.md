@@ -21,7 +21,7 @@ Using Fladle takes 3 steps:
 ``` groovy
 buildscript {
   dependencies {
-    classpath "com.osacky.flank.gradle:fladle:0.8.0"
+    classpath "com.osacky.flank.gradle:fladle:0.8.1"
   }
 }
 
@@ -212,5 +212,5 @@ You can point Fladle to whatever version of Flank you like using the [flankVersi
 ```
 ## Maven Central
 ``` bash
-./gradlew -b buildSrc/build.gradle.kts publishMavenJavaPublicationToMavenRepository
+./gradlew -b buildSrc/build.gradle.kts publishMavenJavaPublicationToMavenRepository  -Dorg.gradle.internal.publish.checksums.insecure=true
 ```

@@ -10,19 +10,19 @@ repositories {
 plugins {
   `kotlin-dsl`
   id("java-gradle-plugin")
-  id("com.gradle.plugin-publish") version "0.10.1"
-  id("org.jmailen.kotlinter") version "2.2.0"
+  id("com.gradle.plugin-publish") version "0.11.0"
+  id("org.jmailen.kotlinter") version "2.3.2"
   `maven-publish`
   signing
 }
 
 dependencies {
   compileOnly(gradleApi())
-  implementation("com.android.tools.build:gradle:3.5.3")
+  implementation("com.android.tools.build:gradle:3.6.2")
 
   testImplementation(gradleTestKit())
-  testImplementation("junit:junit:4.12")
-  testImplementation("com.google.truth:truth:1.0")
+  testImplementation("junit:junit:4.13")
+  testImplementation("com.google.truth:truth:1.0.1")
 }
 
 kotlinter {
@@ -36,7 +36,7 @@ pluginBundle {
 
   mavenCoordinates {
     artifactId = "fladle"
-    groupId = group
+    groupId = project.group.toString()
   }
 }
 
