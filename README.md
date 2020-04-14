@@ -237,7 +237,7 @@ Specifies the number of shards into which you want to evenly distribute test cas
 A key-value map of additional details to attach to the test matrix. Arbitrary key-value pairs may be attached to a test matrix to provide additional context about the tests being run. When consuming the test results, such as in Cloud Functions or a CI system, these details can add additional context such as a link to the corresponding pull request.
 
 ### testTargetsAlwaysRun
-Always run - these tests are inserted at the beginning of every shard useful if you need to grant permissions or login before other tests run
+Always run - these tests are inserted at the beginning of every shard. Useful if you need to grant permissions or login before other tests run
 
 ### otherFiles
 A list of device-path: file-path pairs that indicate the device paths to push files to the device before starting tests, and the paths of files to push. Device paths must be under absolute, whitelisted paths (${EXTERNAL_STORAGE}, or ${ANDROID_DATA}/local/tmp). Source file paths may be in the local filesystem or in Google Cloud Storage (gs://…).
