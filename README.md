@@ -225,7 +225,7 @@ Disables sharding. Useful for parameterized tests. (default: false)
 Disables smart flank JUnit XML uploading. Useful for preventing timing data from being updated. (default: false)
 
 ### testRunnerClass
-The fully-qualified Java class name of the instrumentation test runner (default: the last name extracted from the APK manifest).
+The fully-qualified Java class name of the instrumentation test runner (default: the test manifest is parsed to determine the class name).
 
 ### localResultsDir
 Local directory to store the test results. Folder is DELETED before each run to ensure only artifacts from the new run are saved.
