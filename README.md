@@ -219,7 +219,7 @@ The max time this test run can execute before it is cancelled. s (seconds), m (m
 Always return successful task completion even when there are failed tests. Useful when parsing JUnit XML to determine failure. (default: false)
 
 ### disableSharding
-Disables sharding. Useful for parameterized tests. (default: false)
+Disables sharding. All tests will run on the same device. Useful for parameterized tests which do not support sharding. (default: false)
 
 ### smartFlankDisableUpload
 Disables smart flank JUnit XML uploading. Useful for preventing timing data from being updated. (default: false)
