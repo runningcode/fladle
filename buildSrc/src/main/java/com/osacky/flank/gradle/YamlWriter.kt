@@ -147,7 +147,7 @@ internal class YamlWriter {
     if (config.otherFiles.isNotEmpty()) {
       appendln("  other-files:")
       config.otherFiles.forEach {
-        appendln("    ${it.key} ${it.value}")
+        appendln("    ${it.key}: ${it.value}")
       }
     }
 

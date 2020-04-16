@@ -770,8 +770,8 @@ class YamlWriterTest {
 
     assertTrue(properties.contains("""
         |  other-files:
-        |    /example/path/test1 anyfile.txt
-        |    /example/path/test2 anyfile2.txt
+        |    /example/path/test1: anyfile.txt
+        |    /example/path/test2: anyfile2.txt
     """.trimMargin()))
   }
 
