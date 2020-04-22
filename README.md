@@ -82,6 +82,7 @@ fladle {
     additionalTestApks = ["$buildDir/outputs/apk/debug/sample-debug.apk": ["$buildDir/outputs/apk/androidTest/debug/sample2-debug-androidTest.apk"]]
     autoGoogleLogin = true
     testShards = 5
+    shardTime = 120
     smartFlankGcsPath = "gs://tmp_flank/flank/test_app_android.xml"
     configs {
         oranges {
