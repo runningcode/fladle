@@ -78,7 +78,7 @@ fladle {
     projectId("flank-gradle")
     flankVersion("4.4.0")
     debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
-    instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
+    instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk")
     additionalTestApks = ["$buildDir/outputs/apk/debug/sample-debug.apk": ["$buildDir/outputs/apk/androidTest/debug/sample2-debug-androidTest.apk"]]
     autoGoogleLogin = true
     testShards = 5
