@@ -188,7 +188,12 @@ Keeps the full path of downloaded files from a Google Cloud Storage bucket. Requ
 The name of a unique Google Cloud Storage object within the results bucket where raw test results will be stored. The default is a timestamp with a random suffix.
 
 ---
-### Error APK file not found
+## Results
+By default, results are placed in the `build/fladle/results/<matrix name>` directly.
+A merged junit report is available in `JUnitReport.xml`
+Only on failure, an html report is generated in that directory.
+---
+## Error APK file not found
 The app APK and the instrumentation apk are expected to have already been generated before calling runFlank.
 If you would like the flank task to automatically create the APKs, you can add the following to your application's build.gradle.
 ```
