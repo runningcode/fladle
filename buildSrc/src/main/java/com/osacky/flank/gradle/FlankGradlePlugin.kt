@@ -31,9 +31,9 @@ class FlankGradlePlugin : Plugin<Project> {
   }
 
   private fun configureTasks(project: Project, base: FlankGradleExtension) {
+    // Add Flank dependency to Fladle Configuration
+    project.dependencies.add(FLADLE_CONFIG, "${base.flankCoordinates}:${base.flankVersion}")
     project.afterEvaluate {
-      // Add Flank dependency to Fladle Configuration
-      project.dependencies.add(FLADLE_CONFIG, "${base.flankCoordinates}:${base.flankVersion}")
 
       // Only use automatic apk path detection for 'com.android.application' projects.
       project.pluginManager.withPlugin("com.android.application") {
@@ -65,7 +65,7 @@ class FlankGradlePlugin : Plugin<Project> {
     project.tasks.register("flankDoctor$name", JavaExec::class.java) {
       description = "Finds problems with the current configuration."
       group = TASK_GROUP
-      workingDir("${project.fladleDir}/")
+      workingDir(project.fladleDir)
       classpath = project.fladleConfig
       main = "ftl.Main"
       args = listOf("firebase", "test", "android", "doctor")
@@ -75,7 +75,7 @@ class FlankGradlePlugin : Plugin<Project> {
     val execFlank = project.tasks.register("execFlank$name", JavaExec::class.java) {
       description = "Runs instrumentation tests using flank on firebase test lab."
       group = TASK_GROUP
-      workingDir("${project.fladleDir}/")
+      workingDir(project.fladleDir)
       classpath = project.fladleConfig
       main = "ftl.Main"
       args = listOf("firebase", "test", "android", "run")
