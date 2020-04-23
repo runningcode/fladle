@@ -8,17 +8,12 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.TaskContainer
-import org.gradle.kotlin.dsl.repositories
 import org.gradle.util.GradleVersion
 
 class FlankGradlePlugin : Plugin<Project> {
 
   override fun apply(target: Project) {
     checkMinimumGradleVersion()
-    // Add Flank maven repo.
-    target.repositories {
-      maven { url = target.uri("https://dl.bintray.com/flank/maven") }
-    }
 
     // Create Configuration to store flank dependency
     target.configurations.create(FLADLE_CONFIG)
@@ -38,7 +33,7 @@ class FlankGradlePlugin : Plugin<Project> {
   private fun configureTasks(project: Project, base: FlankGradleExtension) {
     project.afterEvaluate {
       // Add Flank dependency to Fladle Configuration
-      project.dependencies.add(FLADLE_CONFIG, "flank:flank:${base.flankVersion}")
+      project.dependencies.add(FLADLE_CONFIG, "${base.flankCoordinates}:${base.flankVersion}")
 
       // Only use automatic apk path detection for 'com.android.application' projects.
       project.pluginManager.withPlugin("com.android.application") {

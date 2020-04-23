@@ -5,6 +5,7 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
 open class FlankGradleExtension(project: Project) : FladleConfig {
+  override var flankCoordinates: String = "flank:flank"
   override var flankVersion: String = "8.1.0"
   // Project id is automatically discovered by default. Use this to override the project id.
   override var projectId: String? = null
@@ -56,6 +57,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
     FladleConfigImpl(
       name = it,
+      flankCoordinates = flankCoordinates,
       flankVersion = flankVersion,
       projectId = projectId,
       serviceAccountCredentials = serviceAccountCredentials,

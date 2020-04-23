@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.osacky.fladle'
 
+repositories {
+    maven { url 'https://dl.bintray.com/flank/maven' }
+}
+
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
