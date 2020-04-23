@@ -1,6 +1,7 @@
 package com.osacky.flank.gradle
 
 interface FladleConfig {
+  var flankCoordinates: String
   var flankVersion: String
   // Project id is automatically discovered by default. Use this to override the project id.
   var projectId: String?

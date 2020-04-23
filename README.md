@@ -25,6 +25,10 @@ buildscript {
   }
 }
 
+repositories {
+  maven { url 'https://dl.bintray.com/flank/maven' }
+}
+
 apply plugin: "com.osacky.fladle"
 ```
 2. Configure the Fladle extension.
@@ -76,7 +80,7 @@ fladle {
         [ "model": "Nexus5", "version": "23" ]
     ]
     projectId("flank-gradle")
-    flankVersion("4.4.0")
+    flankVersion("8.1.0")
     debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
     instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk")
     additionalTestApks = ["$buildDir/outputs/apk/debug/sample-debug.apk": ["$buildDir/outputs/apk/androidTest/debug/sample2-debug-androidTest.apk"]]
@@ -116,8 +120,10 @@ This is automatically discovered based on the service credential by default.
 ### flankVersion
 `flankVersion("flank_snapshot")` to specify a Flank snapshot.
 
-`flankVersion("4.4.0")` to specify a specific Flank version.
+`flankVersion("8.1.0")` to specify a specific Flank version.
 
+### flankCoordinates
+`flankCoordinates("com.github.flank:flank")` to specify custom flank coordinates.
 
 ### debugApk
 This is the path to the app's debug apk.

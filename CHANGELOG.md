@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.0
+* Do not add flank maven repo.
+* Allow specifying custom flank coordinates.
 
 ## 0.8.1
 * Add support for `additionalTestApks`. [PR](https://github.com/runningcode/fladle/pull/83) Thanks [japplin](https://github.com/japplin).

@@ -2,6 +2,7 @@ package com.osacky.flank.gradle
 
 data class FladleConfigImpl(
   internal val name: String,
+  override var flankCoordinates: String,
   override var flankVersion: String,
   override var projectId: String? = null,
   override var serviceAccountCredentials: String? = null,
