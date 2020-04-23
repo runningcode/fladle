@@ -21,7 +21,7 @@ open class YamlConfigWriterTask @Inject constructor(private val config: FladleCo
 
   @TaskAction
   fun writeFile() {
-    val fladleDir = project.file(project.fladleDir)
+    val fladleDir = project.fladleDir.get().asFile
     if (!fladleDir.exists()) {
       fladleDir.mkdirs()
     }
