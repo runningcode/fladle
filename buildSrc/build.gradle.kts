@@ -1,5 +1,5 @@
 group = "com.osacky.flank.gradle"
-version = "0.9.0"
+version = "0.9.1-SNAPSHOT"
 
 repositories {
   google()
