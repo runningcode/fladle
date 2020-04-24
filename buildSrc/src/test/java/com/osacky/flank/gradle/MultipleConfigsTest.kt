@@ -19,7 +19,7 @@ class MultipleConfigsTest {
       |}
       |
       |fladle {
-      |  serviceAccountCredentials("flank-gradle-service.json")
+      |  serviceAccountCredentials = layout.projectDirectory.file("flank-gradle-service.json")
       |  debugApk("foo.apk")
       |  instrumentationApk("instrument.apk")
       |

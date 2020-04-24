@@ -1,13 +1,12 @@
 package com.osacky.flank.gradle
 
 import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesting
-import org.gradle.util.VersionNumber
 
 internal class YamlWriter {
 
   internal fun createConfigProps(config: FladleConfig, base: FlankGradleExtension): String {
     if (base.projectId == null) {
-      checkNotNull(base.serviceAccountCredentials) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
+      check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     checkNotNull(base.debugApk) { "debugApk cannot be null" }
     checkNotNull(base.instrumentationApk) { "instrumentationApk cannot be null" }
@@ -41,7 +40,7 @@ internal class YamlWriter {
       appendln("  shard-time: $shardTime")
     }
     repeatTests?.let {
-      appendln(repeatTestsLine(config.flankVersion, repeatTests))
+      appendln(repeatTestsLine(repeatTests))
     }
     smartFlankGcsPath?.let {
       appendln("  smart-flank-gcs-path: $it")
@@ -103,19 +102,19 @@ internal class YamlWriter {
         appendln("  - $dir")
       }
     }
-    appendln(flakyTestAttemptsLine(config.flankVersion, config.flakyTestAttempts))
+    appendln(flakyTestAttemptsLine(config.flakyTestAttempts))
     config.resultsDir?.let {
       appendln("  results-dir: $it")
     }
   }
 
-  private fun flakyTestAttemptsLine(flankVersion: String, flakyTestAttempts: Int): String {
-    val label = if (isFlankVersionAtLeast(flankVersion, 8)) "num-flaky-test-attempts" else "flaky-test-attempts"
+  private fun flakyTestAttemptsLine(flakyTestAttempts: Int): String {
+    val label = "num-flaky-test-attempts"
     return "  $label: $flakyTestAttempts"
   }
 
-  private fun repeatTestsLine(flankVersion: String, repeatTests: Int): String {
-    val label = if (isFlankVersionAtLeast(flankVersion, 8)) "num-test-runs" else "repeat-tests"
+  private fun repeatTestsLine(repeatTests: Int): String {
+    val label = "num-test-runs"
     return "  $label: $repeatTests"
   }
 
@@ -138,9 +137,5 @@ internal class YamlWriter {
         appendln("    locale: $it")
       }
     }
-  }
-
-  private fun isFlankVersionAtLeast(flankVersion: String, major: Int): Boolean {
-    return VersionNumber.parse(flankVersion).major >= major
   }
 }

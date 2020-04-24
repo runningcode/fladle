@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.1
+* Bugfix: ability to set flank version.
+* Breaking API change: serviceAccountCredentials now uses [Lazy  Property API](https://docs.gradle.org/current/userguide/lazy_configuration.html#working_with_files_in_lazy_properties). See README for details on how to set it.
+* Minimum required Gradle Version is now 5.1.
+* Dropped support for Flank 7.X and lower.
+
 ## 0.9.0
 * Do not add flank maven repo. [PR](https://github.com/runningcode/fladle/pull/94)
 * Allow specifying custom flank coordinates. [PR](https://github.com/runningcode/fladle/pull/94)

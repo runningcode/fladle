@@ -1,11 +1,11 @@
 package com.osacky.flank.gradle
 
+import org.gradle.api.file.RegularFileProperty
+
 interface FladleConfig {
-  var flankCoordinates: String
-  var flankVersion: String
   // Project id is automatically discovered by default. Use this to override the project id.
   var projectId: String?
-  var serviceAccountCredentials: String?
+  val serviceAccountCredentials: RegularFileProperty
   var useOrchestrator: Boolean
   var autoGoogleLogin: Boolean
   var devices: List<Map<String, String>>

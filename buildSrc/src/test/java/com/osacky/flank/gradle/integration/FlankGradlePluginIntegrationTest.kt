@@ -28,11 +28,27 @@ class FlankGradlePluginIntegrationTest {
             GradleRunner.create()
                 .withProjectDir(testProjectRoot.root)
                 .withPluginClasspath()
-                .withGradleVersion("4.8")
+                .withGradleVersion("5.0")
                 .build()
         } catch (expected: UnexpectedBuildFailure) {
-            assertThat(expected).hasMessageThat().contains("Fladle requires at minimum version Gradle 4.9. Detected version Gradle 4.8")
+            assertThat(expected).hasMessageThat().contains("Fladle requires at minimum version Gradle 5.1. Detected version Gradle 5.0")
         }
+    }
+
+    @Test
+    fun testGradleSixZero() {
+        writeBuildGradle(
+                """plugins {
+             |  id "com.osacky.fladle"
+             |}""".trimMargin()
+        )
+        val result = GradleRunner.create()
+                .withProjectDir(testProjectRoot.root)
+                .withPluginClasspath()
+                .withGradleVersion("6.0")
+                .build()
+
+        assertThat(result.output).contains("SUCCESS")
     }
 
     @Test
@@ -45,7 +61,7 @@ class FlankGradlePluginIntegrationTest {
         GradleRunner.create()
             .withProjectDir(testProjectRoot.root)
             .withPluginClasspath()
-            .withGradleVersion("4.9")
+            .withGradleVersion("5.1")
             .build()
     }
 
@@ -101,7 +117,7 @@ class FlankGradlePluginIntegrationTest {
              |  id "com.osacky.fladle"
              |}
              |fladle {
-             |  serviceAccountCredentials = "foo"
+             |  serviceAccountCredentials = project.layout.projectDirectory.file("foo")
              |}
              |""".trimMargin()
         )

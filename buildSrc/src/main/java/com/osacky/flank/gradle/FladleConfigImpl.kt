@@ -1,11 +1,11 @@
 package com.osacky.flank.gradle
 
+import org.gradle.api.file.RegularFileProperty
+
 data class FladleConfigImpl(
   internal val name: String,
-  override var flankCoordinates: String,
-  override var flankVersion: String,
   override var projectId: String?,
-  override var serviceAccountCredentials: String?,
+  override val serviceAccountCredentials: RegularFileProperty,
   override var useOrchestrator: Boolean,
   override var autoGoogleLogin: Boolean,
   override var devices: List<Map<String, String>>,

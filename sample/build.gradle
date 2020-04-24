@@ -23,7 +23,8 @@ android {
 }
 
 fladle {
-    serviceAccountCredentials("${project.file("flank-gradle-5cf02dc90531.json")}")
+    flankVersion = "flank_snapshot"
+    serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json")
     // Project Id is not needed if serviceAccountCredentials are set.
 //    projectId("flank-gradle")
     useOrchestrator = true
