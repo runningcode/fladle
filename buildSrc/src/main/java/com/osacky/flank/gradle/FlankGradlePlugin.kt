@@ -31,9 +31,15 @@ class FlankGradlePlugin : Plugin<Project> {
   }
 
   private fun configureTasks(project: Project, base: FlankGradleExtension) {
-    // Add Flank dependency to Fladle Configuration
-    project.dependencies.add(FLADLE_CONFIG, "${base.flankCoordinates}:${base.flankVersion}")
+    if (GradleVersion.current() > GradleVersion.version("6.1")) {
+      base.flankVersion.finalizeValueOnRead()
+      base.flankCoordinates.finalizeValueOnRead()
+      base.serviceAccountCredentials.finalizeValueOnRead()
+    }
     project.afterEvaluate {
+      // Add Flank dependency to Fladle Configuration
+      // Must be done afterEvaluate otherwise extension values will not be set.
+      project.dependencies.add(FLADLE_CONFIG, "${base.flankCoordinates.get()}:${base.flankVersion.get()}")
 
       // Only use automatic apk path detection for 'com.android.application' projects.
       project.pluginManager.withPlugin("com.android.application") {
@@ -79,8 +85,8 @@ class FlankGradlePlugin : Plugin<Project> {
       classpath = project.fladleConfig
       main = "ftl.Main"
       args = listOf("firebase", "test", "android", "run")
-      if (config.serviceAccountCredentials != null) {
-        environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to "${config.serviceAccountCredentials}"))
+      if (config.serviceAccountCredentials.isPresent) {
+        environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to config.serviceAccountCredentials.get()))
       }
       dependsOn(named("writeConfigProps$name"))
       doFirst {
@@ -94,8 +100,8 @@ class FlankGradlePlugin : Plugin<Project> {
   }
 
   private fun checkFilesExist(base: FlankGradleExtension, project: Project) {
-    if (base.serviceAccountCredentials != null) {
-      check(project.file(base.serviceAccountCredentials!!).exists()) { "serviceAccountCredential file doesn't exist ${base.serviceAccountCredentials}" }
+    if (base.serviceAccountCredentials.isPresent) {
+      check(project.file(base.serviceAccountCredentials.get()).exists()) { "serviceAccountCredential file doesn't exist ${base.serviceAccountCredentials.get()}" }
     }
     checkNotNull(base.debugApk!!) { "debugApk file cannot be null ${base.debugApk}" }
     checkNotNull(base.instrumentationApk!!) { "instrumentationApk file cannot be null ${base.instrumentationApk}" }
@@ -137,7 +143,7 @@ class FlankGradlePlugin : Plugin<Project> {
     get() = configurations.getByName(FLADLE_CONFIG)
 
   companion object {
-    val GRADLE_MIN_VERSION = GradleVersion.version("4.9")
+    val GRADLE_MIN_VERSION = GradleVersion.version("5.1")
     const val TASK_GROUP = "fladle"
     const val FLADLE_CONFIG = "fladle"
     fun Project.log(message: String) {

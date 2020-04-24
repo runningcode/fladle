@@ -3,13 +3,16 @@ package com.osacky.flank.gradle
 import groovy.lang.Closure
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
+import org.gradle.kotlin.dsl.property
 
 open class FlankGradleExtension(project: Project) : FladleConfig {
-  override var flankCoordinates: String = "flank:flank"
-  override var flankVersion: String = "8.1.0"
+  val flankCoordinates: Property<String> = project.objects.property(String::class.java).convention("flank:flank")
+  val flankVersion: Property<String> = project.objects.property(String::class.java).convention("8.1.0")
   // Project id is automatically discovered by default. Use this to override the project id.
   override var projectId: String? = null
-  override var serviceAccountCredentials: String? = null
+  override val serviceAccountCredentials: RegularFileProperty = project.objects.fileProperty()
   override var useOrchestrator: Boolean = false
   override var autoGoogleLogin: Boolean = false
   override var devices: List<Map<String, String>> = listOf(mapOf("model" to "NexusLowRes", "version" to "28"))
@@ -57,8 +60,6 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
     FladleConfigImpl(
       name = it,
-      flankCoordinates = flankCoordinates,
-      flankVersion = flankVersion,
       projectId = projectId,
       serviceAccountCredentials = serviceAccountCredentials,
       useOrchestrator = useOrchestrator,

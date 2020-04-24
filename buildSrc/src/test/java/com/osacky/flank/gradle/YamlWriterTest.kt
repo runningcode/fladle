@@ -162,7 +162,7 @@ class YamlWriterTest {
   @Test
   fun verifyDebugApkThrowsError() {
     val extension = FlankGradleExtension(project).apply {
-      serviceAccountCredentials = "fake.json"
+      serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
     }
     try {
       yamlWriter.createConfigProps(extension, extension)
@@ -175,7 +175,7 @@ class YamlWriterTest {
   @Test
   fun verifyInstrumentationApkThrowsError() {
     val extension = FlankGradleExtension(project).apply {
-      serviceAccountCredentials = "fake.json"
+      serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
       debugApk = "path"
     }
     try {
@@ -250,18 +250,6 @@ class YamlWriterTest {
 
     assertEquals("flank:\n" +
         "  num-test-runs: 5\n" +
-        "  keep-file-path: false\n", yamlWriter.writeFlankProperties(extension))
-  }
-
-  @Test
-  fun writeTestRepeatsForOlderFlankVersions() {
-    val extension = FlankGradleExtension(project).apply {
-      flankVersion = "7.0.2"
-      repeatTests = 5
-    }
-
-    assertEquals("flank:\n" +
-        "  repeat-tests: 5\n" +
         "  keep-file-path: false\n", yamlWriter.writeFlankProperties(extension))
   }
 
@@ -549,21 +537,6 @@ class YamlWriterTest {
         "  performance-metrics: false\n" +
         "  timeout: 45m\n" +
         "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension))
-  }
-
-  @Test
-  fun writeFlakyTestAttemptsForOldFlankVersion() {
-    val extension = FlankGradleExtension(project).apply {
-      flankVersion = "7.0.2"
-      flakyTestAttempts = 3
-    }
-    assertEquals("  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  flaky-test-attempts: 3\n",
       yamlWriter.writeAdditionalProperties(extension))
   }
 

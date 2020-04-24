@@ -34,7 +34,7 @@ apply plugin: "com.osacky.fladle"
 2. Configure the Fladle extension.
 ``` groovy
 fladle {
-    serviceAccountCredentials("${project.file("flank-gradle-service-account.json")}")
+    serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service-account.json")
 }
 ```
 3. Run the flank gradle task.
@@ -56,7 +56,7 @@ Instructions on how to create this account can be found [here](https://firebase.
 ``` groovy
 fladle {
     // Required parameters
-    serviceAccountCredentials("${project.file("flank-gradle-5cf02dc90531.json")}")
+    serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json")
 
     // Optional parameters
     useOrchestrator = false
@@ -118,12 +118,12 @@ The projectId is a unique identifier which can be found in the project's URL: `h
 This is automatically discovered based on the service credential by default.
 
 ### flankVersion
-`flankVersion("flank_snapshot")` to specify a Flank snapshot.
+`flankVersion = "flank_snapshot"` to specify a Flank snapshot.
 
-`flankVersion("8.1.0")` to specify a specific Flank version.
+`flankVersion = "8.1.0"` to specify a specific Flank version.
 
 ### flankCoordinates
-`flankCoordinates("com.github.flank:flank")` to specify custom flank coordinates.
+`flankCoordinates = "com.github.flank:flank"` to specify custom flank coordinates.
 
 ### debugApk
 This is the path to the app's debug apk.
