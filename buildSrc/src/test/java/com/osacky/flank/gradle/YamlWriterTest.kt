@@ -136,8 +136,8 @@ class YamlWriterTest {
   fun verifyMissingServiceDoesntThrowErrorIfProjectIdSet() {
     val extension = FlankGradleExtension(project).apply {
       projectId = "set"
-      debugApk = "path"
-      instrumentationApk = "instrument"
+      debugApk.set("path")
+      instrumentationApk.set("instrument")
     }
     val yaml = yamlWriter.createConfigProps(extension, extension)
     assertEquals("gcloud:\n" +
@@ -168,7 +168,7 @@ class YamlWriterTest {
       yamlWriter.createConfigProps(extension, extension)
       fail()
     } catch (expected: IllegalStateException) {
-      assertEquals("debugApk cannot be null", expected.message)
+      assertEquals("debugApk must be specified", expected.message)
     }
   }
 
@@ -176,13 +176,13 @@ class YamlWriterTest {
   fun verifyInstrumentationApkThrowsError() {
     val extension = FlankGradleExtension(project).apply {
       serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
-      debugApk = "path"
+      debugApk.set("path")
     }
     try {
       yamlWriter.createConfigProps(extension, extension)
       fail()
     } catch (expected: IllegalStateException) {
-      assertEquals("instrumentationApk cannot be null", expected.message)
+      assertEquals("instrumentationApk must be specified", expected.message)
     }
   }
 
@@ -563,8 +563,8 @@ class YamlWriterTest {
   @Test
   fun writeAdditionalTestApks() {
     val extension = FlankGradleExtension(project).apply {
-      debugApk = "../orange/build/output/app.apk"
-      instrumentationApk = "../orange/build/output/app-test.apk"
+      debugApk.set("../orange/build/output/app.apk")
+      instrumentationApk.set("../orange/build/output/app-test.apk")
       additionalTestApks = mapOf(
         "../orange/build/output/app.apk" to listOf("../orange/build/output/app-test2.apk"),
         "../bob/build/output/app.apk" to listOf("../bob/build/output/app-test.apk")

@@ -8,15 +8,15 @@ internal class YamlWriter {
     if (base.projectId == null) {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
-    checkNotNull(base.debugApk) { "debugApk cannot be null" }
-    checkNotNull(base.instrumentationApk) { "instrumentationApk cannot be null" }
+    check(base.debugApk.isPresent) { "debugApk must be specified" }
+    check(base.instrumentationApk.isPresent) { "instrumentationApk must be specified" }
 
     val deviceString = createDeviceString(config.devices)
     val additionalProperties = writeAdditionalProperties(config)
     val flankProperties = writeFlankProperties(config)
     return """gcloud:
-      |  app: ${base.debugApk}
-      |  test: ${base.instrumentationApk}
+      |  app: ${base.debugApk.get()}
+      |  test: ${base.instrumentationApk.get()}
       |$deviceString
       |$additionalProperties
       |$flankProperties

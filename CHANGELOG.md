@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.2
+* Breaking API change: debugApk and instrumentationApk now use Lazy Property API to avoid resolving at configuration time.
+
 ## 0.9.1
 * Bugfix: ability to set flank version. [PR](https://github.com/runningcode/fladle/pull/97)
 * Breaking API change: serviceAccountCredentials now uses [Lazy  Property API](https://docs.gradle.org/current/userguide/lazy_configuration.html#working_with_files_in_lazy_properties). See README for details on how to set it. [PR](https://github.com/runningcode/fladle/pull/97)

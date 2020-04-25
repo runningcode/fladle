@@ -130,7 +130,7 @@ class FlankGradlePluginIntegrationTest {
                 .withArguments("printYml")
                 .build()
         } catch (expected: UnexpectedBuildFailure) {
-            assertThat(expected).hasMessageThat().contains("debugApk cannot be null")
+            assertThat(expected).hasMessageThat().contains("debugApk must be specified")
         }
     }
 }
