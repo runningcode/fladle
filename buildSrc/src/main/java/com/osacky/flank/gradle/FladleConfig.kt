@@ -139,6 +139,12 @@ interface FladleConfig {
    */
   var roboScript: String?
 
-//  var roboDirectives: List<Map<String,String>>
+  /**
+   * List of robo_directives that you can use to customize the behavior of Robo test.
+   * The type specifies the action type of the directive, which may take on values click, text or ignore.
+   * Each directive is list of String = [type, key, value]
+   * Each key should be the Android resource name of a target UI element and each value should be the text input for that element.
+   * Values are only permitted for text type elements, so no value should be specified for click and ignore type elements.
+   */
   var roboDirectives: List<List<String>>
 }

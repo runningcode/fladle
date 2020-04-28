@@ -117,6 +117,11 @@ fladle {
       "/sdcard/dir2/file2.txt": "/my/example/path/file2.txt"
     ]
     networkProfile = "LTE"
+    roboDirectives = [
+      ["click", "button1", ""],
+      ["ignore", "button2"],
+      ["text", "field1", "my text"],
+    ]
 }
 ```
 
@@ -251,6 +256,12 @@ A list of device-path: file-path pairs that indicate the device paths to push fi
 
 ### networkProfile
 The name of the network traffic profile, for example LTE, HSPA, etc, which consists of a set of parameters to emulate network conditions when running the test (default: no network shaping; see available profiles listed by the `flank test network-profiles list` command). This feature only works on physical devices.
+
+### roboScript
+The path to a Robo Script JSON file. The path may be in the local filesystem or in Google Cloud Storage using gs:// notation. You can guide the Robo test to perform specific actions by recording a Robo Script in Android Studio and then specifying this argument. Learn more at [DOCS](https://firebase.google.com/docs/test-lab/robo-ux-test#scripting).
+
+### roboDirectives
+List of robo_directives that you can use to customize the behavior of Robo test. The type specifies the action type of the directive, which may take on values click, text or ignore. Each directive is list of String = [type, key, value]. Each key should be the Android resource name of a target UI element and each value should be the text input for that element. Values are only permitted for text type elements, so no value should be specified for click and ignore type elements.
 
 ---
 ## Results
