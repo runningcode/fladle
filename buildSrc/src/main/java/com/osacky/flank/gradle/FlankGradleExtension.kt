@@ -5,6 +5,7 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
+import org.gradle.kotlin.dsl.property
 
 open class FlankGradleExtension(project: Project) : FladleConfig {
   val flankCoordinates: Property<String> = project.objects.property(String::class.java).convention("flank:flank")
