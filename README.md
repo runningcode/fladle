@@ -224,5 +224,5 @@ You can point Fladle to whatever version of Flank you like using the [flankVersi
 ```
 ## Maven Central
 ``` bash
-./gradlew -b buildSrc/build.gradle.kts publishMavenJavaPublicationToMavenRepository  -Dorg.gradle.internal.publish.checksums.insecure=true
+./gradlew -b buildSrc/build.gradle.kts publishMavenJavaPublicationToMavenRepository
 ```
