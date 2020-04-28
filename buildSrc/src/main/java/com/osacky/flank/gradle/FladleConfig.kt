@@ -130,4 +130,15 @@ interface FladleConfig {
    * This feature only works on physical devices.
    */
   var networkProfile: String?
+
+  /**
+   * The path to a Robo Script JSON file.
+   * The path may be in the local filesystem or in Google Cloud Storage using gs:// notation.
+   * You can guide the Robo test to perform specific actions by recording a Robo Script in Android Studio and then specifying this argument.
+   * Learn more at [https://firebase.google.com/docs/test-lab/robo-ux-test#scripting].
+   */
+  var roboScript: String?
+
+//  var roboDirectives: List<Map<String,String>>
+  var roboDirectives: List<List<String>>
 }

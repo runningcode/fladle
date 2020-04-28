@@ -784,6 +784,33 @@ class YamlWriterTest {
     assertTrue(properties.contains("  network-profile: LTE"))
   }
 
+  @Test
+  fun writeRoboScript() {
+    val properties = emptyExtension {
+      roboScript = "~/my/dir/with/script.json"
+    }.toAdditionalProperties()
+
+    assertTrue(properties.contains("  robo-script: ~/my/dir/with/script.json"))
+  }
+
+  @Test
+  fun writeRoboDirectives() {
+    val properties = emptyExtension {
+      roboDirectives = listOf(
+              listOf("click", "button3"),
+              listOf("ignore", "button1", ""),
+              listOf("text", "field1", "my common text")
+      )
+    }.toAdditionalProperties()
+
+    assertTrue(properties.contains("""
+        |  robo-directives:
+        |    click:button3: ""
+        |    ignore:button1: ""
+        |    text:field1: my common text
+    """.trimMargin()))
+  }
+
   private fun emptyExtension(block: FlankGradleExtension.() -> Unit) = FlankGradleExtension(project).apply(block)
   private fun FlankGradleExtension.toFlankProperties() = yamlWriter.writeFlankProperties(this).trimIndent()
   private fun FlankGradleExtension.toAdditionalProperties() = yamlWriter.writeAdditionalProperties(this)

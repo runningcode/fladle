@@ -5,7 +5,6 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
-import org.gradle.kotlin.dsl.property
 
 open class FlankGradleExtension(project: Project) : FladleConfig {
   val flankCoordinates: Property<String> = project.objects.property(String::class.java).convention("flank:flank")
@@ -82,6 +81,10 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
 
   override var networkProfile: String? = null
 
+  override var roboScript: String? = null
+
+  override var roboDirectives: List<List<String>> = emptyList()
+
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
     FladleConfigImpl(
       name = it,
@@ -117,7 +120,9 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
       clientDetails = clientDetails,
       testTargetsAlwaysRun = testTargetsAlwaysRun,
       otherFiles = otherFiles,
-      networkProfile = networkProfile
+      networkProfile = networkProfile,
+      roboScript = roboScript,
+      roboDirectives = roboDirectives
     )
   }
 

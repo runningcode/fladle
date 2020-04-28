@@ -154,6 +154,18 @@ internal class YamlWriter {
     config.networkProfile?.let {
       appendln("  network-profile: $it")
     }
+
+    config.roboScript?.let {
+      appendln("  robo-script: $it")
+    }
+
+    if (config.roboDirectives.isNotEmpty()) {
+      appendln("  robo-directives:")
+      config.roboDirectives.forEach {
+        val value = it.getOrNull(2).let { stringValue -> if (stringValue.isNullOrBlank()) "\"\"" else stringValue }
+        appendln("    ${it[0]}:${it[1]}: $value")
+      }
+    }
   }
 
   private fun flakyTestAttemptsLine(flakyTestAttempts: Int): String {
