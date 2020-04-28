@@ -43,7 +43,7 @@ class FlankGradlePlugin : Plugin<Project> {
 
       // Only use automatic apk path detection for 'com.android.application' projects.
       project.pluginManager.withPlugin("com.android.application") {
-        if (base.debugApk == null || base.instrumentationApk == null) {
+        if (!base.debugApk.isPresent || !base.instrumentationApk.isPresent) {
           findDebugAndInstrumentationApk(project, base)
         }
       }
@@ -103,8 +103,8 @@ class FlankGradlePlugin : Plugin<Project> {
     if (base.serviceAccountCredentials.isPresent) {
       check(project.file(base.serviceAccountCredentials.get()).exists()) { "serviceAccountCredential file doesn't exist ${base.serviceAccountCredentials.get()}" }
     }
-    checkNotNull(base.debugApk!!) { "debugApk file cannot be null ${base.debugApk}" }
-    checkNotNull(base.instrumentationApk!!) { "instrumentationApk file cannot be null ${base.instrumentationApk}" }
+    check(base.debugApk.isPresent) { "debugApk file must be specified ${base.debugApk.orNull}" }
+    check(base.instrumentationApk.isPresent) { "instrumentationApk file must be specified ${base.instrumentationApk.orNull}" }
     base.additionalTestApks.forEach {
       check(it.value.isNotEmpty()) { "must provide at least one instrumentation apk for ${it.key}" }
     }
@@ -130,8 +130,8 @@ class FlankGradlePlugin : Plugin<Project> {
             testVariant.outputs.all test@{
               project.log("Configuring fladle.debugApk from variant ${this@debug.name}")
               project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
-              extension.debugApk = this@debug.outputFile.absolutePath
-              extension.instrumentationApk = this@test.outputFile.absolutePath
+              extension.debugApk.set(this@debug.outputFile.absolutePath)
+              extension.instrumentationApk.set(this@test.outputFile.absolutePath)
             }
           }
         }

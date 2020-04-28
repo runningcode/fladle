@@ -81,8 +81,8 @@ fladle {
     ]
     projectId("flank-gradle")
     flankVersion("8.1.0")
-    debugApk("$buildDir/outputs/apk/debug/sample-debug.apk")
-    instrumentationApk("$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk")
+    debugApk = "$buildDir/outputs/apk/debug/sample-debug.apk"
+    instrumentationApk = "$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     additionalTestApks = ["$buildDir/outputs/apk/debug/sample-debug.apk": ["$buildDir/outputs/apk/androidTest/debug/sample2-debug-androidTest.apk"]]
     autoGoogleLogin = true
     testShards = 5
@@ -126,10 +126,10 @@ This is automatically discovered based on the service credential by default.
 `flankCoordinates = "com.github.flank:flank"` to specify custom flank coordinates.
 
 ### debugApk
-This is the path to the app's debug apk.
+This is the path to the app's debug apk. Supports wildcard characters. Example `build/outputs/apk/debug/*.apk`.
 
 ### instrumentationApk
-This is the path to the app's instrumentation apk.
+This is the path to the app's instrumentation apk. Supports wildcard characters. Example `build/outputs/apk/androidTest/debug/*.apk`.
 
 ### additionalTestApks
 Paths to additional test configurations.

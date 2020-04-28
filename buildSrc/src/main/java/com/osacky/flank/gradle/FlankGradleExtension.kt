@@ -34,8 +34,11 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   // Variant to use for configuring output APK.
   var variant: String? = null
 
-  var debugApk: String? = null
-  var instrumentationApk: String? = null
+  /**
+   * debugApk and instrmentationApk are [Property<String>] and not [RegularFileProperty] because we support wildcard characters.
+   */
+  val debugApk: Property<String> = project.objects.property()
+  val instrumentationApk: Property<String> = project.objects.property()
 
   override var directoriesToPull: List<String> = emptyList()
 
