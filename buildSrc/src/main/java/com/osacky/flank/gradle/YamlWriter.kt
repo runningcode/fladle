@@ -162,7 +162,7 @@ internal class YamlWriter {
     if (config.roboDirectives.isNotEmpty()) {
       appendln("  robo-directives:")
       config.roboDirectives.forEach {
-        val value = it.getOrNull(2).let { stringValue -> if (stringValue.isNullOrBlank()) "\"\"" else stringValue }
+        val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
         appendln("    ${it[0]}:${it[1]}: $value")
       }
     }
