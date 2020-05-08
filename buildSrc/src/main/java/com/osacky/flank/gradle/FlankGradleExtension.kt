@@ -8,8 +8,8 @@ import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.property
 
 open class FlankGradleExtension(project: Project) : FladleConfig {
-  val flankCoordinates: Property<String> = project.objects.property(String::class.java).convention("flank:flank")
-  val flankVersion: Property<String> = project.objects.property(String::class.java).convention("8.1.0")
+  val flankCoordinates: Property<String> = project.objects.property(String::class.java).convention("com.github.flank:flank")
+  val flankVersion: Property<String> = project.objects.property(String::class.java).convention("20.05.0")
   // Project id is automatically discovered by default. Use this to override the project id.
   override var projectId: String? = null
   override val serviceAccountCredentials: RegularFileProperty = project.objects.fileProperty()

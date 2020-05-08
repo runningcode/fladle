@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 0.9.3
+* Update [Flank to 20.05.00](https://github.com/Flank/flank/releases/tag/v20.05.0). Huge new release!
+
 ## 0.9.2
 * Breaking API change: debugApk and instrumentationApk now use Lazy Property API to avoid resolving at configuration time.
 
