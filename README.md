@@ -85,7 +85,7 @@ fladle {
     instrumentationApk = "$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     additionalTestApks = ["$buildDir/outputs/apk/debug/sample-debug.apk": ["$buildDir/outputs/apk/androidTest/debug/sample2-debug-androidTest.apk"]]
     autoGoogleLogin = true
-    testShards = 5
+    testShards = 5 //or numUniformShards=5 cannot use both
     shardTime = 120
     smartFlankGcsPath = "gs://tmp_flank/flank/test_app_android.xml"
     configs {
@@ -98,6 +98,30 @@ fladle {
     }
     resultsBucket("my-results-bucket-name")
     keepFilePath = true
+    runTimout = 45m
+    ignoreFailedTests = false
+    disableSharding = false
+    smartFlankDisableUpload = false
+    testRunnerClass = "com.foo.TestRunner"
+    localResultsDir = "flank"
+    clientDetails = [
+      "key1": "value1",
+      "key2": "value2"
+    ]
+    testTargetsAlwaysRun = [
+      "com.example.TestSuite#test1",
+      "com.example.TestSuite#test2"
+    ]
+    otherFiles = [
+      "/sdcard/dir1/file1.txt": "/my/example/path/file1.txt",
+      "/sdcard/dir2/file2.txt": "/my/example/path/file2.txt"
+    ]
+    networkProfile = "LTE"
+    roboDirectives = [
+      ["click", "button1", ""],
+      ["ignore", "button2"],
+      ["text", "field1", "my text"],
+    ]
 }
 ```
 
@@ -176,7 +200,7 @@ A list of paths that will be copied from the device's storage to the designated 
 List of regex that is matched against bucket paths (for example: `2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt`) for files to be downloaded after a flank run.
 
 ### timeoutMin
-The max time in minutes this test execution can run before it is cancelled (default: 15 min). It does not include any time necessary to prepare and clean up the target device. The maximum possible testing time is 30m on physical devices and 60m on virtual devices. 
+The max time in minutes this test execution can run before it is cancelled (default: 15 min). It does not include any time necessary to prepare and clean up the target device. The maximum possible testing time is 30m on physical devices and 60m on virtual devices.
 
 ### recordVideo
 Enable video recording during the test. Enabled by default.
@@ -192,6 +216,52 @@ Keeps the full path of downloaded files from a Google Cloud Storage bucket. Requ
 
 ### resultsDir
 The name of a unique Google Cloud Storage object within the results bucket where raw test results will be stored. The default is a timestamp with a random suffix.
+
+### disableSharding
+Disables sharding. All tests will run on the same device. Useful for parameterized tests which do not support sharding. (default: false)
+
+### smartFlankDisableUpload
+Disables smart flank JUnit XML uploading. Useful for preventing timing data from being updated. (default: false)
+[What is Smart Flank?](https://github.com/Flank/flank/blob/master/docs/smart_flank.md)
+
+### testRunnerClass
+The fully-qualified Java class name of the instrumentation test runner (default: the test manifest is parsed to determine the class name).
+
+### localResultsDir
+The local directory to store the test results. Folder is DELETED before each run to ensure only artifacts from the new run are saved.
+
+### testTargetsAlwaysRun
+Always run - these tests are inserted at the beginning of every shard. Useful if you need to grant permissions or login before other tests run
+
+####  *** Available for flank version higher than 8.1.0 ***
+
+### runTimeout
+The max time this test run can execute before it is cancelled. s (seconds), m (minutes), h (hours) suffixes are acceptable, mixes like 1h45m are currently not supported (default: unlimited).
+Examples:
+* 20, 20s -> 20 seconds
+* 30m -> 30 minutes
+* 2h -> 2 hours
+
+### ignoreFailedTests
+Always return successful task completion even when there are failed tests. Useful when parsing JUnit XML to determine failure. (default: false)
+
+### numUniformShards
+Specifies the number of shards into which you want to evenly distribute test cases. The shards are run in parallel on separate devices. For example, if your test execution contains 20 test cases and you specify four shards, each shard executes five test cases. The number of shards should be less than the total number of test cases. The number of shards specified must be >= 1 and <= 50. This option cannot be used along max-test-shards and is not compatible with smart sharding ([Smart Flank](https://github.com/Flank/flank/blob/master/docs/smart_flank.md)). If you want to take benefits of smart sharding use max-test-shards instead. (default: null)
+
+### clientDetails
+A key-value map of additional details to attach to the test matrix.([clientDetails in Google Cloud Docs](https://cloud.google.com/sdk/gcloud/reference/beta/firebase/test/android/run#--client-details)) Arbitrary key-value pairs may be attached to a test matrix to provide additional context about the tests being run. When consuming the test results, such as in Cloud Functions or a CI system, these details can add additional context such as a link to the corresponding pull request. ([Access Client Details](https://firebase.google.com/docs/test-lab/extend-with-functions#access_client_details))
+
+### otherFiles
+A list of device-path: file-path pairs that indicate the device paths to push files to the device before starting tests, and the paths of files to push. Device paths must be under absolute, whitelisted paths (${EXTERNAL_STORAGE}, or ${ANDROID_DATA}/local/tmp). Source file paths may be in the local filesystem or in Google Cloud Storage (gs://…).
+
+### networkProfile
+The name of the network traffic profile, for example LTE, HSPA, etc, which consists of a set of parameters to emulate network conditions when running the test (default: no network shaping; see available profiles listed by the `flank test network-profiles list` command). This feature only works on physical devices.
+
+### roboScript
+The path to a Robo Script JSON file. The path may be in the local filesystem or in Google Cloud Storage using gs:// notation. You can guide the Robo test to perform specific actions by recording a Robo Script in Android Studio and then specifying this argument. Learn more at [DOCS](https://firebase.google.com/docs/test-lab/robo-ux-test#scripting).
+
+### roboDirectives
+List of robo_directives that you can use to customize the behavior of Robo test. The type specifies the action type of the directive, which may take on values click, text or ignore. Each directive is list of String = [type, key, value]. Each key should be the Android resource name of a target UI element and each value should be the text input for that element. Values are only permitted for text type elements, so no value should be specified for click and ignore type elements.
 
 ---
 ## Results

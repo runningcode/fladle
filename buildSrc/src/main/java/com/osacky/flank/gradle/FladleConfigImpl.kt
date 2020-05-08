@@ -25,5 +25,18 @@ data class FladleConfigImpl(
   override var resultsBucket: String?,
   override var keepFilePath: Boolean,
   override var resultsDir: String?,
-  override var additionalTestApks: Map<String, List<String>>
+  override var additionalTestApks: Map<String, List<String>>,
+  override var runTimeout: String?,
+  override var ignoreFailedTests: Boolean,
+  override var disableSharding: Boolean,
+  override var smartFlankDisableUpload: Boolean,
+  override var testRunnerClass: String?,
+  override var localResultsDir: String?,
+  override var numUniformShards: Int?,
+  override var clientDetails: Map<String, String>,
+  override var testTargetsAlwaysRun: List<String>,
+  override var otherFiles: Map<String, String>,
+  override var networkProfile: String?,
+  override var roboScript: String?,
+  override var roboDirectives: List<List<String>>
 ) : FladleConfig

@@ -5,13 +5,14 @@ import org.gradle.testfixtures.ProjectBuilder
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 
 class YamlWriterTest {
 
-  internal val yamlWriter = YamlWriter()
+  private val yamlWriter = YamlWriter()
 
   private lateinit var project: Project
 
@@ -134,34 +135,38 @@ class YamlWriterTest {
 
   @Test
   fun verifyMissingServiceDoesntThrowErrorIfProjectIdSet() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       projectId = "set"
       debugApk.set("path")
       instrumentationApk.set("instrument")
     }
     val yaml = yamlWriter.createConfigProps(extension, extension)
     assertEquals("gcloud:\n" +
-        "  app: path\n" +
-        "  test: instrument\n" +
-        "  device:\n" +
-        "  - model: NexusLowRes\n" +
-        "    version: 28\n" +
-        "\n" +
-        "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  num-flaky-test-attempts: 0\n" +
-        "\n" +
-        "flank:\n" +
-        "  project: set\n" +
-        "  keep-file-path: false\n", yaml)
+            "  app: path\n" +
+            "  test: instrument\n" +
+            "  device:\n" +
+            "  - model: NexusLowRes\n" +
+            "    version: 28\n" +
+            "\n" +
+            "  use-orchestrator: false\n" +
+            "  auto-google-login: false\n" +
+            "  record-video: true\n" +
+            "  performance-metrics: true\n" +
+            "  timeout: 15m\n" +
+            "  num-flaky-test-attempts: 0\n" +
+            "\n" +
+            "flank:\n" +
+            "  project: set\n" +
+            "  keep-file-path: false\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n", yaml
+    )
   }
 
   @Test
   fun verifyDebugApkThrowsError() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
     }
     try {
@@ -174,7 +179,7 @@ class YamlWriterTest {
 
   @Test
   fun verifyInstrumentationApkThrowsError() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
       debugApk.set("path")
     }
@@ -188,87 +193,112 @@ class YamlWriterTest {
 
   @Test
   fun writeNoTestShards() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
     }
 
     assertEquals("flank:\n" +
-        "  keep-file-path: false\n",
+            "  keep-file-path: false\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeProjectIdOption() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       projectId = "foo"
     }
 
     assertEquals("flank:\n" +
-        "  project: foo\n" +
-        "  keep-file-path: false\n",
+            "  project: foo\n" +
+            "  keep-file-path: false\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeTestShardOption() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       testShards = 5
     }
 
     assertEquals("flank:\n" +
-        "  max-test-shards: 5\n" +
-        "  keep-file-path: false\n", yamlWriter.writeFlankProperties(extension))
+            "  max-test-shards: 5\n" +
+            "  keep-file-path: false\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n",
+            yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeShardTimeOption() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       shardTime = 120
     }
 
     assertEquals("flank:\n" +
-        "  shard-time: 120\n" +
-        "  keep-file-path: false\n",
+            "  shard-time: 120\n" +
+            "  keep-file-path: false\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeNoTestRepeats() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       repeatTests = null
     }
 
     assertEquals("flank:\n" +
-        "  keep-file-path: false\n",
+            "  keep-file-path: false\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeTestRepeats() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       repeatTests = 5
     }
 
     assertEquals("flank:\n" +
-        "  num-test-runs: 5\n" +
-        "  keep-file-path: false\n", yamlWriter.writeFlankProperties(extension))
+            "  num-test-runs: 5\n" +
+            "  keep-file-path: false\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n",
+            yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeTestShardAndRepeatOption() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       testShards = 5
       repeatTests = 2
     }
 
-    assertEquals("flank:\n" +
-        "  max-test-shards: 5\n" +
-        "  num-test-runs: 2\n" +
-        "  keep-file-path: false\n", yamlWriter.writeFlankProperties(extension))
+    assertEquals(
+            "flank:\n" +
+                    "  max-test-shards: 5\n" +
+                    "  num-test-runs: 2\n" +
+                    "  keep-file-path: false\n" +
+                    "  ignore-failed-tests: false\n" +
+                    "  disable-sharding: false\n" +
+                    "  smart-flank-disable-upload: false\n",
+            yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeResultsHistoryName() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       resultsHistoryName = "androidtest"
     }
 
@@ -284,7 +314,7 @@ class YamlWriterTest {
 
   @Test
   fun writeResultsBucket() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       resultsBucket = "fake-project.appspot.com"
     }
 
@@ -300,7 +330,7 @@ class YamlWriterTest {
 
   @Test
   fun writeResultsDir() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       resultsDir = "resultsGoHere"
     }
 
@@ -316,7 +346,7 @@ class YamlWriterTest {
 
   @Test
   fun writeTestTargetsAndResultsHistoryName() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       resultsHistoryName = "androidtest"
       testTargets = listOf("class com.example.Foo")
     }
@@ -335,7 +365,7 @@ class YamlWriterTest {
 
   @Test
   fun writeNoTestTargets() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       testTargets = listOf()
     }
 
@@ -349,7 +379,7 @@ class YamlWriterTest {
 
   @Test
   fun writeSingleTestTargets() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       testTargets = listOf("class com.example.Foo#testThing")
     }
 
@@ -366,7 +396,7 @@ class YamlWriterTest {
 
   @Test
   fun writeMultipleTestTargets() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       testTargets = listOf("class com.example.Foo#testThing", "class com.example.Foo#testThing2")
     }
 
@@ -384,19 +414,22 @@ class YamlWriterTest {
 
   @Test
   fun writeSmartFlankGcsPath() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       smartFlankGcsPath = "gs://test/fakepath.xml"
     }
 
     assertEquals("flank:\n" +
-        "  smart-flank-gcs-path: gs://test/fakepath.xml\n" +
-        "  keep-file-path: false\n",
+            "  smart-flank-gcs-path: gs://test/fakepath.xml\n" +
+            "  keep-file-path: false\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n",
         yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeNoDirectoriesToPull() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       directoriesToPull = listOf()
     }
 
@@ -410,7 +443,7 @@ class YamlWriterTest {
 
   @Test
   fun writeSingleDirectoriesToPull() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       directoriesToPull = listOf("/sdcard/screenshots")
     }
 
@@ -427,7 +460,7 @@ class YamlWriterTest {
 
   @Test
   fun writeMultipleDirectoriesToPull() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       directoriesToPull = listOf("/sdcard/screenshots", "/sdcard/reports")
     }
 
@@ -445,31 +478,37 @@ class YamlWriterTest {
 
   @Test
   fun writeNoFilesToDownload() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       filesToDownload = listOf()
     }
 
     assertEquals("flank:\n" +
-        "  keep-file-path: false\n",
+            "  keep-file-path: false\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeSingleFilesToDownload() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       filesToDownload = listOf(".*/screenshots/.*")
     }
 
     assertEquals("flank:\n" +
-        "  keep-file-path: false\n" +
-        "  files-to-download:\n" +
-        "  - .*/screenshots/.*\n",
+            "  keep-file-path: false\n" +
+            "  files-to-download:\n" +
+            "  - .*/screenshots/.*\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeMultipleFilesToDownload() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       filesToDownload = listOf(".*/screenshots/.*", ".*/reports/.*")
     }
 
@@ -477,13 +516,16 @@ class YamlWriterTest {
         "  keep-file-path: false\n" +
         "  files-to-download:\n" +
         "  - .*/screenshots/.*\n" +
-        "  - .*/reports/.*\n",
+        "  - .*/reports/.*\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeSingleEnvironmentVariables() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       environmentVariables = mapOf(
         "listener" to "com.osacky.flank.sample.Listener"
       )
@@ -502,7 +544,7 @@ class YamlWriterTest {
 
   @Test
   fun writeMultipleEnvironmentVariables() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       environmentVariables = mapOf(
         "clearPackageData" to "true",
         "listener" to "com.osacky.flank.sample.Listener"
@@ -523,7 +565,7 @@ class YamlWriterTest {
 
   @Test
   fun writeDefaultProperties() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       useOrchestrator = true
       autoGoogleLogin = true
       recordVideo = false
@@ -545,24 +587,30 @@ class YamlWriterTest {
     val extension = FlankGradleExtension(project)
 
     assertEquals("flank:\n" +
-        "  keep-file-path: false\n",
+            "  keep-file-path: false\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeKeepFilePath() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       keepFilePath = true
     }
 
     assertEquals("flank:\n" +
-        "  keep-file-path: true\n",
+            "  keep-file-path: true\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeAdditionalTestApks() {
-    val extension = FlankGradleExtension(project).apply {
+    val extension = emptyExtension {
       debugApk.set("../orange/build/output/app.apk")
       instrumentationApk.set("../orange/build/output/app-test.apk")
       additionalTestApks = mapOf(
@@ -580,8 +628,190 @@ class YamlWriterTest {
         "    - app: ../orange/build/output/app.apk\n" +
         "      test: ../orange/build/output/app-test2.apk\n" +
         "    - app: ../bob/build/output/app.apk\n" +
-        "      test: ../bob/build/output/app-test.apk\n"
+        "      test: ../bob/build/output/app-test.apk\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n"
       )
     )
   }
+
+  @Test
+  fun verifyDefaultValues() {
+    val defaultFlankProperties = FlankGradleExtension(project).toFlankProperties()
+    val defaultAdditionalProperties = FlankGradleExtension(project).toAdditionalProperties().trimIndent()
+
+    val expectedFlank = """
+      flank:
+        keep-file-path: false
+        ignore-failed-tests: false
+        disable-sharding: false
+        smart-flank-disable-upload: false
+    """.trimIndent()
+
+    val expectedAdditional = """
+        use-orchestrator: false
+        auto-google-login: false
+        record-video: true
+        performance-metrics: true
+        timeout: 15m
+        num-flaky-test-attempts: 0
+    """.trimIndent()
+
+    assertEquals(expectedFlank, defaultFlankProperties)
+    assertEquals(expectedAdditional, defaultAdditionalProperties)
+  }
+
+  @Test
+  fun writeRunTimeout() {
+    val extension = emptyExtension {
+      runTimeout = "20m"
+    }
+
+    assertTrue(yamlWriter.writeFlankProperties(extension).contains("  run-timeout: 20m"))
+  }
+
+  @Test
+  fun writeIgnoreFailedTests() {
+    val properties = emptyExtension {
+      ignoreFailedTests = true
+    }.toFlankProperties()
+
+    assertTrue(properties.contains("  ignore-failed-tests: true"))
+  }
+
+  @Test
+  fun writeDisableSharding() {
+    val properties = emptyExtension {
+      disableSharding = true
+    }.toFlankProperties()
+
+    assertTrue(properties.contains("  disable-sharding: true"))
+  }
+
+  @Test
+  fun writeSmartFlankDisableUpload() {
+    val properties = emptyExtension {
+      smartFlankDisableUpload = true
+    }.toFlankProperties()
+
+    assertTrue(properties.contains("  smart-flank-disable-upload: true"))
+  }
+
+  @Test
+  fun writeTestRunnerClass() {
+    val properties = emptyExtension {
+      testRunnerClass = "any.class.Runner"
+    }.toAdditionalProperties()
+
+    assertTrue(properties.contains("  test-runner-class: any.class.Runner"))
+  }
+
+  @Test
+  fun writeLocalResultsDir() {
+    val properties = emptyExtension {
+      localResultsDir = "~/my/results/dir"
+    }.toFlankProperties()
+
+    assertTrue(properties.contains("  local-result-dir: ~/my/results/dir"))
+  }
+
+  @Test
+  fun writeNumUniformShards() {
+    val properties = emptyExtension {
+      numUniformShards = 20
+    }.toAdditionalProperties()
+
+    assertTrue(properties.contains("  num-uniform-shards: 20"))
+  }
+
+  @Test
+  fun writeClientDetails() {
+    val properties = emptyExtension {
+      clientDetails = mapOf(
+              "anyDetail1" to "anyValue1",
+              "anyDetail2" to "anyValue2"
+      )
+    }.toAdditionalProperties()
+
+    assertTrue(properties.contains("""
+      |  client-details:
+      |    anyDetail1: anyValue1
+      |    anyDetail2: anyValue2
+    """.trimMargin()))
+  }
+
+  @Test
+  fun writeTestTargetsAlwaysRun() {
+    val properties = emptyExtension {
+      testTargetsAlwaysRun = listOf(
+              "com.example.FirstTests#test1",
+              "com.example.FirstTests#test2",
+              "com.example.FirstTests#test3"
+      )
+    }.toFlankProperties()
+
+    assertTrue(properties.contains("""
+      |  test-targets-always-run:
+      |  - class com.example.FirstTests#test1
+      |  - class com.example.FirstTests#test2
+      |  - class com.example.FirstTests#test3
+    """.trimMargin()))
+  }
+
+  @Test
+  fun writeOtherFiles() {
+    val properties = emptyExtension {
+      otherFiles = mapOf(
+              "/example/path/test1" to "anyfile.txt",
+              "/example/path/test2" to "anyfile2.txt"
+      )
+    }.toAdditionalProperties()
+
+    assertTrue(properties.contains("""
+        |  other-files:
+        |    /example/path/test1: anyfile.txt
+        |    /example/path/test2: anyfile2.txt
+    """.trimMargin()))
+  }
+
+  @Test
+  fun writeNetworkProfile() {
+    val properties = emptyExtension {
+      networkProfile = "LTE"
+    }.toAdditionalProperties()
+
+    assertTrue(properties.contains("  network-profile: LTE"))
+  }
+
+  @Test
+  fun writeRoboScript() {
+    val properties = emptyExtension {
+      roboScript = "~/my/dir/with/script.json"
+    }.toAdditionalProperties()
+
+    assertTrue(properties.contains("  robo-script: ~/my/dir/with/script.json"))
+  }
+
+  @Test
+  fun writeRoboDirectives() {
+    val properties = emptyExtension {
+      roboDirectives = listOf(
+              listOf("click", "button3"),
+              listOf("ignore", "button1", ""),
+              listOf("text", "field1", "my common text")
+      )
+    }.toAdditionalProperties()
+
+    assertTrue(properties.contains("""
+        |  robo-directives:
+        |    click:button3: ""
+        |    ignore:button1: ""
+        |    text:field1: my common text
+    """.trimMargin()))
+  }
+
+  private fun emptyExtension(block: FlankGradleExtension.() -> Unit) = FlankGradleExtension(project).apply(block)
+  private fun FlankGradleExtension.toFlankProperties() = yamlWriter.writeFlankProperties(this).trimIndent()
+  private fun FlankGradleExtension.toAdditionalProperties() = yamlWriter.writeAdditionalProperties(this)
 }
