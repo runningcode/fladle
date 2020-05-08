@@ -80,7 +80,7 @@ fladle {
         [ "model": "Nexus5", "version": "23" ]
     ]
     projectId("flank-gradle")
-    flankVersion("8.1.0")
+    flankVersion = "20.05.0"
     debugApk = "$buildDir/outputs/apk/debug/sample-debug.apk"
     instrumentationApk = "$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     additionalTestApks = ["$buildDir/outputs/apk/debug/sample-debug.apk": ["$buildDir/outputs/apk/androidTest/debug/sample2-debug-androidTest.apk"]]
@@ -144,7 +144,7 @@ This is automatically discovered based on the service credential by default.
 ### flankVersion
 `flankVersion = "flank_snapshot"` to specify a Flank snapshot.
 
-`flankVersion = "8.1.0"` to specify a specific Flank version.
+`flankVersion = "20.05.0"` to specify a specific Flank version.
 
 ### flankCoordinates
 `flankCoordinates = "com.github.flank:flank"` to specify custom flank coordinates.
