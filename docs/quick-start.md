@@ -6,7 +6,7 @@ Using Fladle takes 3 steps:
 ``` groovy
 buildscript {
   dependencies {
-    classpath "com.osacky.flank.gradle:fladle:0.9.1"
+    classpath "com.osacky.flank.gradle:fladle:{{ fladle.current_release }}"
   }
 }
 
@@ -21,4 +21,5 @@ fladle {
 3. Run the Flank Gradle task.
 ``` bash
 ./gradlew runFlank
-`
+```
+

@@ -9,3 +9,6 @@ build/
 
 # Ignore service account credentials.
 flank-gradle-*.json
+
+# Mkdocs generated
+site
