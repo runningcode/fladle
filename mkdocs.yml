@@ -1,3 +1,9 @@
 site_name: Fladle
+site_url: https://runningcode.github.io/fladle/
+repo_name: Fladle
+repo_url: https://github.com/runningcode/fladle/
+site_description: The Gradle Plugin for Firebase Test Lab and Flank
+site_author: Nelson Osacky
 nav:
   - Home: index.md
+  - Changelog: changelog.md
