@@ -6,4 +6,6 @@ site_description: The Gradle Plugin for Firebase Test Lab and Flank
 site_author: Nelson Osacky
 nav:
   - Home: index.md
+  - Quick Start: quick-start.md
   - Changelog: changelog.md
+
