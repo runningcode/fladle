@@ -1,11 +1,35 @@
+# pip install mkdocs mkdocs-material mkdocs-markdownextradata-plugin
+# mkdocs serve
+
+
+extra:
+  fladle:
+    current_release: '0.9.1'
+    next_release: '0.9.2'
+
 site_name: Fladle
 site_url: https://runningcode.github.io/fladle/
 repo_name: Fladle
 repo_url: https://github.com/runningcode/fladle/
 site_description: The Gradle Plugin for Firebase Test Lab and Flank
 site_author: Nelson Osacky
+
 nav:
   - Home: index.md
   - Quick Start: quick-start.md
+  - Configuration: configuration.md
   - Changelog: changelog.md
+  - Results: results.md
+  - FAQ: faq.md
+  - Releasing: releasing.md
 
+theme:
+  name: 'material'
+
+markdown_extensions:
+  - codehilite
+  - admonition
+
+plugins:
+  - search
+  - markdownextradata: {}

@@ -1,17 +1,19 @@
 # Welcome to Fladle
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+[![CircleCI](https://circleci.com/gh/runningcode/fladle.svg?style=svg)](https://circleci.com/gh/runningcode/fladle)
 
-## Commands
+The Gradle Plugin for Firebase Test Lab and [Flank](https://github.com/testArmada/flank).
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+Fladle simplifies the configuration necessary to use Firebase Test Lab and Flank.
 
-## Project layout
+Fladle is mentioned in [Fragmented Podcast #163](https://fragmentedpodcast.com/episodes/163/). Skip to ~29 minutes.
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+
+## New? [_Get Started Here_](quick-start)
+
+### Flank
+[Flank](https://github.com/testArmada/flank) is a parallel test runner for [Firebase Test Lab](https://firebase.google.com/docs/test-lab).
+
+Also read this [medium post](https://medium.com/walmartlabs/flank-smart-test-runner-for-firebase-cf65e1b1eca7).
+
+
