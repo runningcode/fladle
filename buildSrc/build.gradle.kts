@@ -9,7 +9,7 @@ repositories {
 
 plugins {
   `kotlin-dsl`
-  id("java-gradle-plugin")
+  `java-gradle-plugin`
   id("com.gradle.plugin-publish") version "0.11.0"
   id("org.jmailen.kotlinter") version "2.3.2"
   `maven-publish`
@@ -116,6 +116,6 @@ publishing {
 }
 
 signing {
-  setRequired(isReleaseBuild)
+  isRequired = isReleaseBuild
   sign(publishing.publications["mavenJava"])
 }

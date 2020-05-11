@@ -42,7 +42,7 @@ git push origin v{{ fladle.next_release }}
 ```
 * Upload to Maven Central
 ``` bash
-./gradlew -b buildSrc/build.gradle.kts publishMavenJavaPublicationToMavenRepository
+./gradlew -b buildSrc/build.gradle.kts publishMavenJavaPublicationToMavenRepository publishFladlePluginMarkerMavenPublicationToMavenRepository
 ```
 
 * Release to Maven Central
