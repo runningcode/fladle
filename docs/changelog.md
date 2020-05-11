@@ -3,13 +3,20 @@
 ## 0.9.2
 * Update [Flank to 20.05.0](https://github.com/Flank/flank/releases/tag/v20.05.0). Huge new release!
 * Add support for new flank flags. Thanks [pawelpasterz](https://github.com/pawelpasterz) [PR](https://github.com/runningcode/fladle/pull/88)
-* Breaking API change: debugApk and instrumentationApk now use Lazy Property API to avoid resolving at configuration time.
+
+!!! Warning  "Breaking API change"
+    debugApk and instrumentationApk now use Lazy Property API to avoid resolving at configuration time.
 
 ## 0.9.1
+
 * Bugfix: ability to set flank version. [PR](https://github.com/runningcode/fladle/pull/97)
-* Breaking API change: serviceAccountCredentials now uses [Lazy  Property API](https://docs.gradle.org/current/userguide/lazy_configuration.html#working_with_files_in_lazy_properties). See README for details on how to set it. [PR](https://github.com/runningcode/fladle/pull/97)
-* Minimum required Gradle Version is now 5.1.
-* Dropped support for Flank 7.X and lower.
+
+!!! Warning "Breaking API Change"
+    serviceAccountCredentials now uses [Lazy  Property API](https://docs.gradle.org/current/userguide/lazy_configuration.html#working_with_files_in_lazy_properties). See [Configuration](/configuration#serviceAccountCredentials) for details on how to set it. [PR](https://github.com/runningcode/fladle/pull/97)
+!!! Warning
+    Minimum required Gradle Version is now 5.1.
+!!! Warning
+    Dropped support for Flank 7.X and lower.
 
 ## 0.9.0
 * Do not add flank maven repo. [PR](https://github.com/runningcode/fladle/pull/94)

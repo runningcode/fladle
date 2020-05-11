@@ -21,6 +21,7 @@ nav:
   - Changelog: changelog.md
   - Results: results.md
   - FAQ: faq.md
+  - Testing Snapshots: snapshots.md
   - Releasing: releasing.md
 
 theme:
