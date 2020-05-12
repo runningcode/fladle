@@ -4,8 +4,8 @@
 
 extra:
   fladle:
-    current_release: '0.9.1'
-    next_release: '0.9.2'
+    current_release: '0.9.3'
+    next_release: '0.9.4'
 
 site_name: Fladle
 site_url: https://runningcode.github.io/fladle/
