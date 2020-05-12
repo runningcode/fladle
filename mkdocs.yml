@@ -30,6 +30,9 @@ theme:
 markdown_extensions:
   - codehilite
   - admonition
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed
 
 plugins:
   - search
