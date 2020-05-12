@@ -665,7 +665,7 @@ class YamlWriterTest {
   @Test
   fun writeRunTimeout() {
     val extension = emptyExtension {
-      runTimeout = "20m"
+      runTimeout.set("20m")
     }
 
     assertTrue(yamlWriter.writeFlankProperties(extension).contains("  run-timeout: 20m"))
@@ -674,7 +674,7 @@ class YamlWriterTest {
   @Test
   fun writeIgnoreFailedTests() {
     val properties = emptyExtension {
-      ignoreFailedTests = true
+      ignoreFailedTests.set(true)
     }.toFlankProperties()
 
     assertTrue(properties.contains("  ignore-failed-tests: true"))
@@ -710,7 +710,7 @@ class YamlWriterTest {
   @Test
   fun writeLocalResultsDir() {
     val properties = emptyExtension {
-      localResultsDir = "~/my/results/dir"
+      localResultsDir.set("~/my/results/dir")
     }.toFlankProperties()
 
     assertTrue(properties.contains("  local-result-dir: ~/my/results/dir"))

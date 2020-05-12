@@ -1,6 +1,7 @@
 package com.osacky.flank.gradle
 
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 
 interface FladleConfig {
   // Project id is automatically discovered by default. Use this to override the project id.
@@ -59,14 +60,14 @@ interface FladleConfig {
   /**
    * The max time this test run can execute before it is cancelled (default: unlimited).
    */
-  var runTimeout: String?
+  var runTimeout: Property<String>
 
   /**
    * Terminate with exit code 0 when there are failed tests.
    * Useful for Fladle and other gradle plugins that don't expect the process to have a non-zero exit code.
    * The JUnit XML is used to determine failure. (default: false)
    */
-  var ignoreFailedTests: Boolean
+  var ignoreFailedTests: Property<Boolean>
 
   /**
    * Disables sharding. Useful for parameterized tests. (default: false)
@@ -88,7 +89,7 @@ interface FladleConfig {
    * Local folder to store the test result.
    * Folder is DELETED before each run to ensure only artifacts from the new run are saved.
    */
-  var localResultsDir: String?
+  var localResultsDir: Property<String>
 
   /**
    * Specifies the number of shards into which you want to evenly distribute test cases.
