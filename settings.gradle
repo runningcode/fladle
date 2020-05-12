@@ -3,3 +3,4 @@ plugins {
 }
 
 include ':sample'
+include ':sample-kotlin'
