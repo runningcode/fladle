@@ -1,6 +1,6 @@
-regex
-Markdown>=3.2
-mkdocs>=1.1
-mkdocs-material>=5.1
-mkdocs-markdownextradata-plugin
-pymdown-extensions>=7.0
+regex=2020.5.7
+Markdown>=3.2.2
+mkdocs>=1.1.1
+mkdocs-material>=5.1.6
+mkdocs-markdownextradata-plugin=0.1.5
+pymdown-extensions>=7.1
