@@ -60,9 +60,9 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
 
   override var additionalTestApks: Map<String, List<String>> = emptyMap()
 
-  override var runTimeout: String? = null
+  override var runTimeout: Property<String> = project.objects.property()
 
-  override var ignoreFailedTests: Boolean = false
+  override var ignoreFailedTests: Property<Boolean> = project.objects.property()
 
   override var disableSharding: Boolean = false
 
@@ -70,7 +70,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
 
   override var testRunnerClass: String? = null
 
-  override var localResultsDir: String? = null
+  override var localResultsDir: Property<String> = project.objects.property()
 
   override var numUniformShards: Int? = null
 

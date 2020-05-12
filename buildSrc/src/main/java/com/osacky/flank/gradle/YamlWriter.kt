@@ -30,11 +30,11 @@ internal class YamlWriter {
     val smartFlankGcsPath = config.smartFlankGcsPath
     val filesToDownload = config.filesToDownload
     val projectId = config.projectId
-    val runTimeout = config.runTimeout
-    val ignoreFailedTests = config.ignoreFailedTests
+    val runTimeout = config.runTimeout.orNull
+    val ignoreFailedTests = config.ignoreFailedTests.getOrElse(false)
     val disableSharding = config.disableSharding
     val smartFlankDisableUpload = config.smartFlankDisableUpload
-    val localResultsDir = config.localResultsDir
+    val localResultsDir = config.localResultsDir.orNull
     val testTargetsAlwaysRun = config.testTargetsAlwaysRun
 
     appendln("flank:")
