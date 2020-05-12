@@ -1,4 +1,4 @@
-# pip install mkdocs mkdocs-material mkdocs-markdownextradata-plugin
+# pip install -r requirements.txt
 # mkdocs serve
 
 
@@ -32,7 +32,7 @@ markdown_extensions:
   - admonition
   - pymdownx.superfences
   - pymdownx.inlinehilite
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
 
 plugins:
   - search
