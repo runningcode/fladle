@@ -42,7 +42,7 @@ git push origin v{{ fladle.next_release }}
 ```
 * Upload to Maven Central
 ``` bash
-./gradlew -b buildSrc/build.gradle.kts publishAllPublicationsToMavenRepository -Pfladle.releaesMode -Dorg.gradle.internal.publish.checksums.insecure=true
+./gradlew -b buildSrc/build.gradle.kts publishAllPublicationsToMavenRepository -Pfladle.releaseMode -Dorg.gradle.internal.publish.checksums.insecure=true
 ```
 
 * Release to Maven Central

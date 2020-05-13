@@ -1,8 +1,11 @@
 # Changelog
 
-## 0.9.2
-* Update [Flank to 20.05.0](https://github.com/Flank/flank/releases/tag/v20.05.0). Huge new release!
+## 0.9.4
+* Update [Flank to 20.05.1](https://github.com/Flank/flank/releases/tag/v20.05.0). Huge new release!
 * Add support for new flank flags. Thanks [pawelpasterz](https://github.com/pawelpasterz) [PR](https://github.com/runningcode/fladle/pull/88)
+* Use compileOnly for AGP version.
+
+## 0.9.2
 
 !!! Warning  "Breaking API change"
     debugApk and instrumentationApk now use Lazy Property API to avoid resolving at configuration time.
