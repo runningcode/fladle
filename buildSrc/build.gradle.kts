@@ -16,9 +16,16 @@ plugins {
   signing
 }
 
+// See https://github.com/slackhq/keeper/pull/11#issuecomment-579544375 for context
+val isReleaseMode : Boolean = hasProperty("fladle.releaseMode")
+
 dependencies {
   compileOnly(gradleApi())
-  implementation("com.android.tools.build:gradle:3.6.3")
+    if (isReleaseMode) {
+        compileOnly("com.android.tools.build:gradle:3.6.3")
+    } else {
+        implementation("com.android.tools.build:gradle:3.6.3")
+    }
 
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.13")
@@ -85,37 +92,45 @@ publishing {
     }
   }
   publications {
-    create<MavenPublication>("mavenJava") {
-      from(components["java"])
-      artifact(tasks["sourcesJar"])
-      artifact(tasks["javadocJar"])
-      pom {
-        name.set("Fladle")
-        description.set("The Gradle Plugin for Flank")
-        url.set("https://github.com/runningcode/fladle")
-        licenses {
-          license {
-            name.set("The Apache License, Version 2.0")
-            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+      afterEvaluate {
+          named<MavenPublication>("fladlePluginMarkerMaven") {
+              signing.sign(this)
+              pom.configureForFladle()
           }
-        }
-        developers {
-          developer {
-            id.set("runningcode")
-            name.set("Nelson Osacky")
+
+          named<MavenPublication>("pluginMaven") {
+              artifact(tasks["sourcesJar"])
+              artifact(tasks["javadocJar"])
+              signing.sign(this)
+              pom.configureForFladle()
           }
-        }
-        scm {
-          connection.set("scm:git:git://github.com/runningcode/fladle.git")
-          developerConnection.set("scm:git:ssh://github.com/runningcode/fladle.git")
-          url.set("https://github.com/runningcode/fladle")
-        }
       }
-    }
   }
 }
 
 signing {
   isRequired = isReleaseBuild
-  sign(publishing.publications["mavenJava"])
+}
+
+fun org.gradle.api.publish.maven.MavenPom.configureForFladle() {
+    name.set("Fladle")
+    description.set("The Gradle Plugin for Flank")
+    url.set("https://github.com/runningcode/fladle")
+    licenses {
+        license {
+            name.set("The Apache License, Version 2.0")
+            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+        }
+    }
+    developers {
+        developer {
+            id.set("runningcode")
+            name.set("Nelson Osacky")
+        }
+    }
+    scm {
+        connection.set("scm:git:git://github.com/runningcode/fladle.git")
+        developerConnection.set("scm:git:ssh://github.com/runningcode/fladle.git")
+        url.set("https://github.com/runningcode/fladle")
+    }
 }
