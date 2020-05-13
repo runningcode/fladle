@@ -105,7 +105,7 @@ class FlankGradlePlugin : Plugin<Project> {
     }
     check(base.debugApk.isPresent) { "debugApk file must be specified ${base.debugApk.orNull}" }
     check(base.instrumentationApk.isPresent) { "instrumentationApk file must be specified ${base.instrumentationApk.orNull}" }
-    base.additionalTestApks.forEach {
+    base.additionalTestApks.getOrElse(emptyMap()).forEach {
       check(it.value.isNotEmpty()) { "must provide at least one instrumentation apk for ${it.key}" }
     }
   }

@@ -613,10 +613,12 @@ class YamlWriterTest {
     val extension = emptyExtension {
       debugApk.set("../orange/build/output/app.apk")
       instrumentationApk.set("../orange/build/output/app-test.apk")
-      additionalTestApks = mapOf(
-        "../orange/build/output/app.apk" to listOf("../orange/build/output/app-test2.apk"),
-        "../bob/build/output/app.apk" to listOf("../bob/build/output/app-test.apk")
-      )
+      additionalTestApks.putAll(project.provider {
+        mapOf(
+            "../orange/build/output/app.apk" to listOf("../orange/build/output/app-test2.apk"),
+            "../bob/build/output/app.apk" to listOf("../bob/build/output/app-test.apk")
+        )
+      })
     }
 
     assertThat(

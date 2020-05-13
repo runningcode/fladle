@@ -1,6 +1,7 @@
 package com.osacky.flank.gradle
 
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 
 data class FladleConfigImpl(
@@ -26,7 +27,7 @@ data class FladleConfigImpl(
   override var resultsBucket: String?,
   override var keepFilePath: Boolean,
   override var resultsDir: String?,
-  override var additionalTestApks: Map<String, List<String>>,
+  override var additionalTestApks: MapProperty<String, List<String>>,
   override var runTimeout: Property<String>,
   override var ignoreFailedTests: Property<Boolean>,
   override var disableSharding: Boolean,

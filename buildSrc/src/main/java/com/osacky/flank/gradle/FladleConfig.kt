@@ -1,6 +1,7 @@
 package com.osacky.flank.gradle
 
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 
 interface FladleConfig {
@@ -55,7 +56,7 @@ interface FladleConfig {
    */
   var resultsDir: String?
 
-  var additionalTestApks: Map<String, List<String>>
+  var additionalTestApks: MapProperty<String, List<String>>
 
   /**
    * The max time this test run can execute before it is cancelled (default: unlimited).
