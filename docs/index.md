@@ -4,7 +4,7 @@
 
 The Gradle Plugin for Firebase Test Lab and [Flank](https://github.com/testArmada/flank).
 
-Fladle simplifies the configuration necessary to use Firebase Test Lab and Flank.
+Fladle is the easiest way to scale your instrumentation tests using Firebase Test Lab. [Apply the gradle plugin and runFlank](quick-start)! You can easily run many hours of instrumentation tests using hundreds of devices in Test Lab and get the results in just few minutes. Fladle simplifies the configuration necessary to scale your tests using Firebase Test Lab and Flank.
 
 Fladle is mentioned in [Fragmented Podcast #163](https://fragmentedpodcast.com/episodes/163/). Skip to ~29 minutes.
 
@@ -15,5 +15,4 @@ Fladle is mentioned in [Fragmented Podcast #163](https://fragmentedpodcast.com/e
 [Flank](https://github.com/testArmada/flank) is a parallel test runner for [Firebase Test Lab](https://firebase.google.com/docs/test-lab).
 
 Also read this [medium post](https://medium.com/walmartlabs/flank-smart-test-runner-for-firebase-cf65e1b1eca7).
-
 
