@@ -4,7 +4,9 @@ import groovy.lang.Closure
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.property
 
 open class FlankGradleExtension(project: Project) : FladleConfig {
@@ -58,7 +60,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
 
   override var resultsDir: String? = null
 
-  override var additionalTestApks: Map<String, List<String>> = emptyMap()
+  override var additionalTestApks: ListProperty<String> = project.objects.listProperty()
 
   override var runTimeout: Property<String> = project.objects.property()
 

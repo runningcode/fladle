@@ -61,15 +61,12 @@ internal class YamlWriter {
         appendln("  - $file")
       }
     }
-    val testApks = config.additionalTestApks.flatMap { (debugApk, instrumentationApks) ->
-      instrumentationApks.map { debugApk to it }
-    }
+    val additionalTestApks = config.additionalTestApks.getOrElse(emptyList())
 
-    if (testApks.isNotEmpty()) {
+    if (additionalTestApks.isNotEmpty()) {
       appendln("  additional-app-test-apks:")
-      testApks.forEach {
-        appendln("    - app: ${it.first}")
-        appendln("      test: ${it.second}")
+      additionalTestApks.forEach {
+        appendln("    - $it")
       }
     }
 

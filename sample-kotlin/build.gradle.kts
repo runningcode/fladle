@@ -42,6 +42,16 @@ fladle {
             )
             flakyTestAttempts = 3
         }
+        create("additionalTests") {
+            additionalTestApks.value(project.provider { listOf(
+                "app: ../main/app/build/output/apk/debug/app.apk",
+                "test: ../main/app/build/output/apk/androidTest/debug/app-test.apk",
+                "app: ../sample/app/build/output/apk/debug/sample-app.apk",
+                "test: ../sample/app/build/output/apk/androidTest/debug/sample-app-test.apk",
+                "test: ../feature/room/build/output/apk/androidTest/debug/feature-room-test.apk",
+                "test: ../library/databases/build/output/apk/androidTest/debug/sample-databases-test.apk"
+            )})
+        }
     }
     flakyTestAttempts = 1
 }

@@ -1,9 +1,8 @@
 package com.osacky.flank.gradle
 
+import com.google.common.truth.Truth.assertThat
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
@@ -600,41 +599,50 @@ class YamlWriterTest {
       keepFilePath = true
     }
 
-    assertEquals("flank:\n" +
+    assertThat(yamlWriter.writeFlankProperties(extension))
+        .isEqualTo("flank:\n" +
             "  keep-file-path: true\n" +
             "  ignore-failed-tests: false\n" +
             "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n",
-      yamlWriter.writeFlankProperties(extension))
+            "  smart-flank-disable-upload: false\n"
+      )
   }
 
-  @Test
-  fun writeAdditionalTestApks() {
-    val extension = emptyExtension {
-      debugApk.set("../orange/build/output/app.apk")
-      instrumentationApk.set("../orange/build/output/app-test.apk")
-      additionalTestApks = mapOf(
-        "../orange/build/output/app.apk" to listOf("../orange/build/output/app-test2.apk"),
-        "../bob/build/output/app.apk" to listOf("../bob/build/output/app-test.apk")
-      )
+    @Test
+    fun writeAdditionalTestApks() {
+        val extension = emptyExtension {
+            debugApk.set("../orange/build/output/app.apk")
+            instrumentationApk.set("../orange/build/output/app-test.apk")
+            additionalTestApks.set(project.provider {
+                listOf(
+                    "app: ../orange/build/output/app.apk",
+                    "test: ../orange/build/output/app-test2.apk",
+                    "app: ../bob/build/output/app.apk",
+                    "test: ../bob/build/output/app-test.apk",
+                    "test: ../bob/build/output/app-test2.apk",
+                    "test: ../bob/build/output/app-test3.apk"
+                )
+            })
+        }
+
+        assertThat(
+            yamlWriter.writeFlankProperties(extension)).isEqualTo(
+            """
+             flank:
+               keep-file-path: false
+               additional-app-test-apks:
+                 - app: ../orange/build/output/app.apk
+                 - test: ../orange/build/output/app-test2.apk
+                 - app: ../bob/build/output/app.apk
+                 - test: ../bob/build/output/app-test.apk
+                 - test: ../bob/build/output/app-test2.apk
+                 - test: ../bob/build/output/app-test3.apk
+               ignore-failed-tests: false
+               disable-sharding: false
+               smart-flank-disable-upload: false
+          """.trimIndent() + '\n'
+        )
     }
-
-    assertThat(
-      yamlWriter.writeFlankProperties(extension),
-      equalTo(
-"flank:\n" +
-        "  keep-file-path: false\n" +
-        "  additional-app-test-apks:\n" +
-        "    - app: ../orange/build/output/app.apk\n" +
-        "      test: ../orange/build/output/app-test2.apk\n" +
-        "    - app: ../bob/build/output/app.apk\n" +
-        "      test: ../bob/build/output/app-test.apk\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n"
-      )
-    )
-  }
 
   @Test
   fun verifyDefaultValues() {
