@@ -84,7 +84,11 @@ class FlankGradlePlugin : Plugin<Project> {
       workingDir(project.fladleDir)
       classpath = project.fladleConfig
       main = "ftl.Main"
-      args = listOf("firebase", "test", "android", "run")
+      if (project.hasProperty("dumpShards")) {
+        args = listOf("firebase", "test", "android", "run", "--dump-shards")
+      } else {
+        args = listOf("firebase", "test", "android", "run")
+      }
       if (config.serviceAccountCredentials.isPresent) {
         environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to config.serviceAccountCredentials.get()))
       }
