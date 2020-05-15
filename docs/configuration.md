@@ -117,7 +117,31 @@ This is the path to the app's instrumentation apk. Supports wildcard characters.
 
 ### additionalTestApks
 Paths to additional test configurations.
+Order matters. A test apk is run with the nearest previous listed app apk.
+It is not required to list an app apk here. If there is no app apk listed in additionalTestApks, the test apks are run against the [#debugApk].
 
+=== "Groovy"
+    ```groovy
+    additionalTestApks.value(project.provider { [
+    "app: ../main/app/build/output/apk/debug/app.apk",
+    "test: ../main/app/build/output/apk/androidTest/debug/app-test.apk",
+    "app: ../sample/app/build/output/apk/debug/sample-app.apk",
+    "test: ../sample/app/build/output/apk/androidTest/debug/sample-app-test.apk",
+    "test: ../feature/room/build/output/apk/androidTest/debug/feature-room-test.apk",
+    "test: ../library/databases/build/output/apk/androidTest/debug/sample-databases-test.apk"
+    ]})
+    ```
+=== "Kotlin"
+    ``` kotlin
+    additionalTestApks.value(project.provider { listOf(
+    "app: ../main/app/build/output/apk/debug/app.apk",
+    "test: ../main/app/build/output/apk/androidTest/debug/app-test.apk",
+    "app: ../sample/app/build/output/apk/debug/sample-app.apk",
+    "test: ../sample/app/build/output/apk/androidTest/debug/sample-app-test.apk",
+    "test: ../feature/room/build/output/apk/androidTest/debug/feature-room-test.apk",
+    "test: ../library/databases/build/output/apk/androidTest/debug/sample-databases-test.apk"
+    )})
+    ```
 ### autoGoogleLogin
 Whether or not to automatically log in using a preconfigured google account. [More Info](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run#--auto-google-login)
 
