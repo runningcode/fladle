@@ -1,10 +1,11 @@
 # Changelog
 
-## 0.9.5
+## 0.10.0
 
 * Allow for debugging using [--dump-shards](/fladle/faq/#debugging)
 * Fix naming for variant discovery of apk and instrumentation apk. Instead of chocolate-debug, variant must now be set as chocolateDebug.
 * Update [Flank to 20.05.2](https://github.com/Flank/flank/releases/tag/v20.05.2).
+* [Fulladle Preview](/fladle/multi-module-testing)
 
 !!! Warning "Breaking API Change"
     [additionalTestApks](/fladle/configuration/#additionaltestapks) now uses ListProperty instead of the previous Map. This is to allow for lazy configuration of the provided files.

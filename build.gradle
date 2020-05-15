@@ -14,13 +14,20 @@ buildscript {
 
 plugins {
     id "com.github.ben-manes.versions" version "0.28.0"
+    id "com.osacky.fulladle"
 }
 
 allprojects {
     repositories {
         google()
         mavenCentral()
+        // jcenter is required for "org.jetbrains.trove4j:trove4j:20160824."
+        jcenter()
     }
+}
+
+fladle {
+    serviceAccountCredentials = project.layout.projectDirectory.file("sample/flank-gradle-5cf02dc90531.json")
 }
 
 task clean(type: Delete) {

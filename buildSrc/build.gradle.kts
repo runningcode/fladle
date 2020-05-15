@@ -1,5 +1,6 @@
 group = "com.osacky.flank.gradle"
-version = "0.9.5-SNAPSHOT"
+version = "0.10.0-SNAPSHOT"
+description = "Easily Scale your Android Instrumentation Tests with Firebase Test Lab with Flank"
 
 repositories {
   google()
@@ -52,8 +53,14 @@ gradlePlugin {
     create("fladle") {
       id = "com.osacky.fladle"
       displayName = "Fladle"
-      description = "The Gradle Plugin for Flank"
+      description = project.description
       implementationClass = "com.osacky.flank.gradle.FlankGradlePlugin"
+    }
+    create("fulladle") {
+      id = "com.osacky.fulladle"
+      displayName = "Fulladle"
+      description = project.description
+      implementationClass = "com.osacky.flank.gradle.FulladlePlugin"
     }
   }
 }
@@ -92,19 +99,23 @@ publishing {
     }
   }
   publications {
-      afterEvaluate {
-          named<MavenPublication>("fladlePluginMarkerMaven") {
-              signing.sign(this)
-              pom.configureForFladle()
-          }
-
-          named<MavenPublication>("pluginMaven") {
-              artifact(tasks["sourcesJar"])
-              artifact(tasks["javadocJar"])
-              signing.sign(this)
-              pom.configureForFladle()
-          }
+    afterEvaluate {
+      named<MavenPublication>("fladlePluginMarkerMaven") {
+        signing.sign(this)
+        pom.configureForFladle("Fladle")
       }
+
+      named<MavenPublication>("pluginMaven") {
+        artifact(tasks["sourcesJar"])
+        artifact(tasks["javadocJar"])
+        signing.sign(this)
+        pom.configureForFladle("Fladle")
+      }
+      named<MavenPublication>("fulladlePluginMarkerMaven") {
+        signing.sign(this)
+        pom.configureForFladle("Fulladle")
+      }
+    }
   }
 }
 
@@ -112,25 +123,25 @@ signing {
   isRequired = isReleaseBuild
 }
 
-fun org.gradle.api.publish.maven.MavenPom.configureForFladle() {
-    name.set("Fladle")
-    description.set("The Gradle Plugin for Flank")
+fun org.gradle.api.publish.maven.MavenPom.configureForFladle(pluginName: String) {
+  name.set(pluginName)
+  description.set(project.description)
+  url.set("https://github.com/runningcode/fladle")
+  licenses {
+    license {
+      name.set("The Apache License, Version 2.0")
+      url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+    }
+  }
+  developers {
+    developer {
+      id.set("runningcode")
+      name.set("Nelson Osacky")
+    }
+  }
+  scm {
+    connection.set("scm:git:git://github.com/runningcode/fladle.git")
+    developerConnection.set("scm:git:ssh://github.com/runningcode/fladle.git")
     url.set("https://github.com/runningcode/fladle")
-    licenses {
-        license {
-            name.set("The Apache License, Version 2.0")
-            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-        }
-    }
-    developers {
-        developer {
-            id.set("runningcode")
-            name.set("Nelson Osacky")
-        }
-    }
-    scm {
-        connection.set("scm:git:git://github.com/runningcode/fladle.git")
-        developerConnection.set("scm:git:ssh://github.com/runningcode/fladle.git")
-        url.set("https://github.com/runningcode/fladle")
-    }
+  }
 }

@@ -6,6 +6,7 @@ extra:
   fladle:
     current_release: '0.9.4'
     next_release: '0.9.5'
+    flank_version: '20.05.2'
 
 site_name: Fladle
 site_url: https://runningcode.github.io/fladle/
@@ -20,6 +21,7 @@ nav:
   - Configuration: configuration.md
   - Changelog: changelog.md
   - Results: results.md
+  - Multi Module Testing: multi-module-testing.md
   - FAQ: faq.md
   - Testing Snapshots: snapshots.md
   - Releasing: releasing.md
