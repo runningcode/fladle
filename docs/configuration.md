@@ -118,7 +118,7 @@ This is the path to the app's instrumentation apk. Supports wildcard characters.
 ### additionalTestApks
 Paths to additional test configurations.
 Order matters. A test apk is run with the nearest previous listed app apk.
-It is not required to list an app apk here. If there is no app apk listed in additionalTestApks, the test apks are run against the [#debugApk].
+It is not required to list an app apk here. If there is no app apk listed in additionalTestApks, the test apks are run against the [debugApk](#debugApk).
 
 === "Groovy"
     ```groovy

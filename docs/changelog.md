@@ -2,10 +2,10 @@
 
 ## 0.9.5
 
-* Allow for debugging using [--dump-shards](faq/#debugging)
+* Allow for debugging using [--dump-shards](/fladle/faq/#debugging)
 
 !!! Warning "Breaking API Change"
-    [additionalTestApks](/configuration/#additionalTestApks) now uses ListProperty instead of the previous Map. This is to allow for lazy configuration of the provided files.
+    [additionalTestApks](/fladle/configuration/#additionalTestApks) now uses ListProperty instead of the previous Map. This is to allow for lazy configuration of the provided files.
 
 ## 0.9.4
 * Update [Flank to 20.05.1](https://github.com/Flank/flank/releases/tag/v20.05.0). Huge new release!
