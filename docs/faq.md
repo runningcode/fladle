@@ -23,3 +23,6 @@ No signature of method: flank_4vvjv7w3oopge32w1tl9cs6e4.fladle() is applicable f
 ```
 
 If you receive a similar error, please check [configuration](/configuration#sample-configuration) for a sample configuration.
+
+## Debugging
+`./gradlew runFlank -PdumpShards` Will dump shards and exit the process without running the tests.
