@@ -65,7 +65,11 @@ fladle {
     flankVersion = "20.05.1"
     debugApk = "$buildDir/outputs/apk/debug/sample-debug.apk"
     instrumentationApk = "$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
-    additionalTestApks = ["$buildDir/outputs/apk/debug/sample-debug.apk": ["$buildDir/outputs/apk/androidTest/debug/sample2-debug-androidTest.apk"]]
+    additionalTestApks = [
+        "- app: "$buildDir/outputs/apk/debug/sample-debug.apk",
+        "  test: $buildDir/outputs/apk/androidTest/debug/sample2-debug-androidTest.apk",
+        "- test: ${rootProject.buildDir}/database/module/outputs/apk/database-module-androidTest.apk"
+    ]
     autoGoogleLogin = true
     testShards = 5 //or numUniformShards=5 cannot use both
     shardTime = 120
@@ -162,28 +166,29 @@ Optional, prefer to set [variant](/configuration#variant).
 ### additionalTestApks
 Paths to additional test configurations.
 Order matters. A test apk is run with the nearest previous listed app apk.
+For library modules, add them to the list with a `- test:` in front. For test apks which belong to an application module, add them with `  test:`.
 It is not required to list an app apk here. If there is no app apk listed in additionalTestApks, the test apks are run against the [debugApk](#debugapk).
 
 === "Groovy"
     ```groovy
     additionalTestApks.value(project.provider { [
-    "app: ../main/app/build/output/apk/debug/app.apk",
-    "test: ../main/app/build/output/apk/androidTest/debug/app-test.apk",
-    "app: ../sample/app/build/output/apk/debug/sample-app.apk",
-    "test: ../sample/app/build/output/apk/androidTest/debug/sample-app-test.apk",
-    "test: ../feature/room/build/output/apk/androidTest/debug/feature-room-test.apk",
-    "test: ../library/databases/build/output/apk/androidTest/debug/sample-databases-test.apk"
+    "- app: ../main/app/build/output/apk/debug/app.apk",
+    "  test: ../main/app/build/output/apk/androidTest/debug/app-test.apk",
+    "- app: ../sample/app/build/output/apk/debug/sample-app.apk",
+    "  test: ../sample/app/build/output/apk/androidTest/debug/sample-app-test.apk",
+    "- test: ../feature/room/build/output/apk/androidTest/debug/feature-room-test.apk",
+    "- test: ../library/databases/build/output/apk/androidTest/debug/sample-databases-test.apk"
     ]})
     ```
 === "Kotlin"
     ``` kotlin
     additionalTestApks.value(project.provider { listOf(
-    "app: ../main/app/build/output/apk/debug/app.apk",
-    "test: ../main/app/build/output/apk/androidTest/debug/app-test.apk",
-    "app: ../sample/app/build/output/apk/debug/sample-app.apk",
-    "test: ../sample/app/build/output/apk/androidTest/debug/sample-app-test.apk",
-    "test: ../feature/room/build/output/apk/androidTest/debug/feature-room-test.apk",
-    "test: ../library/databases/build/output/apk/androidTest/debug/sample-databases-test.apk"
+    "- app: ../main/app/build/output/apk/debug/app.apk",
+    "  test: ../main/app/build/output/apk/androidTest/debug/app-test.apk",
+    "- app: ../sample/app/build/output/apk/debug/sample-app.apk",
+    "  test: ../sample/app/build/output/apk/androidTest/debug/sample-app-test.apk",
+    "- test: ../feature/room/build/output/apk/androidTest/debug/feature-room-test.apk",
+    "- test: ../library/databases/build/output/apk/androidTest/debug/sample-databases-test.apk"
     )})
     ```
 ### autoGoogleLogin
