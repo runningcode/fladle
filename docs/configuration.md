@@ -1,6 +1,6 @@
 # Configuration
 
-The following configuration options must be set inside the fladle block. See the [sample configuration](/configuration#sample-configuration) below. There is also a [groovy sample](https://github.com/runningcode/fladle/blob/master/sample/build.gradle) and a [kotlin sample](https://github.com/runningcode/fladle/blob/master/sample-kotlin/build.gradle.kts).
+The following configuration options must be set inside the fladle block. See the [sample configuration](/fladle/configuration#sample-configuration) below. There is also a [groovy sample](https://github.com/runningcode/fladle/blob/master/sample/build.gradle) and a [kotlin sample](https://github.com/runningcode/fladle/blob/master/sample-kotlin/build.gradle.kts).
 
 ### serviceAccountCredentials
 
