@@ -66,7 +66,7 @@ internal class YamlWriter {
     if (additionalTestApks.isNotEmpty()) {
       appendln("  additional-app-test-apks:")
       additionalTestApks.forEach {
-        appendln("    - $it")
+        appendln("    $it")
       }
     }
 

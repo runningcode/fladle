@@ -608,41 +608,41 @@ class YamlWriterTest {
       )
   }
 
-    @Test
-    fun writeAdditionalTestApks() {
-        val extension = emptyExtension {
-            debugApk.set("../orange/build/output/app.apk")
-            instrumentationApk.set("../orange/build/output/app-test.apk")
-            additionalTestApks.set(project.provider {
-                listOf(
-                    "app: ../orange/build/output/app.apk",
-                    "test: ../orange/build/output/app-test2.apk",
-                    "app: ../bob/build/output/app.apk",
-                    "test: ../bob/build/output/app-test.apk",
-                    "test: ../bob/build/output/app-test2.apk",
-                    "test: ../bob/build/output/app-test3.apk"
-                )
-            })
-        }
+  @Test
+  fun writeAdditionalTestApks() {
+    val extension = emptyExtension {
+      debugApk.set("../orange/build/output/app.apk")
+      instrumentationApk.set("../orange/build/output/app-test.apk")
+      additionalTestApks.set(project.provider {
+        listOf(
+            "- app: ../orange/build/output/app.apk",
+            "  test: ../orange/build/output/app-test2.apk",
+            "- app: ../bob/build/output/app.apk",
+            "  test: ../bob/build/output/app-test.apk",
+            "- test: ../bob/build/output/app-test2.apk",
+            "- test: ../bob/build/output/app-test3.apk"
+        )
+      })
+    }
 
-        assertThat(
-            yamlWriter.writeFlankProperties(extension)).isEqualTo(
-            """
+    assertThat(
+        yamlWriter.writeFlankProperties(extension)).isEqualTo(
+        """
              flank:
                keep-file-path: false
                additional-app-test-apks:
                  - app: ../orange/build/output/app.apk
-                 - test: ../orange/build/output/app-test2.apk
+                   test: ../orange/build/output/app-test2.apk
                  - app: ../bob/build/output/app.apk
-                 - test: ../bob/build/output/app-test.apk
+                   test: ../bob/build/output/app-test.apk
                  - test: ../bob/build/output/app-test2.apk
                  - test: ../bob/build/output/app-test3.apk
                ignore-failed-tests: false
                disable-sharding: false
                smart-flank-disable-upload: false
           """.trimIndent() + '\n'
-        )
-    }
+    )
+  }
 
   @Test
   fun verifyDefaultValues() {
