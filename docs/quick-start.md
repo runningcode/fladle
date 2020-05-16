@@ -55,7 +55,7 @@ Using Fladle takes 3 steps:
         ```
         
     !!! Warning
-        If using buildFlavors or testing against a non default variant, [variant must also configured](/configuration#variant)
+        If using buildFlavors or testing against a non default variant, [variant must also configured](/fladle/configuration#variant)
 
 3. Run the Flank Gradle task.
     ``` bash
