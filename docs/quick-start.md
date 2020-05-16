@@ -53,10 +53,12 @@ Using Fladle takes 3 steps:
             serviceAccountCredentials.set(project.layout.projectDirectory.file("flank-gradle-service-account.json"))
         }
         ```
+        
+    !!! Warning
+        If using buildFlavors or testing against a non default variant, [variant must also configured](/configuration#variant)
 
 3. Run the Flank Gradle task.
     ``` bash
     ./gradlew runFlank
     ```
-
 

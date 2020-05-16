@@ -1,7 +1,7 @@
 # FAQ
 
 ## Error APK file not found
-The app APK and the instrumentation apk are expected to have already been generated before calling runFlank.
+The app APK and the instrumentation APK are expected to have already been generated before calling runFlank.
 If you would like the flank task to automatically create the APKs, you can add the following to your application's build.gradle.
 ```
 afterEvaluate {
@@ -26,3 +26,9 @@ If you receive a similar error, please check [configuration](/configuration#samp
 
 ## Debugging
 `./gradlew runFlank -PdumpShards` Will dump shards and exit the process without running the tests.
+
+`./gradlew printYml` Will print out the current yaml configuration to be passed to Flank.
+
+
+## More help?
+Still having trouble? Check the #flank channel in the [Firebase Community Slack](https://firebase.community/)
