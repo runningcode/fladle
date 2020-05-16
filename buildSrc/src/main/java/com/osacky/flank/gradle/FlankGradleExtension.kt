@@ -34,10 +34,10 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   override var flakyTestAttempts = 0
 
   // Variant to use for configuring output APK.
-  var variant: String? = null
+  var variant: Property<String> = project.objects.property()
 
   /**
-   * debugApk and instrmentationApk are [Property<String>] and not [RegularFileProperty] because we support wildcard characters.
+   * debugApk and instrumentationApk are [Property<String>] and not [RegularFileProperty] because we support wildcard characters.
    */
   val debugApk: Property<String> = project.objects.property()
   val instrumentationApk: Property<String> = project.objects.property()

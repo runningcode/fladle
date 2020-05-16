@@ -1,5 +1,7 @@
 # Configuration
 
+The following configuration options must be set inside the fladle block. See the [sample configuration](/configuration#sample-configuration) below. There is also a [groovy sample](https://github.com/runningcode/fladle/blob/master/sample/build.gradle) and a [kotlin sample](https://github.com/runningcode/fladle/blob/master/sample-kotlin/build.gradle.kts).
+
 ### serviceAccountCredentials
 
 !!! note ""
@@ -11,12 +13,32 @@ Instructions on how to create this account can be found [here](https://firebase.
   Optionally, the serviceAccountCredentials can be set with [environment variables](https://github.com/TestArmada/flank#authenticate-with-a-service-account) but then the projectId parameter must be set.
 
 
+### variant
+
+!!! note
+    `variant` must be set if using buildFlavors in order to automatically configure the debugApk and testApk.
+    
+Set the variant to automatically configure for testing. A build variant is a combination of buildFlavor and buildType.
+This must also be set when testing against a non-default variant.
+For example: 'debug' or 'freeDebug'.
+Put this inside your Fladle block.
+
+=== "Groovy"
+    ``` groovy
+    variant = "freeDebug"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    variant.set("freeDebug")
+    ```
+
 ## Sample Configuration
 
 ``` groovy
 fladle {
     // Required parameters
     serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json")
+    variant = "freeDebug"
 
     // Optional parameters
     useOrchestrator = false
@@ -110,11 +132,33 @@ This is automatically discovered based on the service credential by default.
 `flankCoordinates = "com.github.flank:flank"` to specify custom flank coordinates.
 
 ### debugApk
-This is the path to the app's debug apk. Supports wildcard characters. Example `build/outputs/apk/debug/*.apk`.
+This is a string representing the path to the app's debug apk. 
+Supports wildcard characters. 
+Optional, prefer to set [variant](/configuration#variant).
+
+=== "Groovy"
+    ``` groovy
+    debugApk = project.provider { "${buildDir.toString()}/outputs/apk/debug/*.apk" }
+    ```
+=== "Kotlin"
+    ``` kotlin
+    debugApk.set(project.provider { "${buildDir.toString()}/outputs/apk/debug/*.apk" })
+    ```
 
 ### instrumentationApk
-This is the path to the app's instrumentation apk. Supports wildcard characters. Example `build/outputs/apk/androidTest/debug/*.apk`.
+This is a string representing the path to the app's instrumentaiton apk. 
+Supports wildcard characters. 
+Optional, prefer to set [variant](/configuration#variant).
 
+=== "Groovy"
+    ``` groovy
+    debugApk = project.provider { "${buildDir.toString()}/outputs/apk/androidTest/debug/*.apk" }
+    ```
+=== "Kotlin"
+    ``` kotlin
+    debugApk.set(project.provider { "${buildDir.toString()}/outputs/apk/androidTest/debug/*.apk" })
+    ```
+    
 ### additionalTestApks
 Paths to additional test configurations.
 Order matters. A test apk is run with the nearest previous listed app apk.
@@ -170,9 +214,6 @@ Give a name to a custom flank task and configure its options. The name is append
 
 ### smartFlankGcsPath
 Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
-
-### variant
-Which variant and buildType to use for testing. For example: 'debug' or 'devDebug'.
 
 ### flakyTestAttempts
 The number of times to retry failed tests. Default is 0. Max is 10.

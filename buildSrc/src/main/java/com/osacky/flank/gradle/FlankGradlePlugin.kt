@@ -84,10 +84,10 @@ class FlankGradlePlugin : Plugin<Project> {
       workingDir(project.fladleDir)
       classpath = project.fladleConfig
       main = "ftl.Main"
-      if (project.hasProperty("dumpShards")) {
-        args = listOf("firebase", "test", "android", "run", "--dump-shards")
+      args = if (project.hasProperty("dumpShards")) {
+        listOf("firebase", "test", "android", "run", "--dump-shards")
       } else {
-        args = listOf("firebase", "test", "android", "run")
+        listOf("firebase", "test", "android", "run")
       }
       if (config.serviceAccountCredentials.isPresent) {
         environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to config.serviceAccountCredentials.get()))
@@ -124,16 +124,15 @@ class FlankGradlePlugin : Plugin<Project> {
   private fun findDebugAndInstrumentationApk(project: Project, extension: FlankGradleExtension) {
     val baseExtension = requireNotNull(project.extensions.findByType(AppExtension::class.java)) { "Could not find AppExtension in ${project.name}" }
     automaticallyConfigureTestOrchestrator(project, extension, baseExtension)
-    baseExtension.applicationVariants.all {
-      if (testVariant != null) {
-        outputs.all debug@{
-          if (extension.variant == null || (extension.variant != null && extension.variant == name)) {
-            testVariant.outputs.all test@{
-              project.log("Configuring fladle.debugApk from variant ${this@debug.name}")
-              project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
-              extension.debugApk.set(this@debug.outputFile.absolutePath)
-              extension.instrumentationApk.set(this@test.outputFile.absolutePath)
-            }
+    baseExtension.testVariants.configureEach {
+      val appVariant = testedVariant
+      outputs.configureEach test@{
+        appVariant.outputs.configureEach app@{
+          if (!extension.variant.isPresent || (extension.variant.isPresent && extension.variant.get() == appVariant.name)) {
+            project.log("Configuring fladle.debugApk from variant ${this@app.name}")
+            project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
+            extension.debugApk.set(this@app.outputFile.absolutePath)
+            extension.instrumentationApk.set(this@test.outputFile.absolutePath)
           }
         }
       }
@@ -144,7 +143,7 @@ class FlankGradlePlugin : Plugin<Project> {
     get() = configurations.getByName(FLADLE_CONFIG)
 
   companion object {
-    val GRADLE_MIN_VERSION = GradleVersion.version("5.1")
+    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("5.1")
     const val TASK_GROUP = "fladle"
     const val FLADLE_CONFIG = "fladle"
     fun Project.log(message: String) {

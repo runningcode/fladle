@@ -4,3 +4,4 @@ plugins {
 
 include ':sample'
 include ':sample-kotlin'
+include ':sample-flavors-kotlin'

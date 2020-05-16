@@ -5,6 +5,8 @@
 version: 2
 jobs:
   build:
+    branches:
+      ignore: gh-pages
     docker:
       - image: circleci/android:api-28-alpha
 
