@@ -123,7 +123,7 @@ class YamlWriterTest {
 
   @Test
   fun verifyMissingServiceThrowsError() {
-    val extension = FlankGradleExtension(project)
+    val extension = FlankGradleExtension(project.objects)
     try {
       yamlWriter.createConfigProps(extension, extension)
       fail()
@@ -583,7 +583,7 @@ class YamlWriterTest {
 
   @Test
   fun writeNoKeepFilePath() {
-    val extension = FlankGradleExtension(project)
+    val extension = emptyExtension()
 
     assertEquals("flank:\n" +
             "  keep-file-path: false\n" +
@@ -646,8 +646,8 @@ class YamlWriterTest {
 
   @Test
   fun verifyDefaultValues() {
-    val defaultFlankProperties = FlankGradleExtension(project).toFlankProperties()
-    val defaultAdditionalProperties = FlankGradleExtension(project).toAdditionalProperties().trimIndent()
+    val defaultFlankProperties = emptyExtension().toFlankProperties()
+    val defaultAdditionalProperties = emptyExtension().toAdditionalProperties().trimIndent()
 
     val expectedFlank = """
       flank:
@@ -819,7 +819,8 @@ class YamlWriterTest {
     """.trimMargin()))
   }
 
-  private fun emptyExtension(block: FlankGradleExtension.() -> Unit) = FlankGradleExtension(project).apply(block)
+  private fun emptyExtension() = FlankGradleExtension(project.objects)
+  private fun emptyExtension(block: FlankGradleExtension.() -> Unit) = emptyExtension().apply(block)
   private fun FlankGradleExtension.toFlankProperties() = yamlWriter.writeFlankProperties(this).trimIndent()
   private fun FlankGradleExtension.toAdditionalProperties() = yamlWriter.writeAdditionalProperties(this)
 }

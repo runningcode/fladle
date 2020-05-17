@@ -8,6 +8,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.TaskContainer
+import org.gradle.kotlin.dsl.create
 import org.gradle.util.GradleVersion
 
 class FlankGradlePlugin : Plugin<Project> {
@@ -18,7 +19,7 @@ class FlankGradlePlugin : Plugin<Project> {
     // Create Configuration to store flank dependency
     target.configurations.create(FLADLE_CONFIG)
 
-    val extension = target.extensions.create("fladle", FlankGradleExtension::class.java, target)
+    val extension = target.extensions.create<FlankGradleExtension>("fladle", target.objects)
 
     configureTasks(target, extension)
   }
@@ -143,7 +144,7 @@ class FlankGradlePlugin : Plugin<Project> {
     get() = configurations.getByName(FLADLE_CONFIG)
 
   companion object {
-    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("5.1")
+    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("5.4")
     const val TASK_GROUP = "fladle"
     const val FLADLE_CONFIG = "fladle"
     fun Project.log(message: String) {

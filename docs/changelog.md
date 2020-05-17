@@ -7,6 +7,8 @@
 
 !!! Warning "Breaking API Change"
     [additionalTestApks](/fladle/configuration/#additionaltestapks) now uses ListProperty instead of the previous Map. This is to allow for lazy configuration of the provided files.
+!!! Warning
+    Minimum supported Gradle version is now 5.4.
 
 ## 0.9.4
 * Update [Flank to 20.05.1](https://github.com/Flank/flank/releases/tag/v20.05.0). Huge new release!
