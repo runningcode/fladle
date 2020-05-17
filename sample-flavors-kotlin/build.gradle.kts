@@ -34,7 +34,7 @@ android {
 }
 
 fladle {
-    flankVersion.set("20.05.1")
+    flankVersion.set("20.05.2")
     variant.set("chocolateDebug")
     debugApk.set(project.provider { "${buildDir.toString()}/outputs/apk/chocolate/debug/*.apk" })
     serviceAccountCredentials.set(project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json"))
