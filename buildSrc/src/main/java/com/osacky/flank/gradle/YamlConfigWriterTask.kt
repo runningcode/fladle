@@ -16,7 +16,7 @@ open class YamlConfigWriterTask @Inject constructor(private val config: FladleCo
 
   @Internal
   override fun getGroup(): String {
-    return FlankGradlePlugin.TASK_GROUP
+    return FladlePluginDelegate.TASK_GROUP
   }
 
   @TaskAction
