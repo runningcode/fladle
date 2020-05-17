@@ -1,5 +1,5 @@
 group = "com.osacky.flank.gradle"
-version = "0.10.0"
+version = "0.10.1-SNAPSHOT"
 description = "Easily Scale your Android Instrumentation Tests with Firebase Test Lab with Flank"
 
 repositories {

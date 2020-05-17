@@ -36,17 +36,17 @@ git tag v{{ fladle.next_release }}
 git push origin v{{ fladle.next_release }}
 ```
 
-* Upload to Gradle Plugin Portal
-```bash
-./gradlew -b buildSrc/build.gradle.kts publishPlugins -Pfladle.releaseMode -Dorg.gradle.internal.publish.checksums.insecure=true
-```
 * Upload to Maven Central
 ``` bash
 ./gradlew -b buildSrc/build.gradle.kts publishAllPublicationsToMavenRepository -Pfladle.releaseMode -Dorg.gradle.internal.publish.checksums.insecure=true
 ```
+* Upload to Gradle Plugin Portal
+```bash
+./gradlew -b buildSrc/build.gradle.kts publishPlugins -Pfladle.releaseMode -Dorg.gradle.internal.publish.checksums.insecure=true
+```
 
 * Release to Maven Central
-    * Login to Sonatype OSS Nexus: https://oss.sonatype.org/
+    * Login to Sonatype OSS Nexus: [https://oss.sonatype.org/]
     * Click on **Staging Repositories**
 
 * Merge the release branch to master
