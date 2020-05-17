@@ -7,6 +7,6 @@ open class RunFlankTask @Inject constructor() : DefaultTask() {
 
   init {
     description = "Runs instrumentation tests using flank on firebase test lab."
-    group = FlankGradlePlugin.TASK_GROUP
+    group = FladlePluginDelegate.TASK_GROUP
   }
 }
