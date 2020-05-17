@@ -62,7 +62,7 @@ fladle {
         [ "model": "Nexus5", "version": "23" ]
     ]
     projectId("flank-gradle")
-    flankVersion = "20.05.2"
+    flankVersion = "{{ fladle.flank_version }}"
     debugApk = "$buildDir/outputs/apk/debug/sample-debug.apk"
     instrumentationApk = "$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     additionalTestApks = [
@@ -128,9 +128,29 @@ The projectId is a unique identifier which can be found in the project's URL: `h
 This is automatically discovered based on the service credential by default.
 
 ### flankVersion
-`flankVersion = "flank_snapshot"` to specify a Flank snapshot.
+Need a different Flank version? Specify it with `flankVersion`.
 
-`flankVersion = "20.05.2"` to specify a specific Flank version.
+To use a snapshot:
+=== "Groovy"
+    ``` groovy 
+    flankVersion = "flank_snapshot"`
+    ```
+=== "Kotlin"
+    ``` kotlin
+    flankVersion.set("flank_snapshot")
+    ```
+
+Need more than 50 shards? Use Flank `8.1.0`.
+
+To use a different version:
+=== "Groovy"
+    ``` groovy 
+    flankVersion = "{{ fladle.flank_version }}"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    flankVersion.set("{{ fladle.flank_version }}")
+    ```
 
 ### flankCoordinates
 `flankCoordinates = "com.github.flank:flank"` to specify custom flank coordinates.

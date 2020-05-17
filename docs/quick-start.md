@@ -57,7 +57,19 @@ Using Fladle takes 3 steps:
     !!! Warning
         If using buildFlavors or testing against a non default variant, [variant must also configured](/fladle/configuration#variant)
 
-3. Run the Flank Gradle task.
+3. Run your tests!
+
+    First assemble your debug apk and test apk.
+    ``` bash
+    ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
+    ```
+   
+    !!! note
+        When using flavors, make sure to assemble your buildVariants.
+        
+        `./gradlew :app:assembleFreeDebug :app:assembleFreeDebugAndroidTest`
+
+    Run Flank!
     ``` bash
     ./gradlew runFlank
     ```
