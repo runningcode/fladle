@@ -1,20 +1,21 @@
 package com.osacky.flank.gradle
 
 import groovy.lang.Closure
+import javax.inject.Inject
 import org.gradle.api.NamedDomainObjectContainer
-import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.property
 
-open class FlankGradleExtension(project: Project) : FladleConfig {
-  val flankCoordinates: Property<String> = project.objects.property(String::class.java).convention("com.github.flank:flank")
-  val flankVersion: Property<String> = project.objects.property(String::class.java).convention("20.05.1")
+open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : FladleConfig {
+  val flankCoordinates: Property<String> = objects.property(String::class.java).convention("com.github.flank:flank")
+  val flankVersion: Property<String> = objects.property(String::class.java).convention("20.05.1")
   // Project id is automatically discovered by default. Use this to override the project id.
   override var projectId: String? = null
-  override val serviceAccountCredentials: RegularFileProperty = project.objects.fileProperty()
+  override val serviceAccountCredentials: RegularFileProperty = objects.fileProperty()
   override var useOrchestrator: Boolean = false
   override var autoGoogleLogin: Boolean = false
   override var devices: List<Map<String, String>> = listOf(mapOf("model" to "NexusLowRes", "version" to "28"))
@@ -34,13 +35,13 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
   override var flakyTestAttempts = 0
 
   // Variant to use for configuring output APK.
-  var variant: Property<String> = project.objects.property()
+  var variant: Property<String> = objects.property()
 
   /**
    * debugApk and instrumentationApk are [Property<String>] and not [RegularFileProperty] because we support wildcard characters.
    */
-  val debugApk: Property<String> = project.objects.property()
-  val instrumentationApk: Property<String> = project.objects.property()
+  val debugApk: Property<String> = objects.property()
+  val instrumentationApk: Property<String> = objects.property()
 
   override var directoriesToPull: List<String> = emptyList()
 
@@ -60,11 +61,11 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
 
   override var resultsDir: String? = null
 
-  override var additionalTestApks: ListProperty<String> = project.objects.listProperty()
+  override var additionalTestApks: ListProperty<String> = objects.listProperty()
 
-  override var runTimeout: Property<String> = project.objects.property()
+  override var runTimeout: Property<String> = objects.property()
 
-  override var ignoreFailedTests: Property<Boolean> = project.objects.property()
+  override var ignoreFailedTests: Property<Boolean> = objects.property()
 
   override var disableSharding: Boolean = false
 
@@ -72,7 +73,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
 
   override var testRunnerClass: String? = null
 
-  override var localResultsDir: Property<String> = project.objects.property()
+  override var localResultsDir: Property<String> = objects.property()
 
   override var numUniformShards: Int? = null
 
@@ -88,7 +89,7 @@ open class FlankGradleExtension(project: Project) : FladleConfig {
 
   override var roboDirectives: List<List<String>> = emptyList()
 
-  val configs: NamedDomainObjectContainer<FladleConfigImpl> = project.container(FladleConfigImpl::class.java) {
+  val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
       name = it,
       projectId = projectId,
