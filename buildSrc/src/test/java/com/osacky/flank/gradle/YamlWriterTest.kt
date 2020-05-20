@@ -32,7 +32,7 @@ class YamlWriterTest {
       |    version: 28
       |
     """.trimMargin()
-    assertEquals(expected, deviceString)
+    assertThat(deviceString).isEqualTo(expected)
   }
 
   @Test
@@ -50,7 +50,7 @@ class YamlWriterTest {
       |    version: 23
       |
     """.trimMargin()
-    assertEquals(expected, deviceString)
+    assertThat(deviceString).isEqualTo(expected)
   }
 
   @Test
@@ -70,7 +70,7 @@ class YamlWriterTest {
       |    orientation: landscape
       |
     """.trimMargin()
-    assertEquals(expected, deviceString)
+    assertThat(deviceString).isEqualTo(expected)
   }
 
   @Test
@@ -92,7 +92,7 @@ class YamlWriterTest {
       |    locale: es_ES
       |
     """.trimMargin()
-    assertEquals(expected, deviceString)
+    assertThat(deviceString).isEqualTo(expected)
   }
 
   @Test
