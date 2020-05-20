@@ -5,7 +5,7 @@ import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesti
 internal class YamlWriter {
 
   internal fun createConfigProps(config: FladleConfig, base: FlankGradleExtension): String {
-    if (base.projectId == null) {
+    if (base.projectId.orNull == null) {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
@@ -17,7 +17,7 @@ internal class YamlWriter {
       """.trimIndent()
     }
 
-    val deviceString = createDeviceString(config.devices)
+    val deviceString = createDeviceString(config.devices.getOrElse(listOf(mapOf("model" to "NexusLowRes", "version" to "28"))))
     val additionalProperties = writeAdditionalProperties(config)
     val flankProperties = writeFlankProperties(config)
 
@@ -34,18 +34,18 @@ internal class YamlWriter {
   }
 
   internal fun writeFlankProperties(config: FladleConfig): String = buildString {
-    val testShards = config.testShards
-    val shardTime = config.shardTime
-    val repeatTests = config.repeatTests
-    val smartFlankGcsPath = config.smartFlankGcsPath
-    val filesToDownload = config.filesToDownload
-    val projectId = config.projectId
+    val testShards = config.testShards.orNull
+    val shardTime = config.shardTime.orNull
+    val repeatTests = config.repeatTests.orNull
+    val smartFlankGcsPath = config.smartFlankGcsPath.orNull
+    val filesToDownload = config.filesToDownload.getOrElse(emptyList())
+    val projectId = config.projectId.orNull
     val runTimeout = config.runTimeout.orNull
     val ignoreFailedTests = config.ignoreFailedTests.getOrElse(false)
-    val disableSharding = config.disableSharding
-    val smartFlankDisableUpload = config.smartFlankDisableUpload
+    val disableSharding = config.disableSharding.getOrElse(false)
+    val smartFlankDisableUpload = config.smartFlankDisableUpload.getOrElse(false)
     val localResultsDir = config.localResultsDir.orNull
-    val testTargetsAlwaysRun = config.testTargetsAlwaysRun
+    val testTargetsAlwaysRun = config.testTargetsAlwaysRun.getOrElse(emptyList())
 
     appendln("flank:")
 
@@ -64,7 +64,7 @@ internal class YamlWriter {
     projectId?.let {
       appendln("  project: $it")
     }
-    appendln("  keep-file-path: ${config.keepFilePath}")
+    appendln("  keep-file-path: ${config.keepFilePath.getOrElse(false)}")
     if (filesToDownload.isNotEmpty()) {
       appendln("  files-to-download:")
       filesToDownload.forEach { file ->
@@ -100,79 +100,81 @@ internal class YamlWriter {
   }
 
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
-    appendln("  use-orchestrator: ${config.useOrchestrator}")
-    appendln("  auto-google-login: ${config.autoGoogleLogin}")
-    appendln("  record-video: ${config.recordVideo}")
-    appendln("  performance-metrics: ${config.performanceMetrics}")
-    appendln("  timeout: ${config.testTimeout}")
+    appendln("  use-orchestrator: ${config.useOrchestrator.getOrElse(false)}")
+    appendln("  auto-google-login: ${config.autoGoogleLogin.getOrElse(false)}")
+    appendln("  record-video: ${config.recordVideo.getOrElse(true)}")
+    appendln("  performance-metrics: ${config.performanceMetrics.getOrElse(true)}")
+    appendln("  timeout: ${config.testTimeout.getOrElse(15)}m")
 
-    config.resultsHistoryName?.let {
+    config.resultsHistoryName.orNull?.let {
       appendln("  results-history-name: $it")
     }
-    config.resultsBucket?.let {
+    config.resultsBucket.orNull?.let {
       appendln("  results-bucket: $it")
     }
-    val environmentVariables = config.environmentVariables
+    val environmentVariables = config.environmentVariables.getOrElse(emptyMap())
     if (environmentVariables.isNotEmpty()) {
       appendln("  environment-variables:")
       environmentVariables.forEach { key, value ->
         appendln("    $key: $value")
       }
     }
-    val testTargets = config.testTargets
+    val testTargets = config.testTargets.getOrElse(emptyList())
     if (testTargets.isNotEmpty()) {
       appendln("  test-targets:")
       testTargets.forEach { target ->
         appendln("  - $target")
       }
     }
-    val directoriesToPull = config.directoriesToPull
+    val directoriesToPull = config.directoriesToPull.getOrElse(emptyList())
     if (directoriesToPull.isNotEmpty()) {
       appendln("  directories-to-pull:")
       directoriesToPull.forEach { dir ->
         appendln("  - $dir")
       }
     }
-    appendln(flakyTestAttemptsLine(config.flakyTestAttempts))
-    config.resultsDir?.let {
+    appendln(flakyTestAttemptsLine(config.flakyTestAttempts.getOrElse(0)))
+    config.resultsDir.orNull?.let {
       appendln("  results-dir: $it")
     }
 
-    config.testRunnerClass?.let {
+    config.testRunnerClass.orNull?.let {
       appendln("  test-runner-class: $it")
     }
 
-    config.numUniformShards?.let {
+    config.numUniformShards.orNull?.let {
       appendln("  num-uniform-shards: $it")
     }
 
-    if (config.clientDetails.isNotEmpty()) {
-      appendln("  client-details:")
-      config.clientDetails.forEach {
-        appendln("    ${it.key}: ${it.value}")
+    config.clientDetails.getOrElse(emptyMap()).also { details ->
+      if (details.isNotEmpty()) {
+        appendln("  client-details:")
+        details.forEach { appendln("    ${it.key}: ${it.value}") }
       }
     }
 
-    if (config.otherFiles.isNotEmpty()) {
-      appendln("  other-files:")
-      config.otherFiles.forEach {
-        appendln("    ${it.key}: ${it.value}")
+    config.otherFiles.getOrElse(emptyMap()).also { files ->
+      if (files.isNotEmpty()) {
+        appendln("  other-files:")
+        files.forEach { appendln("    ${it.key}: ${it.value}") }
       }
     }
 
-    config.networkProfile?.let {
+    config.networkProfile.orNull?.let {
       appendln("  network-profile: $it")
     }
 
-    config.roboScript?.let {
+    config.roboScript.orNull?.let {
       appendln("  robo-script: $it")
     }
 
-    if (config.roboDirectives.isNotEmpty()) {
-      appendln("  robo-directives:")
-      config.roboDirectives.forEach {
-        val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
-        appendln("    ${it[0]}:${it[1]}: $value")
+    config.roboDirectives.getOrElse(emptyList()).also { directives ->
+      if (directives.isNotEmpty()) {
+        appendln("  robo-directives:")
+        directives.forEach {
+          val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
+          appendln("    ${it[0]}:${it[1]}: $value")
+        }
       }
     }
   }

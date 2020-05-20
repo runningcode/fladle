@@ -2,20 +2,21 @@ package com.osacky.flank.gradle
 
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 
 interface FladleConfig {
   // Project id is automatically discovered by default. Use this to override the project id.
-  var projectId: String?
+  var projectId: Property<String>
   val serviceAccountCredentials: RegularFileProperty
-  var useOrchestrator: Boolean
-  var autoGoogleLogin: Boolean
-  var devices: List<Map<String, String>>
+  var useOrchestrator: Property<Boolean>
+  var autoGoogleLogin: Property<Boolean>
+  var devices: ListProperty<Map<String, String>>
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
-  var testTargets: List<String>
+  var testTargets: ListProperty<String>
 
-  var testShards: Int?
+  var testShards: Property<Int>
 
   /**
    * shardTime - the amount of time tests within a shard should take
@@ -23,36 +24,36 @@ interface FladleConfig {
    * 2 minutes (120) is recommended.
    * default: -1 (unlimited)
    */
-  var shardTime: Int?
+  var shardTime: Property<Int>
 
-  var repeatTests: Int?
+  var repeatTests: Property<Int>
 
-  var smartFlankGcsPath: String?
+  var smartFlankGcsPath: Property<String>
 
-  var resultsHistoryName: String?
+  var resultsHistoryName: Property<String>
 
-  var directoriesToPull: List<String>
+  var directoriesToPull: ListProperty<String>
 
-  var filesToDownload: List<String>
+  var filesToDownload: ListProperty<String>
 
-  var environmentVariables: Map<String, String>
+  var environmentVariables: MapProperty<String, String>
 
-  var recordVideo: Boolean
+  var recordVideo: Property<Boolean>
 
-  var performanceMetrics: Boolean
+  var performanceMetrics: Property<Boolean>
 
   // The number of times to retry failed tests. Default is 0. Max is 10.
-  var flakyTestAttempts: Int
+  var flakyTestAttempts: Property<Int>
 
-  var resultsBucket: String?
+  var resultsBucket: Property<String>
 
-  var keepFilePath: Boolean
+  var keepFilePath: Property<Boolean>
 
   /**
    * The name of a unique Google Cloud Storage object within the results bucket where raw test results will be stored
    * (default: a timestamp with a random suffix).
    */
-  var resultsDir: String?
+  var resultsDir: Property<String>
 
   var additionalTestApks: ListProperty<String>
 
@@ -71,18 +72,18 @@ interface FladleConfig {
   /**
    * Disables sharding. Useful for parameterized tests. (default: false)
    */
-  var disableSharding: Boolean
+  var disableSharding: Property<Boolean>
 
   /**
    * Disables smart flank JUnit XML uploading. Useful for preventing timing data from being updated. (default: false)
    */
-  var smartFlankDisableUpload: Boolean
+  var smartFlankDisableUpload: Property<Boolean>
 
   /**
    * The fully-qualified Java class name of the instrumentation test runner
    * (default: the last name extracted from the APK manifest).
    */
-  var testRunnerClass: String?
+  var testRunnerClass: Property<String>
 
   /**
    * Local folder to store the test result.
@@ -100,7 +101,7 @@ interface FladleConfig {
    * If you want to take benefits of smart sharding use max-test-shards instead.
    * (default: null)
    */
-  var numUniformShards: Int?
+  var numUniformShards: Property<Int>
 
   /**
    * A key-value map of additional details to attach to the test matrix.
@@ -108,20 +109,20 @@ interface FladleConfig {
    * When consuming the test results, such as in Cloud Functions or a CI system,
    * these details can add additional context such as a link to the corresponding pull request.
    */
-  var clientDetails: Map<String, String>
+  var clientDetails: MapProperty<String, String>
 
   /**
    * Always run - these tests are inserted at the beginning of every shard
    * useful if you need to grant permissions or login before other tests run
    */
-  var testTargetsAlwaysRun: List<String>
+  var testTargetsAlwaysRun: ListProperty<String>
 
   /**
    * A list of device-path: file-path pairs that indicate the device paths to push files to the device before starting tests, and the paths of files to push.
    * Device paths must be under absolute, whitelisted paths (${EXTERNAL_STORAGE}, or ${ANDROID_DATA}/local/tmp).
    * Source file paths may be in the local filesystem or in Google Cloud Storage (gs://…).
    */
-  var otherFiles: Map<String, String>
+  var otherFiles: MapProperty<String, String>
 
   /**
    * The name of the network traffic profile, for example LTE, HSPA, etc,
@@ -129,7 +130,7 @@ interface FladleConfig {
    * (default: no network shaping; see available profiles listed by the `flank test network-profiles list` command).
    * This feature only works on physical devices.
    */
-  var networkProfile: String?
+  var networkProfile: Property<String>
 
   /**
    * The path to a Robo Script JSON file.
@@ -137,7 +138,7 @@ interface FladleConfig {
    * You can guide the Robo test to perform specific actions by recording a Robo Script in Android Studio and then specifying this argument.
    * Learn more at [https://firebase.google.com/docs/test-lab/robo-ux-test#scripting].
    */
-  var roboScript: String?
+  var roboScript: Property<String>
 
   /**
    * List of robo_directives that you can use to customize the behavior of Robo test.
@@ -146,7 +147,7 @@ interface FladleConfig {
    * Each key should be the Android resource name of a target UI element and each value should be the text input for that element.
    * Values are only permitted for text type elements, so no value should be specified for click and ignore type elements.
    */
-  var roboDirectives: List<List<String>>
+  var roboDirectives: ListProperty<List<String>>
 
   /**
    * The max time test execution can run before it is cancelled (default: 15m).

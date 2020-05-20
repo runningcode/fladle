@@ -139,7 +139,7 @@ class YamlWriterTest {
   @Test
   fun verifyMissingServiceDoesntThrowErrorIfProjectIdSet() {
     val extension = emptyExtension {
-      projectId = "set"
+      projectId.set("set")
       debugApk.set("path")
       instrumentationApk.set("instrument")
     }
@@ -279,7 +279,7 @@ class YamlWriterTest {
   @Test
   fun writeProjectIdOption() {
     val extension = emptyExtension {
-      projectId = "foo"
+      projectId.set("foo")
     }
 
     assertEquals(
@@ -297,7 +297,7 @@ class YamlWriterTest {
   @Test
   fun writeTestShardOption() {
     val extension = emptyExtension {
-      testShards = 5
+      testShards.set(5)
     }
 
     assertEquals(
@@ -315,7 +315,7 @@ class YamlWriterTest {
   @Test
   fun writeShardTimeOption() {
     val extension = emptyExtension {
-      shardTime = 120
+      shardTime.set(120)
     }
 
     assertEquals(
@@ -332,25 +332,19 @@ class YamlWriterTest {
 
   @Test
   fun writeNoTestRepeats() {
-    val extension = emptyExtension {
-      repeatTests = null
-    }
-
-    assertEquals(
-      "flank:\n" +
-        "  keep-file-path: false\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
-    )
+    val extension = emptyExtension {}
+    assertEquals("flank:\n" +
+            "  keep-file-path: false\n" +
+            "  ignore-failed-tests: false\n" +
+            "  disable-sharding: false\n" +
+            "  smart-flank-disable-upload: false\n",
+      yamlWriter.writeFlankProperties(extension))
   }
 
   @Test
   fun writeTestRepeats() {
     val extension = emptyExtension {
-      repeatTests = 5
+      repeatTests.set(5)
     }
 
     assertEquals(
@@ -368,8 +362,8 @@ class YamlWriterTest {
   @Test
   fun writeTestShardAndRepeatOption() {
     val extension = emptyExtension {
-      testShards = 5
-      repeatTests = 2
+      testShards.set(5)
+      repeatTests.set(2)
     }
 
     assertEquals(
@@ -388,7 +382,7 @@ class YamlWriterTest {
   @Test
   fun writeResultsHistoryName() {
     val extension = emptyExtension {
-      resultsHistoryName = "androidtest"
+      resultsHistoryName.set("androidtest")
     }
 
     assertEquals(
@@ -406,7 +400,7 @@ class YamlWriterTest {
   @Test
   fun writeResultsBucket() {
     val extension = emptyExtension {
-      resultsBucket = "fake-project.appspot.com"
+      resultsBucket.set("fake-project.appspot.com")
     }
 
     assertEquals(
@@ -424,7 +418,7 @@ class YamlWriterTest {
   @Test
   fun writeResultsDir() {
     val extension = emptyExtension {
-      resultsDir = "resultsGoHere"
+      resultsDir.set("resultsGoHere")
     }
 
     assertEquals(
@@ -442,8 +436,8 @@ class YamlWriterTest {
   @Test
   fun writeTestTargetsAndResultsHistoryName() {
     val extension = emptyExtension {
-      resultsHistoryName = "androidtest"
-      testTargets = listOf("class com.example.Foo")
+      resultsHistoryName.set("androidtest")
+      testTargets.set(listOf("class com.example.Foo"))
     }
 
     assertEquals(
@@ -463,7 +457,7 @@ class YamlWriterTest {
   @Test
   fun writeNoTestTargets() {
     val extension = emptyExtension {
-      testTargets = listOf()
+      testTargets.set(listOf())
     }
 
     assertEquals(
@@ -480,7 +474,7 @@ class YamlWriterTest {
   @Test
   fun writeSingleTestTargets() {
     val extension = emptyExtension {
-      testTargets = listOf("class com.example.Foo#testThing")
+      testTargets.set(listOf("class com.example.Foo#testThing"))
     }
 
     assertEquals(
@@ -499,7 +493,7 @@ class YamlWriterTest {
   @Test
   fun writeMultipleTestTargets() {
     val extension = emptyExtension {
-      testTargets = listOf("class com.example.Foo#testThing", "class com.example.Foo#testThing2")
+      testTargets.set(listOf("class com.example.Foo#testThing", "class com.example.Foo#testThing2"))
     }
 
     assertEquals(
@@ -519,7 +513,7 @@ class YamlWriterTest {
   @Test
   fun writeSmartFlankGcsPath() {
     val extension = emptyExtension {
-      smartFlankGcsPath = "gs://test/fakepath.xml"
+      smartFlankGcsPath.set("gs://test/fakepath.xml")
     }
 
     assertEquals(
@@ -537,7 +531,7 @@ class YamlWriterTest {
   @Test
   fun writeNoDirectoriesToPull() {
     val extension = emptyExtension {
-      directoriesToPull = listOf()
+      directoriesToPull.set(listOf())
     }
 
     assertEquals(
@@ -554,7 +548,7 @@ class YamlWriterTest {
   @Test
   fun writeSingleDirectoriesToPull() {
     val extension = emptyExtension {
-      directoriesToPull = listOf("/sdcard/screenshots")
+      directoriesToPull.set(listOf("/sdcard/screenshots"))
     }
 
     assertEquals(
@@ -573,7 +567,7 @@ class YamlWriterTest {
   @Test
   fun writeMultipleDirectoriesToPull() {
     val extension = emptyExtension {
-      directoriesToPull = listOf("/sdcard/screenshots", "/sdcard/reports")
+      directoriesToPull.set(listOf("/sdcard/screenshots", "/sdcard/reports"))
     }
 
     assertEquals(
@@ -593,7 +587,7 @@ class YamlWriterTest {
   @Test
   fun writeNoFilesToDownload() {
     val extension = emptyExtension {
-      filesToDownload = listOf()
+      filesToDownload.set(listOf())
     }
 
     assertEquals(
@@ -610,7 +604,7 @@ class YamlWriterTest {
   @Test
   fun writeSingleFilesToDownload() {
     val extension = emptyExtension {
-      filesToDownload = listOf(".*/screenshots/.*")
+      filesToDownload.set(listOf(".*/screenshots/.*"))
     }
 
     assertEquals(
@@ -629,7 +623,7 @@ class YamlWriterTest {
   @Test
   fun writeMultipleFilesToDownload() {
     val extension = emptyExtension {
-      filesToDownload = listOf(".*/screenshots/.*", ".*/reports/.*")
+      filesToDownload.set(listOf(".*/screenshots/.*", ".*/reports/.*"))
     }
 
     assertEquals(
@@ -649,9 +643,9 @@ class YamlWriterTest {
   @Test
   fun writeSingleEnvironmentVariables() {
     val extension = emptyExtension {
-      environmentVariables = mapOf(
+      environmentVariables.set(mapOf(
         "listener" to "com.osacky.flank.sample.Listener"
-      )
+      ))
     }
 
     assertEquals(
@@ -670,10 +664,10 @@ class YamlWriterTest {
   @Test
   fun writeMultipleEnvironmentVariables() {
     val extension = emptyExtension {
-      environmentVariables = mapOf(
+      environmentVariables.set(mapOf(
         "clearPackageData" to "true",
         "listener" to "com.osacky.flank.sample.Listener"
-      )
+      ))
     }
 
     assertEquals(
@@ -693,11 +687,11 @@ class YamlWriterTest {
   @Test
   fun writeDefaultProperties() {
     val extension = emptyExtension {
-      useOrchestrator = true
-      autoGoogleLogin = true
-      recordVideo = false
-      performanceMetrics = false
-      testTimeout = "45m"
+      useOrchestrator.set(true)
+      autoGoogleLogin.set(true)
+      recordVideo.set(false)
+      performanceMetrics.set(false)
+      testTimeout.set("45")
     }
 
     assertEquals(
@@ -729,7 +723,7 @@ class YamlWriterTest {
   @Test
   fun writeKeepFilePath() {
     val extension = emptyExtension {
-      keepFilePath = true
+      keepFilePath.set(true)
     }
 
     assertThat(yamlWriter.writeFlankProperties(extension))
@@ -833,7 +827,7 @@ class YamlWriterTest {
   @Test
   fun writeDisableSharding() {
     val properties = emptyExtension {
-      disableSharding = true
+      disableSharding.set(true)
     }.toFlankProperties()
 
     assertTrue(properties.contains("  disable-sharding: true"))
@@ -842,7 +836,7 @@ class YamlWriterTest {
   @Test
   fun writeSmartFlankDisableUpload() {
     val properties = emptyExtension {
-      smartFlankDisableUpload = true
+      smartFlankDisableUpload.set(true)
     }.toFlankProperties()
 
     assertTrue(properties.contains("  smart-flank-disable-upload: true"))
@@ -851,7 +845,7 @@ class YamlWriterTest {
   @Test
   fun writeTestRunnerClass() {
     val properties = emptyExtension {
-      testRunnerClass = "any.class.Runner"
+      testRunnerClass.set("any.class.Runner")
     }.toAdditionalProperties()
 
     assertTrue(properties.contains("  test-runner-class: any.class.Runner"))
@@ -869,7 +863,7 @@ class YamlWriterTest {
   @Test
   fun writeNumUniformShards() {
     val properties = emptyExtension {
-      numUniformShards = 20
+      numUniformShards.set(20)
     }.toAdditionalProperties()
 
     assertTrue(properties.contains("  num-uniform-shards: 20"))
@@ -894,10 +888,10 @@ class YamlWriterTest {
   @Test
   fun writeClientDetails() {
     val properties = emptyExtension {
-      clientDetails = mapOf(
-        "anyDetail1" to "anyValue1",
-        "anyDetail2" to "anyValue2"
-      )
+      clientDetails.set(mapOf(
+              "anyDetail1" to "anyValue1",
+              "anyDetail2" to "anyValue2"
+      ))
     }.toAdditionalProperties()
 
     assertTrue(
@@ -914,11 +908,11 @@ class YamlWriterTest {
   @Test
   fun writeTestTargetsAlwaysRun() {
     val properties = emptyExtension {
-      testTargetsAlwaysRun = listOf(
-        "com.example.FirstTests#test1",
-        "com.example.FirstTests#test2",
-        "com.example.FirstTests#test3"
-      )
+      testTargetsAlwaysRun.set(listOf(
+              "com.example.FirstTests#test1",
+              "com.example.FirstTests#test2",
+              "com.example.FirstTests#test3"
+      ))
     }.toFlankProperties()
 
     assertTrue(
@@ -936,10 +930,10 @@ class YamlWriterTest {
   @Test
   fun writeOtherFiles() {
     val properties = emptyExtension {
-      otherFiles = mapOf(
-        "/example/path/test1" to "anyfile.txt",
-        "/example/path/test2" to "anyfile2.txt"
-      )
+      otherFiles.set(mapOf(
+              "/example/path/test1" to "anyfile.txt",
+              "/example/path/test2" to "anyfile2.txt"
+      ))
     }.toAdditionalProperties()
 
     assertTrue(
@@ -956,7 +950,7 @@ class YamlWriterTest {
   @Test
   fun writeNetworkProfile() {
     val properties = emptyExtension {
-      networkProfile = "LTE"
+      networkProfile.set("LTE")
     }.toAdditionalProperties()
 
     assertTrue(properties.contains("  network-profile: LTE"))
@@ -965,7 +959,7 @@ class YamlWriterTest {
   @Test
   fun writeRoboScript() {
     val properties = emptyExtension {
-      roboScript = "~/my/dir/with/script.json"
+      roboScript.set("~/my/dir/with/script.json")
     }.toAdditionalProperties()
 
     assertTrue(properties.contains("  robo-script: ~/my/dir/with/script.json"))
@@ -974,11 +968,11 @@ class YamlWriterTest {
   @Test
   fun writeRoboDirectives() {
     val properties = emptyExtension {
-      roboDirectives = listOf(
-        listOf("click", "button3"),
-        listOf("ignore", "button1", ""),
-        listOf("text", "field1", "my common text")
-      )
+      roboDirectives.set(listOf(
+              listOf("click", "button3"),
+              listOf("ignore", "button1", ""),
+              listOf("text", "field1", "my common text")
+      ))
     }.toAdditionalProperties()
 
     assertTrue(

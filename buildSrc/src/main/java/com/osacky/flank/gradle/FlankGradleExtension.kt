@@ -5,8 +5,10 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.listProperty
+import org.gradle.kotlin.dsl.mapProperty
 import org.gradle.kotlin.dsl.property
 import javax.inject.Inject
 
@@ -14,25 +16,25 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   val flankCoordinates: Property<String> = objects.property(String::class.java).convention("com.github.flank:flank")
   val flankVersion: Property<String> = objects.property(String::class.java).convention("20.07.0")
   // Project id is automatically discovered by default. Use this to override the project id.
-  override var projectId: String? = null
+  override var projectId: Property<String> = objects.property()
   override val serviceAccountCredentials: RegularFileProperty = objects.fileProperty()
-  override var useOrchestrator: Boolean = false
-  override var autoGoogleLogin: Boolean = false
-  override var devices: List<Map<String, String>> = listOf(mapOf("model" to "NexusLowRes", "version" to "28"))
+  override var useOrchestrator: Property<Boolean> = objects.property()
+  override var autoGoogleLogin: Property<Boolean> = objects.property()
+  override var devices: ListProperty<Map<String, String>> = objects.listProperty()
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
-  override var testTargets: List<String> = emptyList()
+  override var testTargets: ListProperty<String> = objects.listProperty()
 
-  override var testShards: Int? = null
-  override var shardTime: Int? = null
-  override var repeatTests: Int? = null
+  override var testShards: Property<Int> = objects.property()
+  override var shardTime: Property<Int> = objects.property()
+  override var repeatTests: Property<Int> = objects.property()
 
   // Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
-  override var smartFlankGcsPath: String? = null
+  override var smartFlankGcsPath: Property<String> = objects.property()
 
-  override var resultsHistoryName: String? = null
+  override var resultsHistoryName: Property<String> = objects.property()
 
-  override var flakyTestAttempts = 0
+  override var flakyTestAttempts: Property<Int> = objects.property()
 
   // Variant to use for configuring output APK.
   var variant: Property<String> = objects.property()
@@ -43,21 +45,21 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   val debugApk: Property<String> = objects.property()
   val instrumentationApk: Property<String> = objects.property()
 
-  override var directoriesToPull: List<String> = emptyList()
+  override var directoriesToPull: ListProperty<String> = objects.listProperty()
 
-  override var filesToDownload: List<String> = emptyList()
+  override var filesToDownload: ListProperty<String> = objects.listProperty()
 
-  override var environmentVariables: Map<String, String> = emptyMap()
+  override var environmentVariables: MapProperty<String, String> = objects.mapProperty()
 
-  override var recordVideo: Boolean = true
+  override var recordVideo: Property<Boolean> = objects.property()
 
-  override var performanceMetrics: Boolean = true
+  override var performanceMetrics: Property<Boolean> = objects.property()
 
-  override var resultsBucket: String? = null
+  override var resultsBucket: Property<String> = objects.property()
 
-  override var keepFilePath: Boolean = false
+  override var keepFilePath: Property<Boolean> = objects.property()
 
-  override var resultsDir: String? = null
+  override var resultsDir: Property<String> = objects.property()
 
   override var additionalTestApks: ListProperty<String> = objects.listProperty()
 
@@ -65,27 +67,27 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override var ignoreFailedTests: Property<Boolean> = objects.property()
 
-  override var disableSharding: Boolean = false
+  override var disableSharding: Property<Boolean> = objects.property()
 
-  override var smartFlankDisableUpload: Boolean = false
+  override var smartFlankDisableUpload: Property<Boolean> = objects.property()
 
-  override var testRunnerClass: String? = null
+  override var testRunnerClass: Property<String> = objects.property()
 
   override var localResultsDir: Property<String> = objects.property()
 
-  override var numUniformShards: Int? = null
+  override var numUniformShards: Property<Int> = objects.property()
 
-  override var clientDetails: Map<String, String> = emptyMap()
+  override var clientDetails: MapProperty<String, String> = objects.mapProperty()
 
-  override var testTargetsAlwaysRun: List<String> = emptyList()
+  override var testTargetsAlwaysRun: ListProperty<String> = objects.listProperty()
 
-  override var otherFiles: Map<String, String> = emptyMap()
+  override var otherFiles: MapProperty<String, String> = objects.mapProperty()
 
-  override var networkProfile: String? = null
+  override var networkProfile: Property<String> = objects.property()
 
-  override var roboScript: String? = null
+  override var roboScript: Property<String> = objects.property()
 
-  override var roboDirectives: List<List<String>> = emptyList()
+  override var roboDirectives: ListProperty<List<String>> = objects.listProperty()
 
   override var testTimeout: String = "15m"
 
