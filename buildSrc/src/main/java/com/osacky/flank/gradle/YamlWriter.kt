@@ -18,13 +18,17 @@ internal class YamlWriter {
     val deviceString = createDeviceString(config.devices)
     val additionalProperties = writeAdditionalProperties(config)
     val flankProperties = writeFlankProperties(config)
-    return """gcloud:
-      |  app: ${base.debugApk.get()}
-      |  test: ${base.instrumentationApk.get()}
-      |$deviceString
-      |$additionalProperties
-      |$flankProperties
-    """.trimMargin()
+
+    return buildString {
+      appendln("gcloud:")
+      appendln("  app: ${base.debugApk.get()}")
+      if (base.instrumentationApk.isPresent) {
+        appendln("  test: ${base.instrumentationApk.get()}")
+      }
+      appendln(deviceString)
+      appendln(additionalProperties)
+      append(flankProperties)
+    }
   }
 
   internal fun writeFlankProperties(config: FladleConfig): String = buildString {
