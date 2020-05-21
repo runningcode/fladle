@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.1
+* [Fix] Allow for specifying roboScript without specifying instrumentationApk. Fixes [#128](https://github.com/runningcode/fladle/issues/128).
+
 ## 0.10.0
 
 * Allow for debugging using [--dump-shards](/fladle/faq/#debugging)

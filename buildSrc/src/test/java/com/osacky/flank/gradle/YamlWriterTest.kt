@@ -177,7 +177,7 @@ class YamlWriterTest {
   }
 
   @Test
-  fun verifyInstrumentationApkThrowsError() {
+  fun verifyNoInstrumentationApkThrowsError() {
     val extension = emptyExtension {
       serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
       debugApk.set("path")
@@ -186,7 +186,31 @@ class YamlWriterTest {
       yamlWriter.createConfigProps(extension, extension)
       fail()
     } catch (expected: IllegalStateException) {
-      assertEquals("instrumentationApk must be specified", expected.message)
+      assertThat(expected).hasMessageThat().isEqualTo("""
+        Either instrumentationApk file or roboScript file must be specified but not both.
+        instrumentationApk=null
+        roboScript=null
+      """.trimIndent())
+    }
+  }
+
+  @Test
+  fun verifyInstrumentationApkAndRoboscriptThrowsError() {
+    val extension = emptyExtension {
+      serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
+      debugApk.set("path")
+      instrumentationApk.set("build/test/*.apk")
+      roboScript = "foo"
+    }
+    try {
+      yamlWriter.createConfigProps(extension, extension)
+      fail()
+    } catch (expected: IllegalStateException) {
+      assertThat(expected).hasMessageThat().isEqualTo("""
+        Either instrumentationApk file or roboScript file must be specified but not both.
+        instrumentationApk=build/test/*.apk
+        roboScript=foo
+      """.trimIndent())
     }
   }
 
