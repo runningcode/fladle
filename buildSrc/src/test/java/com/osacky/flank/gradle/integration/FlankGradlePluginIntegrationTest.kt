@@ -2,7 +2,6 @@ package com.osacky.flank.gradle.integration
 
 import com.google.common.truth.Truth.assertThat
 import org.gradle.testkit.runner.GradleRunner
-import org.gradle.testkit.runner.UnexpectedBuildFailure
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -117,16 +116,58 @@ class FlankGradlePluginIntegrationTest {
              |}
              |""".trimMargin()
     )
-    try {
+    val result = GradleRunner.create()
+        .withProjectDir(testProjectRoot.root)
+        .withPluginClasspath()
+        .withGradleVersion(minSupportGradleVersion)
+        .withArguments("runFlank")
+        .buildAndFail()
+    assertThat(result.output).contains("debugApk must be specified")
+  }
 
-      GradleRunner.create()
-          .withProjectDir(testProjectRoot.root)
-          .withPluginClasspath()
-          .withGradleVersion(minSupportGradleVersion)
-          .withArguments("printYml")
-          .build()
-    } catch (expected: UnexpectedBuildFailure) {
-      assertThat(expected).hasMessageThat().contains("debugApk must be specified")
-    }
+  @Test
+  fun testMissingInstrumentationApkFailsBuild() {
+    writeBuildGradle(
+        """plugins {
+            id "com.osacky.fladle"
+           }
+           fladle {
+             serviceAccountCredentials = project.layout.projectDirectory.file("foo")
+             debugApk = "test-debug.apk"
+           }
+           """.trimIndent()
+    )
+    val result = GradleRunner.create()
+        .withProjectDir(testProjectRoot.root)
+        .withPluginClasspath()
+        .withGradleVersion(minSupportGradleVersion)
+        .withArguments("runFlank")
+        .buildAndFail()
+
+    assertThat(result.output).contains("Either instrumentationApk file or roboScript file must be specified but not both.")
+  }
+
+  @Test
+  fun testSpecifyingBothInstrumenationAndRoboscriptFailsBuild() {
+    writeBuildGradle(
+        """plugins {
+            id "com.osacky.fladle"
+           }
+           fladle {
+             serviceAccountCredentials = project.layout.projectDirectory.file("foo")
+             debugApk = "test-debug.apk"
+             instrumentationApk = "instrumenation-debug.apk"
+             roboScript = "foo.script"
+           }
+           """.trimIndent()
+    )
+    val result = GradleRunner.create()
+        .withProjectDir(testProjectRoot.root)
+        .withPluginClasspath()
+        .withGradleVersion(minSupportGradleVersion)
+        .withArguments("printYml")
+        .buildAndFail()
+
+    assertThat(result.output).contains("Either instrumentationApk file or roboScript file must be specified but not both.")
   }
 }

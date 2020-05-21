@@ -107,8 +107,6 @@ class FladlePluginDelegate {
     if (base.serviceAccountCredentials.isPresent) {
       check(project.file(base.serviceAccountCredentials.get()).exists()) { "serviceAccountCredential file doesn't exist ${base.serviceAccountCredentials.get()}" }
     }
-    check(base.debugApk.isPresent) { "debugApk file must be specified ${base.debugApk.orNull}" }
-    check(base.instrumentationApk.isPresent) { "instrumentationApk file must be specified ${base.instrumentationApk.orNull}" }
   }
 
   private fun automaticallyConfigureTestOrchestrator(project: Project, extension: FlankGradleExtension, androidExtension: AppExtension) {

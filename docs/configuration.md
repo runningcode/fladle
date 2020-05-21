@@ -173,6 +173,7 @@ Optional, prefer to set [variant](/configuration#variant).
 This is a string representing the path to the app's instrumentaiton apk. 
 Supports wildcard characters. 
 Optional, prefer to set [variant](/configuration#variant).
+InstrumenationApk should not be set when using [roboScript](/configuration#roboscript).
 
 === "Groovy"
     ``` groovy
