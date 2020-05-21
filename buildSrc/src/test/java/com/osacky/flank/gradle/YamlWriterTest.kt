@@ -140,26 +140,28 @@ class YamlWriterTest {
       instrumentationApk.set("instrument")
     }
     val yaml = yamlWriter.createConfigProps(extension, extension)
-    assertEquals("gcloud:\n" +
-            "  app: path\n" +
-            "  test: instrument\n" +
-            "  device:\n" +
-            "  - model: NexusLowRes\n" +
-            "    version: 28\n" +
-            "\n" +
-            "  use-orchestrator: false\n" +
-            "  auto-google-login: false\n" +
-            "  record-video: true\n" +
-            "  performance-metrics: true\n" +
-            "  timeout: 15m\n" +
-            "  num-flaky-test-attempts: 0\n" +
-            "\n" +
-            "flank:\n" +
-            "  project: set\n" +
-            "  keep-file-path: false\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n", yaml
+    assertThat(yaml).isEqualTo("""
+             gcloud:
+               app: path
+               test: instrument
+               device:
+               - model: NexusLowRes
+                 version: 28
+             
+               use-orchestrator: false
+               auto-google-login: false
+               record-video: true
+               performance-metrics: true
+               timeout: 15m
+               num-flaky-test-attempts: 0
+             
+             flank:
+               project: set
+               keep-file-path: false
+               ignore-failed-tests: false
+               disable-sharding: false
+               smart-flank-disable-upload: false
+             """.trimIndent() + '\n' // Dunno why this needs to be here to make the tests pass.
     )
   }
 
@@ -212,6 +214,37 @@ class YamlWriterTest {
         roboScript=foo
       """.trimIndent())
     }
+  }
+
+  @Test
+  fun verifyOnlyWithRoboscriptWorks() {
+    val extension = emptyExtension {
+      serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
+      debugApk.set("path")
+      roboScript = "foo"
+    }
+    val configProps = yamlWriter.createConfigProps(extension, extension)
+    assertThat(configProps).isEqualTo("""
+    gcloud:
+      app: path
+      device:
+      - model: NexusLowRes
+        version: 28
+    
+      use-orchestrator: false
+      auto-google-login: false
+      record-video: true
+      performance-metrics: true
+      timeout: 15m
+      num-flaky-test-attempts: 0
+      robo-script: foo
+    
+    flank:
+      keep-file-path: false
+      ignore-failed-tests: false
+      disable-sharding: false
+      smart-flank-disable-upload: false
+    """.trimIndent() + '\n')
   }
 
   @Test
