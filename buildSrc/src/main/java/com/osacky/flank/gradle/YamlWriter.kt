@@ -9,15 +9,13 @@ internal class YamlWriter {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
-    check(base.instrumentationApk.isPresent xor !base.roboScript.isNullOrBlank()) {
-      """
+    check(base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank()) { """
      Either instrumentationApk file or roboScript file must be specified but not both.
      instrumentationApk=${base.instrumentationApk.orNull}
-     roboScript=${base.roboScript}
-      """.trimIndent()
-    }
+     roboScript=${base.roboScript.orNull}
+    """.trimIndent() }
 
-    val deviceString = createDeviceString(config.devices.getOrElse(listOf(mapOf("model" to "NexusLowRes", "version" to "28"))))
+    val deviceString = createDeviceString(config.devices.get())
     val additionalProperties = writeAdditionalProperties(config)
     val flankProperties = writeFlankProperties(config)
 
@@ -34,44 +32,41 @@ internal class YamlWriter {
   }
 
   internal fun writeFlankProperties(config: FladleConfig): String = buildString {
-    val testShards = config.testShards.orNull
-    val shardTime = config.shardTime.orNull
-    val repeatTests = config.repeatTests.orNull
-    val smartFlankGcsPath = config.smartFlankGcsPath.orNull
-    val filesToDownload = config.filesToDownload.getOrElse(emptyList())
-    val projectId = config.projectId.orNull
-    val runTimeout = config.runTimeout.orNull
-    val ignoreFailedTests = config.ignoreFailedTests.getOrElse(false)
-    val disableSharding = config.disableSharding.getOrElse(false)
-    val smartFlankDisableUpload = config.smartFlankDisableUpload.getOrElse(false)
-    val localResultsDir = config.localResultsDir.orNull
-    val testTargetsAlwaysRun = config.testTargetsAlwaysRun.getOrElse(emptyList())
-
     appendln("flank:")
+    // without default values
+    val testShards = config.testShards
+    val shardTime = config.shardTime
+    val repeatTests = config.repeatTests
+    val smartFlankGcsPath = config.smartFlankGcsPath
+    val projectId = config.projectId
+    val runTimeout = config.runTimeout
+    val localResultsDir = config.localResultsDir
 
-    testShards?.let {
-      appendln("  max-test-shards: $testShards")
-    }
-    shardTime?.let {
-      appendln("  shard-time: $shardTime")
-    }
-    repeatTests?.let {
-      appendln(repeatTestsLine(repeatTests))
-    }
-    smartFlankGcsPath?.let {
-      appendln("  smart-flank-gcs-path: $it")
-    }
-    projectId?.let {
-      appendln("  project: $it")
-    }
-    appendln("  keep-file-path: ${config.keepFilePath.getOrElse(false)}")
+    if (testShards.isPresent) appendln("  max-test-shards: ${testShards.get()}")
+    if (shardTime.isPresent) appendln("  shard-time: ${shardTime.get()}")
+    if (repeatTests.isPresent) appendln(repeatTestsLine(repeatTests.get()))
+    if (smartFlankGcsPath.isPresent) appendln("  smart-flank-gcs-path: ${smartFlankGcsPath.get()}")
+    if (projectId.isPresent) appendln("  project: ${projectId.get()}")
+    if (runTimeout.isPresent) appendln("  run-timeout: ${runTimeout.get()}")
+    if (localResultsDir.isPresent) appendln("  local-result-dir: ${localResultsDir.get()}")
+
+    // with default values
+    val filesToDownload = config.filesToDownload.get()
+    val ignoreFailedTests = config.ignoreFailedTests.get()
+    val disableSharding = config.disableSharding.get()
+    val smartFlankDisableUpload = config.smartFlankDisableUpload.get()
+    val testTargetsAlwaysRun = config.testTargetsAlwaysRun.get()
+    val keepFilePath = config.keepFilePath.get()
+    val additionalTestApks = config.additionalTestApks.get()
+
+    appendln("  keep-file-path: $keepFilePath")
+
     if (filesToDownload.isNotEmpty()) {
       appendln("  files-to-download:")
       filesToDownload.forEach { file ->
         appendln("  - $file")
       }
     }
-    val additionalTestApks = config.additionalTestApks.getOrElse(emptyList())
 
     if (additionalTestApks.isNotEmpty()) {
       appendln("  additional-app-test-apks:")
@@ -80,15 +75,9 @@ internal class YamlWriter {
       }
     }
 
-    runTimeout?.let {
-      appendln("  run-timeout: $it")
-    }
     appendln("  ignore-failed-tests: $ignoreFailedTests")
     appendln("  disable-sharding: $disableSharding")
     appendln("  smart-flank-disable-upload: $smartFlankDisableUpload")
-    localResultsDir?.let {
-      appendln("  local-result-dir: $localResultsDir")
-    }
     if (testTargetsAlwaysRun.isNotEmpty()) {
       appendln("  test-targets-always-run:")
       testTargetsAlwaysRun.forEach {
@@ -100,81 +89,79 @@ internal class YamlWriter {
   }
 
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
-    appendln("  use-orchestrator: ${config.useOrchestrator.getOrElse(false)}")
-    appendln("  auto-google-login: ${config.autoGoogleLogin.getOrElse(false)}")
-    appendln("  record-video: ${config.recordVideo.getOrElse(true)}")
-    appendln("  performance-metrics: ${config.performanceMetrics.getOrElse(true)}")
-    appendln("  timeout: ${config.testTimeout.getOrElse(15)}m")
+    // without default values
+    val resultsHistoryName = config.resultsHistoryName
+    val resultsBucket = config.resultsBucket
+    val resultsDir = config.resultsDir
+    val testRunnerClass = config.testRunnerClass
+    val numUniformShards = config.numUniformShards
+    val networkProfile = config.networkProfile
+    val roboScript = config.roboScript
 
-    config.resultsHistoryName.orNull?.let {
-      appendln("  results-history-name: $it")
-    }
-    config.resultsBucket.orNull?.let {
-      appendln("  results-bucket: $it")
-    }
-    val environmentVariables = config.environmentVariables.getOrElse(emptyMap())
+    if (resultsHistoryName.isPresent) appendln("  results-history-name: ${resultsHistoryName.get()}")
+    if (resultsBucket.isPresent) appendln("  results-bucket: ${resultsBucket.get()}")
+    if (resultsDir.isPresent) appendln("  results-dir: ${resultsDir.get()}")
+    if (testRunnerClass.isPresent) appendln("  test-runner-class: ${testRunnerClass.get()}")
+    if (numUniformShards.isPresent) appendln("  num-uniform-shards: ${numUniformShards.get()}")
+    if (networkProfile.isPresent) appendln("  network-profile: ${networkProfile.get()}")
+    if (roboScript.isPresent) appendln("  robo-script: ${roboScript.get()}")
+
+    // with default values
+    val useOrchestrator = config.useOrchestrator.get()
+    val autoGoogleLogin = config.autoGoogleLogin.get()
+    val recordVideo = config.recordVideo.get()
+    val performanceMetrics = config.performanceMetrics.get()
+    val timeoutMin = config.timeoutMin.get()
+    val environmentVariables = config.environmentVariables.get()
+    val testTargets = config.testTargets.get()
+    val directoriesToPull = config.directoriesToPull.get()
+    val flakyTestAttempts = config.flakyTestAttempts.get()
+    val clientDetails = config.clientDetails.get()
+    val otherFiles = config.otherFiles.get()
+    val roboDirectives = config.roboDirectives.get()
+
+    appendln("  use-orchestrator: $useOrchestrator")
+    appendln("  auto-google-login: $autoGoogleLogin")
+    appendln("  record-video: $recordVideo")
+    appendln("  performance-metrics: $performanceMetrics")
+    appendln("  timeout: ${timeoutMin}m")
+
     if (environmentVariables.isNotEmpty()) {
       appendln("  environment-variables:")
-      environmentVariables.forEach { key, value ->
+      environmentVariables.forEach { (key, value) ->
         appendln("    $key: $value")
       }
     }
-    val testTargets = config.testTargets.getOrElse(emptyList())
     if (testTargets.isNotEmpty()) {
       appendln("  test-targets:")
       testTargets.forEach { target ->
         appendln("  - $target")
       }
     }
-    val directoriesToPull = config.directoriesToPull.getOrElse(emptyList())
     if (directoriesToPull.isNotEmpty()) {
       appendln("  directories-to-pull:")
       directoriesToPull.forEach { dir ->
         appendln("  - $dir")
       }
     }
-    appendln(flakyTestAttemptsLine(config.flakyTestAttempts.getOrElse(0)))
-    config.resultsDir.orNull?.let {
-      appendln("  results-dir: $it")
+
+    appendln(flakyTestAttemptsLine(flakyTestAttempts))
+
+    if (clientDetails.isNotEmpty()) {
+      appendln("  client-details:")
+      clientDetails.forEach { appendln("    ${it.key}: ${it.value}") }
     }
 
-    config.testRunnerClass.orNull?.let {
-      appendln("  test-runner-class: $it")
+    if (otherFiles.isNotEmpty()) {
+      appendln("  other-files:")
+      otherFiles.forEach { appendln("    ${it.key}: ${it.value}") }
     }
 
-    config.numUniformShards.orNull?.let {
-      appendln("  num-uniform-shards: $it")
-    }
-
-    config.clientDetails.getOrElse(emptyMap()).also { details ->
-      if (details.isNotEmpty()) {
-        appendln("  client-details:")
-        details.forEach { appendln("    ${it.key}: ${it.value}") }
-      }
-    }
-
-    config.otherFiles.getOrElse(emptyMap()).also { files ->
-      if (files.isNotEmpty()) {
-        appendln("  other-files:")
-        files.forEach { appendln("    ${it.key}: ${it.value}") }
-      }
-    }
-
-    config.networkProfile.orNull?.let {
-      appendln("  network-profile: $it")
-    }
-
-    config.roboScript.orNull?.let {
-      appendln("  robo-script: $it")
-    }
-
-    config.roboDirectives.getOrElse(emptyList()).also { directives ->
-      if (directives.isNotEmpty()) {
-        appendln("  robo-directives:")
-        directives.forEach {
-          val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
-          appendln("    ${it[0]}:${it[1]}: $value")
-        }
+    if (roboDirectives.isNotEmpty()) {
+      appendln("  robo-directives:")
+      roboDirectives.forEach {
+        val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
+        appendln("    ${it[0]}:${it[1]}: $value")
       }
     }
   }

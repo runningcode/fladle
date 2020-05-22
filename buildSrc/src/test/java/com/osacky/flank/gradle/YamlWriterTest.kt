@@ -210,7 +210,7 @@ class YamlWriterTest {
       serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
       debugApk.set("path")
       instrumentationApk.set("build/test/*.apk")
-      roboScript = "foo"
+      roboScript.set("foo")
     }
     try {
       yamlWriter.createConfigProps(extension, extension)
@@ -231,7 +231,7 @@ class YamlWriterTest {
     val extension = emptyExtension {
       serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
       debugApk.set("path")
-      roboScript = "foo"
+      roboScript.set("foo")
     }
     val configProps = yamlWriter.createConfigProps(extension, extension)
     assertThat(configProps).isEqualTo(
@@ -242,13 +242,13 @@ class YamlWriterTest {
       - model: NexusLowRes
         version: 28
     
+      robo-script: foo
       use-orchestrator: false
       auto-google-login: false
       record-video: true
       performance-metrics: true
       timeout: 15m
       num-flaky-test-attempts: 0
-      robo-script: foo
     
     flank:
       keep-file-path: false
@@ -385,13 +385,12 @@ class YamlWriterTest {
       resultsHistoryName.set("androidtest")
     }
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
+    assertEquals("  results-history-name: androidtest\n" +
+        "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
-        "  results-history-name: androidtest\n" +
         "  num-flaky-test-attempts: 0\n",
       yamlWriter.writeAdditionalProperties(extension)
     )
@@ -403,13 +402,12 @@ class YamlWriterTest {
       resultsBucket.set("fake-project.appspot.com")
     }
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
+    assertEquals("  results-bucket: fake-project.appspot.com\n" +
+        "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
-        "  results-bucket: fake-project.appspot.com\n" +
         "  num-flaky-test-attempts: 0\n",
       yamlWriter.writeAdditionalProperties(extension)
     )
@@ -421,16 +419,14 @@ class YamlWriterTest {
       resultsDir.set("resultsGoHere")
     }
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
+    assertEquals("  results-dir: resultsGoHere\n" +
+        "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
-        "  num-flaky-test-attempts: 0\n" +
-        "  results-dir: resultsGoHere\n",
-      yamlWriter.writeAdditionalProperties(extension)
-    )
+        "  num-flaky-test-attempts: 0\n",
+        yamlWriter.writeAdditionalProperties(extension))
   }
 
   @Test
@@ -440,13 +436,12 @@ class YamlWriterTest {
       testTargets.set(listOf("class com.example.Foo"))
     }
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
+    assertEquals("  results-history-name: androidtest\n" +
+        "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
-        "  results-history-name: androidtest\n" +
         "  test-targets:\n" +
         "  - class com.example.Foo\n" +
         "  num-flaky-test-attempts: 0\n",
