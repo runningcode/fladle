@@ -38,23 +38,23 @@ fladle {
     serviceAccountCredentials.set(project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json"))
     // Project Id is not needed if serviceAccountCredentials are set.
 //    projectId("flank-gradle")
-    useOrchestrator = true
-    environmentVariables = mapOf("clearPackageData" to "true")
-    testTargets = listOf(
+    useOrchestrator.set(true)
+    environmentVariables.set(mapOf("clearPackageData" to "true"))
+    testTargets.set(listOf(
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
-    )
-    devices = listOf(
+    ))
+    devices.set(listOf(
         mapOf("model" to "Pixel2", "version" to "26" ),
         mapOf("model" to "Nexus5", "version" to "23" )
-    )
-    smartFlankGcsPath = "gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml"
+    ))
+    smartFlankGcsPath.set("gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml")
     configs {
         create("oranges") {
-            useOrchestrator = false
-            testTargets = listOf(
+            useOrchestrator.set(false)
+            testTargets.set(listOf(
                     "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
-            )
-            flakyTestAttempts = 3
+            ))
+            flakyTestAttempts.set(3)
         }
         create("additionalTests") {
             additionalTestApks.value(project.provider { listOf(
@@ -67,7 +67,7 @@ fladle {
             )})
         }
     }
-    flakyTestAttempts = 1
+    flakyTestAttempts.set(1)
 }
 
 dependencies {

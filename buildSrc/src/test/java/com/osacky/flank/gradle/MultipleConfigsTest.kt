@@ -27,7 +27,12 @@ class MultipleConfigsTest {
       |  testTargets = ['default']
       |  configs {
       |    orange {
-      |      testTargets = ['override']
+      |      testTargets.set(['override'])
+      |      timeoutMin.set 25
+      |      environmentVariables.set([
+      |        "anyVariable": "anyValue"
+      |      ])
+      |      useOrchestrator.set true
       |    }
       |  }
       |}
@@ -50,11 +55,13 @@ class MultipleConfigsTest {
       |  - model: NexusLowRes
       |    version: 28
       |
-      |  use-orchestrator: false
+      |  use-orchestrator: true
       |  auto-google-login: false
       |  record-video: true
       |  performance-metrics: true
-      |  timeout: 15m
+      |  timeout: 25m
+      |  environment-variables:
+      |    anyVariable: anyValue
       |  test-targets:
       |  - override
       |  num-flaky-test-attempts: 0

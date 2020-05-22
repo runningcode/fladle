@@ -36,29 +36,29 @@ fladle {
     smartFlankGcsPath = "gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml"
     configs {
         oranges {
-            useOrchestrator = false
-            testTargets = [
+            useOrchestrator.set false
+            testTargets.set([
                     "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
-            ]
-            flakyTestAttempts = 3
+            ])
+            flakyTestAttempts.set 3
         }
         additionalTests {
-            useOrchestrator = false
-            testTargets = [
+            useOrchestrator.set false
+            testTargets.set([
                 "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
-            ]
-            flakyTestAttempts = 3
-            additionalTestApks.value(project.provider { [
+            ])
+            flakyTestAttempts.set 3
+            additionalTestApks.set([
                 "app: ../main/app/build/output/apk/debug/app.apk",
                 "test: ../main/app/build/output/apk/androidTest/debug/app-test.apk",
                 "app: ../sample/app/build/output/apk/debug/sample-app.apk",
                 "test: ../sample/app/build/output/apk/androidTest/debug/sample-app-test.apk",
                 "test: ../feature/room/build/output/apk/androidTest/debug/feature-room-test.apk",
                 "test: ../library/databases/build/output/apk/androidTest/debug/sample-databases-test.apk"
-            ]})
+            ])
         }
     }
-    flakyTestAttempts 1
+    flakyTestAttempts = 1
 }
 
 dependencies {

@@ -45,7 +45,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override var directoriesToPull: ListProperty<String> = objects.listProperty(String::class.java).convention(emptyList())
 
-  override var filesToDownload: ListProperty<String> = objects.listProperty(String::class.java).convention(emptyList())
+  override var filesToDownload: ListProperty<String> = objects.listProperty(String::class.java)
 
   override var environmentVariables: MapProperty<String, String> = objects.mapProperty(String::class.java, String::class.java).convention(emptyMap())
 
