@@ -15,6 +15,13 @@ buildscript {
 plugins {
     id "com.github.ben-manes.versions" version "0.28.0"
     id "com.osacky.fulladle"
+    id "org.jmailen.kotlinter" version "2.3.2"
+}
+
+apply from: 'gradle/scans-quality-check.gradle'
+
+kotlinter {
+  indentSize = 2
 }
 
 allprojects {
@@ -27,6 +34,11 @@ allprojects {
                 includeVersion 'org.jetbrains.trove4j', 'trove4j', '20160824'
             }
         }
+    }
+    apply plugin: "org.jmailen.kotlinter"
+
+    kotlinter {
+        indentSize = 2
     }
 }
 

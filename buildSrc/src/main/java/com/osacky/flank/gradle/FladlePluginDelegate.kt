@@ -66,9 +66,9 @@ class FladlePluginDelegate {
       }
     }
 
-    val writeConfigProps = project.tasks.register("writeConfigProps$name", YamlConfigWriterTask::class.java, config, base)
+    val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, config, base)
 
-    project.tasks.register("flankDoctor$name", JavaExec::class.java) {
+    register("flankDoctor$name", JavaExec::class.java) {
       description = "Finds problems with the current configuration."
       group = TASK_GROUP
       workingDir(project.fladleDir)
@@ -78,7 +78,7 @@ class FladlePluginDelegate {
       dependsOn(writeConfigProps)
     }
 
-    val execFlank = project.tasks.register("execFlank$name", JavaExec::class.java) {
+    val execFlank = register("execFlank$name", JavaExec::class.java) {
       description = "Runs instrumentation tests using flank on firebase test lab."
       group = TASK_GROUP
       workingDir(project.fladleDir)
