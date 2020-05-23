@@ -31,7 +31,7 @@ class FlankGradlePluginIntegrationTest {
         .withPluginClasspath()
         .withGradleVersion(oldVersion)
         .buildAndFail()
-    assertThat(result.output).contains("Fladle requires at minimum version Gradle 5.4. Detected version Gradle 5.3.1")
+    assertThat(result.output).contains("Fladle requires at minimum version Gradle 5.5. Detected version Gradle 5.3.1")
   }
 
   @Test

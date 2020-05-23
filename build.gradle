@@ -22,7 +22,11 @@ allprojects {
         google()
         mavenCentral()
         // jcenter is required for "org.jetbrains.trove4j:trove4j:20160824."
-        jcenter()
+        jcenter() {
+            content {
+                includeVersion 'org.jetbrains.trove4j', 'trove4j', '20160824'
+            }
+        }
     }
 }
 
@@ -43,4 +47,17 @@ buildScan {
 wrapper {
     distributionType = Wrapper.DistributionType.ALL
     gradleVersion = '6.4.1'
+}
+
+def isNonStable = { String version ->
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
+}
+
+dependencyUpdates {
+    // Example 1: reject all non stable versions
+    rejectVersionIf {
+        isNonStable(it.candidate.version)
+    }
 }

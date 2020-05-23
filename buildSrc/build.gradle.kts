@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 group = "com.osacky.flank.gradle"
 version = "0.10.1-SNAPSHOT"
 description = "Easily Scale your Android Instrumentation Tests with Firebase Test Lab with Flank"
@@ -143,5 +145,11 @@ fun org.gradle.api.publish.maven.MavenPom.configureForFladle(pluginName: String)
     connection.set("scm:git:git://github.com/runningcode/fladle.git")
     developerConnection.set("scm:git:ssh://github.com/runningcode/fladle.git")
     url.set("https://github.com/runningcode/fladle")
+  }
+}
+
+tasks.withType(Test::class.java).configureEach {
+  testLogging {
+    events = setOf(TestLogEvent.SKIPPED, TestLogEvent.FAILED, TestLogEvent.PASSED)
   }
 }
