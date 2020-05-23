@@ -1,0 +1,49 @@
+/**
+ * This Gradle script captures issues found by reporting tasks and stores them in build scans via custom values.
+ */
+
+def buildScanApi = project.extensions.findByName('buildScan')
+if (!buildScanApi) {
+    return
+}
+
+
+gradle.taskGraph.afterTask { task, TaskState state ->
+    if (!isCapturedReportingTask(task)) {
+        return
+    }
+    def reportFile = task.reports.get().checkstyle
+    if (!reportFile.exists()) {
+        return
+    }
+    def report = new XmlSlurper().parse(reportFile)
+    def valueName = '' as String
+    def errors = [] as List<String>
+    if (ReportingTask.KOTLINTER.isTask(task)) {
+        valueName = "Kotlinter"
+        errors = report.file.collect {
+            String filePath = task.project.rootProject.relativePath(it.@name.text())
+            it.error.collect { "${filePath}:${it.@line}:${it.@column} \u2192 ${it.@message}" }
+        }.flatten() as List<String>
+    }
+    errors.each { buildScan.value valueName, it }
+}
+
+enum ReportingTask {
+
+    KOTLINTER('org.jmailen.gradle.kotlinter.tasks.LintTask')
+
+    String className
+
+    private ReportingTask(String className) {
+        this.className = className
+    }
+
+    ReportingTask isTask(task) {
+        task.class.name.contains(className) ? this : null
+    }
+}
+
+static boolean isCapturedReportingTask(task) {
+    ReportingTask.values().toList().any { it.isTask(task) }
+}
