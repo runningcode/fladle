@@ -12,3 +12,7 @@ flank-gradle-*.json
 
 # Mkdocs generated
 site
+
+# Pyhon Environment
+lib
+bin

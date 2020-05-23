@@ -128,9 +128,11 @@ class FladlePluginDelegate {
         appVariant.outputs.configureEach app@{
           if (!extension.variant.isPresent || (extension.variant.isPresent && extension.variant.get() == appVariant.name)) {
             project.log("Configuring fladle.debugApk from variant ${this@app.name}")
-            project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
             extension.debugApk.set(this@app.outputFile.absolutePath)
-            extension.instrumentationApk.set(this@test.outputFile.absolutePath)
+            if (extension.roboScript == null) {
+              project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
+              extension.instrumentationApk.set(this@test.outputFile.absolutePath)
+            }
           }
         }
       }
@@ -141,7 +143,7 @@ class FladlePluginDelegate {
     get() = configurations.getByName(FLADLE_CONFIG)
 
   companion object {
-    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("5.4")
+    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("5.5")
     const val TASK_GROUP = "fladle"
     const val FLADLE_CONFIG = "fladle"
     fun Project.log(message: String) {
