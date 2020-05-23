@@ -26,18 +26,11 @@ class AutoConfigureFladleTest {
               repositories {
                 google()
                 mavenCentral()
-                jcenter()
               } 
             }
              """.trimIndent()
     )
       testProjectRoot.newFile("settings.gradle").writeText("""
-        pluginManagement {
-          repositories {
-            gradlePluginPortal()
-//            google()
-          }
-        }
         include '$fixtureName'
       """.trimIndent())
 

@@ -24,11 +24,11 @@ val isReleaseMode : Boolean = hasProperty("fladle.releaseMode")
 
 dependencies {
   compileOnly(gradleApi())
-    if (isReleaseMode) {
-        compileOnly("com.android.tools.build:gradle:3.6.3")
-    } else {
-        implementation("com.android.tools.build:gradle:3.6.3")
-    }
+  if (isReleaseMode) {
+    compileOnly("com.android.tools.build:gradle:3.6.3")
+  } else {
+    implementation("com.android.tools.build:gradle:3.6.3")
+  }
 
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.13")
@@ -149,6 +149,8 @@ fun org.gradle.api.publish.maven.MavenPom.configureForFladle(pluginName: String)
 }
 
 tasks.withType(Test::class.java).configureEach {
+  // Test fixtures are stored in here so we should re-run tests if the test projects change.
+  inputs.dir("src/test/resources")
   testLogging {
     events = setOf(TestLogEvent.SKIPPED, TestLogEvent.FAILED, TestLogEvent.PASSED)
   }
