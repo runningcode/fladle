@@ -46,7 +46,7 @@ git push origin v{{ fladle.next_release }}
 ```
 
 * Release to Maven Central
-    * Login to Sonatype OSS Nexus: [https://oss.sonatype.org/]
+    * Login to Sonatype OSS Nexus: [https://oss.sonatype.org/](https://oss.sonatype.org/)
     * Click on **Staging Repositories**
 
 * Merge the release branch to master
