@@ -114,7 +114,7 @@ class FladlePluginDelegate {
           if (!extension.variant.isPresent || (extension.variant.isPresent && extension.variant.get() == appVariant.name)) {
             project.log("Configuring fladle.debugApk from variant ${this@app.name}")
             extension.debugApk.set(this@app.outputFile.absolutePath)
-            if (extension.roboScript == null) {
+            if (extension.roboScript.isPresent.not()) {
               project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
               extension.instrumentationApk.set(this@test.outputFile.absolutePath)
             }

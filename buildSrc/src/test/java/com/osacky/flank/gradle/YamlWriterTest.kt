@@ -332,7 +332,7 @@ class YamlWriterTest {
 
   @Test
   fun writeNoTestRepeats() {
-    val extension = emptyExtension {}
+    val extension = emptyExtension()
     assertEquals("flank:\n" +
             "  keep-file-path: false\n" +
             "  ignore-failed-tests: false\n" +

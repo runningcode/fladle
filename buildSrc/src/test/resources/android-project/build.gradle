@@ -34,11 +34,11 @@ fladle {
     smartFlankGcsPath = "gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml"
     configs {
         oranges {
-            useOrchestrator = false
-            testTargets = [
+            useOrchestrator.set false
+            testTargets.set([
                     "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
-            ]
-            flakyTestAttempts = 3
+            ])
+            flakyTestAttempts.set 3
         }
     }
 }

@@ -5,11 +5,11 @@ import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesti
 internal class YamlWriter {
 
   internal fun createConfigProps(config: FladleConfig, base: FlankGradleExtension): String {
-    if (base.projectId.orNull == null) {
+    if (base.projectId.isPresent.not()) {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
-    check(base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank()) { """
+    check(base.instrumentationApk.isPresent xor base.roboScript.isPresent) { """
      Either instrumentationApk file or roboScript file must be specified but not both.
      instrumentationApk=${base.instrumentationApk.orNull}
      roboScript=${base.roboScript.orNull}
