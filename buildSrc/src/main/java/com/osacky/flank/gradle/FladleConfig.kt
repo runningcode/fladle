@@ -160,5 +160,5 @@ interface FladleConfig {
    * * 200s -> 200 seconds
    * * 100  -> 100 seconds
    */
-  var timeout: String
+  var testTimeout: String
 }

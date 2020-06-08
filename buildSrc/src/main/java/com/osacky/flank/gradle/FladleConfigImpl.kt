@@ -40,5 +40,5 @@ data class FladleConfigImpl(
   override var networkProfile: String?,
   override var roboScript: String?,
   override var roboDirectives: List<List<String>>,
-  override var timeout: String
+  override var testTimeout: String
 ) : FladleConfig

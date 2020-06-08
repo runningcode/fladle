@@ -626,7 +626,7 @@ class YamlWriterTest {
       autoGoogleLogin = true
       recordVideo = false
       performanceMetrics = false
-      timeout = "45m"
+      testTimeout = "45m"
     }
 
     assertEquals("  use-orchestrator: true\n" +

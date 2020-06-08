@@ -54,7 +54,7 @@ fladle {
     testTargets = [
         "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
     ]
-    timeout = "15m"
+    testTimeout = "15m"
     recordVideo = false
     performanceMetrics = false
     devices = [
@@ -250,7 +250,7 @@ A list of paths that will be copied from the device's storage to the designated 
 ### filesToDownload
 List of regex that is matched against bucket paths (for example: `2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt`) for files to be downloaded after a flank run.
 
-### timeout
+### testTimeout
 The max time test execution can run before it is cancelled (default: 15m). It does not include any time necessary to prepare and clean up the target device. The maximum possible testing time is 45m on physical devices and 60m on virtual devices. The TIMEOUT units can be h, m, or s. If no unit is given, seconds are assumed.
 Examples:
 * 1h   -> 1 hour

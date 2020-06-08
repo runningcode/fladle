@@ -87,7 +87,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override var roboDirectives: List<List<String>> = emptyList()
 
-  override var timeout: String = "15m"
+  override var testTimeout: String = "15m"
 
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
@@ -126,7 +126,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       networkProfile = networkProfile,
       roboScript = roboScript,
       roboDirectives = roboDirectives,
-      timeout = timeout
+      testTimeout = testTimeout
     )
   }
 
