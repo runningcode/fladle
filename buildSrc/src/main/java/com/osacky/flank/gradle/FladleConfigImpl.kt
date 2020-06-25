@@ -21,7 +21,6 @@ data class FladleConfigImpl(
   override var directoriesToPull: List<String>,
   override var filesToDownload: List<String>,
   override var environmentVariables: Map<String, String>,
-  override var timeoutMin: Int,
   override var recordVideo: Boolean,
   override var performanceMetrics: Boolean,
   override var resultsBucket: String?,
@@ -40,5 +39,6 @@ data class FladleConfigImpl(
   override var otherFiles: Map<String, String>,
   override var networkProfile: String?,
   override var roboScript: String?,
-  override var roboDirectives: List<List<String>>
+  override var roboDirectives: List<List<String>>,
+  override var testTimeout: String
 ) : FladleConfig

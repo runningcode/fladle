@@ -31,8 +31,6 @@ interface FladleConfig {
 
   var resultsHistoryName: String?
 
-  var timeoutMin: Int
-
   var directoriesToPull: List<String>
 
   var filesToDownload: List<String>
@@ -149,4 +147,18 @@ interface FladleConfig {
    * Values are only permitted for text type elements, so no value should be specified for click and ignore type elements.
    */
   var roboDirectives: List<List<String>>
+
+  /**
+   * The max time test execution can run before it is cancelled (default: 15m).
+   * It does not include any time necessary to prepare and clean up the target device.
+   * The maximum possible testing time is 45m on physical devices and 60m on virtual devices.
+   * The TIMEOUT units can be h, m, or s. If no unit is given, seconds are assumed.
+   *
+   * Examples:
+   * * 1h   -> 1 hour
+   * * 5m   -> 5 minutes
+   * * 200s -> 200 seconds
+   * * 100  -> 100 seconds
+   */
+  var testTimeout: String
 }

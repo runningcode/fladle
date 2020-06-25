@@ -49,8 +49,6 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override var environmentVariables: Map<String, String> = emptyMap()
 
-  override var timeoutMin: Int = 15
-
   override var recordVideo: Boolean = true
 
   override var performanceMetrics: Boolean = true
@@ -89,6 +87,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override var roboDirectives: List<List<String>> = emptyList()
 
+  override var testTimeout: String = "15m"
+
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
       name = it,
@@ -107,7 +107,6 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       directoriesToPull = directoriesToPull,
       filesToDownload = filesToDownload,
       environmentVariables = environmentVariables,
-      timeoutMin = timeoutMin,
       recordVideo = recordVideo,
       performanceMetrics = performanceMetrics,
       resultsBucket = resultsBucket,
@@ -126,7 +125,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       otherFiles = otherFiles,
       networkProfile = networkProfile,
       roboScript = roboScript,
-      roboDirectives = roboDirectives
+      roboDirectives = roboDirectives,
+      testTimeout = testTimeout
     )
   }
 

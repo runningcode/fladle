@@ -100,7 +100,7 @@ internal class YamlWriter {
     appendln("  auto-google-login: ${config.autoGoogleLogin}")
     appendln("  record-video: ${config.recordVideo}")
     appendln("  performance-metrics: ${config.performanceMetrics}")
-    appendln("  timeout: ${config.timeoutMin}m")
+    appendln("  timeout: ${config.testTimeout}")
 
     config.resultsHistoryName?.let {
       appendln("  results-history-name: $it")
