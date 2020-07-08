@@ -4,7 +4,6 @@ import com.google.common.truth.Truth.assertThat
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Before
@@ -162,6 +161,7 @@ class YamlWriterTest {
                ignore-failed-tests: false
                disable-sharding: false
                smart-flank-disable-upload: false
+               output-style: single
              """.trimIndent() + '\n' // Dunno why this needs to be here to make the tests pass.
     )
   }
@@ -245,6 +245,7 @@ class YamlWriterTest {
       ignore-failed-tests: false
       disable-sharding: false
       smart-flank-disable-upload: false
+      output-style: single
     """.trimIndent() + '\n')
   }
 
@@ -257,7 +258,8 @@ class YamlWriterTest {
             "  keep-file-path: false\n" +
             "  ignore-failed-tests: false\n" +
             "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n",
+            "  smart-flank-disable-upload: false\n" +
+            "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
@@ -272,7 +274,8 @@ class YamlWriterTest {
             "  keep-file-path: false\n" +
             "  ignore-failed-tests: false\n" +
             "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n",
+            "  smart-flank-disable-upload: false\n" +
+            "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
@@ -287,7 +290,8 @@ class YamlWriterTest {
             "  keep-file-path: false\n" +
             "  ignore-failed-tests: false\n" +
             "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n",
+            "  smart-flank-disable-upload: false\n" +
+            "  output-style: single\n",
             yamlWriter.writeFlankProperties(extension))
   }
 
@@ -302,7 +306,8 @@ class YamlWriterTest {
             "  keep-file-path: false\n" +
             "  ignore-failed-tests: false\n" +
             "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n",
+            "  smart-flank-disable-upload: false\n" +
+            "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
@@ -316,7 +321,8 @@ class YamlWriterTest {
             "  keep-file-path: false\n" +
             "  ignore-failed-tests: false\n" +
             "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n",
+            "  smart-flank-disable-upload: false\n" +
+            "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
@@ -331,7 +337,8 @@ class YamlWriterTest {
             "  keep-file-path: false\n" +
             "  ignore-failed-tests: false\n" +
             "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n",
+            "  smart-flank-disable-upload: false\n" +
+            "  output-style: single\n",
             yamlWriter.writeFlankProperties(extension))
   }
 
@@ -349,7 +356,8 @@ class YamlWriterTest {
                     "  keep-file-path: false\n" +
                     "  ignore-failed-tests: false\n" +
                     "  disable-sharding: false\n" +
-                    "  smart-flank-disable-upload: false\n",
+                    "  smart-flank-disable-upload: false\n" +
+                    "  output-style: single\n",
             yamlWriter.writeFlankProperties(extension))
   }
 
@@ -480,7 +488,8 @@ class YamlWriterTest {
             "  keep-file-path: false\n" +
             "  ignore-failed-tests: false\n" +
             "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n",
+            "  smart-flank-disable-upload: false\n" +
+            "  output-style: single\n",
         yamlWriter.writeFlankProperties(extension))
   }
 
@@ -543,7 +552,8 @@ class YamlWriterTest {
             "  keep-file-path: false\n" +
             "  ignore-failed-tests: false\n" +
             "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n",
+            "  smart-flank-disable-upload: false\n" +
+            "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
@@ -559,7 +569,8 @@ class YamlWriterTest {
             "  - .*/screenshots/.*\n" +
             "  ignore-failed-tests: false\n" +
             "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n",
+            "  smart-flank-disable-upload: false\n" +
+            "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
@@ -576,7 +587,8 @@ class YamlWriterTest {
         "  - .*/reports/.*\n" +
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n",
+        "  smart-flank-disable-upload: false\n" +
+        "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
@@ -647,7 +659,8 @@ class YamlWriterTest {
             "  keep-file-path: false\n" +
             "  ignore-failed-tests: false\n" +
             "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n",
+            "  smart-flank-disable-upload: false\n" +
+            "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension))
   }
 
@@ -662,7 +675,8 @@ class YamlWriterTest {
             "  keep-file-path: true\n" +
             "  ignore-failed-tests: false\n" +
             "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n"
+            "  smart-flank-disable-upload: false\n" +
+            "  output-style: single\n"
       )
   }
 
@@ -698,6 +712,7 @@ class YamlWriterTest {
                ignore-failed-tests: false
                disable-sharding: false
                smart-flank-disable-upload: false
+               output-style: single
           """.trimIndent() + '\n'
     )
   }
@@ -713,6 +728,7 @@ class YamlWriterTest {
         ignore-failed-tests: false
         disable-sharding: false
         smart-flank-disable-upload: false
+        output-style: single
     """.trimIndent()
 
     val expectedAdditional = """
@@ -804,7 +820,7 @@ class YamlWriterTest {
   fun missingOutputStyle() {
     val properties = emptyExtension().toFlankProperties()
 
-    assertFalse(properties.contains("output-style"))
+    assertTrue(properties.contains("  output-style: single"))
   }
 
   @Test
