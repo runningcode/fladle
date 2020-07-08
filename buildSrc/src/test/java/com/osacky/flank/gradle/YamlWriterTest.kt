@@ -791,6 +791,15 @@ class YamlWriterTest {
   }
 
   @Test
+  fun writeOutputStyle() {
+    val properties = emptyExtension {
+      outputStyle = "anyString"
+    }.toFlankProperties()
+
+    assertTrue(properties.contains("  output-style: anyString"))
+  }
+
+  @Test
   fun writeClientDetails() {
     val properties = emptyExtension {
       clientDetails = mapOf(
