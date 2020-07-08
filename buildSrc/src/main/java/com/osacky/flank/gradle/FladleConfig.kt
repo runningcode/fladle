@@ -168,5 +168,5 @@ interface FladleConfig {
    * 'multi' is used as the default. The output style 'multi' is not displayed correctly on consoles
    * which don't support ansi codes, to avoid corrupted output use single or verbose.
    */
-  var outputStyle: String?
+  var outputStyle: Property<String>
 }

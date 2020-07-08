@@ -89,7 +89,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override var testTimeout: String = "15m"
 
-  override var outputStyle: String? = null
+  override var outputStyle: Property<String> = objects.property()
 
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(

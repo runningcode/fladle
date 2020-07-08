@@ -4,6 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Before
@@ -793,10 +794,17 @@ class YamlWriterTest {
   @Test
   fun writeOutputStyle() {
     val properties = emptyExtension {
-      outputStyle = "anyString"
+      outputStyle.set("anyString")
     }.toFlankProperties()
 
     assertTrue(properties.contains("  output-style: anyString"))
+  }
+
+  @Test
+  fun missingOutputStyle() {
+    val properties = emptyExtension().toFlankProperties()
+
+    assertFalse(properties.contains("output-style"))
   }
 
   @Test

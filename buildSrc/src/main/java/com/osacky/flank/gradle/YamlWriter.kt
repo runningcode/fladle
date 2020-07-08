@@ -44,7 +44,7 @@ internal class YamlWriter {
     val smartFlankDisableUpload = config.smartFlankDisableUpload
     val localResultsDir = config.localResultsDir.orNull
     val testTargetsAlwaysRun = config.testTargetsAlwaysRun
-    val outputStyle = config.outputStyle
+    val outputStyle = config.outputStyle.orNull
 
     appendln("flank:")
 

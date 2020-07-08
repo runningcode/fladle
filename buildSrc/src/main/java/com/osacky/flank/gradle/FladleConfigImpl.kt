@@ -41,5 +41,5 @@ data class FladleConfigImpl(
   override var roboScript: String?,
   override var roboDirectives: List<List<String>>,
   override var testTimeout: String,
-  override var outputStyle: String?
+  override var outputStyle: Property<String>
 ) : FladleConfig
