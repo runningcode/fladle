@@ -21,18 +21,20 @@ class AutoConfigureFladleTest {
     testProjectRoot.newFile("local.properties").writeText("sdk.dir=${androidHome()}\n")
     testProjectRoot.newFile("gradle.properties").writeText("android.useAndroidX=true")
     writeBuildGradle(
-        """
+      """
             allprojects {
               repositories {
                 google()
                 mavenCentral()
               } 
             }
-             """.trimIndent()
+      """.trimIndent()
     )
-      testProjectRoot.newFile("settings.gradle").writeText("""
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
         include '$fixtureName'
-      """.trimIndent())
+      """.trimIndent()
+    )
 
     testProjectRoot.setupFixture(fixtureName)
     testProjectRoot.root.walk().forEach {
@@ -40,13 +42,14 @@ class AutoConfigureFladleTest {
     }
 
     val result = GradleRunner.create()
-        .withProjectDir(testProjectRoot.root)
-        .withPluginClasspath()
-        .withArguments("assembleDebug", "assembleDebugAndroidTest", "printYml", "--stacktrace")
-        .build()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withArguments("assembleDebug", "assembleDebugAndroidTest", "printYml", "--stacktrace")
+      .build()
 
     assertThat(result.output).contains("BUILD SUCCESSFUL")
-    assertThat(result.output).containsMatch("""
+    assertThat(result.output).containsMatch(
+      """
         > Task :android-project:printYml
         gcloud:
           app: [0-9a-zA-Z\/]*/android-project/build/outputs/apk/debug/android-project-debug.apk
@@ -74,6 +77,7 @@ class AutoConfigureFladleTest {
           ignore-failed-tests: false
           disable-sharding: false
           smart-flank-disable-upload: false
-    """.trimIndent())
+      """.trimIndent()
+    )
   }
 }

@@ -35,7 +35,8 @@ internal fun androidHome(): String {
     }
   }
   throw IllegalStateException(
-      "Missing 'ANDROID_HOME' environment variable or local.properties with 'sdk.dir'")
+    "Missing 'ANDROID_HOME' environment variable or local.properties with 'sdk.dir'"
+  )
 }
 
 internal fun String.withInvariantPathSeparators() = replace("\\", "/")

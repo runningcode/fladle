@@ -1,7 +1,6 @@
 package com.osacky.flank.gradle
 
 import groovy.lang.Closure
-import javax.inject.Inject
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
@@ -9,10 +8,11 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.property
+import javax.inject.Inject
 
 open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : FladleConfig {
   val flankCoordinates: Property<String> = objects.property(String::class.java).convention("com.github.flank:flank")
-  val flankVersion: Property<String> = objects.property(String::class.java).convention("20.05.2")
+  val flankVersion: Property<String> = objects.property(String::class.java).convention("20.06.2")
   // Project id is automatically discovered by default. Use this to override the project id.
   override var projectId: String? = null
   override val serviceAccountCredentials: RegularFileProperty = objects.fileProperty()

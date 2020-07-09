@@ -15,7 +15,7 @@ buildscript {
 plugins {
     id "com.github.ben-manes.versions" version "0.28.0"
     id "com.osacky.fulladle"
-    id "org.jmailen.kotlinter" version "2.3.2"
+    id "org.jmailen.kotlinter" version "2.4.1"
 }
 
 apply from: 'gradle/scans-quality-check.gradle'
@@ -58,7 +58,7 @@ buildScan {
 
 wrapper {
     distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = '6.5'
+    gradleVersion = '6.5.1'
 }
 
 def isNonStable = { String version ->

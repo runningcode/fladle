@@ -23,10 +23,11 @@ class YamlWriterTest {
   @Test
   fun testWriteSingleDevice() {
     val devices = listOf(
-        mapOf("model" to "NexusLowRes", "version" to "28")
+      mapOf("model" to "NexusLowRes", "version" to "28")
     )
     val deviceString = yamlWriter.createDeviceString(devices)
-    val expected = """
+    val expected =
+      """
       |  device:
       |  - model: NexusLowRes
       |    version: 28
@@ -38,11 +39,12 @@ class YamlWriterTest {
   @Test
   fun testWriteTwoDevices() {
     val devices = listOf(
-        mapOf("model" to "NexusLowRes", "version" to "28"),
-        mapOf("model" to "Nexus5", "version" to "23")
+      mapOf("model" to "NexusLowRes", "version" to "28"),
+      mapOf("model" to "Nexus5", "version" to "23")
     )
     val deviceString = yamlWriter.createDeviceString(devices)
-    val expected = """
+    val expected =
+      """
       |  device:
       |  - model: NexusLowRes
       |    version: 28
@@ -56,11 +58,12 @@ class YamlWriterTest {
   @Test
   fun testWriteTwoCustomDevices() {
     val devices = listOf(
-        mapOf("model" to "NexusLowRes", "version" to "23", "orientation" to "portrait"),
-        mapOf("model" to "Nexus5", "orientation" to "landscape", "version" to "28")
+      mapOf("model" to "NexusLowRes", "version" to "23", "orientation" to "portrait"),
+      mapOf("model" to "Nexus5", "orientation" to "landscape", "version" to "28")
     )
     val deviceString = yamlWriter.createDeviceString(devices)
-    val expected = """
+    val expected =
+      """
       |  device:
       |  - model: NexusLowRes
       |    version: 23
@@ -76,11 +79,12 @@ class YamlWriterTest {
   @Test
   fun testWriteTwoCustomDevicesWithLocale() {
     val devices = listOf(
-            mapOf("model" to "NexusLowRes", "version" to "23", "orientation" to "portrait", "locale" to "en"),
-            mapOf("model" to "Nexus5", "orientation" to "landscape", "locale" to "es_ES", "version" to "28")
+      mapOf("model" to "NexusLowRes", "version" to "23", "orientation" to "portrait", "locale" to "en"),
+      mapOf("model" to "Nexus5", "orientation" to "landscape", "locale" to "es_ES", "version" to "28")
     )
     val deviceString = yamlWriter.createDeviceString(devices)
-    val expected = """
+    val expected =
+      """
       |  device:
       |  - model: NexusLowRes
       |    version: 23
@@ -98,7 +102,7 @@ class YamlWriterTest {
   @Test
   fun testThrowsExceptionWhenMissingModelKeyInDevice() {
     val devices = listOf(
-            mapOf("version" to "23", "orientation" to "portrait", "locale" to "en")
+      mapOf("version" to "23", "orientation" to "portrait", "locale" to "en")
     )
     try {
       yamlWriter.createDeviceString(devices)
@@ -111,7 +115,7 @@ class YamlWriterTest {
   @Test
   fun testThrowsExceptionWhenMissingVersionKeyInDevice() {
     val devices = listOf(
-            mapOf("model" to "NexusLowRes", "orientation" to "portrait", "locale" to "en")
+      mapOf("model" to "NexusLowRes", "orientation" to "portrait", "locale" to "en")
     )
     try {
       yamlWriter.createDeviceString(devices)
@@ -140,7 +144,8 @@ class YamlWriterTest {
       instrumentationApk.set("instrument")
     }
     val yaml = yamlWriter.createConfigProps(extension, extension)
-    assertThat(yaml).isEqualTo("""
+    assertThat(yaml).isEqualTo(
+      """
              gcloud:
                app: path
                test: instrument
@@ -162,7 +167,7 @@ class YamlWriterTest {
                disable-sharding: false
                smart-flank-disable-upload: false
                output-style: single
-             """.trimIndent() + '\n' // Dunno why this needs to be here to make the tests pass.
+      """.trimIndent() + '\n' // Dunno why this needs to be here to make the tests pass.
     )
   }
 
@@ -189,11 +194,13 @@ class YamlWriterTest {
       yamlWriter.createConfigProps(extension, extension)
       fail()
     } catch (expected: IllegalStateException) {
-      assertThat(expected).hasMessageThat().isEqualTo("""
+      assertThat(expected).hasMessageThat().isEqualTo(
+        """
         Either instrumentationApk file or roboScript file must be specified but not both.
         instrumentationApk=null
         roboScript=null
-      """.trimIndent())
+        """.trimIndent()
+      )
     }
   }
 
@@ -209,11 +216,13 @@ class YamlWriterTest {
       yamlWriter.createConfigProps(extension, extension)
       fail()
     } catch (expected: IllegalStateException) {
-      assertThat(expected).hasMessageThat().isEqualTo("""
+      assertThat(expected).hasMessageThat().isEqualTo(
+        """
         Either instrumentationApk file or roboScript file must be specified but not both.
         instrumentationApk=build/test/*.apk
         roboScript=foo
-      """.trimIndent())
+        """.trimIndent()
+      )
     }
   }
 
@@ -225,7 +234,8 @@ class YamlWriterTest {
       roboScript = "foo"
     }
     val configProps = yamlWriter.createConfigProps(extension, extension)
-    assertThat(configProps).isEqualTo("""
+    assertThat(configProps).isEqualTo(
+      """
     gcloud:
       app: path
       device:
@@ -246,7 +256,8 @@ class YamlWriterTest {
       disable-sharding: false
       smart-flank-disable-upload: false
       output-style: single
-    """.trimIndent() + '\n')
+      """.trimIndent() + '\n'
+    )
   }
 
   @Test
@@ -254,13 +265,15 @@ class YamlWriterTest {
     val extension = emptyExtension {
     }
 
-    assertEquals("flank:\n" +
-            "  keep-file-path: false\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n" +
-            "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension))
+    assertEquals(
+      "flank:\n" +
+        "  keep-file-path: false\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n" +
+        "  output-style: single\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -269,14 +282,16 @@ class YamlWriterTest {
       projectId = "foo"
     }
 
-    assertEquals("flank:\n" +
-            "  project: foo\n" +
-            "  keep-file-path: false\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n" +
-            "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension))
+    assertEquals(
+      "flank:\n" +
+        "  project: foo\n" +
+        "  keep-file-path: false\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n" +
+        "  output-style: single\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -285,14 +300,16 @@ class YamlWriterTest {
       testShards = 5
     }
 
-    assertEquals("flank:\n" +
-            "  max-test-shards: 5\n" +
-            "  keep-file-path: false\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n" +
-            "  output-style: single\n",
-            yamlWriter.writeFlankProperties(extension))
+    assertEquals(
+      "flank:\n" +
+        "  max-test-shards: 5\n" +
+        "  keep-file-path: false\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n" +
+        "  output-style: single\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -301,14 +318,16 @@ class YamlWriterTest {
       shardTime = 120
     }
 
-    assertEquals("flank:\n" +
-            "  shard-time: 120\n" +
-            "  keep-file-path: false\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n" +
-            "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension))
+    assertEquals(
+      "flank:\n" +
+        "  shard-time: 120\n" +
+        "  keep-file-path: false\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n" +
+        "  output-style: single\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -317,13 +336,15 @@ class YamlWriterTest {
       repeatTests = null
     }
 
-    assertEquals("flank:\n" +
-            "  keep-file-path: false\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n" +
-            "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension))
+    assertEquals(
+      "flank:\n" +
+        "  keep-file-path: false\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n" +
+        "  output-style: single\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -332,14 +353,16 @@ class YamlWriterTest {
       repeatTests = 5
     }
 
-    assertEquals("flank:\n" +
-            "  num-test-runs: 5\n" +
-            "  keep-file-path: false\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n" +
-            "  output-style: single\n",
-            yamlWriter.writeFlankProperties(extension))
+    assertEquals(
+      "flank:\n" +
+        "  num-test-runs: 5\n" +
+        "  keep-file-path: false\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n" +
+        "  output-style: single\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -350,15 +373,16 @@ class YamlWriterTest {
     }
 
     assertEquals(
-            "flank:\n" +
-                    "  max-test-shards: 5\n" +
-                    "  num-test-runs: 2\n" +
-                    "  keep-file-path: false\n" +
-                    "  ignore-failed-tests: false\n" +
-                    "  disable-sharding: false\n" +
-                    "  smart-flank-disable-upload: false\n" +
-                    "  output-style: single\n",
-            yamlWriter.writeFlankProperties(extension))
+      "flank:\n" +
+        "  max-test-shards: 5\n" +
+        "  num-test-runs: 2\n" +
+        "  keep-file-path: false\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n" +
+        "  output-style: single\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -367,14 +391,16 @@ class YamlWriterTest {
       resultsHistoryName = "androidtest"
     }
 
-    assertEquals("  use-orchestrator: false\n" +
+    assertEquals(
+      "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
         "  results-history-name: androidtest\n" +
         "  num-flaky-test-attempts: 0\n",
-        yamlWriter.writeAdditionalProperties(extension))
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -383,14 +409,16 @@ class YamlWriterTest {
       resultsBucket = "fake-project.appspot.com"
     }
 
-    assertEquals("  use-orchestrator: false\n" +
+    assertEquals(
+      "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
         "  results-bucket: fake-project.appspot.com\n" +
         "  num-flaky-test-attempts: 0\n",
-        yamlWriter.writeAdditionalProperties(extension))
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -399,14 +427,16 @@ class YamlWriterTest {
       resultsDir = "resultsGoHere"
     }
 
-    assertEquals("  use-orchestrator: false\n" +
+    assertEquals(
+      "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
         "  num-flaky-test-attempts: 0\n" +
         "  results-dir: resultsGoHere\n",
-        yamlWriter.writeAdditionalProperties(extension))
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -416,7 +446,8 @@ class YamlWriterTest {
       testTargets = listOf("class com.example.Foo")
     }
 
-    assertEquals("  use-orchestrator: false\n" +
+    assertEquals(
+      "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
@@ -425,7 +456,8 @@ class YamlWriterTest {
         "  test-targets:\n" +
         "  - class com.example.Foo\n" +
         "  num-flaky-test-attempts: 0\n",
-        yamlWriter.writeAdditionalProperties(extension))
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -434,12 +466,15 @@ class YamlWriterTest {
       testTargets = listOf()
     }
 
-    assertEquals("  use-orchestrator: false\n" +
+    assertEquals(
+      "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
-        "  num-flaky-test-attempts: 0\n", yamlWriter.writeAdditionalProperties(extension))
+        "  num-flaky-test-attempts: 0\n",
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -448,7 +483,8 @@ class YamlWriterTest {
       testTargets = listOf("class com.example.Foo#testThing")
     }
 
-    assertEquals("  use-orchestrator: false\n" +
+    assertEquals(
+      "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
@@ -456,7 +492,8 @@ class YamlWriterTest {
         "  test-targets:\n" +
         "  - class com.example.Foo#testThing\n" +
         "  num-flaky-test-attempts: 0\n",
-        yamlWriter.writeAdditionalProperties(extension))
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -465,7 +502,8 @@ class YamlWriterTest {
       testTargets = listOf("class com.example.Foo#testThing", "class com.example.Foo#testThing2")
     }
 
-    assertEquals("  use-orchestrator: false\n" +
+    assertEquals(
+      "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
@@ -474,7 +512,8 @@ class YamlWriterTest {
         "  - class com.example.Foo#testThing\n" +
         "  - class com.example.Foo#testThing2\n" +
         "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension))
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -483,14 +522,16 @@ class YamlWriterTest {
       smartFlankGcsPath = "gs://test/fakepath.xml"
     }
 
-    assertEquals("flank:\n" +
-            "  smart-flank-gcs-path: gs://test/fakepath.xml\n" +
-            "  keep-file-path: false\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n" +
-            "  output-style: single\n",
-        yamlWriter.writeFlankProperties(extension))
+    assertEquals(
+      "flank:\n" +
+        "  smart-flank-gcs-path: gs://test/fakepath.xml\n" +
+        "  keep-file-path: false\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n" +
+        "  output-style: single\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -499,12 +540,15 @@ class YamlWriterTest {
       directoriesToPull = listOf()
     }
 
-    assertEquals("  use-orchestrator: false\n" +
+    assertEquals(
+      "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
-        "  num-flaky-test-attempts: 0\n", yamlWriter.writeAdditionalProperties(extension))
+        "  num-flaky-test-attempts: 0\n",
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -513,7 +557,8 @@ class YamlWriterTest {
       directoriesToPull = listOf("/sdcard/screenshots")
     }
 
-    assertEquals("  use-orchestrator: false\n" +
+    assertEquals(
+      "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
@@ -521,7 +566,8 @@ class YamlWriterTest {
         "  directories-to-pull:\n" +
         "  - /sdcard/screenshots\n" +
         "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension))
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -530,7 +576,8 @@ class YamlWriterTest {
       directoriesToPull = listOf("/sdcard/screenshots", "/sdcard/reports")
     }
 
-    assertEquals("  use-orchestrator: false\n" +
+    assertEquals(
+      "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
@@ -539,7 +586,8 @@ class YamlWriterTest {
         "  - /sdcard/screenshots\n" +
         "  - /sdcard/reports\n" +
         "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension))
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -548,13 +596,15 @@ class YamlWriterTest {
       filesToDownload = listOf()
     }
 
-    assertEquals("flank:\n" +
-            "  keep-file-path: false\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n" +
-            "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension))
+    assertEquals(
+      "flank:\n" +
+        "  keep-file-path: false\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n" +
+        "  output-style: single\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -563,15 +613,17 @@ class YamlWriterTest {
       filesToDownload = listOf(".*/screenshots/.*")
     }
 
-    assertEquals("flank:\n" +
-            "  keep-file-path: false\n" +
-            "  files-to-download:\n" +
-            "  - .*/screenshots/.*\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n" +
-            "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension))
+    assertEquals(
+      "flank:\n" +
+        "  keep-file-path: false\n" +
+        "  files-to-download:\n" +
+        "  - .*/screenshots/.*\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n" +
+        "  output-style: single\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -580,7 +632,8 @@ class YamlWriterTest {
       filesToDownload = listOf(".*/screenshots/.*", ".*/reports/.*")
     }
 
-    assertEquals("flank:\n" +
+    assertEquals(
+      "flank:\n" +
         "  keep-file-path: false\n" +
         "  files-to-download:\n" +
         "  - .*/screenshots/.*\n" +
@@ -589,7 +642,8 @@ class YamlWriterTest {
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
         "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension))
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -600,7 +654,8 @@ class YamlWriterTest {
       )
     }
 
-    assertEquals("  use-orchestrator: false\n" +
+    assertEquals(
+      "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
@@ -608,7 +663,8 @@ class YamlWriterTest {
         "  environment-variables:\n" +
         "    listener: com.osacky.flank.sample.Listener\n" +
         "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension))
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -620,7 +676,8 @@ class YamlWriterTest {
       )
     }
 
-    assertEquals("  use-orchestrator: false\n" +
+    assertEquals(
+      "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
@@ -629,7 +686,8 @@ class YamlWriterTest {
         "    clearPackageData: true\n" +
         "    listener: com.osacky.flank.sample.Listener\n" +
         "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension))
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -642,26 +700,30 @@ class YamlWriterTest {
       testTimeout = "45m"
     }
 
-    assertEquals("  use-orchestrator: true\n" +
+    assertEquals(
+      "  use-orchestrator: true\n" +
         "  auto-google-login: true\n" +
         "  record-video: false\n" +
         "  performance-metrics: false\n" +
         "  timeout: 45m\n" +
         "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension))
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
   fun writeNoKeepFilePath() {
     val extension = emptyExtension()
 
-    assertEquals("flank:\n" +
-            "  keep-file-path: false\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n" +
-            "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension))
+    assertEquals(
+      "flank:\n" +
+        "  keep-file-path: false\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n" +
+        "  output-style: single\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -671,12 +733,13 @@ class YamlWriterTest {
     }
 
     assertThat(yamlWriter.writeFlankProperties(extension))
-        .isEqualTo("flank:\n" +
-            "  keep-file-path: true\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n" +
-            "  output-style: single\n"
+      .isEqualTo(
+        "flank:\n" +
+          "  keep-file-path: true\n" +
+          "  ignore-failed-tests: false\n" +
+          "  disable-sharding: false\n" +
+          "  smart-flank-disable-upload: false\n" +
+          "  output-style: single\n"
       )
   }
 
@@ -685,21 +748,24 @@ class YamlWriterTest {
     val extension = emptyExtension {
       debugApk.set("../orange/build/output/app.apk")
       instrumentationApk.set("../orange/build/output/app-test.apk")
-      additionalTestApks.set(project.provider {
-        listOf(
+      additionalTestApks.set(
+        project.provider {
+          listOf(
             "- app: ../orange/build/output/app.apk",
             "  test: ../orange/build/output/app-test2.apk",
             "- app: ../bob/build/output/app.apk",
             "  test: ../bob/build/output/app-test.apk",
             "- test: ../bob/build/output/app-test2.apk",
             "- test: ../bob/build/output/app-test3.apk"
-        )
-      })
+          )
+        }
+      )
     }
 
     assertThat(
-        yamlWriter.writeFlankProperties(extension)).isEqualTo(
-        """
+      yamlWriter.writeFlankProperties(extension)
+    ).isEqualTo(
+      """
              flank:
                keep-file-path: false
                additional-app-test-apks:
@@ -713,7 +779,7 @@ class YamlWriterTest {
                disable-sharding: false
                smart-flank-disable-upload: false
                output-style: single
-          """.trimIndent() + '\n'
+      """.trimIndent() + '\n'
     )
   }
 
@@ -722,23 +788,25 @@ class YamlWriterTest {
     val defaultFlankProperties = emptyExtension().toFlankProperties()
     val defaultAdditionalProperties = emptyExtension().toAdditionalProperties().trimIndent()
 
-    val expectedFlank = """
+    val expectedFlank =
+      """
       flank:
         keep-file-path: false
         ignore-failed-tests: false
         disable-sharding: false
         smart-flank-disable-upload: false
         output-style: single
-    """.trimIndent()
+      """.trimIndent()
 
-    val expectedAdditional = """
+    val expectedAdditional =
+      """
         use-orchestrator: false
         auto-google-login: false
         record-video: true
         performance-metrics: true
         timeout: 15m
         num-flaky-test-attempts: 0
-    """.trimIndent()
+      """.trimIndent()
 
     assertEquals(expectedFlank, defaultFlankProperties)
     assertEquals(expectedAdditional, defaultAdditionalProperties)
@@ -827,50 +895,62 @@ class YamlWriterTest {
   fun writeClientDetails() {
     val properties = emptyExtension {
       clientDetails = mapOf(
-              "anyDetail1" to "anyValue1",
-              "anyDetail2" to "anyValue2"
+        "anyDetail1" to "anyValue1",
+        "anyDetail2" to "anyValue2"
       )
     }.toAdditionalProperties()
 
-    assertTrue(properties.contains("""
+    assertTrue(
+      properties.contains(
+        """
       |  client-details:
       |    anyDetail1: anyValue1
       |    anyDetail2: anyValue2
-    """.trimMargin()))
+    """.trimMargin()
+      )
+    )
   }
 
   @Test
   fun writeTestTargetsAlwaysRun() {
     val properties = emptyExtension {
       testTargetsAlwaysRun = listOf(
-              "com.example.FirstTests#test1",
-              "com.example.FirstTests#test2",
-              "com.example.FirstTests#test3"
+        "com.example.FirstTests#test1",
+        "com.example.FirstTests#test2",
+        "com.example.FirstTests#test3"
       )
     }.toFlankProperties()
 
-    assertTrue(properties.contains("""
+    assertTrue(
+      properties.contains(
+        """
       |  test-targets-always-run:
       |  - class com.example.FirstTests#test1
       |  - class com.example.FirstTests#test2
       |  - class com.example.FirstTests#test3
-    """.trimMargin()))
+    """.trimMargin()
+      )
+    )
   }
 
   @Test
   fun writeOtherFiles() {
     val properties = emptyExtension {
       otherFiles = mapOf(
-              "/example/path/test1" to "anyfile.txt",
-              "/example/path/test2" to "anyfile2.txt"
+        "/example/path/test1" to "anyfile.txt",
+        "/example/path/test2" to "anyfile2.txt"
       )
     }.toAdditionalProperties()
 
-    assertTrue(properties.contains("""
+    assertTrue(
+      properties.contains(
+        """
         |  other-files:
         |    /example/path/test1: anyfile.txt
         |    /example/path/test2: anyfile2.txt
-    """.trimMargin()))
+    """.trimMargin()
+      )
+    )
   }
 
   @Test
@@ -895,18 +975,22 @@ class YamlWriterTest {
   fun writeRoboDirectives() {
     val properties = emptyExtension {
       roboDirectives = listOf(
-              listOf("click", "button3"),
-              listOf("ignore", "button1", ""),
-              listOf("text", "field1", "my common text")
+        listOf("click", "button3"),
+        listOf("ignore", "button1", ""),
+        listOf("text", "field1", "my common text")
       )
     }.toAdditionalProperties()
 
-    assertTrue(properties.contains("""
+    assertTrue(
+      properties.contains(
+        """
         |  robo-directives:
         |    click:button3: ""
         |    ignore:button1: ""
         |    text:field1: my common text
-    """.trimMargin()))
+    """.trimMargin()
+      )
+    )
   }
 
   private fun emptyExtension() = FlankGradleExtension(project.objects)

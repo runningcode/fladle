@@ -1,9 +1,9 @@
 package com.osacky.flank.gradle
 
-import javax.inject.Inject
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
+import javax.inject.Inject
 
 open class YamlConfigWriterTask @Inject constructor(private val config: FladleConfig, private val extension: FlankGradleExtension) : DefaultTask() {
 
