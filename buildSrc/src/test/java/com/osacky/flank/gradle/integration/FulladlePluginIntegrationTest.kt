@@ -18,15 +18,15 @@ class FulladlePluginIntegrationTest {
   @Test
   fun fladleSmokeTest() {
     writeBuildGradle(
-        """plugins {
+      """plugins {
              |  id "com.osacky.fulladle"
              |}""".trimMargin()
     )
     val result = GradleRunner.create()
-        .withProjectDir(testProjectRoot.root)
-        .withPluginClasspath()
-        .withGradleVersion("6.0")
-        .build()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withGradleVersion("6.0")
+      .build()
     assertThat(result.output).contains("SUCCESS")
   }
 }

@@ -9,11 +9,13 @@ internal class YamlWriter {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
-    check(base.instrumentationApk.isPresent xor !base.roboScript.isNullOrBlank()) { """
+    check(base.instrumentationApk.isPresent xor !base.roboScript.isNullOrBlank()) {
+      """
      Either instrumentationApk file or roboScript file must be specified but not both.
      instrumentationApk=${base.instrumentationApk.orNull}
      roboScript=${base.roboScript}
-    """.trimIndent() }
+      """.trimIndent()
+    }
 
     val deviceString = createDeviceString(config.devices)
     val additionalProperties = writeAdditionalProperties(config)

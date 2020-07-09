@@ -9,7 +9,7 @@ class ExampleInstrumentedTest {
 
   @Test
   fun seeView() {
-      assert(true)
+    assert(true)
   }
 
   @Test

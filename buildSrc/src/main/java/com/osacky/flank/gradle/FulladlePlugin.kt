@@ -11,11 +11,13 @@ import org.gradle.kotlin.dsl.getByType
  */
 class FulladlePlugin : Plugin<Project> {
   override fun apply(root: Project) {
-    println("""
+    println(
+      """
               Warning: Fulladle is still in development. It is very likely not to work. 
                * Report bugs to the Firebase Community slack in #flank or as an issue in the Fladle project.
                * Include the output from the printYml task.
-            """.trimIndent())
+      """.trimIndent()
+    )
 
     check(root.parent == null) { "Fulladle must be applied in the root project in order to configure subprojects." }
     FladlePluginDelegate().apply(root)
@@ -44,18 +46,22 @@ class FulladlePlugin : Plugin<Project> {
                 flankGradleExtension.debugApk.set(root.provider { this@app.outputFile.absolutePath })
               } else {
                 // Otherwise, let's just add it to the list.
-                flankGradleExtension.additionalTestApks.add(root.provider {
-                  "- app: ${this@app.outputFile}"
-                })
+                flankGradleExtension.additionalTestApks.add(
+                  root.provider {
+                    "- app: ${this@app.outputFile}"
+                  }
+                )
               }
               // If the instrumentation apk isn't yet set, let's use this one.
               if (!flankGradleExtension.instrumentationApk.isPresent) {
                 flankGradleExtension.instrumentationApk.set(root.provider { this@test.outputFile.absolutePath })
               } else {
                 // Otherwise, let's just add it to the list.
-                flankGradleExtension.additionalTestApks.add(root.provider {
-                  "  test: ${this@test.outputFile}"
-                })
+                flankGradleExtension.additionalTestApks.add(
+                  root.provider {
+                    "  test: ${this@test.outputFile}"
+                  }
+                )
               }
               addedTestsForModule = true
               return@test
@@ -67,9 +73,11 @@ class FulladlePlugin : Plugin<Project> {
         val library = extensions.getByType<LibraryExtension>()
         library.testVariants.configureEach {
           outputs.configureEach {
-            flankGradleExtension.additionalTestApks.add(root.provider {
-              "- test: $outputFile"
-            })
+            flankGradleExtension.additionalTestApks.add(
+              root.provider {
+                "- test: $outputFile"
+              }
+            )
           }
         }
       }

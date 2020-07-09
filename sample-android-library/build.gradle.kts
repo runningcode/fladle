@@ -18,7 +18,7 @@ android {
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7")
   implementation("androidx.appcompat:appcompat:1.1.0")
-  implementation("androidx.navigation:navigation-fragment-ktx:2.2.2")
+  implementation("androidx.navigation:navigation-fragment-ktx:2.3.0")
   implementation("androidx.constraintlayout:constraintlayout:1.1.3")
   testImplementation("junit:junit:4.13")
   androidTestImplementation("androidx.test.ext:junit:1.1.1")

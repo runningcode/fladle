@@ -22,30 +22,30 @@ class FlankGradlePluginIntegrationTest {
   @Test
   fun testLowGradleVersionFailsBuild() {
     writeBuildGradle(
-        """plugins {
+      """plugins {
              |  id "com.osacky.fladle"
              |}""".trimMargin()
     )
     val result = GradleRunner.create()
-        .withProjectDir(testProjectRoot.root)
-        .withPluginClasspath()
-        .withGradleVersion(oldVersion)
-        .buildAndFail()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withGradleVersion(oldVersion)
+      .buildAndFail()
     assertThat(result.output).contains("Fladle requires at minimum version Gradle 5.5. Detected version Gradle 5.3.1")
   }
 
   @Test
   fun testGradleSixZero() {
     writeBuildGradle(
-        """plugins {
+      """plugins {
              |  id "com.osacky.fladle"
              |}""".trimMargin()
     )
     val result = GradleRunner.create()
-        .withProjectDir(testProjectRoot.root)
-        .withPluginClasspath()
-        .withGradleVersion("6.0")
-        .build()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withGradleVersion("6.0")
+      .build()
 
     assertThat(result.output).contains("SUCCESS")
   }
@@ -53,21 +53,21 @@ class FlankGradlePluginIntegrationTest {
   @Test
   fun testMinSupportedGradleVersionWorks() {
     writeBuildGradle(
-        """plugins {
+      """plugins {
              |  id "com.osacky.fladle"
              |}""".trimMargin()
     )
     GradleRunner.create()
-        .withProjectDir(testProjectRoot.root)
-        .withPluginClasspath()
-        .withGradleVersion(minSupportGradleVersion)
-        .build()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withGradleVersion(minSupportGradleVersion)
+      .build()
   }
 
   @Test
   fun testMissingServiceAccountWithProjectId() {
     writeBuildGradle(
-        """plugins {
+      """plugins {
              |  id "com.osacky.fladle"
              |}
              |
@@ -78,17 +78,17 @@ class FlankGradlePluginIntegrationTest {
              |}""".trimMargin()
     )
     GradleRunner.create()
-        .withProjectDir(testProjectRoot.root)
-        .withPluginClasspath()
-        .withGradleVersion(minSupportGradleVersion)
-        .withArguments("printYml")
-        .build()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withGradleVersion(minSupportGradleVersion)
+      .withArguments("printYml")
+      .build()
   }
 
   @Test
   fun testMissingServiceAccountFailsBuild() {
     writeBuildGradle(
-        """plugins {
+      """plugins {
              |  id "com.osacky.fladle"
              |}
              |
@@ -97,18 +97,18 @@ class FlankGradlePluginIntegrationTest {
              |}""".trimMargin()
     )
     val result = GradleRunner.create()
-        .withProjectDir(testProjectRoot.root)
-        .withPluginClasspath()
-        .withGradleVersion(minSupportGradleVersion)
-        .withArguments("printYml")
-        .buildAndFail()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withGradleVersion(minSupportGradleVersion)
+      .withArguments("printYml")
+      .buildAndFail()
     assertThat(result.output).contains("ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials")
   }
 
   @Test
   fun testMissingApkFailsBuild() {
     writeBuildGradle(
-        """plugins {
+      """plugins {
              |  id "com.osacky.fladle"
              |}
              |fladle {
@@ -117,32 +117,32 @@ class FlankGradlePluginIntegrationTest {
              |""".trimMargin()
     )
     val result = GradleRunner.create()
-        .withProjectDir(testProjectRoot.root)
-        .withPluginClasspath()
-        .withGradleVersion(minSupportGradleVersion)
-        .withArguments("runFlank")
-        .buildAndFail()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withGradleVersion(minSupportGradleVersion)
+      .withArguments("runFlank")
+      .buildAndFail()
     assertThat(result.output).contains("debugApk must be specified")
   }
 
   @Test
   fun testMissingInstrumentationApkFailsBuild() {
     writeBuildGradle(
-        """plugins {
+      """plugins {
             id "com.osacky.fladle"
            }
            fladle {
              serviceAccountCredentials = project.layout.projectDirectory.file("foo")
              debugApk = "test-debug.apk"
            }
-           """.trimIndent()
+      """.trimIndent()
     )
     val result = GradleRunner.create()
-        .withProjectDir(testProjectRoot.root)
-        .withPluginClasspath()
-        .withGradleVersion(minSupportGradleVersion)
-        .withArguments("runFlank")
-        .buildAndFail()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withGradleVersion(minSupportGradleVersion)
+      .withArguments("runFlank")
+      .buildAndFail()
 
     assertThat(result.output).contains("Either instrumentationApk file or roboScript file must be specified but not both.")
   }
@@ -150,7 +150,7 @@ class FlankGradlePluginIntegrationTest {
   @Test
   fun testSpecifyingBothInstrumenationAndRoboscriptFailsBuild() {
     writeBuildGradle(
-        """plugins {
+      """plugins {
             id "com.osacky.fladle"
            }
            fladle {
@@ -159,14 +159,14 @@ class FlankGradlePluginIntegrationTest {
              instrumentationApk = "instrumenation-debug.apk"
              roboScript = "foo.script"
            }
-           """.trimIndent()
+      """.trimIndent()
     )
     val result = GradleRunner.create()
-        .withProjectDir(testProjectRoot.root)
-        .withPluginClasspath()
-        .withGradleVersion(minSupportGradleVersion)
-        .withArguments("printYml")
-        .buildAndFail()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withGradleVersion(minSupportGradleVersion)
+      .withArguments("printYml")
+      .buildAndFail()
 
     assertThat(result.output).contains("Either instrumentationApk file or roboScript file must be specified but not both.")
   }

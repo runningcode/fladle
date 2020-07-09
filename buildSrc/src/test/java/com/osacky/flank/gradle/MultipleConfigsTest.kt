@@ -13,7 +13,8 @@ class MultipleConfigsTest {
   @Test
   fun checkCanPrintSecondConfig() {
     val file = testProjectRoot.newFile("build.gradle")
-    file.writeText("""
+    file.writeText(
+      """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -30,16 +31,18 @@ class MultipleConfigsTest {
       |    }
       |  }
       |}
-    """.trimMargin())
+    """.trimMargin()
+    )
 
-      GradleRunner.create()
-        .withPluginClasspath()
-        .withArguments("writeConfigPropsOrange")
-        .withProjectDir(testProjectRoot.root)
-        .build()
+    GradleRunner.create()
+      .withPluginClasspath()
+      .withArguments("writeConfigPropsOrange")
+      .withProjectDir(testProjectRoot.root)
+      .build()
 
-      val writtenYmlFile = testProjectRoot.root.resolve("build/fladle/flank.yml")
-      assertThat(writtenYmlFile.readText()).contains("""
+    val writtenYmlFile = testProjectRoot.root.resolve("build/fladle/flank.yml")
+    assertThat(writtenYmlFile.readText()).contains(
+      """
       |gcloud:
       |  app: foo.apk
       |  test: instrument.apk
@@ -58,6 +61,7 @@ class MultipleConfigsTest {
       |
       |flank:
       |  keep-file-path: false
-    """.trimMargin())
+    """.trimMargin()
+    )
   }
 }

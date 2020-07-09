@@ -13,8 +13,8 @@ repositories {
 plugins {
   `kotlin-dsl`
   `java-gradle-plugin`
-  id("com.gradle.plugin-publish") version "0.11.0"
-  id("org.jmailen.kotlinter") version "2.3.2"
+  id("com.gradle.plugin-publish") version "0.12.0"
+  id("org.jmailen.kotlinter") version "2.4.1"
   `maven-publish`
   signing
 }
