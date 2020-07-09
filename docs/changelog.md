@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.10.2
+* Update [Flank to 20.06.2](https://github.com/Flank/flank/releases/tag/v20.06.2).
+* Fix duplicated status messages in console. [PR](https://github.com/runningcode/fladle/pull/142) Thanks [francescocervone](https://github.com/francescocervone)
+
+!!! Warning  "Breaking API change"
+    Add time units for timeout. `timeoutMin` has been renamed to `testTimeout`. [PR](https://github.com/runningcode/fladle/pull/137) Thanks [pawelpasterz](https://github.com/pawelpasterz)
+
 ## 0.10.1
 * [Fix] Allow for specifying roboScript without specifying instrumentationApk. Fixes [#128](https://github.com/runningcode/fladle/issues/128).
 

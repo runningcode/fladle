@@ -17,7 +17,7 @@ Instructions on how to create this account can be found [here](https://firebase.
 
 !!! note
     `variant` must be set if using buildFlavors in order to automatically configure the debugApk and testApk.
-    
+
 Set the variant to automatically configure for testing. A build variant is a combination of buildFlavor and buildType.
 This must also be set when testing against a non-default variant.
 For example: 'debug' or 'freeDebug'.
@@ -108,6 +108,7 @@ fladle {
       ["ignore", "button2"],
       ["text", "field1", "my text"],
     ]
+    outputStyle = 'multi'
 }
 ```
 
@@ -132,7 +133,7 @@ Need a different Flank version? Specify it with `flankVersion`.
 
 To use a snapshot:
 === "Groovy"
-    ``` groovy 
+    ``` groovy
     flankVersion = "flank_snapshot"`
     ```
 === "Kotlin"
@@ -144,7 +145,7 @@ Need more than 50 shards? Use Flank `8.1.0`.
 
 To use a different version:
 === "Groovy"
-    ``` groovy 
+    ``` groovy
     flankVersion = "{{ fladle.flank_version }}"
     ```
 === "Kotlin"
@@ -156,8 +157,8 @@ To use a different version:
 `flankCoordinates = "com.github.flank:flank"` to specify custom flank coordinates.
 
 ### debugApk
-This is a string representing the path to the app's debug apk. 
-Supports wildcard characters. 
+This is a string representing the path to the app's debug apk.
+Supports wildcard characters.
 Optional, prefer to set [variant](/configuration#variant).
 
 === "Groovy"
@@ -170,8 +171,8 @@ Optional, prefer to set [variant](/configuration#variant).
     ```
 
 ### instrumentationApk
-This is a string representing the path to the app's instrumentaiton apk. 
-Supports wildcard characters. 
+This is a string representing the path to the app's instrumentaiton apk.
+Supports wildcard characters.
 Optional, prefer to set [variant](/configuration#variant).
 InstrumenationApk should not be set when using [roboScript](/configuration#roboscript).
 
@@ -183,7 +184,7 @@ InstrumenationApk should not be set when using [roboScript](/configuration#robos
     ``` kotlin
     debugApk.set(project.provider { "${buildDir.toString()}/outputs/apk/androidTest/debug/*.apk" })
     ```
-    
+
 ### additionalTestApks
 Paths to additional test configurations.
 Order matters. A test apk is run with the nearest previous listed app apk.
@@ -258,6 +259,15 @@ Examples:
 * 200s -> 200 seconds
 * 100  -> 100 seconds
 
+=== "Groovy"
+    ``` groovy
+    testTimeout = "1h"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    testTimeout = "1h"
+    ```
+
 ### recordVideo
 Enable video recording during the test. Enabled by default.
 
@@ -321,4 +331,21 @@ The path to a Robo Script JSON file. The path may be in the local filesystem or 
 ### roboDirectives
 List of robo_directives that you can use to customize the behavior of Robo test. The type specifies the action type of the directive, which may take on values click, text or ignore. Each directive is list of String = [type, key, value]. Each key should be the Android resource name of a target UI element and each value should be the text input for that element. Values are only permitted for text type elements, so no value should be specified for click and ignore type elements.
 
+### outputStyle
+Output style of execution status. May be one of [`verbose`, `multi`, `single`].
+For runs with only one test execution the default value is 'verbose', in other cases 'multi' is used as the default. The output style 'multi' is not displayed correctly on consoles which don't support ansi codes, to avoid corrupted output use single or verbose.
 
+`multi` displays separated status for each shard execution in separated line, lines are updated over time. Similar to gradle output when running multiple tasks in parallel. Requires ANSI codes support.
+
+`single` displays shortened status of all executions in single line. Similar to gcloud output when running with sharding. Should work on any console.
+
+Default value is single.
+
+=== "Groovy"
+    ``` groovy
+    outputSyle = "single"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    outputStyle.set("single")
+    ```
