@@ -93,6 +93,8 @@ internal class YamlWriter {
         appendln("  - class $it")
       }
     }
+
+    appendln("  output-style: ${config.outputStyle.get()}")
   }
 
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
