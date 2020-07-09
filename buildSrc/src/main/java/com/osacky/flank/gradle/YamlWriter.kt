@@ -44,7 +44,6 @@ internal class YamlWriter {
     val smartFlankDisableUpload = config.smartFlankDisableUpload
     val localResultsDir = config.localResultsDir.orNull
     val testTargetsAlwaysRun = config.testTargetsAlwaysRun
-    val outputStyle = config.outputStyle.orNull
 
     appendln("flank:")
 
@@ -95,9 +94,7 @@ internal class YamlWriter {
       }
     }
 
-    outputStyle?.let {
-      appendln("  output-style: $it")
-    }
+    appendln("  output-style: ${config.outputStyle.get()}")
   }
 
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
