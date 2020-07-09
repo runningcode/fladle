@@ -1,0 +1,9 @@
+{
+    "name": "Fladle",
+    "type": "library",
+    "platforms": [ "Android" ],
+    "content": "README.md",
+    "tabs": [
+        { "title": "Documentation", "href": "https://runningcode.github.io/fladle/" },
+    ]
+}
