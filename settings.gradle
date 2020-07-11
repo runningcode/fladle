@@ -2,6 +2,7 @@ plugins {
   id "com.gradle.enterprise" version "3.3"
 }
 
+include ':android-library-no-tests'
 include ':sample'
 include ':sample-kotlin'
 include ':sample-flavors-kotlin'
