@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion(28)
+    compileSdkVersion(29)
     defaultConfig {
         applicationId = "com.osacky.flank.gradle.sample.kotlin"
         minSdkVersion(23)
