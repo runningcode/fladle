@@ -11,14 +11,6 @@ import org.gradle.kotlin.dsl.getByType
  */
 class FulladlePlugin : Plugin<Project> {
   override fun apply(root: Project) {
-    println(
-      """
-              Warning: Fulladle is still in development. It is very likely not to work.
-               * Report bugs to the Firebase Community slack in #flank or as an issue in the Fladle project.
-               * Include the output from the printYml task.
-      """.trimIndent()
-    )
-
     check(root.parent == null) { "Fulladle must be applied in the root project in order to configure subprojects." }
     FladlePluginDelegate().apply(root)
 
@@ -26,6 +18,13 @@ class FulladlePlugin : Plugin<Project> {
 
     val fulladleConfigureTask = root.tasks.register("configureFulladle") {
       doLast {
+        logger.info(
+          """
+              Warning: Fulladle is still in development. It is very likely not to work.
+               * Report bugs to the Firebase Community slack in #flank or as an issue in the Fladle project.
+               * Include the output from the printYml task.
+          """.trimIndent()
+        )
         root.subprojects {
           pluginManager.withPlugin("com.android.application") {
             val appExtension = extensions.getByType<AppExtension>()
