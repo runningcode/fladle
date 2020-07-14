@@ -246,10 +246,34 @@ Shard Android tests by time using historical run data. The amount of shards used
 The number of times to retry failed tests. Default is 0. Max is 10.
 
 ### directoriesToPull
-A list of paths that will be copied from the device's storage to the designated results bucket after the test is complete. These must be absolute paths under /sdcard or /data/local/tmp. Path names are restricted to the characters a-zA-Z0-9_-./+. The paths /sdcard and /data will be made available and treated as implicit path substitutions. E.g. if /sdcard on a particular device does not map to external storage, the system will replace it with the external storage path prefix for that device.
+A list of paths that will be copied from the device's storage to the designated results bucket after the test is complete. These must be absolute paths under `/sdcard` or `/data/local/tmp`.  Path names are restricted to the characters `a-zA-Z0-9_-./+`. The paths `/sdcard` and `/data` will be made available and treated as implicit path substitutions. E.g. if `/sdcard` on a particular device does not map to external storage, the system will replace it with the external storage path prefix for that device.
+=== "Groovy"
+    ``` groovy
+    directoriesToPull = [
+      '/sdcard/tempDir1','/data/local/tmp/tempDir2'
+    ]
+    ```
+=== "Kotlin"
+    ``` kotlin
+    directoriesToPull = listOf(
+      "/sdcard/tempDir1","/data/local/tmp/tempDir2"
+    )
+    ```
 
 ### filesToDownload
-List of regex that is matched against bucket paths (for example: `2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt`) for files to be downloaded after a flank run.
+List of regex that is matched against bucket paths (for example: `2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt`) for files to be downloaded after a flank run. The results are downloaded to the `APP_MODULE/build/fladle/results/` directory.
+=== "Groovy"
+    ``` groovy
+    filesToDownload = [
+      '.*/sdcard/tempDir1/.*','.*/data/local/tmp/tempDir2/.*'
+    ]
+    ```
+=== "Kotlin"
+    ``` kotlin
+    filesToDownload = listOf(
+      ".*/sdcard/tempDir1/.*",".*/data/local/tmp/tempDir2/.*"
+    )
+    ```
 
 ### testTimeout
 The max time test execution can run before it is cancelled (default: 15m). It does not include any time necessary to prepare and clean up the target device. The maximum possible testing time is 45m on physical devices and 60m on virtual devices. The TIMEOUT units can be h, m, or s. If no unit is given, seconds are assumed.
