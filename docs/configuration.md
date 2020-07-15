@@ -262,7 +262,7 @@ A list of paths that will be copied from the device's storage to the designated 
     ```
 
 ### filesToDownload
-List of regex that is matched against bucket paths (for example: `2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt`) for files to be downloaded after a flank run. The results are downloaded to the `APP_MODULE/build/fladle/results/` directory.
+List of regex that is matched against bucket paths (for example: `2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt`) for files to be downloaded after a flank run. The results are downloaded to the `APP_MODULE/build/fladle/RESULTS` directory where RESULTS can be set by [`localResultsDir`](#localresultsdir) var otherwise defaulting to `results/`.
 
 === "Groovy"
     ``` groovy
