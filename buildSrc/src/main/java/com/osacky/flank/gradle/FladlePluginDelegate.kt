@@ -5,7 +5,6 @@ import com.android.builder.model.TestOptions
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.kotlin.dsl.create
 import org.gradle.util.GradleVersion
@@ -68,22 +67,17 @@ class FladlePluginDelegate {
 
     val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, config, base)
 
-    register("flankDoctor$name", JavaExec::class.java) {
+    register("flankDoctor$name", FlankJavaExec::class.java) {
       description = "Finds problems with the current configuration."
-      group = TASK_GROUP
-      workingDir(project.layout.fladleDir)
       classpath = project.fladleConfig
-      main = "ftl.Main"
       args = listOf("firebase", "test", "android", "doctor")
       dependsOn(writeConfigProps)
     }
 
-    val execFlank = register("execFlank$name", JavaExec::class.java) {
+    val execFlank = register("execFlank$name", FlankExecutionTask::class.java, config)
+    execFlank.configure {
       description = "Runs instrumentation tests using flank on firebase test lab."
-      group = TASK_GROUP
-      workingDir(project.layout.fladleDir)
       classpath = project.fladleConfig
-      main = "ftl.Main"
       args = if (project.hasProperty("dumpShards")) {
         listOf("firebase", "test", "android", "run", "--dump-shards")
       } else {
@@ -92,20 +86,11 @@ class FladlePluginDelegate {
       if (config.serviceAccountCredentials.isPresent) {
         environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to config.serviceAccountCredentials.get()))
       }
-      dependsOn(named("writeConfigProps$name"))
-      doFirst {
-        checkFilesExist(base, project)
-      }
+      dependsOn(writeConfigProps)
     }
 
     register("runFlank$name", RunFlankTask::class.java).configure {
       dependsOn(execFlank)
-    }
-  }
-
-  private fun checkFilesExist(base: FlankGradleExtension, project: Project) {
-    if (base.serviceAccountCredentials.isPresent) {
-      check(project.file(base.serviceAccountCredentials.get()).exists()) { "serviceAccountCredential file doesn't exist ${base.serviceAccountCredentials.get()}" }
     }
   }
 
