@@ -71,7 +71,7 @@ class FladlePluginDelegate {
     register("flankDoctor$name", JavaExec::class.java) {
       description = "Finds problems with the current configuration."
       group = TASK_GROUP
-      workingDir(project.fladleDir)
+      workingDir(project.layout.fladleDir)
       classpath = project.fladleConfig
       main = "ftl.Main"
       args = listOf("firebase", "test", "android", "doctor")
@@ -81,7 +81,7 @@ class FladlePluginDelegate {
     val execFlank = register("execFlank$name", JavaExec::class.java) {
       description = "Runs instrumentation tests using flank on firebase test lab."
       group = TASK_GROUP
-      workingDir(project.fladleDir)
+      workingDir(project.layout.fladleDir)
       classpath = project.fladleConfig
       main = "ftl.Main"
       args = if (project.hasProperty("dumpShards")) {
