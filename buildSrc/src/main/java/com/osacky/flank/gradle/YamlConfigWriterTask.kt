@@ -1,11 +1,12 @@
 package com.osacky.flank.gradle
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.ProjectLayout
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import javax.inject.Inject
 
-open class YamlConfigWriterTask @Inject constructor(private val config: FladleConfig, private val extension: FlankGradleExtension) : DefaultTask() {
+open class YamlConfigWriterTask @Inject constructor(private val config: FladleConfig, private val extension: FlankGradleExtension, private val projectLayout: ProjectLayout) : DefaultTask() {
 
   private val yamlWriter = YamlWriter()
 
@@ -21,7 +22,7 @@ open class YamlConfigWriterTask @Inject constructor(private val config: FladleCo
 
   @TaskAction
   fun writeFile() {
-    val fladleDir = project.fladleDir.get().asFile
+    val fladleDir = projectLayout.fladleDir.get().asFile
     if (!fladleDir.exists()) {
       fladleDir.mkdirs()
     }

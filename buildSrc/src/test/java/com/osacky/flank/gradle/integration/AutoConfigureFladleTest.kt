@@ -26,7 +26,7 @@ class AutoConfigureFladleTest {
               repositories {
                 google()
                 mavenCentral()
-              } 
+              }
             }
       """.trimIndent()
     )
@@ -59,7 +59,7 @@ class AutoConfigureFladleTest {
             version: 26
           - model: Nexus5
             version: 23
-        
+
           use-orchestrator: true
           auto-google-login: false
           record-video: true
@@ -70,7 +70,7 @@ class AutoConfigureFladleTest {
           test-targets:
           - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView
           num-flaky-test-attempts: 0
-        
+
         flank:
           smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
           keep-file-path: false
