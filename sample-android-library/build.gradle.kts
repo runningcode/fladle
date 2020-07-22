@@ -10,9 +10,7 @@ android {
     targetSdkVersion(28)
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
-  testOptions {
-    execution = "ANDROIDX_TEST_ORCHESTRATOR"
-  }
+  testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"
 }
 
 dependencies {
