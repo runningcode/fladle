@@ -14,9 +14,7 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    testOptions {
-        execution = "ANDROIDX_TEST_ORCHESTRATOR"
-    }
+    testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"
     flavorDimensions("flavor")
 
     productFlavors {
@@ -28,13 +26,13 @@ android {
         }
     }
 
-    variantFilter {
-        setIgnore(name == "vanilla")
+    onVariants.withName("vanilla") {
+        enabled = false
     }
 }
 
 fladle {
-    flankVersion.set("20.05.2")
+    flankVersion.set("20.07.0")
     variant.set("chocolateDebug")
     debugApk.set(project.provider { "${buildDir.toString()}/outputs/apk/chocolate/debug/*.apk" })
     serviceAccountCredentials.set(project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json"))

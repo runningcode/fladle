@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : FladleConfig {
   val flankCoordinates: Property<String> = objects.property(String::class.java).convention("com.github.flank:flank")
-  val flankVersion: Property<String> = objects.property(String::class.java).convention("20.06.2")
+  val flankVersion: Property<String> = objects.property(String::class.java).convention("20.07.0")
   // Project id is automatically discovered by default. Use this to override the project id.
   override var projectId: String? = null
   override val serviceAccountCredentials: RegularFileProperty = objects.fileProperty()

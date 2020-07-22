@@ -7,13 +7,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:4.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 plugins {
-    id "com.github.ben-manes.versions" version "0.28.0"
+    id "com.github.ben-manes.versions" version "0.29.0"
     id "com.osacky.fulladle"
     id "org.jmailen.kotlinter" version "2.4.1"
 }
@@ -46,19 +46,15 @@ fladle {
     serviceAccountCredentials = project.layout.projectDirectory.file("sample/flank-gradle-5cf02dc90531.json")
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
 buildScan {
     termsOfServiceUrl = 'https://gradle.com/terms-of-service'
     termsOfServiceAgree = 'yes'
     publishAlways()
 }
 
-wrapper {
+tasks.wrapper.configure {
     distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = '6.5.1'
+    gradleVersion = '6.6-rc-2'
 }
 
 def isNonStable = { String version ->

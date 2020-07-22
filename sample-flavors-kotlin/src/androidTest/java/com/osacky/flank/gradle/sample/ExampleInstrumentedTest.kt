@@ -6,6 +6,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
+import com.osacky.flank.gradle.sample.kotlin.MainActivity
 import com.osacky.flank.gradle.sample.kotlin.R
 import org.junit.Rule
 import org.junit.Test

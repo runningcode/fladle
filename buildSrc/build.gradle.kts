@@ -27,9 +27,9 @@ val isReleaseMode : Boolean = hasProperty("fladle.releaseMode")
 dependencies {
   compileOnly(gradleApi())
   if (isReleaseMode) {
-    compileOnly("com.android.tools.build:gradle:3.6.3")
+    compileOnly("com.android.tools.build:gradle:4.0.1")
   } else {
-    implementation("com.android.tools.build:gradle:3.6.3")
+    implementation("com.android.tools.build:gradle:4.0.1")
   }
 
   testImplementation(gradleTestKit())
