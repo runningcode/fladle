@@ -178,11 +178,11 @@ InstrumenationApk should not be set when using [roboScript](/configuration#robos
 
 === "Groovy"
     ``` groovy
-    debugApk = project.provider { "${buildDir.toString()}/outputs/apk/androidTest/debug/*.apk" }
+    instrumentationApk = project.provider { "${buildDir.toString()}/outputs/apk/androidTest/debug/*.apk" }
     ```
 === "Kotlin"
     ``` kotlin
-    debugApk.set(project.provider { "${buildDir.toString()}/outputs/apk/androidTest/debug/*.apk" })
+    instrumentationApk.set(project.provider { "${buildDir.toString()}/outputs/apk/androidTest/debug/*.apk" })
     ```
 
 ### additionalTestApks
