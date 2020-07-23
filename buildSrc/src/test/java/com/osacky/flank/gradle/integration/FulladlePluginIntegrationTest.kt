@@ -16,7 +16,7 @@ class FulladlePluginIntegrationTest {
   }
 
   @Test
-  fun fladleSmokeTest() {
+  fun fulladleSmokeTest() {
     writeBuildGradle(
       """plugins {
              |  id "com.osacky.fulladle"
