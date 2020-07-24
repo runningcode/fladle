@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.11.0
+* Update [Flank to 20.07.0](https://github.com/Flank/flank/releases/tag/v20.07.0).
+* Only add `additional-test-apks` for modules that have tests. [PR](https://github.com/runningcode/fladle/pull/150)
+* Experimental configuration caching support. [PR1](https://github.com/runningcode/fladle/pull/153)[PR2](https://github.com/runningcode/fladle/pull/154)
+
 ## 0.10.2
 * Update [Flank to 20.06.2](https://github.com/Flank/flank/releases/tag/v20.06.2).
 * Fix duplicated status messages in console. [PR](https://github.com/runningcode/fladle/pull/142) Thanks [francescocervone](https://github.com/francescocervone)
