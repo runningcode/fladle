@@ -54,7 +54,7 @@ buildScan {
 
 tasks.wrapper.configure {
     distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = '6.6-rc-2'
+    gradleVersion = '6.6-rc-3'
 }
 
 def isNonStable = { String version ->
