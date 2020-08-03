@@ -18,7 +18,7 @@ Multi module testing can be done by manually specifying [additionalTestApks](/fl
     === "Kotlin"
         ``` kotlin
         plugins {
-            id 'com.osacky.fulladle' version '{{ fladle.current_release }}'
+            id("com.osacky.fulladle") version "{{ fladle.current_release }}"
         }
         ```
 
