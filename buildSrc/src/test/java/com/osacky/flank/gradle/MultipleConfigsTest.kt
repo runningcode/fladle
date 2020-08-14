@@ -40,7 +40,7 @@ class MultipleConfigsTest {
       .withProjectDir(testProjectRoot.root)
       .build()
 
-    val writtenYmlFile = testProjectRoot.root.resolve("build/fladle/flank.yml")
+    val writtenYmlFile = testProjectRoot.root.resolve("build/fladle/orange/flank.yml")
     assertThat(writtenYmlFile.readText()).contains(
       """
       |gcloud:

@@ -66,11 +66,14 @@ class FladlePluginDelegate {
     }
 
     val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, config, base)
+    writeConfigProps.configure {
+      flankConfig.set(project.layout.buildDirectory.dir("fladle/${name.toLowerCase()}").map { it.file("flank.yml") })
+    }
 
     register("flankDoctor$name", FlankJavaExec::class.java) {
       description = "Finds problems with the current configuration."
       classpath = project.fladleConfig
-      args = listOf("firebase", "test", "android", "doctor")
+      args = listOf("firebase", "test", "android", "doctor", "-c", writeConfigProps.get().flankConfig.get().asFile.absolutePath)
       dependsOn(writeConfigProps)
     }
 
@@ -79,9 +82,9 @@ class FladlePluginDelegate {
       description = "Runs instrumentation tests using flank on firebase test lab."
       classpath = project.fladleConfig
       args = if (project.hasProperty("dumpShards")) {
-        listOf("firebase", "test", "android", "run", "--dump-shards")
+        listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().flankConfig.get().asFile.absolutePath, "--dump-shards")
       } else {
-        listOf("firebase", "test", "android", "run")
+        listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().flankConfig.get().asFile.absolutePath)
       }
       if (config.serviceAccountCredentials.isPresent) {
         environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to config.serviceAccountCredentials.get()))
