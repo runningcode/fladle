@@ -33,10 +33,11 @@ class MultipleConfigsTest {
       |}
     """.trimMargin()
     )
+    testProjectRoot.newFile("flank-gradle-service.json").writeText("{}")
 
     GradleRunner.create()
       .withPluginClasspath()
-      .withArguments("writeConfigPropsOrange")
+      .withArguments("writeConfigPropsOrange", "--stacktrace")
       .withProjectDir(testProjectRoot.root)
       .build()
 

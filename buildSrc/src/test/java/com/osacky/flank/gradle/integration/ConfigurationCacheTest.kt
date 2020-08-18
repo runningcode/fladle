@@ -46,6 +46,7 @@ class ConfigurationCacheTest {
            |}
            |""".trimMargin()
     )
+    testProjectRoot.newFile("flank-gradle-service-account.json").writeText("{}")
     val result = configCachingRunner("writeConfigProps").build()
 
     assertThat(result.output).contains("SUCCESS")
@@ -73,6 +74,7 @@ class ConfigurationCacheTest {
            |}
            |""".trimMargin()
     )
+    testProjectRoot.newFile("flank-gradle-service-account.json").writeText("{}")
     val result = configCachingRunner("flankDoctor").build()
 
     assertThat(result.output).contains("SUCCESS")

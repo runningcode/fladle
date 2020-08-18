@@ -57,17 +57,19 @@ class FladlePluginDelegate {
   }
 
   private fun TaskContainer.createTasksForConfig(base: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
+    val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, base)
+    writeConfigProps.configure {
+      fladleConfig = config
+      flankConfig.set(project.layout.buildDirectory.dir("fladle/${name.toLowerCase()}").map { it.file("flank.yml") })
+    }
+
     register("printYml$name") {
       description = "Print the flank.yml file to the console."
       group = TASK_GROUP
+      dependsOn(writeConfigProps)
       doLast {
-        println(YamlWriter().createConfigProps(config, base))
+        println(writeConfigProps.get().flankConfig.get().asFile.readText())
       }
-    }
-
-    val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, config, base)
-    writeConfigProps.configure {
-      flankConfig.set(project.layout.buildDirectory.dir("fladle/${name.toLowerCase()}").map { it.file("flank.yml") })
     }
 
     register("flankDoctor$name", FlankJavaExec::class.java) {
