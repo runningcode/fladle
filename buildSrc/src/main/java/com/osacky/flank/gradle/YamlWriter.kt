@@ -9,11 +9,13 @@ internal class YamlWriter {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
-    check(base.instrumentationApk.isPresent xor base.roboScript.isPresent) { """
+    check(base.instrumentationApk.isPresent xor base.roboScript.isPresent) {
+      """
      Either instrumentationApk file or roboScript file must be specified but not both.
      instrumentationApk=${base.instrumentationApk.orNull}
      roboScript=${base.roboScript.orNull}
-    """.trimIndent() }
+      """.trimIndent()
+    }
 
     val deviceString = createDeviceString(config.devices.get())
     val additionalProperties = writeAdditionalProperties(config)
@@ -111,7 +113,7 @@ internal class YamlWriter {
     val autoGoogleLogin = config.autoGoogleLogin.get()
     val recordVideo = config.recordVideo.get()
     val performanceMetrics = config.performanceMetrics.get()
-    val timeoutMin = config.timeoutMin.get()
+    val testTimeout = config.testTimeout.get()
     val environmentVariables = config.environmentVariables.get()
     val testTargets = config.testTargets.get()
     val directoriesToPull = config.directoriesToPull.get()
@@ -124,7 +126,7 @@ internal class YamlWriter {
     appendln("  auto-google-login: $autoGoogleLogin")
     appendln("  record-video: $recordVideo")
     appendln("  performance-metrics: $performanceMetrics")
-    appendln("  timeout: ${timeoutMin}m")
+    appendln("  timeout: ${testTimeout}m")
 
     if (environmentVariables.isNotEmpty()) {
       appendln("  environment-variables:")

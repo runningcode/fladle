@@ -1,4 +1,5 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "com.osacky.flank.gradle"
 version = "0.11.1-SNAPSHOT"
@@ -156,4 +157,8 @@ tasks.withType(Test::class.java).configureEach {
   testLogging {
     events = setOf(TestLogEvent.SKIPPED, TestLogEvent.FAILED, TestLogEvent.PASSED)
   }
+}
+
+tasks.withType<KotlinCompile> {
+  kotlinOptions.jvmTarget = "1.8"
 }

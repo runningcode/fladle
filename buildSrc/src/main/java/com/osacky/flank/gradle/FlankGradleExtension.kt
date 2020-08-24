@@ -87,7 +87,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override var roboDirectives: ListProperty<List<String>> = (objects.listProperty(List::class.java) as ListProperty<List<String>>).convention(emptyList())
 
-  override var testTimeout: String = "15m"
+  override var testTimeout: Property<String> = objects.property()
 
   override var outputStyle: Property<String> = objects.property<String>().convention("single")
 

@@ -132,7 +132,10 @@ class YamlWriterTest {
       yamlWriter.createConfigProps(extension, extension)
       fail()
     } catch (expected: IllegalStateException) {
-      assertEquals("ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials", expected.message)
+      assertEquals(
+        "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials",
+        expected.message
+      )
     }
   }
 
@@ -333,12 +336,14 @@ class YamlWriterTest {
   @Test
   fun writeNoTestRepeats() {
     val extension = emptyExtension()
-    assertEquals("flank:\n" +
-            "  keep-file-path: false\n" +
-            "  ignore-failed-tests: false\n" +
-            "  disable-sharding: false\n" +
-            "  smart-flank-disable-upload: false\n",
-      yamlWriter.writeFlankProperties(extension))
+    assertEquals(
+      "flank:\n" +
+        "  keep-file-path: false\n" +
+        "  ignore-failed-tests: false\n" +
+        "  disable-sharding: false\n" +
+        "  smart-flank-disable-upload: false\n",
+      yamlWriter.writeFlankProperties(extension)
+    )
   }
 
   @Test
@@ -385,7 +390,8 @@ class YamlWriterTest {
       resultsHistoryName.set("androidtest")
     }
 
-    assertEquals("  results-history-name: androidtest\n" +
+    assertEquals(
+      "  results-history-name: androidtest\n" +
         "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
@@ -402,7 +408,8 @@ class YamlWriterTest {
       resultsBucket.set("fake-project.appspot.com")
     }
 
-    assertEquals("  results-bucket: fake-project.appspot.com\n" +
+    assertEquals(
+      "  results-bucket: fake-project.appspot.com\n" +
         "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
@@ -419,14 +426,16 @@ class YamlWriterTest {
       resultsDir.set("resultsGoHere")
     }
 
-    assertEquals("  results-dir: resultsGoHere\n" +
+    assertEquals(
+      "  results-dir: resultsGoHere\n" +
         "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
         "  performance-metrics: true\n" +
         "  timeout: 15m\n" +
         "  num-flaky-test-attempts: 0\n",
-        yamlWriter.writeAdditionalProperties(extension))
+      yamlWriter.writeAdditionalProperties(extension)
+    )
   }
 
   @Test
@@ -436,7 +445,8 @@ class YamlWriterTest {
       testTargets.set(listOf("class com.example.Foo"))
     }
 
-    assertEquals("  results-history-name: androidtest\n" +
+    assertEquals(
+      "  results-history-name: androidtest\n" +
         "  use-orchestrator: false\n" +
         "  auto-google-login: false\n" +
         "  record-video: true\n" +
@@ -638,9 +648,11 @@ class YamlWriterTest {
   @Test
   fun writeSingleEnvironmentVariables() {
     val extension = emptyExtension {
-      environmentVariables.set(mapOf(
-        "listener" to "com.osacky.flank.sample.Listener"
-      ))
+      environmentVariables.set(
+        mapOf(
+          "listener" to "com.osacky.flank.sample.Listener"
+        )
+      )
     }
 
     assertEquals(
@@ -659,10 +671,12 @@ class YamlWriterTest {
   @Test
   fun writeMultipleEnvironmentVariables() {
     val extension = emptyExtension {
-      environmentVariables.set(mapOf(
-        "clearPackageData" to "true",
-        "listener" to "com.osacky.flank.sample.Listener"
-      ))
+      environmentVariables.set(
+        mapOf(
+          "clearPackageData" to "true",
+          "listener" to "com.osacky.flank.sample.Listener"
+        )
+      )
     }
 
     assertEquals(
@@ -883,10 +897,12 @@ class YamlWriterTest {
   @Test
   fun writeClientDetails() {
     val properties = emptyExtension {
-      clientDetails.set(mapOf(
-              "anyDetail1" to "anyValue1",
-              "anyDetail2" to "anyValue2"
-      ))
+      clientDetails.set(
+        mapOf(
+          "anyDetail1" to "anyValue1",
+          "anyDetail2" to "anyValue2"
+        )
+      )
     }.toAdditionalProperties()
 
     assertTrue(
@@ -903,11 +919,13 @@ class YamlWriterTest {
   @Test
   fun writeTestTargetsAlwaysRun() {
     val properties = emptyExtension {
-      testTargetsAlwaysRun.set(listOf(
-              "com.example.FirstTests#test1",
-              "com.example.FirstTests#test2",
-              "com.example.FirstTests#test3"
-      ))
+      testTargetsAlwaysRun.set(
+        listOf(
+          "com.example.FirstTests#test1",
+          "com.example.FirstTests#test2",
+          "com.example.FirstTests#test3"
+        )
+      )
     }.toFlankProperties()
 
     assertTrue(
@@ -925,10 +943,12 @@ class YamlWriterTest {
   @Test
   fun writeOtherFiles() {
     val properties = emptyExtension {
-      otherFiles.set(mapOf(
-              "/example/path/test1" to "anyfile.txt",
-              "/example/path/test2" to "anyfile2.txt"
-      ))
+      otherFiles.set(
+        mapOf(
+          "/example/path/test1" to "anyfile.txt",
+          "/example/path/test2" to "anyfile2.txt"
+        )
+      )
     }.toAdditionalProperties()
 
     assertTrue(
@@ -963,11 +983,13 @@ class YamlWriterTest {
   @Test
   fun writeRoboDirectives() {
     val properties = emptyExtension {
-      roboDirectives.set(listOf(
-              listOf("click", "button3"),
-              listOf("ignore", "button1", ""),
-              listOf("text", "field1", "my common text")
-      ))
+      roboDirectives.set(
+        listOf(
+          listOf("click", "button3"),
+          listOf("ignore", "button1", ""),
+          listOf("text", "field1", "my common text")
+        )
+      )
     }.toAdditionalProperties()
 
     assertTrue(

@@ -161,7 +161,7 @@ interface FladleConfig {
    * * 200s -> 200 seconds
    * * 100  -> 100 seconds
    */
-  var testTimeout: String
+  var testTimeout: Property<String>
 
   /**
    * Output style of execution status. May be one of [verbose, multi, single].
