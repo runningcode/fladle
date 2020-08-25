@@ -18,13 +18,6 @@ class FulladlePlugin : Plugin<Project> {
 
     val fulladleConfigureTask = root.tasks.register("configureFulladle") {
       doLast {
-        logger.info(
-          """
-              Warning: Fulladle is still in development. It is very likely not to work.
-               * Report bugs to the Firebase Community slack in #flank or as an issue in the Fladle project.
-               * Include the output from the printYml task.
-          """.trimIndent()
-        )
         root.subprojects {
           pluginManager.withPlugin("com.android.application") {
             val appExtension = extensions.getByType<AppExtension>()
