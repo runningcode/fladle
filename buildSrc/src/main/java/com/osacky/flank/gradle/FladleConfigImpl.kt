@@ -26,9 +26,9 @@ data class FladleConfigImpl(
   override var resultsBucket: String?,
   override var keepFilePath: Boolean,
   override var resultsDir: String?,
-  override var additionalTestApks: ListProperty<String>,
-  override var runTimeout: Property<String>,
-  override var ignoreFailedTests: Property<Boolean>,
+  override val additionalTestApks: ListProperty<String>,
+  override val runTimeout: Property<String>,
+  override val ignoreFailedTests: Property<Boolean>,
   override var disableSharding: Boolean,
   override var smartFlankDisableUpload: Boolean,
   override var testRunnerClass: String?,
@@ -41,7 +41,7 @@ data class FladleConfigImpl(
   override var roboScript: String?,
   override var roboDirectives: List<List<String>>,
   override var testTimeout: String,
-  override var outputStyle: Property<String>,
-  override var legacyJunitResult: Boolean,
-  override var fullJunitResult: Boolean
+  override val outputStyle: Property<String>,
+  override val legacyJunitResult: Property<Boolean>,
+  override val fullJunitResult: Property<Boolean>
 ) : FladleConfig

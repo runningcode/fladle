@@ -103,9 +103,9 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val outputStyle: Property<String> = objects.property<String>().convention("single")
 
-  override var legacyJunitResult: Boolean = false
+  override val legacyJunitResult: Property<Boolean> = objects.property<Boolean>().convention(false)
 
-  override var fullJunitResult: Boolean = false
+  override val fullJunitResult: Property<Boolean> = objects.property<Boolean>().convention(false)
 
   @Internal
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
@@ -147,8 +147,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       roboDirectives = roboDirectives,
       testTimeout = testTimeout,
       outputStyle = objects.property<String>().convention(outputStyle),
-      legacyJunitResult = legacyJunitResult,
-      fullJunitResult = fullJunitResult
+      legacyJunitResult = objects.property<Boolean>().convention(legacyJunitResult),
+      fullJunitResult = objects.property<Boolean>().convention(fullJunitResult)
     )
   }
 

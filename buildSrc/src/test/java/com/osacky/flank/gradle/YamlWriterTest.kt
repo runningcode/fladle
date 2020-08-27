@@ -152,14 +152,14 @@ class YamlWriterTest {
                device:
                - model: NexusLowRes
                  version: 28
-             
+
                use-orchestrator: false
                auto-google-login: false
                record-video: true
                performance-metrics: true
                timeout: 15m
                num-flaky-test-attempts: 0
-             
+
              flank:
                project: set
                keep-file-path: false
@@ -243,7 +243,7 @@ class YamlWriterTest {
       device:
       - model: NexusLowRes
         version: 28
-    
+
       use-orchestrator: false
       auto-google-login: false
       record-video: true
@@ -251,7 +251,7 @@ class YamlWriterTest {
       timeout: 15m
       num-flaky-test-attempts: 0
       robo-script: foo
-    
+
     flank:
       keep-file-path: false
       ignore-failed-tests: false
@@ -928,7 +928,7 @@ class YamlWriterTest {
   @Test
   fun writeLegacyJunitResult() {
     val properties = emptyExtension {
-      legacyJunitResult = true
+      legacyJunitResult.set(true)
     }.toFlankProperties()
 
     assertTrue(properties.contains("  legacy-junit-result: true"))
@@ -944,7 +944,7 @@ class YamlWriterTest {
   @Test
   fun writeFullJunitResult() {
     val properties = emptyExtension {
-      fullJunitResult = true
+      fullJunitResult.set(true)
     }.toFlankProperties()
 
     assertTrue(properties.contains("  full-junit-result: true"))
