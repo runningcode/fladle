@@ -107,7 +107,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
     FladleConfigImpl(
       name = it,
       projectId = projectId,
-      serviceAccountCredentials = serviceAccountCredentials,
+      serviceAccountCredentials = objects.fileProperty().convention(serviceAccountCredentials),
       useOrchestrator = useOrchestrator,
       autoGoogleLogin = autoGoogleLogin,
       devices = devices,
@@ -126,13 +126,13 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       resultsBucket = resultsBucket,
       keepFilePath = keepFilePath,
       resultsDir = resultsDir,
-      additionalTestApks = additionalTestApks,
-      runTimeout = runTimeout,
-      ignoreFailedTests = ignoreFailedTests,
+      additionalTestApks = objects.listProperty<String>().convention(additionalTestApks),
+      runTimeout = objects.property<String>().convention(runTimeout),
+      ignoreFailedTests = objects.property<Boolean>().convention(ignoreFailedTests),
       disableSharding = disableSharding,
       smartFlankDisableUpload = smartFlankDisableUpload,
       testRunnerClass = testRunnerClass,
-      localResultsDir = localResultsDir,
+      localResultsDir = objects.property<String>().convention(localResultsDir),
       numUniformShards = numUniformShards,
       clientDetails = clientDetails,
       testTargetsAlwaysRun = testTargetsAlwaysRun,
@@ -141,7 +141,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       roboScript = roboScript,
       roboDirectives = roboDirectives,
       testTimeout = testTimeout,
-      outputStyle = outputStyle
+      outputStyle = objects.property<String>().convention(outputStyle)
     )
   }
 
