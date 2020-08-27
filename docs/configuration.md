@@ -383,5 +383,23 @@ Flank provides two ways for parsing junit xml results.
 New way uses google api instead of merging xml files, but can generate slightly different output format.
 This flag allows fallback for legacy xml junit results parsing
 
+=== "Groovy"
+    ``` groovy
+    legacyJunitResult = false
+    ```
+=== "Kotlin"
+    ``` kotlin
+    legacyJunitResult.set(false)
+    ```
+
 ### fullJunitResult
 Enables creating an additional local junit result on local storage with failure nodes on passed flaky tests.
+
+=== "Groovy"
+    ``` groovy
+    fullJunitResult = false
+    ```
+=== "Kotlin"
+    ``` kotlin
+    fullJunitResult.set(false)
+    ```

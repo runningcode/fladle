@@ -231,11 +231,11 @@ interface FladleConfig {
    * This flag allows fallback for legacy xml junit results parsing
    */
   @get:Input
-  var legacyJunitResult: Boolean
+  val legacyJunitResult: Property<Boolean>
 
   /**
    * Enables creating an additional local junit result on local storage with failure nodes on passed flaky tests.
    */
   @get:Input
-  var fullJunitResult: Boolean
+  val fullJunitResult: Property<Boolean>
 }
