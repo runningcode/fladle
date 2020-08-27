@@ -3,6 +3,8 @@
 ## Unreleased
 
 ## 0.13.0
+* Bump Flank to [20.09.3](https://github.com/Flank/flank/releases/tag/v20.09.3)
+
 !!! Warning "Breaking API Change"
     Use lazy properties [Fixes #92](https://github.com/runningcode/fladle/issues/92) [PR](https://github.com/runningcode/fladle/pull/176) Thanks [pawelpasterz](https://github.com/pawelpasterz)
 
