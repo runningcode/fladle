@@ -5,6 +5,7 @@
 * Update [Flank to 20.08.3](https://github.com/Flank/flank/releases/tag/v20.08.3).
 * Use Github actions instead of CircleCI
 * Write Yaml file to task specific output directory and add up-to-date checks. [#159](https://github.com/runningcode/fladle/pull/159) [Fixes #147](https://github.com/runningcode/fladle/issues/147) Thanks [CristianGM](https://github.com/CristianGM)
+* Add support for `full-junit-result` and `legacy-junit-result`. [#170](https://github.com/runningcode/fladle/pull/170) Fixes [#157](https://github.com/runningcode/fladle/issues/157). Thanks [MatthewTPage](https://github.com/MatthewTPage)
 
 ## 0.11.0
 * Update [Flank to 20.07.0](https://github.com/Flank/flank/releases/tag/v20.07.0).
