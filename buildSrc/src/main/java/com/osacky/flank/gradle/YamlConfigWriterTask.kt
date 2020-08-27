@@ -3,24 +3,34 @@ package com.osacky.flank.gradle
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
-import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
+import java.util.Locale
 import javax.inject.Inject
 
-open class YamlConfigWriterTask @Inject constructor(private val extension: FlankGradleExtension, projectLayout: ProjectLayout, objectFactory: ObjectFactory) : DefaultTask() {
+open class YamlConfigWriterTask @Inject constructor(
+  private val base: FlankGradleExtension,
+  @get:Nested val config: FladleConfig,
+  @get:Input val configName: String,
+  projectLayout: ProjectLayout
+) : DefaultTask() {
 
   private val yamlWriter = YamlWriter()
 
-  @get:Nested
-  var fladleConfig: FladleConfig? = null
+  private val fladleDir = projectLayout.fladleDir.map {
+    if (configName == "") {
+      it
+    } else {
+      it.dir(configName.toLowerCase(Locale.ROOT))
+    }
+  }
 
-  @get:OutputFile
-  val flankConfig: Property<RegularFile> =
-    objectFactory.fileProperty().convention(projectLayout.fladleDir.map { it.file("flank.yml") })
+  @OutputFile
+  val fladleConfigFile: Provider<RegularFile> = fladleDir.map { it.file("flank.yml") }
 
   @Internal
   override fun getDescription(): String {
@@ -34,7 +44,7 @@ open class YamlConfigWriterTask @Inject constructor(private val extension: Flank
 
   @TaskAction
   fun writeFile() {
-    val fladleConfig = checkNotNull(fladleConfig)
-    flankConfig.get().asFile.writeText(yamlWriter.createConfigProps(fladleConfig, extension))
+    fladleDir.get().asFile.mkdirs()
+    fladleConfigFile.get().asFile.writeText(yamlWriter.createConfigProps(config, base))
   }
 }
