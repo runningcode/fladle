@@ -2,20 +2,35 @@ package com.osacky.flank.gradle
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ProjectLayout
+import org.gradle.api.file.RegularFile
+import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
-import java.io.File
+import java.util.Locale
 import javax.inject.Inject
 
-open class YamlConfigWriterTask @Inject constructor(private val config: FladleConfig, private val extension: FlankGradleExtension, projectLayout: ProjectLayout) : DefaultTask() {
+open class YamlConfigWriterTask @Inject constructor(
+  @get:Nested val base: FlankGradleExtension,
+  @get:Nested val config: FladleConfig,
+  @get:Input val configName: String,
+  projectLayout: ProjectLayout
+) : DefaultTask() {
 
   private val yamlWriter = YamlWriter()
 
-  private val fladleDir = projectLayout.fladleDir.get().asFile
+  private val fladleDir = projectLayout.fladleDir.map {
+    if (configName == "") {
+      it
+    } else {
+      it.dir(configName.toLowerCase(Locale.ROOT))
+    }
+  }
 
   @OutputFile
-  val fladleConfigFile: File = fladleDir.resolve("flank.yml")
+  val fladleConfigFile: Provider<RegularFile> = fladleDir.map { it.file("flank.yml") }
 
   @Internal
   override fun getDescription(): String {
@@ -29,7 +44,7 @@ open class YamlConfigWriterTask @Inject constructor(private val config: FladleCo
 
   @TaskAction
   fun writeFile() {
-    fladleDir.mkdirs()
-    fladleConfigFile.writeText(yamlWriter.createConfigProps(config, extension))
+    fladleDir.get().asFile.mkdirs()
+    fladleConfigFile.get().asFile.writeText(yamlWriter.createConfigProps(config, base))
   }
 }

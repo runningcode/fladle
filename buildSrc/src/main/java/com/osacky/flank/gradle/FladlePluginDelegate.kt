@@ -57,20 +57,21 @@ class FladlePluginDelegate {
   }
 
   private fun TaskContainer.createTasksForConfig(base: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
+    val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, base, config, name)
+
     register("printYml$name") {
       description = "Print the flank.yml file to the console."
       group = TASK_GROUP
+      dependsOn(writeConfigProps)
       doLast {
-        println(YamlWriter().createConfigProps(config, base))
+        println(writeConfigProps.get().fladleConfigFile.get().asFile.readText())
       }
     }
-
-    val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, config, base)
 
     register("flankDoctor$name", FlankJavaExec::class.java) {
       description = "Finds problems with the current configuration."
       classpath = project.fladleConfig
-      args = listOf("firebase", "test", "android", "doctor")
+      args = listOf("firebase", "test", "android", "doctor", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath)
       dependsOn(writeConfigProps)
     }
 
@@ -79,9 +80,9 @@ class FladlePluginDelegate {
       description = "Runs instrumentation tests using flank on firebase test lab."
       classpath = project.fladleConfig
       args = if (project.hasProperty("dumpShards")) {
-        listOf("firebase", "test", "android", "run", "--dump-shards")
+        listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath, "--dump-shards")
       } else {
-        listOf("firebase", "test", "android", "run")
+        listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath)
       }
       if (config.serviceAccountCredentials.isPresent) {
         environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to config.serviceAccountCredentials.get()))

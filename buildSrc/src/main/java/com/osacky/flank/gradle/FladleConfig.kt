@@ -3,18 +3,31 @@ package com.osacky.flank.gradle
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Optional
 
 interface FladleConfig {
   // Project id is automatically discovered by default. Use this to override the project id.
+  @get:Input
+  @get:Optional
   var projectId: String?
+  @get:InputFile
+  @get:Optional
   val serviceAccountCredentials: RegularFileProperty
+  @get:Input
   var useOrchestrator: Boolean
+  @get:Input
   var autoGoogleLogin: Boolean
+  @get:Input
   var devices: List<Map<String, String>>
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
+  @get:Input
   var testTargets: List<String>
 
+  @get:Input
+  @get:Optional
   var testShards: Int?
 
   /**
@@ -23,72 +36,102 @@ interface FladleConfig {
    * 2 minutes (120) is recommended.
    * default: -1 (unlimited)
    */
+  @get:Input
+  @get:Optional
   var shardTime: Int?
 
+  @get:Input
+  @get:Optional
   var repeatTests: Int?
 
+  @get:Input
+  @get:Optional
   var smartFlankGcsPath: String?
 
+  @get:Input
+  @get:Optional
   var resultsHistoryName: String?
 
+  @get:Input
   var directoriesToPull: List<String>
 
+  @get:Input
   var filesToDownload: List<String>
 
+  @get:Input
   var environmentVariables: Map<String, String>
 
+  @get:Input
   var recordVideo: Boolean
 
+  @get:Input
   var performanceMetrics: Boolean
 
   // The number of times to retry failed tests. Default is 0. Max is 10.
+  @get:Input
   var flakyTestAttempts: Int
 
+  @get:Input
+  @get:Optional
   var resultsBucket: String?
 
+  @get:Input
   var keepFilePath: Boolean
 
   /**
    * The name of a unique Google Cloud Storage object within the results bucket where raw test results will be stored
    * (default: a timestamp with a random suffix).
    */
+  @get:Input
+  @get:Optional
   var resultsDir: String?
 
-  var additionalTestApks: ListProperty<String>
+  @get:Input
+  val additionalTestApks: ListProperty<String>
 
   /**
    * The max time this test run can execute before it is cancelled (default: unlimited).
    */
-  var runTimeout: Property<String>
+  @get:Input
+  @get:Optional
+  val runTimeout: Property<String>
 
   /**
    * Terminate with exit code 0 when there are failed tests.
    * Useful for Fladle and other gradle plugins that don't expect the process to have a non-zero exit code.
    * The JUnit XML is used to determine failure. (default: false)
    */
-  var ignoreFailedTests: Property<Boolean>
+  @get:Input
+  @get:Optional
+  val ignoreFailedTests: Property<Boolean>
 
   /**
    * Disables sharding. Useful for parameterized tests. (default: false)
    */
+  @get:Input
   var disableSharding: Boolean
 
   /**
    * Disables smart flank JUnit XML uploading. Useful for preventing timing data from being updated. (default: false)
    */
+  @get:Input
   var smartFlankDisableUpload: Boolean
 
   /**
    * The fully-qualified Java class name of the instrumentation test runner
    * (default: the last name extracted from the APK manifest).
    */
+  @get:Input
+  @get:Optional
   var testRunnerClass: String?
 
   /**
    * Local folder to store the test result.
    * Folder is DELETED before each run to ensure only artifacts from the new run are saved.
    */
-  var localResultsDir: Property<String>
+  @get:Input
+  @get:Optional
+  val localResultsDir: Property<String>
 
   /**
    * Specifies the number of shards into which you want to evenly distribute test cases.
@@ -100,6 +143,8 @@ interface FladleConfig {
    * If you want to take benefits of smart sharding use max-test-shards instead.
    * (default: null)
    */
+  @get:Input
+  @get:Optional
   var numUniformShards: Int?
 
   /**
@@ -108,12 +153,14 @@ interface FladleConfig {
    * When consuming the test results, such as in Cloud Functions or a CI system,
    * these details can add additional context such as a link to the corresponding pull request.
    */
+  @get:Input
   var clientDetails: Map<String, String>
 
   /**
    * Always run - these tests are inserted at the beginning of every shard
    * useful if you need to grant permissions or login before other tests run
    */
+  @get:Input
   var testTargetsAlwaysRun: List<String>
 
   /**
@@ -121,6 +168,7 @@ interface FladleConfig {
    * Device paths must be under absolute, whitelisted paths (${EXTERNAL_STORAGE}, or ${ANDROID_DATA}/local/tmp).
    * Source file paths may be in the local filesystem or in Google Cloud Storage (gs://…).
    */
+  @get:Input
   var otherFiles: Map<String, String>
 
   /**
@@ -129,6 +177,8 @@ interface FladleConfig {
    * (default: no network shaping; see available profiles listed by the `flank test network-profiles list` command).
    * This feature only works on physical devices.
    */
+  @get:Input
+  @get:Optional
   var networkProfile: String?
 
   /**
@@ -137,6 +187,8 @@ interface FladleConfig {
    * You can guide the Robo test to perform specific actions by recording a Robo Script in Android Studio and then specifying this argument.
    * Learn more at [https://firebase.google.com/docs/test-lab/robo-ux-test#scripting].
    */
+  @get:Input
+  @get:Optional
   var roboScript: String?
 
   /**
@@ -146,6 +198,7 @@ interface FladleConfig {
    * Each key should be the Android resource name of a target UI element and each value should be the text input for that element.
    * Values are only permitted for text type elements, so no value should be specified for click and ignore type elements.
    */
+  @get:Input
   var roboDirectives: List<List<String>>
 
   /**
@@ -160,6 +213,7 @@ interface FladleConfig {
    * * 200s -> 200 seconds
    * * 100  -> 100 seconds
    */
+  @get:Input
   var testTimeout: String
 
   /**
@@ -168,17 +222,20 @@ interface FladleConfig {
    * 'multi' is used as the default. The output style 'multi' is not displayed correctly on consoles
    * which don't support ansi codes, to avoid corrupted output use single or verbose.
    */
-  var outputStyle: Property<String>
+  @get:Input
+  val outputStyle: Property<String>
 
   /**
    * Flank provides two ways for parsing junit xml results.
    * New way uses google api instead of merging xml files, but can generate slightly different output format.
    * This flag allows fallback for legacy xml junit results parsing
    */
+  @get:Input
   var legacyJunitResult: Boolean
 
   /**
    * Enables creating an additional local junit result on local storage with failure nodes on passed flaky tests.
    */
+  @get:Input
   var fullJunitResult: Boolean
 }

@@ -25,22 +25,28 @@ class MultipleConfigsTest {
       |  instrumentationApk = "instrument.apk"
       |
       |  testTargets = ['default']
+      |  localResultsDir = 'defaultDir'
       |  configs {
       |    orange {
       |      testTargets = ['override']
+      |      localResultsDir.set('overrideDir')
       |    }
       |  }
       |}
     """.trimMargin()
     )
+    testProjectRoot.newFile("flank-gradle-service.json").writeText("{}")
 
-    GradleRunner.create()
+    val result = GradleRunner.create()
       .withPluginClasspath()
-      .withArguments("writeConfigPropsOrange")
+      .withArguments("writeConfigPropsOrange", "--stacktrace")
+      .forwardOutput()
       .withProjectDir(testProjectRoot.root)
       .build()
 
-    val writtenYmlFile = testProjectRoot.root.resolve("build/fladle/flank.yml")
+    assertThat(result.output).contains("SUCCESS")
+
+    val writtenYmlFile = testProjectRoot.root.resolve("build/fladle/orange/flank.yml")
     assertThat(writtenYmlFile.readText()).contains(
       """
       |gcloud:
@@ -61,7 +67,48 @@ class MultipleConfigsTest {
       |
       |flank:
       |  keep-file-path: false
+      |  ignore-failed-tests: false
+      |  disable-sharding: false
+      |  smart-flank-disable-upload: false
+      |  local-result-dir: overrideDir
     """.trimMargin()
+    )
+
+    val regularConfig = GradleRunner.create()
+      .withPluginClasspath()
+      .withArguments("writeConfigProps")
+      .forwardOutput()
+      .withProjectDir(testProjectRoot.root)
+      .build()
+
+    assertThat(regularConfig.output).contains("SUCCESS")
+
+    val writtenBaseYml = testProjectRoot.root.resolve("build/fladle/flank.yml")
+    assertThat(writtenBaseYml.readText()).contains(
+      """
+      |gcloud:
+      |  app: foo.apk
+      |  test: instrument.apk
+      |  device:
+      |  - model: NexusLowRes
+      |    version: 28
+      |
+      |  use-orchestrator: false
+      |  auto-google-login: false
+      |  record-video: true
+      |  performance-metrics: true
+      |  timeout: 15m
+      |  test-targets:
+      |  - default
+      |  num-flaky-test-attempts: 0
+      |
+      |flank:
+      |  keep-file-path: false
+      |  ignore-failed-tests: false
+      |  disable-sharding: false
+      |  smart-flank-disable-upload: false
+      |  local-result-dir: defaultDir
+      """.trimMargin()
     )
   }
 }

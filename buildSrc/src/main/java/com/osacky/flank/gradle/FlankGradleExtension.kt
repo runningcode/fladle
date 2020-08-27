@@ -6,12 +6,18 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Optional
 import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.property
 import javax.inject.Inject
 
 open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : FladleConfig {
+  @get:Input
   val flankCoordinates: Property<String> = objects.property(String::class.java).convention("com.github.flank:flank")
+
+  @get:Input
   val flankVersion: Property<String> = objects.property(String::class.java).convention("20.08.3")
   // Project id is automatically discovered by default. Use this to override the project id.
   override var projectId: String? = null
@@ -35,12 +41,18 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   override var flakyTestAttempts = 0
 
   // Variant to use for configuring output APK.
-  var variant: Property<String> = objects.property()
+  @get:Input
+  @get:Optional
+  val variant: Property<String> = objects.property()
 
   /**
    * debugApk and instrumentationApk are [Property<String>] and not [RegularFileProperty] because we support wildcard characters.
    */
+  @get:Input
+  @get:Optional
   val debugApk: Property<String> = objects.property()
+  @get:Input
+  @get:Optional
   val instrumentationApk: Property<String> = objects.property()
 
   override var directoriesToPull: List<String> = emptyList()
@@ -59,11 +71,11 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override var resultsDir: String? = null
 
-  override var additionalTestApks: ListProperty<String> = objects.listProperty()
+  override val additionalTestApks: ListProperty<String> = objects.listProperty()
 
-  override var runTimeout: Property<String> = objects.property()
+  override val runTimeout: Property<String> = objects.property()
 
-  override var ignoreFailedTests: Property<Boolean> = objects.property()
+  override val ignoreFailedTests: Property<Boolean> = objects.property()
 
   override var disableSharding: Boolean = false
 
@@ -71,7 +83,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override var testRunnerClass: String? = null
 
-  override var localResultsDir: Property<String> = objects.property()
+  override val localResultsDir: Property<String> = objects.property()
 
   override var numUniformShards: Int? = null
 
@@ -89,17 +101,18 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override var testTimeout: String = "15m"
 
-  override var outputStyle: Property<String> = objects.property<String>().convention("single")
+  override val outputStyle: Property<String> = objects.property<String>().convention("single")
 
   override var legacyJunitResult: Boolean = false
 
   override var fullJunitResult: Boolean = false
 
+  @Internal
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
       name = it,
       projectId = projectId,
-      serviceAccountCredentials = serviceAccountCredentials,
+      serviceAccountCredentials = objects.fileProperty().convention(serviceAccountCredentials),
       useOrchestrator = useOrchestrator,
       autoGoogleLogin = autoGoogleLogin,
       devices = devices,
@@ -118,13 +131,13 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       resultsBucket = resultsBucket,
       keepFilePath = keepFilePath,
       resultsDir = resultsDir,
-      additionalTestApks = additionalTestApks,
-      runTimeout = runTimeout,
-      ignoreFailedTests = ignoreFailedTests,
+      additionalTestApks = objects.listProperty<String>().convention(additionalTestApks),
+      runTimeout = objects.property<String>().convention(runTimeout),
+      ignoreFailedTests = objects.property<Boolean>().convention(ignoreFailedTests),
       disableSharding = disableSharding,
       smartFlankDisableUpload = smartFlankDisableUpload,
       testRunnerClass = testRunnerClass,
-      localResultsDir = localResultsDir,
+      localResultsDir = objects.property<String>().convention(localResultsDir),
       numUniformShards = numUniformShards,
       clientDetails = clientDetails,
       testTargetsAlwaysRun = testTargetsAlwaysRun,
@@ -133,7 +146,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       roboScript = roboScript,
       roboDirectives = roboDirectives,
       testTimeout = testTimeout,
-      outputStyle = outputStyle,
+      outputStyle = objects.property<String>().convention(outputStyle),
       legacyJunitResult = legacyJunitResult,
       fullJunitResult = fullJunitResult
     )

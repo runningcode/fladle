@@ -1,6 +1,6 @@
 # Welcome to Fladle
 
-[![CircleCI](https://circleci.com/gh/runningcode/fladle.svg?style=svg)](https://circleci.com/gh/runningcode/fladle)
+![Github Actions](https://github.com/runningcode/fladle/workflows/CI/badge.svg)
 
 The Gradle Plugin for Firebase Test Lab and [Flank](https://github.com/testArmada/flank).
 

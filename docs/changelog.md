@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.11.1 (Unreleased)
+* Don't override property values in individual configurations. Fixes [#158](https://github.com/runningcode/fladle/issues/158).
+* Update [Flank to 20.08.3](https://github.com/Flank/flank/releases/tag/v20.08.3).
+* Use Github actions instead of CircleCI
+
 ## 0.11.0
 * Update [Flank to 20.07.0](https://github.com/Flank/flank/releases/tag/v20.07.0).
 * Only add `additional-test-apks` for modules that have tests. [PR](https://github.com/runningcode/fladle/pull/150)
