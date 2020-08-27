@@ -116,6 +116,7 @@ class FlankGradlePluginIntegrationTest {
              |}
              |""".trimMargin()
     )
+    testProjectRoot.newFile("foo").writeText("{}")
     val result = GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
       .withPluginClasspath()
@@ -137,6 +138,7 @@ class FlankGradlePluginIntegrationTest {
            }
       """.trimIndent()
     )
+    testProjectRoot.newFile("foo").writeText("{}")
     val result = GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
       .withPluginClasspath()
@@ -161,6 +163,7 @@ class FlankGradlePluginIntegrationTest {
            }
       """.trimIndent()
     )
+    testProjectRoot.newFile("foo").writeText("{}")
     val result = GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
       .withPluginClasspath()
