@@ -166,6 +166,8 @@ class YamlWriterTest {
                ignore-failed-tests: false
                disable-sharding: false
                smart-flank-disable-upload: false
+               legacy-junit-result: false
+               full-junit-result: false
                output-style: single
       """.trimIndent() + '\n' // Dunno why this needs to be here to make the tests pass.
     )
@@ -255,6 +257,8 @@ class YamlWriterTest {
       ignore-failed-tests: false
       disable-sharding: false
       smart-flank-disable-upload: false
+      legacy-junit-result: false
+      full-junit-result: false
       output-style: single
       """.trimIndent() + '\n'
     )
@@ -271,6 +275,8 @@ class YamlWriterTest {
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
+        "  legacy-junit-result: false\n" +
+        "  full-junit-result: false\n" +
         "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension)
     )
@@ -289,6 +295,8 @@ class YamlWriterTest {
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
+        "  legacy-junit-result: false\n" +
+        "  full-junit-result: false\n" +
         "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension)
     )
@@ -307,6 +315,8 @@ class YamlWriterTest {
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
+        "  legacy-junit-result: false\n" +
+        "  full-junit-result: false\n" +
         "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension)
     )
@@ -325,6 +335,8 @@ class YamlWriterTest {
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
+        "  legacy-junit-result: false\n" +
+        "  full-junit-result: false\n" +
         "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension)
     )
@@ -342,6 +354,8 @@ class YamlWriterTest {
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
+        "  legacy-junit-result: false\n" +
+        "  full-junit-result: false\n" +
         "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension)
     )
@@ -360,6 +374,8 @@ class YamlWriterTest {
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
+        "  legacy-junit-result: false\n" +
+        "  full-junit-result: false\n" +
         "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension)
     )
@@ -380,6 +396,8 @@ class YamlWriterTest {
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
+        "  legacy-junit-result: false\n" +
+        "  full-junit-result: false\n" +
         "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension)
     )
@@ -529,6 +547,8 @@ class YamlWriterTest {
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
+        "  legacy-junit-result: false\n" +
+        "  full-junit-result: false\n" +
         "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension)
     )
@@ -602,6 +622,8 @@ class YamlWriterTest {
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
+        "  legacy-junit-result: false\n" +
+        "  full-junit-result: false\n" +
         "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension)
     )
@@ -621,6 +643,8 @@ class YamlWriterTest {
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
+        "  legacy-junit-result: false\n" +
+        "  full-junit-result: false\n" +
         "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension)
     )
@@ -641,6 +665,8 @@ class YamlWriterTest {
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
+        "  legacy-junit-result: false\n" +
+        "  full-junit-result: false\n" +
         "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension)
     )
@@ -721,6 +747,8 @@ class YamlWriterTest {
         "  ignore-failed-tests: false\n" +
         "  disable-sharding: false\n" +
         "  smart-flank-disable-upload: false\n" +
+        "  legacy-junit-result: false\n" +
+        "  full-junit-result: false\n" +
         "  output-style: single\n",
       yamlWriter.writeFlankProperties(extension)
     )
@@ -739,6 +767,8 @@ class YamlWriterTest {
           "  ignore-failed-tests: false\n" +
           "  disable-sharding: false\n" +
           "  smart-flank-disable-upload: false\n" +
+          "  legacy-junit-result: false\n" +
+          "  full-junit-result: false\n" +
           "  output-style: single\n"
       )
   }
@@ -778,6 +808,8 @@ class YamlWriterTest {
                ignore-failed-tests: false
                disable-sharding: false
                smart-flank-disable-upload: false
+               legacy-junit-result: false
+               full-junit-result: false
                output-style: single
       """.trimIndent() + '\n'
     )
@@ -795,6 +827,8 @@ class YamlWriterTest {
         ignore-failed-tests: false
         disable-sharding: false
         smart-flank-disable-upload: false
+        legacy-junit-result: false
+        full-junit-result: false
         output-style: single
       """.trimIndent()
 
@@ -889,6 +923,38 @@ class YamlWriterTest {
     val properties = emptyExtension().toFlankProperties()
 
     assertTrue(properties.contains("  output-style: single"))
+  }
+
+  @Test
+  fun writeLegacyJunitResult() {
+    val properties = emptyExtension {
+      legacyJunitResult = true
+    }.toFlankProperties()
+
+    assertTrue(properties.contains("  legacy-junit-result: true"))
+  }
+
+  @Test
+  fun missingLegacyJunitResult() {
+    val properties = emptyExtension().toFlankProperties()
+
+    assertTrue(properties.contains("  legacy-junit-result: false"))
+  }
+
+  @Test
+  fun writeFullJunitResult() {
+    val properties = emptyExtension {
+      fullJunitResult = true
+    }.toFlankProperties()
+
+    assertTrue(properties.contains("  full-junit-result: true"))
+  }
+
+  @Test
+  fun missingFullJunitResult() {
+    val properties = emptyExtension().toFlankProperties()
+
+    assertTrue(properties.contains("  full-junit-result: false"))
   }
 
   @Test
