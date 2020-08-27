@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.12.0 (Unreleased)
+## Unreleased
+
+## 0.12.0
 * Don't override property values in individual configurations. Fixes [#158](https://github.com/runningcode/fladle/issues/158).
 * Update [Flank to 20.08.3](https://github.com/Flank/flank/releases/tag/v20.08.3).
 * Use Github actions instead of CircleCI
