@@ -46,6 +46,8 @@ internal class YamlWriter {
     val smartFlankDisableUpload = config.smartFlankDisableUpload
     val localResultsDir = config.localResultsDir.orNull
     val testTargetsAlwaysRun = config.testTargetsAlwaysRun
+    val legacyJunitResult = config.legacyJunitResult
+    val fullJunitResult = config.fullJunitResult
 
     appendln("flank:")
 
@@ -96,6 +98,8 @@ internal class YamlWriter {
       }
     }
 
+    appendln("  legacy-junit-result: $legacyJunitResult")
+    appendln("  full-junit-result: $fullJunitResult")
     appendln("  output-style: ${config.outputStyle.get()}")
   }
 

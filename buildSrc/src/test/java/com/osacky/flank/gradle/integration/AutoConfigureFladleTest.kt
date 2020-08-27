@@ -52,8 +52,8 @@ class AutoConfigureFladleTest {
       """
         > Task :android-project:printYml
         gcloud:
-          app: [0-9a-zA-Z\/]*/android-project/build/outputs/apk/debug/android-project-debug.apk
-          test: [0-9a-zA-Z\/]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
+          app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
+          test: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
           device:
           - model: Pixel2
             version: 26
@@ -77,6 +77,9 @@ class AutoConfigureFladleTest {
           ignore-failed-tests: false
           disable-sharding: false
           smart-flank-disable-upload: false
+          legacy-junit-result: false
+          full-junit-result: false
+          output-style: single
       """.trimIndent()
     )
   }

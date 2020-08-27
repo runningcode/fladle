@@ -16,6 +16,7 @@ import javax.inject.Inject
 open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : FladleConfig {
   @get:Input
   val flankCoordinates: Property<String> = objects.property(String::class.java).convention("com.github.flank:flank")
+
   @get:Input
   val flankVersion: Property<String> = objects.property(String::class.java).convention("20.08.3")
   // Project id is automatically discovered by default. Use this to override the project id.
@@ -102,6 +103,10 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val outputStyle: Property<String> = objects.property<String>().convention("single")
 
+  override var legacyJunitResult: Boolean = false
+
+  override var fullJunitResult: Boolean = false
+
   @Internal
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
@@ -141,7 +146,9 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       roboScript = roboScript,
       roboDirectives = roboDirectives,
       testTimeout = testTimeout,
-      outputStyle = objects.property<String>().convention(outputStyle)
+      outputStyle = objects.property<String>().convention(outputStyle),
+      legacyJunitResult = legacyJunitResult,
+      fullJunitResult = fullJunitResult
     )
   }
 

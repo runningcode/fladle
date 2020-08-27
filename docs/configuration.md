@@ -109,6 +109,8 @@ fladle {
       ["text", "field1", "my text"],
     ]
     outputStyle = 'multi'
+    legacyJunitResult = false
+    fullJunitResult = false
 }
 ```
 
@@ -375,3 +377,11 @@ Default value is single.
     ``` kotlin
     outputStyle.set("single")
     ```
+
+### legacyJunitResult
+Flank provides two ways for parsing junit xml results.
+New way uses google api instead of merging xml files, but can generate slightly different output format.
+This flag allows fallback for legacy xml junit results parsing
+
+### fullJunitResult
+Enables creating an additional local junit result on local storage with failure nodes on passed flaky tests.

@@ -224,4 +224,18 @@ interface FladleConfig {
    */
   @get:Input
   val outputStyle: Property<String>
+
+  /**
+   * Flank provides two ways for parsing junit xml results.
+   * New way uses google api instead of merging xml files, but can generate slightly different output format.
+   * This flag allows fallback for legacy xml junit results parsing
+   */
+  @get:Input
+  var legacyJunitResult: Boolean
+
+  /**
+   * Enables creating an additional local junit result on local storage with failure nodes on passed flaky tests.
+   */
+  @get:Input
+  var fullJunitResult: Boolean
 }
