@@ -13,7 +13,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 open class YamlConfigWriterTask @Inject constructor(
-  private val base: FlankGradleExtension,
+  @get:Nested val base: FlankGradleExtension,
   @get:Nested val config: FladleConfig,
   @get:Input val configName: String,
   projectLayout: ProjectLayout
