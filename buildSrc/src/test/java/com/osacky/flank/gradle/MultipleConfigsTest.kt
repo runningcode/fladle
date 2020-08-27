@@ -35,11 +35,14 @@ class MultipleConfigsTest {
     )
     testProjectRoot.newFile("flank-gradle-service.json").writeText("{}")
 
-    GradleRunner.create()
+    val result = GradleRunner.create()
       .withPluginClasspath()
       .withArguments("writeConfigPropsOrange", "--stacktrace")
+      .forwardOutput()
       .withProjectDir(testProjectRoot.root)
       .build()
+
+    assertThat(result.output).contains("SUCCESS")
 
     val writtenYmlFile = testProjectRoot.root.resolve("build/fladle/orange/flank.yml")
     assertThat(writtenYmlFile.readText()).contains(

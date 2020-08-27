@@ -9,6 +9,7 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
+import java.util.Locale
 import javax.inject.Inject
 
 open class YamlConfigWriterTask @Inject constructor(
@@ -24,7 +25,7 @@ open class YamlConfigWriterTask @Inject constructor(
     if (configName == "") {
       it
     } else {
-      it.dir(configName)
+      it.dir(configName.toLowerCase(Locale.ROOT))
     }
   }
 
