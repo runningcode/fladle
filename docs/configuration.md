@@ -73,7 +73,7 @@ fladle {
     autoGoogleLogin = true
     testShards = 5 //or numUniformShards=5 cannot use both
     shardTime = 120
-    smartFlankGcsPath = "gs://tmp_flank/flank/test_app_android.xml"
+    smartFlankGcsPath.set("gs://tmp_flank/flank/test_app_android.xml")
     configs {
         oranges {
             useOrchestrator = false

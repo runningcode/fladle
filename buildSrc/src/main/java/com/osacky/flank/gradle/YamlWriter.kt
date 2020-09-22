@@ -1,5 +1,8 @@
 package com.osacky.flank.gradle
 
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
 import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesting
 
 internal class YamlWriter {
@@ -9,11 +12,11 @@ internal class YamlWriter {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
-    check(base.instrumentationApk.isPresent xor !base.roboScript.isNullOrBlank()) {
+    check(base.instrumentationApk.isPresent xor base.roboScript.isPresent) {
       """
      Either instrumentationApk file or roboScript file must be specified but not both.
      instrumentationApk=${base.instrumentationApk.orNull}
-     roboScript=${base.roboScript}
+     roboScript=${base.roboScript.orNull}
       """.trimIndent()
     }
 
@@ -37,15 +40,7 @@ internal class YamlWriter {
     val testShards = config.testShards
     val shardTime = config.shardTime
     val repeatTests = config.repeatTests
-    val smartFlankGcsPath = config.smartFlankGcsPath
-    val filesToDownload = config.filesToDownload
     val projectId = config.projectId
-    val runTimeout = config.runTimeout.orNull
-    val ignoreFailedTests = config.ignoreFailedTests.getOrElse(false)
-    val disableSharding = config.disableSharding
-    val smartFlankDisableUpload = config.smartFlankDisableUpload
-    val localResultsDir = config.localResultsDir.orNull
-    val testTargetsAlwaysRun = config.testTargetsAlwaysRun
 
     appendln("flank:")
 
@@ -58,38 +53,38 @@ internal class YamlWriter {
     repeatTests?.let {
       appendln(repeatTestsLine(repeatTests))
     }
-    smartFlankGcsPath?.let {
-      appendln("  smart-flank-gcs-path: $it")
-    }
+
+    appendIfPresent(config.smartFlankGcsPath, name = "smart-flank-gcs-path")
+
     projectId?.let {
       appendln("  project: $it")
     }
-    appendln("  keep-file-path: ${config.keepFilePath}")
-    if (filesToDownload.isNotEmpty()) {
+    appendIfPresent(config.keepFilePath, name = "keep-file-path")
+
+    if (config.filesToDownload.isPresentAndNotEmpty) {
+      val filesToDownload = config.filesToDownload.get()
       appendln("  files-to-download:")
       filesToDownload.forEach { file ->
         appendln("  - $file")
       }
     }
-    val additionalTestApks = config.additionalTestApks.getOrElse(emptyList())
 
-    if (additionalTestApks.isNotEmpty()) {
+    if (config.additionalTestApks.isPresentAndNotEmpty) {
+      val additionalTestApks = config.additionalTestApks.get()
       appendln("  additional-app-test-apks:")
       additionalTestApks.forEach {
         appendln("    $it")
       }
     }
 
-    runTimeout?.let {
-      appendln("  run-timeout: $it")
-    }
-    appendln("  ignore-failed-tests: $ignoreFailedTests")
-    appendln("  disable-sharding: $disableSharding")
-    appendln("  smart-flank-disable-upload: $smartFlankDisableUpload")
-    localResultsDir?.let {
-      appendln("  local-result-dir: $localResultsDir")
-    }
-    if (testTargetsAlwaysRun.isNotEmpty()) {
+    appendIfPresent(config.runTimeout, name = "run-timeout")
+    appendIfPresent(config.ignoreFailedTests, name = "ignore-failed-tests")
+    appendIfPresent(config.disableSharding, name = "disable-sharding")
+    appendIfPresent(config.smartFlankDisableUpload, name = "smart-flank-disable-upload")
+    appendIfPresent(config.localResultsDir, name = "local-result-dir")
+
+    if (config.testTargetsAlwaysRun.isPresentAndNotEmpty) {
+      val testTargetsAlwaysRun = config.testTargetsAlwaysRun.get()
       appendln("  test-targets-always-run:")
       testTargetsAlwaysRun.forEach {
         appendln("  - class $it")
@@ -104,20 +99,16 @@ internal class YamlWriter {
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
     appendln("  use-orchestrator: ${config.useOrchestrator}")
     appendln("  auto-google-login: ${config.autoGoogleLogin}")
-    appendln("  record-video: ${config.recordVideo}")
-    appendln("  performance-metrics: ${config.performanceMetrics}")
-    appendln("  timeout: ${config.testTimeout}")
+    appendIfPresent(config.recordVideo, name = "record-video")
+    appendIfPresent(config.performanceMetrics, name = "performance-metrics")
+    appendIfPresent(config.testTimeout, name = "timeout")
+    appendIfPresent(config.resultsHistoryName, name = "results-history-name")
+    appendIfPresent(config.resultsBucket, name = "results-bucket")
 
-    config.resultsHistoryName?.let {
-      appendln("  results-history-name: $it")
-    }
-    config.resultsBucket?.let {
-      appendln("  results-bucket: $it")
-    }
-    val environmentVariables = config.environmentVariables
-    if (environmentVariables.isNotEmpty()) {
+    if (config.environmentVariables.isPresentAndNotEmpty) {
+      val environmentVariables = config.environmentVariables.get()
       appendln("  environment-variables:")
-      environmentVariables.forEach { key, value ->
+      environmentVariables.forEach { (key, value) ->
         appendln("    $key: $value")
       }
     }
@@ -128,61 +119,56 @@ internal class YamlWriter {
         appendln("  - $target")
       }
     }
-    val directoriesToPull = config.directoriesToPull
-    if (directoriesToPull.isNotEmpty()) {
+    if (config.directoriesToPull.isPresentAndNotEmpty) {
+      val directoriesToPull = config.directoriesToPull.get()
       appendln("  directories-to-pull:")
       directoriesToPull.forEach { dir ->
         appendln("  - $dir")
       }
     }
-    appendln(flakyTestAttemptsLine(config.flakyTestAttempts))
-    config.resultsDir?.let {
-      appendln("  results-dir: $it")
-    }
+    appendIfPresent(config.flakyTestAttempts, name = "num-flaky-test-attempts")
+    appendIfPresent(config.resultsDir, name = "results-dir")
+    appendIfPresent(config.testRunnerClass, name = "test-runner-class")
+    appendIfPresent(config.numUniformShards, name = "num-uniform-shards")
 
-    config.testRunnerClass?.let {
-      appendln("  test-runner-class: $it")
-    }
-
-    config.numUniformShards?.let {
-      appendln("  num-uniform-shards: $it")
-    }
-
-    if (config.clientDetails.isNotEmpty()) {
+    if (config.clientDetails.isPresentAndNotEmpty) {
+      val clientDetails = config.clientDetails.get()
       appendln("  client-details:")
-      config.clientDetails.forEach {
+      clientDetails.forEach {
         appendln("    ${it.key}: ${it.value}")
       }
     }
 
-    if (config.otherFiles.isNotEmpty()) {
+    if (config.otherFiles.isPresentAndNotEmpty) {
+      val otherFiles = config.otherFiles.get()
       appendln("  other-files:")
-      config.otherFiles.forEach {
+      otherFiles.forEach {
         appendln("    ${it.key}: ${it.value}")
       }
     }
 
-    config.networkProfile?.let {
-      appendln("  network-profile: $it")
-    }
+    appendIfPresent(config.networkProfile, name = "network-profile")
+    appendIfPresent(config.roboScript, name = "robo-script")
 
-    config.roboScript?.let {
-      appendln("  robo-script: $it")
-    }
-
-    if (config.roboDirectives.isNotEmpty()) {
+    if (config.roboDirectives.isPresentAndNotEmpty) {
+      val roboDirectives = config.roboDirectives.get()
       appendln("  robo-directives:")
-      config.roboDirectives.forEach {
+      roboDirectives.forEach {
         val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
         appendln("    ${it[0]}:${it[1]}: $value")
       }
     }
   }
 
-  private fun flakyTestAttemptsLine(flakyTestAttempts: Int): String {
-    val label = "num-flaky-test-attempts"
-    return "  $label: $flakyTestAttempts"
+  private fun <T> StringBuilder.appendIfPresent(prop: Property<T>, name: String) {
+    if (prop.isPresent) appendln("  $name: ${prop.get()}")
   }
+
+  private val <T> ListProperty<T>.isPresentAndNotEmpty
+    get() = isPresent && get().isEmpty().not()
+
+  private val <T, K> MapProperty<T, K>.isPresentAndNotEmpty
+    get() = isPresent && get().isEmpty().not()
 
   private fun repeatTestsLine(repeatTests: Int): String {
     val label = "num-test-runs"

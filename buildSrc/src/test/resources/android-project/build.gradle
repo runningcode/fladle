@@ -31,14 +31,14 @@ fladle {
             [ "model": "Pixel2", "version": "26" ],
             [ "model": "Nexus5", "version": "23" ]
     ]
-    smartFlankGcsPath = "gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml"
+    smartFlankGcsPath.set("gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml")
     configs {
         oranges {
             useOrchestrator = false
             testTargets = [
                     "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
             ]
-            flakyTestAttempts = 3
+            flakyTestAttempts.set(3)
         }
     }
 }
