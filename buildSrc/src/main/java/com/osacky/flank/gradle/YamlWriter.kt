@@ -44,40 +44,17 @@ internal class YamlWriter {
     appendProperty(config.smartFlankGcsPath, name = "smart-flank-gcs-path")
     appendProperty(config.projectId, name = "project")
     appendProperty(config.keepFilePath, name = "keep-file-path")
-
-    if (config.filesToDownload.isPresentAndNotEmpty) {
-      val filesToDownload = config.filesToDownload.get()
-      appendln("  files-to-download:")
-      filesToDownload.forEach { file ->
-        appendln("  - $file")
-      }
-    }
-
-    if (config.additionalTestApks.isPresentAndNotEmpty) {
-      val additionalTestApks = config.additionalTestApks.get()
-      appendln("  additional-app-test-apks:")
-      additionalTestApks.forEach {
-        appendln("    $it")
-      }
-    }
-
+    appendListProperty(config.filesToDownload, name = "files-to-download") { appendln("  - $it") }
+    appendListProperty(config.additionalTestApks, name = "additional-app-test-apks") { appendln("    $it") }
     appendProperty(config.runTimeout, name = "run-timeout")
     appendProperty(config.ignoreFailedTests, name = "ignore-failed-tests")
     appendProperty(config.disableSharding, name = "disable-sharding")
     appendProperty(config.smartFlankDisableUpload, name = "smart-flank-disable-upload")
     appendProperty(config.localResultsDir, name = "local-result-dir")
-
-    if (config.testTargetsAlwaysRun.isPresentAndNotEmpty) {
-      val testTargetsAlwaysRun = config.testTargetsAlwaysRun.get()
-      appendln("  test-targets-always-run:")
-      testTargetsAlwaysRun.forEach {
-        appendln("  - class $it")
-      }
-    }
-
-    appendln("  legacy-junit-result: ${config.legacyJunitResult.get()}")
-    appendln("  full-junit-result: ${config.fullJunitResult.get()}")
-    appendln("  output-style: ${config.outputStyle.get()}")
+    appendListProperty(config.testTargetsAlwaysRun, name = "test-targets-always-run") { appendln("  - class $it") }
+    appendProperty(config.legacyJunitResult, name = "legacy-junit-result")
+    appendProperty(config.fullJunitResult, name = "full-junit-result")
+    appendProperty(config.outputStyle, name = "output-style")
   }
 
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
@@ -88,55 +65,22 @@ internal class YamlWriter {
     appendProperty(config.testTimeout, name = "timeout")
     appendProperty(config.resultsHistoryName, name = "results-history-name")
     appendProperty(config.resultsBucket, name = "results-bucket")
-
-    if (config.environmentVariables.isPresentAndNotEmpty) {
-      val environmentVariables = config.environmentVariables.get()
-      appendln("  environment-variables:")
-      environmentVariables.forEach { (key, value) ->
-        appendln("    $key: $value")
-      }
+    appendMapProperty(config.environmentVariables, name = "environment-variables") {
+      appendln("    ${it.key}: ${it.value}")
     }
-    if (config.testTargets.isPresentAndNotEmpty) {
-      val testTargets = config.testTargets.get()
-      appendln("  test-targets:")
-      testTargets.forEach { target ->
-        appendln("  - $target")
-      }
-    }
-    if (config.directoriesToPull.isPresentAndNotEmpty) {
-      val directoriesToPull = config.directoriesToPull.get()
-      appendln("  directories-to-pull:")
-      directoriesToPull.forEach { dir ->
-        appendln("  - $dir")
-      }
-    }
+    appendListProperty(config.testTargets, name = "test-targets") { appendln("  - $it") }
+    appendListProperty(config.directoriesToPull, name = "directories-to-pull") { appendln("  - $it") }
     appendProperty(config.flakyTestAttempts, name = "num-flaky-test-attempts")
     appendProperty(config.resultsDir, name = "results-dir")
     appendProperty(config.testRunnerClass, name = "test-runner-class")
     appendProperty(config.numUniformShards, name = "num-uniform-shards")
-
-    appendMapProperty(config.clientDetails, name = "client-details") {
-      appendln("    ${it.key}: ${it.value}")
-    }
-
-    if (config.otherFiles.isPresentAndNotEmpty) {
-      val otherFiles = config.otherFiles.get()
-      appendln("  other-files:")
-      otherFiles.forEach {
-        appendln("    ${it.key}: ${it.value}")
-      }
-    }
-
+    appendMapProperty(config.clientDetails, name = "client-details") { appendln("    ${it.key}: ${it.value}") }
+    appendMapProperty(config.otherFiles, name = "other-files") { appendln("    ${it.key}: ${it.value}") }
     appendProperty(config.networkProfile, name = "network-profile")
     appendProperty(config.roboScript, name = "robo-script")
-
-    if (config.roboDirectives.isPresentAndNotEmpty) {
-      val roboDirectives = config.roboDirectives.get()
-      appendln("  robo-directives:")
-      roboDirectives.forEach {
-        val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
-        appendln("    ${it[0]}:${it[1]}: $value")
-      }
+    appendListProperty(config.roboDirectives, name = "robo-directives") {
+      val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
+      appendln("    ${it[0]}:${it[1]}: $value")
     }
   }
 
