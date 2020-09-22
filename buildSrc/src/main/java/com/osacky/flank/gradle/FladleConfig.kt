@@ -12,14 +12,18 @@ interface FladleConfig {
   // Project id is automatically discovered by default. Use this to override the project id.
   @get:Input
   @get:Optional
-  var projectId: String?
+  val projectId: Property<String>
+
   @get:InputFile
   @get:Optional
   val serviceAccountCredentials: RegularFileProperty
+
   @get:Input
-  var useOrchestrator: Boolean
+  val useOrchestrator: Property<Boolean>
+
   @get:Input
-  var autoGoogleLogin: Boolean
+  val autoGoogleLogin: Property<Boolean>
+
   @get:Input
   val devices: ListProperty<Map<String, String>>
 

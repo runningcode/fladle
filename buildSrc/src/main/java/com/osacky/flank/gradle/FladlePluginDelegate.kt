@@ -101,7 +101,7 @@ class FladlePluginDelegate {
       if (useOrchestrator) {
         log("Automatically detected the use of Android Test Orchestrator")
       }
-      extension.useOrchestrator = useOrchestrator
+      extension.useOrchestrator.set(useOrchestrator)
     }
   }
 

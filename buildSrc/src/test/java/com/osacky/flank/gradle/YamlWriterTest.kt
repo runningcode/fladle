@@ -142,7 +142,7 @@ class YamlWriterTest {
   @Test
   fun verifyMissingServiceDoesntThrowErrorIfProjectIdSet() {
     val extension = emptyExtension {
-      projectId = "set"
+      projectId.set("set")
       debugApk.set("path")
       instrumentationApk.set("instrument")
     }
@@ -288,7 +288,7 @@ class YamlWriterTest {
   @Test
   fun writeProjectIdOption() {
     val extension = emptyExtension {
-      projectId = "foo"
+      projectId.set("foo")
     }
 
     assertEquals(
@@ -762,8 +762,8 @@ class YamlWriterTest {
   @Test
   fun writeDefaultProperties() {
     val extension = emptyExtension {
-      useOrchestrator = true
-      autoGoogleLogin = true
+      useOrchestrator.set(true)
+      autoGoogleLogin.set(true)
       recordVideo.set(false)
       performanceMetrics.set(false)
       testTimeout.set("45m")

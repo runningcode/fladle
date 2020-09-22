@@ -8,7 +8,7 @@ import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesti
 internal class YamlWriter {
 
   internal fun createConfigProps(config: FladleConfig, base: FlankGradleExtension): String {
-    if (base.projectId == null) {
+    if (base.projectId.orNull == null) {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
@@ -36,18 +36,14 @@ internal class YamlWriter {
   }
 
   internal fun writeFlankProperties(config: FladleConfig): String = buildString {
-    val projectId = config.projectId
-
     appendln("flank:")
-    appendIfPresent(config.testShards, name = "max-test-shards")
-    appendIfPresent(config.shardTime, name = "shard-time")
-    appendIfPresent(config.repeatTests, name = "num-test-runs")
-    appendIfPresent(config.smartFlankGcsPath, name = "smart-flank-gcs-path")
 
-    projectId?.let {
-      appendln("  project: $it")
-    }
-    appendIfPresent(config.keepFilePath, name = "keep-file-path")
+    appendProperty(config.testShards, name = "max-test-shards")
+    appendProperty(config.shardTime, name = "shard-time")
+    appendProperty(config.repeatTests, name = "num-test-runs")
+    appendProperty(config.smartFlankGcsPath, name = "smart-flank-gcs-path")
+    appendProperty(config.projectId, name = "project")
+    appendProperty(config.keepFilePath, name = "keep-file-path")
 
     if (config.filesToDownload.isPresentAndNotEmpty) {
       val filesToDownload = config.filesToDownload.get()
@@ -65,11 +61,11 @@ internal class YamlWriter {
       }
     }
 
-    appendIfPresent(config.runTimeout, name = "run-timeout")
-    appendIfPresent(config.ignoreFailedTests, name = "ignore-failed-tests")
-    appendIfPresent(config.disableSharding, name = "disable-sharding")
-    appendIfPresent(config.smartFlankDisableUpload, name = "smart-flank-disable-upload")
-    appendIfPresent(config.localResultsDir, name = "local-result-dir")
+    appendProperty(config.runTimeout, name = "run-timeout")
+    appendProperty(config.ignoreFailedTests, name = "ignore-failed-tests")
+    appendProperty(config.disableSharding, name = "disable-sharding")
+    appendProperty(config.smartFlankDisableUpload, name = "smart-flank-disable-upload")
+    appendProperty(config.localResultsDir, name = "local-result-dir")
 
     if (config.testTargetsAlwaysRun.isPresentAndNotEmpty) {
       val testTargetsAlwaysRun = config.testTargetsAlwaysRun.get()
@@ -85,13 +81,13 @@ internal class YamlWriter {
   }
 
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
-    appendln("  use-orchestrator: ${config.useOrchestrator}")
-    appendln("  auto-google-login: ${config.autoGoogleLogin}")
-    appendIfPresent(config.recordVideo, name = "record-video")
-    appendIfPresent(config.performanceMetrics, name = "performance-metrics")
-    appendIfPresent(config.testTimeout, name = "timeout")
-    appendIfPresent(config.resultsHistoryName, name = "results-history-name")
-    appendIfPresent(config.resultsBucket, name = "results-bucket")
+    appendProperty(config.useOrchestrator, name = "use-orchestrator")
+    appendProperty(config.autoGoogleLogin, name = "auto-google-login")
+    appendProperty(config.recordVideo, name = "record-video")
+    appendProperty(config.performanceMetrics, name = "performance-metrics")
+    appendProperty(config.testTimeout, name = "timeout")
+    appendProperty(config.resultsHistoryName, name = "results-history-name")
+    appendProperty(config.resultsBucket, name = "results-bucket")
 
     if (config.environmentVariables.isPresentAndNotEmpty) {
       val environmentVariables = config.environmentVariables.get()
@@ -114,17 +110,13 @@ internal class YamlWriter {
         appendln("  - $dir")
       }
     }
-    appendIfPresent(config.flakyTestAttempts, name = "num-flaky-test-attempts")
-    appendIfPresent(config.resultsDir, name = "results-dir")
-    appendIfPresent(config.testRunnerClass, name = "test-runner-class")
-    appendIfPresent(config.numUniformShards, name = "num-uniform-shards")
+    appendProperty(config.flakyTestAttempts, name = "num-flaky-test-attempts")
+    appendProperty(config.resultsDir, name = "results-dir")
+    appendProperty(config.testRunnerClass, name = "test-runner-class")
+    appendProperty(config.numUniformShards, name = "num-uniform-shards")
 
-    if (config.clientDetails.isPresentAndNotEmpty) {
-      val clientDetails = config.clientDetails.get()
-      appendln("  client-details:")
-      clientDetails.forEach {
-        appendln("    ${it.key}: ${it.value}")
-      }
+    appendMapProperty(config.clientDetails, name = "client-details") {
+      appendln("    ${it.key}: ${it.value}")
     }
 
     if (config.otherFiles.isPresentAndNotEmpty) {
@@ -135,8 +127,8 @@ internal class YamlWriter {
       }
     }
 
-    appendIfPresent(config.networkProfile, name = "network-profile")
-    appendIfPresent(config.roboScript, name = "robo-script")
+    appendProperty(config.networkProfile, name = "network-profile")
+    appendProperty(config.roboScript, name = "robo-script")
 
     if (config.roboDirectives.isPresentAndNotEmpty) {
       val roboDirectives = config.roboDirectives.get()
@@ -148,8 +140,30 @@ internal class YamlWriter {
     }
   }
 
-  private fun <T> StringBuilder.appendIfPresent(prop: Property<T>, name: String) {
+  private fun <T> StringBuilder.appendProperty(prop: Property<T>, name: String) {
     if (prop.isPresent) appendln("  $name: ${prop.get()}")
+  }
+
+  private fun <T, K> StringBuilder.appendMapProperty(
+    prop: MapProperty<T, K>,
+    name: String,
+    custom: StringBuilder.(Map.Entry<T, K>) -> Unit
+  ) {
+    if (prop.isPresentAndNotEmpty) {
+      appendln("  $name:")
+      prop.get().forEach { custom(it) }
+    }
+  }
+
+  private fun <T> StringBuilder.appendListProperty(
+    prop: ListProperty<T>,
+    name: String,
+    custom: StringBuilder.(T) -> Unit
+  ) {
+    if (prop.isPresentAndNotEmpty) {
+      appendln("  $name:")
+      prop.get().forEach { custom(it) }
+    }
   }
 
   private val <T> ListProperty<T>.isPresentAndNotEmpty

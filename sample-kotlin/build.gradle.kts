@@ -22,7 +22,7 @@ fladle {
     serviceAccountCredentials.set(project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json"))
     // Project Id is not needed if serviceAccountCredentials are set.
 //    projectId("flank-gradle")
-    useOrchestrator = true
+    useOrchestrator.set(true)
     environmentVariables.set(project.provider { mapOf("clearPackageData" to "true") })
     testTargets.set(project.provider { listOf(
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
@@ -34,7 +34,7 @@ fladle {
     smartFlankGcsPath.set("gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml")
     configs {
         create("oranges") {
-            useOrchestrator = false
+            useOrchestrator.set(false)
             testTargets.set(project.provider { listOf(
                     "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
             ) })

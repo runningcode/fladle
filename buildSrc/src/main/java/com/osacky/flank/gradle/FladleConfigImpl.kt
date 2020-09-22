@@ -7,10 +7,10 @@ import org.gradle.api.provider.Property
 
 data class FladleConfigImpl(
   internal val name: String,
-  override var projectId: String?,
+  override val projectId: Property<String>,
   override val serviceAccountCredentials: RegularFileProperty,
-  override var useOrchestrator: Boolean,
-  override var autoGoogleLogin: Boolean,
+  override val useOrchestrator: Property<Boolean>,
+  override val autoGoogleLogin: Property<Boolean>,
   override val devices: ListProperty<Map<String, String>>,
   override val testTargets: ListProperty<String>,
   override val shardTime: Property<Int>,

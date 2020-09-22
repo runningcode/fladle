@@ -22,10 +22,10 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   @get:Input
   val flankVersion: Property<String> = objects.property(String::class.java).convention("20.08.3")
   // Project id is automatically discovered by default. Use this to override the project id.
-  override var projectId: String? = null
+  override val projectId: Property<String> = objects.property()
   override val serviceAccountCredentials: RegularFileProperty = objects.fileProperty()
-  override var useOrchestrator: Boolean = false
-  override var autoGoogleLogin: Boolean = false
+  override val useOrchestrator: Property<Boolean> = objects.property<Boolean>().convention(false)
+  override val autoGoogleLogin: Property<Boolean> = objects.property<Boolean>().convention(false)
   override val devices: ListProperty<Map<String, String>> = objects.listProperty<Map<String, String>>().convention(listOf(mapOf("model" to "NexusLowRes", "version" to "28")))
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
@@ -113,10 +113,10 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
       name = it,
-      projectId = projectId,
+      projectId = objects.property<String>().convention(projectId),
       serviceAccountCredentials = objects.fileProperty().convention(serviceAccountCredentials),
-      useOrchestrator = useOrchestrator,
-      autoGoogleLogin = autoGoogleLogin,
+      useOrchestrator = objects.property<Boolean>().convention(useOrchestrator),
+      autoGoogleLogin = objects.property<Boolean>().convention(autoGoogleLogin),
       devices = objects.listProperty<Map<String, String>>().convention(devices),
       testTargets = objects.listProperty<String>().convention(testTargets),
       testShards = objects.property<Int>().convention(testShards),
