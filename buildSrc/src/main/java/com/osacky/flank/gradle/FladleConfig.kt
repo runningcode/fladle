@@ -21,15 +21,15 @@ interface FladleConfig {
   @get:Input
   var autoGoogleLogin: Boolean
   @get:Input
-  var devices: List<Map<String, String>>
+  val devices: ListProperty<Map<String, String>>
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
   @get:Input
-  var testTargets: List<String>
+  val testTargets: ListProperty<String>
 
   @get:Input
   @get:Optional
-  var testShards: Int?
+  val testShards: Property<Int>
 
   /**
    * shardTime - the amount of time tests within a shard should take
@@ -39,11 +39,11 @@ interface FladleConfig {
    */
   @get:Input
   @get:Optional
-  var shardTime: Int?
+  val shardTime: Property<Int>
 
   @get:Input
   @get:Optional
-  var repeatTests: Int?
+  val repeatTests: Property<Int>
 
   @get:Input
   @get:Optional

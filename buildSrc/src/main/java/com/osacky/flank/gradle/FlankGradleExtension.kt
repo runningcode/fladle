@@ -26,14 +26,14 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   override val serviceAccountCredentials: RegularFileProperty = objects.fileProperty()
   override var useOrchestrator: Boolean = false
   override var autoGoogleLogin: Boolean = false
-  override var devices: List<Map<String, String>> = listOf(mapOf("model" to "NexusLowRes", "version" to "28"))
+  override val devices: ListProperty<Map<String, String>> = objects.listProperty<Map<String, String>>().convention(listOf(mapOf("model" to "NexusLowRes", "version" to "28")))
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
-  override var testTargets: List<String> = emptyList()
+  override val testTargets: ListProperty<String> = objects.listProperty()
 
-  override var testShards: Int? = null
-  override var shardTime: Int? = null
-  override var repeatTests: Int? = null
+  override val testShards: Property<Int> = objects.property()
+  override val shardTime: Property<Int> = objects.property()
+  override val repeatTests: Property<Int> = objects.property()
 
   // Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
   override val smartFlankGcsPath: Property<String> = objects.property()
@@ -117,11 +117,11 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       serviceAccountCredentials = objects.fileProperty().convention(serviceAccountCredentials),
       useOrchestrator = useOrchestrator,
       autoGoogleLogin = autoGoogleLogin,
-      devices = devices,
-      testTargets = testTargets,
-      testShards = testShards,
-      shardTime = shardTime,
-      repeatTests = repeatTests,
+      devices = objects.listProperty<Map<String, String>>().convention(devices),
+      testTargets = objects.listProperty<String>().convention(testTargets),
+      testShards = objects.property<Int>().convention(testShards),
+      shardTime = objects.property<Int>().convention(shardTime),
+      repeatTests = objects.property<Int>().convention(repeatTests),
       smartFlankGcsPath = objects.property<String>().convention(smartFlankGcsPath),
       resultsHistoryName = objects.property<String>().convention(resultsHistoryName),
       flakyTestAttempts = objects.property<Int>().convention(flakyTestAttempts),

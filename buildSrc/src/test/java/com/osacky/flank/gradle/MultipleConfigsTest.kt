@@ -24,11 +24,11 @@ class MultipleConfigsTest {
       |  debugApk = "foo.apk"
       |  instrumentationApk = "instrument.apk"
       |
-      |  testTargets = ['default']
+      |  testTargets.set(project.provider { ['default'] })
       |  localResultsDir = 'defaultDir'
       |  configs {
       |    orange {
-      |      testTargets = ['override']
+      |      testTargets.set(project.provider { ['override'] })
       |      localResultsDir.set('overrideDir')
       |    }
       |  }

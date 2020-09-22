@@ -51,16 +51,16 @@ fladle {
     filesToDownload = [
         ".*/screenshots/.*"
     ]
-    testTargets = [
+    testTargets.set(project.provider { [
         "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
-    ]
+    ] })
     testTimeout = "15m"
     recordVideo = false
     performanceMetrics = false
-    devices = [
+    devices.set(project.provider { [
         [ "model": "NexusLowRes", "version": "28" ],
         [ "model": "Nexus5", "version": "23" ]
-    ]
+    ] })
     projectId("flank-gradle")
     flankVersion = "{{ fladle.flank_version }}"
     debugApk = "$buildDir/outputs/apk/debug/sample-debug.apk"
@@ -72,14 +72,14 @@ fladle {
     ]
     autoGoogleLogin = true
     testShards = 5 //or numUniformShards=5 cannot use both
-    shardTime = 120
+    shardTime.set(120)
     smartFlankGcsPath.set("gs://tmp_flank/flank/test_app_android.xml")
     configs {
         oranges {
             useOrchestrator = false
-            testTargets = [
+            testTargets.set(project.provider { [
                 "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
-            ]
+            ] })
         }
     }
     resultsBucket("my-results-bucket-name")

@@ -20,7 +20,6 @@ internal class YamlWriter {
       """.trimIndent()
     }
 
-    val deviceString = createDeviceString(config.devices)
     val additionalProperties = writeAdditionalProperties(config)
     val flankProperties = writeFlankProperties(config)
 
@@ -30,30 +29,19 @@ internal class YamlWriter {
       if (base.instrumentationApk.isPresent) {
         appendln("  test: ${base.instrumentationApk.get()}")
       }
-      appendln(deviceString)
+      if (config.devices.isPresentAndNotEmpty) appendln(createDeviceString(config.devices.get()))
       appendln(additionalProperties)
       append(flankProperties)
     }
   }
 
   internal fun writeFlankProperties(config: FladleConfig): String = buildString {
-    val testShards = config.testShards
-    val shardTime = config.shardTime
-    val repeatTests = config.repeatTests
     val projectId = config.projectId
 
     appendln("flank:")
-
-    testShards?.let {
-      appendln("  max-test-shards: $testShards")
-    }
-    shardTime?.let {
-      appendln("  shard-time: $shardTime")
-    }
-    repeatTests?.let {
-      appendln(repeatTestsLine(repeatTests))
-    }
-
+    appendIfPresent(config.testShards, name = "max-test-shards")
+    appendIfPresent(config.shardTime, name = "shard-time")
+    appendIfPresent(config.repeatTests, name = "num-test-runs")
     appendIfPresent(config.smartFlankGcsPath, name = "smart-flank-gcs-path")
 
     projectId?.let {
@@ -112,8 +100,8 @@ internal class YamlWriter {
         appendln("    $key: $value")
       }
     }
-    val testTargets = config.testTargets
-    if (testTargets.isNotEmpty()) {
+    if (config.testTargets.isPresentAndNotEmpty) {
+      val testTargets = config.testTargets.get()
       appendln("  test-targets:")
       testTargets.forEach { target ->
         appendln("  - $target")
@@ -169,11 +157,6 @@ internal class YamlWriter {
 
   private val <T, K> MapProperty<T, K>.isPresentAndNotEmpty
     get() = isPresent && get().isEmpty().not()
-
-  private fun repeatTestsLine(repeatTests: Int): String {
-    val label = "num-test-runs"
-    return "  $label: $repeatTests"
-  }
 
   @VisibleForTesting
   internal fun createDeviceString(devices: List<Map<String, String>>): String = buildString {

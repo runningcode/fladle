@@ -308,7 +308,7 @@ class YamlWriterTest {
   @Test
   fun writeTestShardOption() {
     val extension = emptyExtension {
-      testShards = 5
+      testShards.set(5)
     }
 
     assertEquals(
@@ -328,7 +328,7 @@ class YamlWriterTest {
   @Test
   fun writeShardTimeOption() {
     val extension = emptyExtension {
-      shardTime = 120
+      shardTime.set(120)
     }
 
     assertEquals(
@@ -347,9 +347,7 @@ class YamlWriterTest {
 
   @Test
   fun writeNoTestRepeats() {
-    val extension = emptyExtension {
-      repeatTests = null
-    }
+    val extension = emptyExtension {}
 
     assertEquals(
       "flank:\n" +
@@ -367,7 +365,7 @@ class YamlWriterTest {
   @Test
   fun writeTestRepeats() {
     val extension = emptyExtension {
-      repeatTests = 5
+      repeatTests.set(5)
     }
 
     assertEquals(
@@ -387,8 +385,8 @@ class YamlWriterTest {
   @Test
   fun writeTestShardAndRepeatOption() {
     val extension = emptyExtension {
-      testShards = 5
-      repeatTests = 2
+      testShards.set(5)
+      repeatTests.set(2)
     }
 
     assertEquals(
@@ -464,7 +462,11 @@ class YamlWriterTest {
   fun writeTestTargetsAndResultsHistoryName() {
     val extension = emptyExtension {
       resultsHistoryName.set("androidtest")
-      testTargets = listOf("class com.example.Foo")
+      testTargets.set(
+        project.provider {
+          listOf("class com.example.Foo")
+        }
+      )
     }
 
     assertEquals(
@@ -483,9 +485,7 @@ class YamlWriterTest {
 
   @Test
   fun writeNoTestTargets() {
-    val extension = emptyExtension {
-      testTargets = listOf()
-    }
+    val extension = emptyExtension {}
 
     assertEquals(
       "  use-orchestrator: false\n" +
@@ -501,7 +501,11 @@ class YamlWriterTest {
   @Test
   fun writeSingleTestTargets() {
     val extension = emptyExtension {
-      testTargets = listOf("class com.example.Foo#testThing")
+      testTargets.set(
+        project.provider {
+          listOf("class com.example.Foo#testThing")
+        }
+      )
     }
 
     assertEquals(
@@ -520,7 +524,11 @@ class YamlWriterTest {
   @Test
   fun writeMultipleTestTargets() {
     val extension = emptyExtension {
-      testTargets = listOf("class com.example.Foo#testThing", "class com.example.Foo#testThing2")
+      testTargets.set(
+        project.provider {
+          listOf("class com.example.Foo#testThing", "class com.example.Foo#testThing2")
+        }
+      )
     }
 
     assertEquals(

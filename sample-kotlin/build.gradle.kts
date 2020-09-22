@@ -24,20 +24,20 @@ fladle {
 //    projectId("flank-gradle")
     useOrchestrator = true
     environmentVariables.set(project.provider { mapOf("clearPackageData" to "true") })
-    testTargets = listOf(
+    testTargets.set(project.provider { listOf(
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
-    )
-    devices = listOf(
+    ) })
+    devices.set(project.provider { listOf(
         mapOf("model" to "Pixel2", "version" to "26" ),
         mapOf("model" to "Nexus5", "version" to "23" )
-    )
+    ) })
     smartFlankGcsPath.set("gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml")
     configs {
         create("oranges") {
             useOrchestrator = false
-            testTargets = listOf(
+            testTargets.set(project.provider { listOf(
                     "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
-            )
+            ) })
             flakyTestAttempts.set(3)
         }
         create("additionalTests") {
