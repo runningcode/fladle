@@ -12,7 +12,7 @@ internal class YamlWriter {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
-    check(base.instrumentationApk.isPresent xor base.roboScript.isPresent) {
+    check(base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank()) {
       """
      Either instrumentationApk file or roboScript file must be specified but not both.
      instrumentationApk=${base.instrumentationApk.orNull}
@@ -111,10 +111,10 @@ internal class YamlWriter {
   }
 
   private val <T> ListProperty<T>.isPresentAndNotEmpty
-    get() = isPresent && get().isEmpty().not()
+    get() = isPresent && get().isNotEmpty()
 
   private val <T, K> MapProperty<T, K>.isPresentAndNotEmpty
-    get() = isPresent && get().isEmpty().not()
+    get() = isPresent && get().isNotEmpty()
 
   @VisibleForTesting
   internal fun createDeviceString(devices: List<Map<String, String>>): String = buildString {
