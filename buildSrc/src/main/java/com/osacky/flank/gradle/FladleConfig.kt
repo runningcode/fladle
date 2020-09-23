@@ -174,7 +174,6 @@ interface FladleConfig {
    * Source file paths may be in the local filesystem or in Google Cloud Storage (gs://…).
    */
   @get:Input
-  @get:Optional
   val otherFiles: MapProperty<String, String>
 
   /**
