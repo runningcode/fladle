@@ -41,7 +41,7 @@ fladle {
     variant = "freeDebug"
 
     // Optional parameters
-    useOrchestrator.set(false)
+    useOrchestrator = false
     environmentVariables = [
         "clearPackageData": "true"
     ]
@@ -51,16 +51,16 @@ fladle {
     filesToDownload = [
         ".*/screenshots/.*"
     ]
-    testTargets.set(project.provider { [
+    testTargets = [
         "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
-    ] })
+    ]
     testTimeout = "15m"
     recordVideo = false
     performanceMetrics = false
-    devices.set(project.provider { [
+    devices = [
         [ "model": "NexusLowRes", "version": "28" ],
         [ "model": "Nexus5", "version": "23" ]
-    ] })
+    ]
     projectId("flank-gradle")
     flankVersion = "{{ fladle.flank_version }}"
     debugApk = "$buildDir/outputs/apk/debug/sample-debug.apk"
@@ -70,10 +70,10 @@ fladle {
         "  test: $buildDir/outputs/apk/androidTest/debug/sample2-debug-androidTest.apk",
         "- test: ${rootProject.buildDir}/database/module/outputs/apk/database-module-androidTest.apk"
     ]
-    autoGoogleLogin.set(true)
-    testShards.set(5) //or numUniformShards=5 cannot use both
-    shardTime.set(120)
-    smartFlankGcsPath.set("gs://tmp_flank/flank/test_app_android.xml")
+    autoGoogleLogin = true
+    testShards = 5 //or numUniformShards=5 cannot use both
+    shardTime = 120
+    smartFlankGcsPath = "gs://tmp_flank/flank/test_app_android.xml"
     configs {
         oranges {
             useOrchestrator.set(false)
