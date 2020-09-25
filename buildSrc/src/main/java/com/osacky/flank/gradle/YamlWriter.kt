@@ -12,7 +12,8 @@ internal class YamlWriter {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
-    check(base.sanityRobo.get() == true || (base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank())) {
+    if (base.sanityRobo.get() == false) {
+    check(base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank()) {
       val prefix = if (base.instrumentationApk.isPresent && !base.roboScript.orNull.isNullOrBlank()) {
         "Both instrumentationApk file and roboScript file were specified, but only one is expected."
       } else {
@@ -23,6 +24,7 @@ internal class YamlWriter {
       instrumentationApk=${base.instrumentationApk.orNull}
       roboScript=${base.roboScript.orNull}
       """.trimIndent()
+      }
     }
 
     val shouldPrintTestAndRobo = base.sanityRobo.get().not()

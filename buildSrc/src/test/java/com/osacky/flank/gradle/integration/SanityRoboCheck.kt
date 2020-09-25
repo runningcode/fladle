@@ -14,9 +14,11 @@ class SanityRoboCheck {
   fun setUp() = testProjectRoot.newFile("flank-gradle-service.json").writeText("{}")
 
   @Test
-  fun checkSanityRoboRunSimpleCase() {
-    makeGradleFile(where = testProjectRoot) {
-      """
+  fun checkSanityRoboRunWithProjectProperty() {
+    makeGradleFile(
+      where = testProjectRoot,
+      buildScript =
+        """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -26,12 +28,12 @@ class SanityRoboCheck {
       |  debugApk = "foo.apk"
       |}
     """
-    }
+    )
 
-    val result = gradleRun {
-      arguments = listOf("writeConfigProps", "-PsanityRobo")
+    val result = gradleRun(
+      arguments = listOf("writeConfigProps", "-PsanityRobo"),
       projectDir = testProjectRoot.root
-    }
+    )
 
     assertThat(result.output).contains("SUCCESS")
 
@@ -64,8 +66,10 @@ class SanityRoboCheck {
 
   @Test
   fun checkSanityRoboRunWithApksAdded() {
-    makeGradleFile(where = testProjectRoot) {
-      """
+    makeGradleFile(
+      where = testProjectRoot,
+      buildScript =
+        """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -81,12 +85,12 @@ class SanityRoboCheck {
       |  ]
       |}
     """
-    }
+    )
 
-    val result = gradleRun {
-      arguments = listOf("writeConfigProps", "-PsanityRobo")
+    val result = gradleRun(
+      arguments = listOf("writeConfigProps", "-PsanityRobo"),
       projectDir = testProjectRoot.root
-    }
+    )
 
     assertThat(result.output).contains("SUCCESS")
 
@@ -119,8 +123,10 @@ class SanityRoboCheck {
 
   @Test
   fun checkSanityRoboRunMultipleConfigs() {
-    makeGradleFile(where = testProjectRoot) {
-      """
+    makeGradleFile(
+      where = testProjectRoot,
+      buildScript =
+        """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -142,12 +148,12 @@ class SanityRoboCheck {
       |  }
       |}
     """
-    }
+    )
 
-    val result = gradleRun {
-      arguments = listOf("writeConfigProps", "-PsanityRobo")
+    val result = gradleRun(
+      arguments = listOf("writeConfigProps", "-PsanityRobo"),
       projectDir = testProjectRoot.root
-    }
+    )
 
     assertThat(result.output).contains("SUCCESS")
 
@@ -177,10 +183,10 @@ class SanityRoboCheck {
     """
     }
 
-    val resultOrange = gradleRun {
-      arguments = listOf("writeConfigPropsOrange", "-PsanityRobo")
+    val resultOrange = gradleRun(
+      arguments = listOf("writeConfigPropsOrange", "-PsanityRobo"),
       projectDir = testProjectRoot.root
-    }
+    )
 
     assertThat(resultOrange.output).contains("SUCCESS")
 
@@ -216,8 +222,10 @@ class SanityRoboCheck {
 
   @Test
   fun checkSanityRoboRunRoboScript() {
-    makeGradleFile(where = testProjectRoot) {
-      """
+    makeGradleFile(
+      where = testProjectRoot,
+      buildScript =
+        """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -228,12 +236,12 @@ class SanityRoboCheck {
       |  roboScript = "some/path/script.json"
       |}
     """
-    }
+    )
 
-    val result = gradleRun {
-      arguments = listOf("writeConfigProps", "-PsanityRobo")
+    val result = gradleRun(
+      arguments = listOf("writeConfigProps", "-PsanityRobo"),
       projectDir = testProjectRoot.root
-    }
+    )
 
     assertThat(result.output).contains("SUCCESS")
 
@@ -266,8 +274,10 @@ class SanityRoboCheck {
 
   @Test
   fun checkSanityRoboRunRoboDirectives() {
-    makeGradleFile(where = testProjectRoot) {
-      """
+    makeGradleFile(
+      where = testProjectRoot,
+      buildScript =
+        """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -282,12 +292,12 @@ class SanityRoboCheck {
       |  ]
       |}
     """
-    }
+    )
 
-    val result = gradleRun {
-      arguments = listOf("writeConfigProps", "-PsanityRobo")
+    val result = gradleRun(
+      arguments = listOf("writeConfigProps", "-PsanityRobo"),
       projectDir = testProjectRoot.root
-    }
+    )
 
     assertThat(result.output).contains("SUCCESS")
 

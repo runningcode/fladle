@@ -8,20 +8,14 @@ fun TemporaryFolder.setupFixture(fixtureName: String) {
   File(this::class.java.classLoader.getResource(fixtureName)!!.file).copyRecursively(newFile(fixtureName), true)
 }
 
-internal fun makeGradleFile(where: TemporaryFolder, stringProvider: () -> String) = where
+internal fun makeGradleFile(where: TemporaryFolder, buildScript: String) = where
   .newFile("build.gradle")
-  .writeText(stringProvider().trimMargin())
+  .writeText(buildScript.trimMargin())
 
-internal fun gradleRun(block: GradleRunFladle.() -> Unit) = GradleRunFladle().apply(block).run {
+internal fun gradleRun(projectDir: File, arguments: List<String> = emptyList()) =
   GradleRunner.create()
     .withPluginClasspath()
     .withArguments(arguments)
     .forwardOutput()
     .withProjectDir(projectDir)
     .build()
-}
-
-internal data class GradleRunFladle(
-  var arguments: List<String> = emptyList(),
-  var projectDir: File? = null
-)
