@@ -12,7 +12,7 @@ internal class YamlWriter {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
-    check(base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank()) {
+    check(base.sanityRobo.get() == true || (base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank())) {
       val prefix = if (base.instrumentationApk.isPresent && !base.roboScript.orNull.isNullOrBlank()) {
         "Both instrumentationApk file and roboScript file were specified, but only one is expected."
       } else {
@@ -25,13 +25,15 @@ internal class YamlWriter {
       """.trimIndent()
     }
 
-    val additionalProperties = writeAdditionalProperties(config)
-    val flankProperties = writeFlankProperties(config)
+    val shouldPrintTestAndRobo = base.sanityRobo.get().not()
+    val additionalProperties = writeAdditionalProperties(config, shouldPrintTestAndRobo)
+    val flankProperties = writeFlankProperties(config, shouldPrintTestAndRobo)
 
     return buildString {
       appendln("gcloud:")
       appendln("  app: ${base.debugApk.get()}")
-      if (base.instrumentationApk.isPresent) {
+      // We don't want to print instrumentation apks if sanityRobo == true
+      if (shouldPrintTestAndRobo && base.instrumentationApk.isPresent) {
         appendln("  test: ${base.instrumentationApk.get()}")
       }
       if (config.devices.isPresentAndNotEmpty) appendln(createDeviceString(config.devices.get()))
@@ -40,7 +42,7 @@ internal class YamlWriter {
     }
   }
 
-  internal fun writeFlankProperties(config: FladleConfig): String = buildString {
+  internal fun writeFlankProperties(config: FladleConfig, printApk: Boolean = true): String = buildString {
     appendln("flank:")
 
     appendProperty(config.testShards, name = "max-test-shards")
@@ -50,7 +52,8 @@ internal class YamlWriter {
     appendProperty(config.projectId, name = "project")
     appendProperty(config.keepFilePath, name = "keep-file-path")
     appendListProperty(config.filesToDownload, name = "files-to-download") { appendln("  - $it") }
-    appendListProperty(config.additionalTestApks, name = "additional-app-test-apks") { appendln("    $it") }
+    if (printApk)
+      appendListProperty(config.additionalTestApks, name = "additional-app-test-apks") { appendln("    $it") }
     appendProperty(config.runTimeout, name = "run-timeout")
     appendProperty(config.ignoreFailedTests, name = "ignore-failed-tests")
     appendProperty(config.disableSharding, name = "disable-sharding")
@@ -62,7 +65,7 @@ internal class YamlWriter {
     appendProperty(config.outputStyle, name = "output-style")
   }
 
-  internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
+  internal fun writeAdditionalProperties(config: FladleConfig, printRobo: Boolean = true): String = buildString {
     appendProperty(config.useOrchestrator, name = "use-orchestrator")
     appendProperty(config.autoGoogleLogin, name = "auto-google-login")
     appendProperty(config.recordVideo, name = "record-video")
@@ -82,10 +85,12 @@ internal class YamlWriter {
     appendMapProperty(config.clientDetails, name = "client-details") { appendln("    ${it.key}: ${it.value}") }
     appendMapProperty(config.otherFiles, name = "other-files") { appendln("    ${it.key}: ${it.value}") }
     appendProperty(config.networkProfile, name = "network-profile")
-    appendProperty(config.roboScript, name = "robo-script")
-    appendListProperty(config.roboDirectives, name = "robo-directives") {
-      val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
-      appendln("    ${it[0]}:${it[1]}: $value")
+    if (printRobo) {
+      appendProperty(config.roboScript, name = "robo-script")
+      appendListProperty(config.roboDirectives, name = "robo-directives") {
+        val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
+        appendln("    ${it[0]}:${it[1]}: $value")
+      }
     }
   }
 
