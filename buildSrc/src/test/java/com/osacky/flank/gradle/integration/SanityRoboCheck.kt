@@ -24,6 +24,58 @@ class SanityRoboCheck {
       |}
       |
       |fladle {
+      |  sanityRobo = project.hasProperty('sanityRobo')
+      |  serviceAccountCredentials = layout.projectDirectory.file("flank-gradle-service.json")
+      |  debugApk = "foo.apk"
+      |}
+    """
+    )
+
+    val result = gradleRun(
+      arguments = listOf("printYml", "-PsanityRobo"),
+      projectDir = testProjectRoot.root
+    )
+
+    assertThat(result.output).contains("SUCCESS")
+    assertThat(result.output).contains(
+      """
+      |gcloud:
+      |  app: foo.apk
+      |  device:
+      |  - model: NexusLowRes
+      |    version: 28
+      |
+      |  use-orchestrator: false
+      |  auto-google-login: false
+      |  record-video: true
+      |  performance-metrics: true
+      |  timeout: 15m
+      |  num-flaky-test-attempts: 0
+      |
+      |flank:
+      |  keep-file-path: false
+      |  ignore-failed-tests: false
+      |  disable-sharding: false
+      |  smart-flank-disable-upload: false
+      |  legacy-junit-result: false
+      |  full-junit-result: false
+      |  output-style: single
+    """.trimMargin()
+    )
+  }
+
+  @Test
+  fun checkSanityRoboRunWithProjectPropertySetAsExtensionProperty() {
+    makeGradleFile(
+      where = testProjectRoot,
+      buildScript =
+        """
+      |plugins {
+      |  id "com.osacky.fladle"
+      |}
+      |
+      |fladle {
+      |  sanityRobo = true
       |  serviceAccountCredentials = layout.projectDirectory.file("flank-gradle-service.json")
       |  debugApk = "foo.apk"
       |}
@@ -74,6 +126,7 @@ class SanityRoboCheck {
       |}
       |
       |fladle {
+      |  sanityRobo = project.hasProperty('sanityRobo')
       |  serviceAccountCredentials = layout.projectDirectory.file("flank-gradle-service.json")
       |  debugApk = "foo.apk"
       |  instrumentationApk = "test.apk"
@@ -130,6 +183,7 @@ class SanityRoboCheck {
       |}
       |
       |fladle {
+      |  sanityRobo = project.hasProperty('sanityRobo')
       |  serviceAccountCredentials = layout.projectDirectory.file("flank-gradle-service.json")
       |  debugApk = "foo.apk"
       |  instrumentationApk = "test.apk"
@@ -227,6 +281,7 @@ class SanityRoboCheck {
       |}
       |
       |fladle {
+      |  sanityRobo = project.hasProperty('sanityRobo')
       |  serviceAccountCredentials = layout.projectDirectory.file("flank-gradle-service.json")
       |  debugApk = "foo.apk"
       |  roboScript = "some/path/script.json"
@@ -278,6 +333,7 @@ class SanityRoboCheck {
       |}
       |
       |fladle {
+      |  sanityRobo = project.hasProperty('sanityRobo')
       |  serviceAccountCredentials = layout.projectDirectory.file("flank-gradle-service.json")
       |  debugApk = "foo.apk"
       |  roboDirectives = [
