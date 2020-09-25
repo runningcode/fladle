@@ -31,13 +31,12 @@ class SanityRoboCheck {
     )
 
     val result = gradleRun(
-      arguments = listOf("writeConfigProps", "-PsanityRobo"),
+      arguments = listOf("printYml", "-PsanityRobo"),
       projectDir = testProjectRoot.root
     )
 
     assertThat(result.output).contains("SUCCESS")
-
-    "build/fladle/flank.yml" readAndCompareWith {
+    assertThat(result.output).contains(
       """
       |gcloud:
       |  app: foo.apk
@@ -60,8 +59,8 @@ class SanityRoboCheck {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-    """
-    }
+    """.trimMargin()
+    )
   }
 
   @Test
@@ -88,13 +87,12 @@ class SanityRoboCheck {
     )
 
     val result = gradleRun(
-      arguments = listOf("writeConfigProps", "-PsanityRobo"),
+      arguments = listOf("printYml", "-PsanityRobo"),
       projectDir = testProjectRoot.root
     )
 
     assertThat(result.output).contains("SUCCESS")
-
-    "build/fladle/flank.yml" readAndCompareWith {
+    assertThat(result.output).contains(
       """
       |gcloud:
       |  app: foo.apk
@@ -117,8 +115,8 @@ class SanityRoboCheck {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-    """
-    }
+    """.trimMargin()
+    )
   }
 
   @Test
@@ -151,13 +149,12 @@ class SanityRoboCheck {
     )
 
     val result = gradleRun(
-      arguments = listOf("writeConfigProps", "-PsanityRobo"),
+      arguments = listOf("printYml", "-PsanityRobo"),
       projectDir = testProjectRoot.root
     )
 
     assertThat(result.output).contains("SUCCESS")
-
-    "build/fladle/flank.yml" readAndCompareWith {
+    assertThat(result.output).contains(
       """
       |gcloud:
       |  app: foo.apk
@@ -180,17 +177,16 @@ class SanityRoboCheck {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-    """
-    }
+    """.trimMargin()
+    )
 
     val resultOrange = gradleRun(
-      arguments = listOf("writeConfigPropsOrange", "-PsanityRobo"),
+      arguments = listOf("printYmlOrange", "-PsanityRobo"),
       projectDir = testProjectRoot.root
     )
 
     assertThat(resultOrange.output).contains("SUCCESS")
-
-    "build/fladle/orange/flank.yml" readAndCompareWith {
+    assertThat(resultOrange.output).contains(
       """
       |gcloud:
       |  app: foo.apk
@@ -216,8 +212,8 @@ class SanityRoboCheck {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-    """
-    }
+    """.trimMargin()
+    )
   }
 
   @Test
@@ -239,13 +235,12 @@ class SanityRoboCheck {
     )
 
     val result = gradleRun(
-      arguments = listOf("writeConfigProps", "-PsanityRobo"),
+      arguments = listOf("printYml", "-PsanityRobo"),
       projectDir = testProjectRoot.root
     )
 
     assertThat(result.output).contains("SUCCESS")
-
-    "build/fladle/flank.yml" readAndCompareWith {
+    assertThat(result.output).contains(
       """
       |gcloud:
       |  app: foo.apk
@@ -268,8 +263,8 @@ class SanityRoboCheck {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-    """
-    }
+    """.trimMargin()
+    )
   }
 
   @Test
@@ -295,13 +290,12 @@ class SanityRoboCheck {
     )
 
     val result = gradleRun(
-      arguments = listOf("writeConfigProps", "-PsanityRobo"),
+      arguments = listOf("printYml", "-PsanityRobo"),
       projectDir = testProjectRoot.root
     )
 
     assertThat(result.output).contains("SUCCESS")
-
-    "build/fladle/flank.yml" readAndCompareWith {
+    assertThat(result.output).contains(
       """
       |gcloud:
       |  app: foo.apk
@@ -324,15 +318,7 @@ class SanityRoboCheck {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-    """
-    }
+    """.trimMargin()
+    )
   }
-
-  private infix fun String.readAndCompareWith(block: () -> String) = testProjectRoot
-    .root
-    .resolve(this)
-    .readText()
-    .run {
-      assertThat(this).contains(block().trimMargin())
-    }
 }
