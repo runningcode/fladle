@@ -36,6 +36,7 @@ fladle {
     smartFlankGcsPath = "gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml"
     configs {
         oranges {
+            // Cannot use = syntax: https://github.com/gradle/gradle/issues/9987
             useOrchestrator.set(false)
             testTargets.set(project.provider { [
                     "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
