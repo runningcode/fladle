@@ -1,23 +1,25 @@
 package com.osacky.flank.gradle
 
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
 import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesting
 
 internal class YamlWriter {
 
   internal fun createConfigProps(config: FladleConfig, base: FlankGradleExtension): String {
-    if (base.projectId == null) {
+    if (base.projectId.orNull == null) {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
-    check(base.instrumentationApk.isPresent xor !base.roboScript.isNullOrBlank()) {
+    check(base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank()) {
       """
      Either instrumentationApk file or roboScript file must be specified but not both.
      instrumentationApk=${base.instrumentationApk.orNull}
-     roboScript=${base.roboScript}
+     roboScript=${base.roboScript.orNull}
       """.trimIndent()
     }
 
-    val deviceString = createDeviceString(config.devices)
     val additionalProperties = writeAdditionalProperties(config)
     val flankProperties = writeFlankProperties(config)
 
@@ -27,167 +29,92 @@ internal class YamlWriter {
       if (base.instrumentationApk.isPresent) {
         appendln("  test: ${base.instrumentationApk.get()}")
       }
-      appendln(deviceString)
+      if (config.devices.isPresentAndNotEmpty) appendln(createDeviceString(config.devices.get()))
       appendln(additionalProperties)
       append(flankProperties)
     }
   }
 
   internal fun writeFlankProperties(config: FladleConfig): String = buildString {
-    val testShards = config.testShards
-    val shardTime = config.shardTime
-    val repeatTests = config.repeatTests
-    val smartFlankGcsPath = config.smartFlankGcsPath
-    val filesToDownload = config.filesToDownload
-    val projectId = config.projectId
-    val runTimeout = config.runTimeout.orNull
-    val ignoreFailedTests = config.ignoreFailedTests.getOrElse(false)
-    val disableSharding = config.disableSharding
-    val smartFlankDisableUpload = config.smartFlankDisableUpload
-    val localResultsDir = config.localResultsDir.orNull
-    val testTargetsAlwaysRun = config.testTargetsAlwaysRun
-
     appendln("flank:")
 
-    testShards?.let {
-      appendln("  max-test-shards: $testShards")
-    }
-    shardTime?.let {
-      appendln("  shard-time: $shardTime")
-    }
-    repeatTests?.let {
-      appendln(repeatTestsLine(repeatTests))
-    }
-    smartFlankGcsPath?.let {
-      appendln("  smart-flank-gcs-path: $it")
-    }
-    projectId?.let {
-      appendln("  project: $it")
-    }
-    appendln("  keep-file-path: ${config.keepFilePath}")
-    if (filesToDownload.isNotEmpty()) {
-      appendln("  files-to-download:")
-      filesToDownload.forEach { file ->
-        appendln("  - $file")
-      }
-    }
-    val additionalTestApks = config.additionalTestApks.getOrElse(emptyList())
-
-    if (additionalTestApks.isNotEmpty()) {
-      appendln("  additional-app-test-apks:")
-      additionalTestApks.forEach {
-        appendln("    $it")
-      }
-    }
-
-    runTimeout?.let {
-      appendln("  run-timeout: $it")
-    }
-    appendln("  ignore-failed-tests: $ignoreFailedTests")
-    appendln("  disable-sharding: $disableSharding")
-    appendln("  smart-flank-disable-upload: $smartFlankDisableUpload")
-    localResultsDir?.let {
-      appendln("  local-result-dir: $localResultsDir")
-    }
-    if (testTargetsAlwaysRun.isNotEmpty()) {
-      appendln("  test-targets-always-run:")
-      testTargetsAlwaysRun.forEach {
-        appendln("  - class $it")
-      }
-    }
-
-    appendln("  legacy-junit-result: ${config.legacyJunitResult.get()}")
-    appendln("  full-junit-result: ${config.fullJunitResult.get()}")
-    appendln("  output-style: ${config.outputStyle.get()}")
+    appendProperty(config.testShards, name = "max-test-shards")
+    appendProperty(config.shardTime, name = "shard-time")
+    appendProperty(config.repeatTests, name = "num-test-runs")
+    appendProperty(config.smartFlankGcsPath, name = "smart-flank-gcs-path")
+    appendProperty(config.projectId, name = "project")
+    appendProperty(config.keepFilePath, name = "keep-file-path")
+    appendListProperty(config.filesToDownload, name = "files-to-download") { appendln("  - $it") }
+    appendListProperty(config.additionalTestApks, name = "additional-app-test-apks") { appendln("    $it") }
+    appendProperty(config.runTimeout, name = "run-timeout")
+    appendProperty(config.ignoreFailedTests, name = "ignore-failed-tests")
+    appendProperty(config.disableSharding, name = "disable-sharding")
+    appendProperty(config.smartFlankDisableUpload, name = "smart-flank-disable-upload")
+    appendProperty(config.localResultsDir, name = "local-result-dir")
+    appendListProperty(config.testTargetsAlwaysRun, name = "test-targets-always-run") { appendln("  - class $it") }
+    appendProperty(config.legacyJunitResult, name = "legacy-junit-result")
+    appendProperty(config.fullJunitResult, name = "full-junit-result")
+    appendProperty(config.outputStyle, name = "output-style")
   }
 
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
-    appendln("  use-orchestrator: ${config.useOrchestrator}")
-    appendln("  auto-google-login: ${config.autoGoogleLogin}")
-    appendln("  record-video: ${config.recordVideo}")
-    appendln("  performance-metrics: ${config.performanceMetrics}")
-    appendln("  timeout: ${config.testTimeout}")
-
-    config.resultsHistoryName?.let {
-      appendln("  results-history-name: $it")
+    appendProperty(config.useOrchestrator, name = "use-orchestrator")
+    appendProperty(config.autoGoogleLogin, name = "auto-google-login")
+    appendProperty(config.recordVideo, name = "record-video")
+    appendProperty(config.performanceMetrics, name = "performance-metrics")
+    appendProperty(config.testTimeout, name = "timeout")
+    appendProperty(config.resultsHistoryName, name = "results-history-name")
+    appendProperty(config.resultsBucket, name = "results-bucket")
+    appendMapProperty(config.environmentVariables, name = "environment-variables") {
+      appendln("    ${it.key}: ${it.value}")
     }
-    config.resultsBucket?.let {
-      appendln("  results-bucket: $it")
-    }
-    val environmentVariables = config.environmentVariables
-    if (environmentVariables.isNotEmpty()) {
-      appendln("  environment-variables:")
-      environmentVariables.forEach { key, value ->
-        appendln("    $key: $value")
-      }
-    }
-    val testTargets = config.testTargets
-    if (testTargets.isNotEmpty()) {
-      appendln("  test-targets:")
-      testTargets.forEach { target ->
-        appendln("  - $target")
-      }
-    }
-    val directoriesToPull = config.directoriesToPull
-    if (directoriesToPull.isNotEmpty()) {
-      appendln("  directories-to-pull:")
-      directoriesToPull.forEach { dir ->
-        appendln("  - $dir")
-      }
-    }
-    appendln(flakyTestAttemptsLine(config.flakyTestAttempts))
-    config.resultsDir?.let {
-      appendln("  results-dir: $it")
-    }
-
-    config.testRunnerClass?.let {
-      appendln("  test-runner-class: $it")
-    }
-
-    config.numUniformShards?.let {
-      appendln("  num-uniform-shards: $it")
-    }
-
-    if (config.clientDetails.isNotEmpty()) {
-      appendln("  client-details:")
-      config.clientDetails.forEach {
-        appendln("    ${it.key}: ${it.value}")
-      }
-    }
-
-    if (config.otherFiles.isNotEmpty()) {
-      appendln("  other-files:")
-      config.otherFiles.forEach {
-        appendln("    ${it.key}: ${it.value}")
-      }
-    }
-
-    config.networkProfile?.let {
-      appendln("  network-profile: $it")
-    }
-
-    config.roboScript?.let {
-      appendln("  robo-script: $it")
-    }
-
-    if (config.roboDirectives.isNotEmpty()) {
-      appendln("  robo-directives:")
-      config.roboDirectives.forEach {
-        val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
-        appendln("    ${it[0]}:${it[1]}: $value")
-      }
+    appendListProperty(config.testTargets, name = "test-targets") { appendln("  - $it") }
+    appendListProperty(config.directoriesToPull, name = "directories-to-pull") { appendln("  - $it") }
+    appendProperty(config.flakyTestAttempts, name = "num-flaky-test-attempts")
+    appendProperty(config.resultsDir, name = "results-dir")
+    appendProperty(config.testRunnerClass, name = "test-runner-class")
+    appendProperty(config.numUniformShards, name = "num-uniform-shards")
+    appendMapProperty(config.clientDetails, name = "client-details") { appendln("    ${it.key}: ${it.value}") }
+    appendMapProperty(config.otherFiles, name = "other-files") { appendln("    ${it.key}: ${it.value}") }
+    appendProperty(config.networkProfile, name = "network-profile")
+    appendProperty(config.roboScript, name = "robo-script")
+    appendListProperty(config.roboDirectives, name = "robo-directives") {
+      val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
+      appendln("    ${it[0]}:${it[1]}: $value")
     }
   }
 
-  private fun flakyTestAttemptsLine(flakyTestAttempts: Int): String {
-    val label = "num-flaky-test-attempts"
-    return "  $label: $flakyTestAttempts"
+  private fun <T> StringBuilder.appendProperty(prop: Property<T>, name: String) {
+    if (prop.isPresent) appendln("  $name: ${prop.get()}")
   }
 
-  private fun repeatTestsLine(repeatTests: Int): String {
-    val label = "num-test-runs"
-    return "  $label: $repeatTests"
+  private fun <T, K> StringBuilder.appendMapProperty(
+    prop: MapProperty<T, K>,
+    name: String,
+    custom: StringBuilder.(Map.Entry<T, K>) -> Unit
+  ) {
+    if (prop.isPresentAndNotEmpty) {
+      appendln("  $name:")
+      prop.get().forEach { custom(it) }
+    }
   }
+
+  private fun <T> StringBuilder.appendListProperty(
+    prop: ListProperty<T>,
+    name: String,
+    custom: StringBuilder.(T) -> Unit
+  ) {
+    if (prop.isPresentAndNotEmpty) {
+      appendln("  $name:")
+      prop.get().forEach { custom(it) }
+    }
+  }
+
+  private val <T> ListProperty<T>.isPresentAndNotEmpty
+    get() = isPresent && get().isNotEmpty()
+
+  private val <T, K> MapProperty<T, K>.isPresentAndNotEmpty
+    get() = isPresent && get().isNotEmpty()
 
   @VisibleForTesting
   internal fun createDeviceString(devices: List<Map<String, String>>): String = buildString {

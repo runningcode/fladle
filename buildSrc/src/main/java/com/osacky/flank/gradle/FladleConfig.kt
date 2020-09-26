@@ -2,6 +2,7 @@ package com.osacky.flank.gradle
 
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -11,24 +12,28 @@ interface FladleConfig {
   // Project id is automatically discovered by default. Use this to override the project id.
   @get:Input
   @get:Optional
-  var projectId: String?
+  val projectId: Property<String>
+
   @get:InputFile
   @get:Optional
   val serviceAccountCredentials: RegularFileProperty
+
   @get:Input
-  var useOrchestrator: Boolean
+  val useOrchestrator: Property<Boolean>
+
   @get:Input
-  var autoGoogleLogin: Boolean
+  val autoGoogleLogin: Property<Boolean>
+
   @get:Input
-  var devices: List<Map<String, String>>
+  val devices: ListProperty<Map<String, String>>
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
   @get:Input
-  var testTargets: List<String>
+  val testTargets: ListProperty<String>
 
   @get:Input
   @get:Optional
-  var testShards: Int?
+  val testShards: Property<Int>
 
   /**
    * shardTime - the amount of time tests within a shard should take
@@ -38,45 +43,45 @@ interface FladleConfig {
    */
   @get:Input
   @get:Optional
-  var shardTime: Int?
+  val shardTime: Property<Int>
 
   @get:Input
   @get:Optional
-  var repeatTests: Int?
+  val repeatTests: Property<Int>
 
   @get:Input
   @get:Optional
-  var smartFlankGcsPath: String?
+  val smartFlankGcsPath: Property<String>
 
   @get:Input
   @get:Optional
-  var resultsHistoryName: String?
+  val resultsHistoryName: Property<String>
 
   @get:Input
-  var directoriesToPull: List<String>
+  val directoriesToPull: ListProperty<String>
 
   @get:Input
-  var filesToDownload: List<String>
+  val filesToDownload: ListProperty<String>
 
   @get:Input
-  var environmentVariables: Map<String, String>
+  val environmentVariables: MapProperty<String, String>
 
   @get:Input
-  var recordVideo: Boolean
+  val recordVideo: Property<Boolean>
 
   @get:Input
-  var performanceMetrics: Boolean
+  val performanceMetrics: Property<Boolean>
 
   // The number of times to retry failed tests. Default is 0. Max is 10.
   @get:Input
-  var flakyTestAttempts: Int
+  val flakyTestAttempts: Property<Int>
 
   @get:Input
   @get:Optional
-  var resultsBucket: String?
+  val resultsBucket: Property<String>
 
   @get:Input
-  var keepFilePath: Boolean
+  val keepFilePath: Property<Boolean>
 
   /**
    * The name of a unique Google Cloud Storage object within the results bucket where raw test results will be stored
@@ -84,7 +89,7 @@ interface FladleConfig {
    */
   @get:Input
   @get:Optional
-  var resultsDir: String?
+  val resultsDir: Property<String>
 
   @get:Input
   val additionalTestApks: ListProperty<String>
@@ -109,13 +114,13 @@ interface FladleConfig {
    * Disables sharding. Useful for parameterized tests. (default: false)
    */
   @get:Input
-  var disableSharding: Boolean
+  val disableSharding: Property<Boolean>
 
   /**
    * Disables smart flank JUnit XML uploading. Useful for preventing timing data from being updated. (default: false)
    */
   @get:Input
-  var smartFlankDisableUpload: Boolean
+  val smartFlankDisableUpload: Property<Boolean>
 
   /**
    * The fully-qualified Java class name of the instrumentation test runner
@@ -123,7 +128,7 @@ interface FladleConfig {
    */
   @get:Input
   @get:Optional
-  var testRunnerClass: String?
+  val testRunnerClass: Property<String>
 
   /**
    * Local folder to store the test result.
@@ -145,7 +150,7 @@ interface FladleConfig {
    */
   @get:Input
   @get:Optional
-  var numUniformShards: Int?
+  val numUniformShards: Property<Int>
 
   /**
    * A key-value map of additional details to attach to the test matrix.
@@ -154,14 +159,14 @@ interface FladleConfig {
    * these details can add additional context such as a link to the corresponding pull request.
    */
   @get:Input
-  var clientDetails: Map<String, String>
+  val clientDetails: MapProperty<String, String>
 
   /**
    * Always run - these tests are inserted at the beginning of every shard
    * useful if you need to grant permissions or login before other tests run
    */
   @get:Input
-  var testTargetsAlwaysRun: List<String>
+  val testTargetsAlwaysRun: ListProperty<String>
 
   /**
    * A list of device-path: file-path pairs that indicate the device paths to push files to the device before starting tests, and the paths of files to push.
@@ -169,7 +174,7 @@ interface FladleConfig {
    * Source file paths may be in the local filesystem or in Google Cloud Storage (gs://…).
    */
   @get:Input
-  var otherFiles: Map<String, String>
+  val otherFiles: MapProperty<String, String>
 
   /**
    * The name of the network traffic profile, for example LTE, HSPA, etc,
@@ -179,7 +184,7 @@ interface FladleConfig {
    */
   @get:Input
   @get:Optional
-  var networkProfile: String?
+  val networkProfile: Property<String>
 
   /**
    * The path to a Robo Script JSON file.
@@ -189,7 +194,7 @@ interface FladleConfig {
    */
   @get:Input
   @get:Optional
-  var roboScript: String?
+  val roboScript: Property<String>
 
   /**
    * List of robo_directives that you can use to customize the behavior of Robo test.
@@ -199,7 +204,7 @@ interface FladleConfig {
    * Values are only permitted for text type elements, so no value should be specified for click and ignore type elements.
    */
   @get:Input
-  var roboDirectives: List<List<String>>
+  val roboDirectives: ListProperty<List<String>>
 
   /**
    * The max time test execution can run before it is cancelled (default: 15m).
@@ -214,7 +219,7 @@ interface FladleConfig {
    * * 100  -> 100 seconds
    */
   @get:Input
-  var testTimeout: String
+  val testTimeout: Property<String>
 
   /**
    * Output style of execution status. May be one of [verbose, multi, single].

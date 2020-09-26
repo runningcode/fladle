@@ -76,10 +76,10 @@ fladle {
     smartFlankGcsPath = "gs://tmp_flank/flank/test_app_android.xml"
     configs {
         oranges {
-            useOrchestrator = false
-            testTargets = [
+            useOrchestrator.set(false)
+            testTargets.set(project.provider { [
                 "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
-            ]
+            ] })
         }
     }
     resultsBucket("my-results-bucket-name")

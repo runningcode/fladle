@@ -101,7 +101,7 @@ class FladlePluginDelegate {
       if (useOrchestrator) {
         log("Automatically detected the use of Android Test Orchestrator")
       }
-      extension.useOrchestrator = useOrchestrator
+      extension.useOrchestrator.set(useOrchestrator)
     }
   }
 
@@ -119,7 +119,7 @@ class FladlePluginDelegate {
               project.log("Configuring fladle.debugApk from variant ${this@app.name}")
               extension.debugApk.set(this@app.outputFile.absolutePath)
             }
-            if (extension.roboScript == null && !extension.instrumentationApk.isPresent) {
+            if (!extension.roboScript.isPresent && !extension.instrumentationApk.isPresent) {
               // Don't set instrumentation apk if not already set. #172
               project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
               extension.instrumentationApk.set(this@test.outputFile.absolutePath)

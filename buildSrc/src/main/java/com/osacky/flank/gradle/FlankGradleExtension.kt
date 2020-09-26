@@ -5,11 +5,13 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.kotlin.dsl.listProperty
+import org.gradle.kotlin.dsl.mapProperty
 import org.gradle.kotlin.dsl.property
 import javax.inject.Inject
 
@@ -20,25 +22,25 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   @get:Input
   val flankVersion: Property<String> = objects.property(String::class.java).convention("20.08.3")
   // Project id is automatically discovered by default. Use this to override the project id.
-  override var projectId: String? = null
+  override val projectId: Property<String> = objects.property()
   override val serviceAccountCredentials: RegularFileProperty = objects.fileProperty()
-  override var useOrchestrator: Boolean = false
-  override var autoGoogleLogin: Boolean = false
-  override var devices: List<Map<String, String>> = listOf(mapOf("model" to "NexusLowRes", "version" to "28"))
+  override val useOrchestrator: Property<Boolean> = objects.property<Boolean>().convention(false)
+  override val autoGoogleLogin: Property<Boolean> = objects.property<Boolean>().convention(false)
+  override val devices: ListProperty<Map<String, String>> = objects.listProperty<Map<String, String>>().convention(listOf(mapOf("model" to "NexusLowRes", "version" to "28")))
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
-  override var testTargets: List<String> = emptyList()
+  override val testTargets: ListProperty<String> = objects.listProperty()
 
-  override var testShards: Int? = null
-  override var shardTime: Int? = null
-  override var repeatTests: Int? = null
+  override val testShards: Property<Int> = objects.property()
+  override val shardTime: Property<Int> = objects.property()
+  override val repeatTests: Property<Int> = objects.property()
 
   // Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
-  override var smartFlankGcsPath: String? = null
+  override val smartFlankGcsPath: Property<String> = objects.property()
 
-  override var resultsHistoryName: String? = null
+  override val resultsHistoryName: Property<String> = objects.property()
 
-  override var flakyTestAttempts = 0
+  override val flakyTestAttempts: Property<Int> = objects.property<Int>().convention(0)
 
   // Variant to use for configuring output APK.
   @get:Input
@@ -55,51 +57,51 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   @get:Optional
   val instrumentationApk: Property<String> = objects.property()
 
-  override var directoriesToPull: List<String> = emptyList()
+  override val directoriesToPull: ListProperty<String> = objects.listProperty()
 
-  override var filesToDownload: List<String> = emptyList()
+  override val filesToDownload: ListProperty<String> = objects.listProperty()
 
-  override var environmentVariables: Map<String, String> = emptyMap()
+  override val environmentVariables: MapProperty<String, String> = objects.mapProperty()
 
-  override var recordVideo: Boolean = true
+  override val recordVideo: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  override var performanceMetrics: Boolean = true
+  override val performanceMetrics: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  override var resultsBucket: String? = null
+  override val resultsBucket: Property<String> = objects.property()
 
-  override var keepFilePath: Boolean = false
+  override val keepFilePath: Property<Boolean> = objects.property<Boolean>().convention(false)
 
-  override var resultsDir: String? = null
+  override val resultsDir: Property<String> = objects.property()
 
   override val additionalTestApks: ListProperty<String> = objects.listProperty()
 
   override val runTimeout: Property<String> = objects.property()
 
-  override val ignoreFailedTests: Property<Boolean> = objects.property()
+  override val ignoreFailedTests: Property<Boolean> = objects.property<Boolean>().convention(false)
 
-  override var disableSharding: Boolean = false
+  override val disableSharding: Property<Boolean> = objects.property<Boolean>().convention(false)
 
-  override var smartFlankDisableUpload: Boolean = false
+  override val smartFlankDisableUpload: Property<Boolean> = objects.property<Boolean>().convention(false)
 
-  override var testRunnerClass: String? = null
+  override val testRunnerClass: Property<String> = objects.property()
 
   override val localResultsDir: Property<String> = objects.property()
 
-  override var numUniformShards: Int? = null
+  override val numUniformShards: Property<Int> = objects.property()
 
-  override var clientDetails: Map<String, String> = emptyMap()
+  override val clientDetails: MapProperty<String, String> = objects.mapProperty()
 
-  override var testTargetsAlwaysRun: List<String> = emptyList()
+  override val testTargetsAlwaysRun: ListProperty<String> = objects.listProperty()
 
-  override var otherFiles: Map<String, String> = emptyMap()
+  override val otherFiles: MapProperty<String, String> = objects.mapProperty()
 
-  override var networkProfile: String? = null
+  override val networkProfile: Property<String> = objects.property()
 
-  override var roboScript: String? = null
+  override val roboScript: Property<String> = objects.property()
 
-  override var roboDirectives: List<List<String>> = emptyList()
+  override val roboDirectives: ListProperty<List<String>> = objects.listProperty()
 
-  override var testTimeout: String = "15m"
+  override val testTimeout: Property<String> = objects.property<String>().convention("15m")
 
   override val outputStyle: Property<String> = objects.property<String>().convention("single")
 
@@ -111,41 +113,41 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
       name = it,
-      projectId = projectId,
+      projectId = objects.property<String>().convention(projectId),
       serviceAccountCredentials = objects.fileProperty().convention(serviceAccountCredentials),
-      useOrchestrator = useOrchestrator,
-      autoGoogleLogin = autoGoogleLogin,
-      devices = devices,
-      testTargets = testTargets,
-      testShards = testShards,
-      shardTime = shardTime,
-      repeatTests = repeatTests,
-      smartFlankGcsPath = smartFlankGcsPath,
-      resultsHistoryName = resultsHistoryName,
-      flakyTestAttempts = flakyTestAttempts,
-      directoriesToPull = directoriesToPull,
-      filesToDownload = filesToDownload,
-      environmentVariables = environmentVariables,
-      recordVideo = recordVideo,
-      performanceMetrics = performanceMetrics,
-      resultsBucket = resultsBucket,
-      keepFilePath = keepFilePath,
-      resultsDir = resultsDir,
+      useOrchestrator = objects.property<Boolean>().convention(useOrchestrator),
+      autoGoogleLogin = objects.property<Boolean>().convention(autoGoogleLogin),
+      devices = objects.listProperty<Map<String, String>>().convention(devices),
+      testTargets = objects.listProperty<String>().convention(testTargets),
+      testShards = objects.property<Int>().convention(testShards),
+      shardTime = objects.property<Int>().convention(shardTime),
+      repeatTests = objects.property<Int>().convention(repeatTests),
+      smartFlankGcsPath = objects.property<String>().convention(smartFlankGcsPath),
+      resultsHistoryName = objects.property<String>().convention(resultsHistoryName),
+      flakyTestAttempts = objects.property<Int>().convention(flakyTestAttempts),
+      directoriesToPull = objects.listProperty<String>().convention(directoriesToPull),
+      filesToDownload = objects.listProperty<String>().convention(filesToDownload),
+      environmentVariables = objects.mapProperty<String, String>().convention(environmentVariables),
+      recordVideo = objects.property<Boolean>().convention(recordVideo),
+      performanceMetrics = objects.property<Boolean>().convention(performanceMetrics),
+      resultsBucket = objects.property<String>().convention(resultsBucket),
+      keepFilePath = objects.property<Boolean>().convention(keepFilePath),
+      resultsDir = objects.property<String>().convention(resultsDir),
       additionalTestApks = objects.listProperty<String>().convention(additionalTestApks),
       runTimeout = objects.property<String>().convention(runTimeout),
       ignoreFailedTests = objects.property<Boolean>().convention(ignoreFailedTests),
-      disableSharding = disableSharding,
-      smartFlankDisableUpload = smartFlankDisableUpload,
-      testRunnerClass = testRunnerClass,
+      disableSharding = objects.property<Boolean>().convention(disableSharding),
+      smartFlankDisableUpload = objects.property<Boolean>().convention(smartFlankDisableUpload),
+      testRunnerClass = objects.property<String>().convention(testRunnerClass),
       localResultsDir = objects.property<String>().convention(localResultsDir),
-      numUniformShards = numUniformShards,
-      clientDetails = clientDetails,
-      testTargetsAlwaysRun = testTargetsAlwaysRun,
-      otherFiles = otherFiles,
-      networkProfile = networkProfile,
-      roboScript = roboScript,
-      roboDirectives = roboDirectives,
-      testTimeout = testTimeout,
+      numUniformShards = objects.property<Int>().convention(numUniformShards),
+      clientDetails = objects.mapProperty<String, String>().convention(clientDetails),
+      testTargetsAlwaysRun = objects.listProperty<String>().convention(testTargetsAlwaysRun),
+      otherFiles = objects.mapProperty<String, String>().convention(otherFiles),
+      networkProfile = objects.property<String>().convention(networkProfile),
+      roboScript = objects.property<String>().convention(roboScript),
+      roboDirectives = objects.listProperty<List<String>>().convention(roboDirectives),
+      testTimeout = objects.property<String>().convention(testTimeout),
       outputStyle = objects.property<String>().convention(outputStyle),
       legacyJunitResult = objects.property<Boolean>().convention(legacyJunitResult),
       fullJunitResult = objects.property<Boolean>().convention(fullJunitResult)
