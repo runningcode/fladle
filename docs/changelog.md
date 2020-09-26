@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.13.0
+!!! Warning "Breaking API Change"
+    Use lazy properties [Fixes #92](https://github.com/runningcode/fladle/issues/92) [PR](https://github.com/runningcode/fladle/pull/176) Thanks [pawelpasterz](https://github.com/pawelpasterz)
+
 ## 0.12.1
 * Don't override debug or instrumentation apk if already specified. Fixes [#172](https://github.com/runningcode/fladle/issues/172).
 

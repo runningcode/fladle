@@ -21,16 +21,17 @@ fladle {
     flankVersion.set("20.08.3")
     serviceAccountCredentials.set(project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json"))
     // Project Id is not needed if serviceAccountCredentials are set.
-//    projectId("flank-gradle")
+//    projectId.set("flank-gradle")
+    projectId.set("flank-gradle")
     useOrchestrator.set(true)
     environmentVariables.set(project.provider { mapOf("clearPackageData" to "true") })
-    testTargets.set(project.provider { listOf(
+    testTargets.set(listOf(
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
-    ) })
-    devices.set(project.provider { listOf(
+    ))
+    devices.set(listOf(
         mapOf("model" to "Pixel2", "version" to "26" ),
         mapOf("model" to "Nexus5", "version" to "23" )
-    ) })
+    ))
     smartFlankGcsPath.set("gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml")
     configs {
         create("oranges") {
