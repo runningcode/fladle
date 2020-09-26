@@ -119,16 +119,63 @@ fladle {
 Whether or not we should use the android test orchestrator to run this tests.
 Set this to true when the build.gradle file includes `testOptions.execution 'ANDROID_TEST_ORCHESTRATOR'`
 
+=== "Groovy"
+    ``` groovy
+    useOrchestrator = true
+    ```
+=== "Kotlin"
+    ``` kotlin
+    useOrchestrator.set(true)
+    ```
+
 ### testTargets
 Set multiple testTargets to be run by Flank. These are used to whitelist or blacklist test classes, test cases and test annotations.
 See [Google Cloud Firebase docs](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run) for more information.
 
+=== "Groovy"
+    ``` groovy
+    testTargets = [
+            "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
+    ]
+    ```
+=== "Kotlin"
+    ``` kotlin
+    testTargets.set(listOf(
+            "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
+    ))
+    ```
+
+
 ### devices
 A list of devices to run the tests against. When list is empty, a default device will be used. Each device entry is a map.  The valid keys in the map are `model`, `version`, `orientation`, and `locale`.  When a key is not set or is null, a default value will be used.
+
+=== "Groovy"
+    ``` groovy
+    devices = [
+            [ "model": "Pixel2", "version": "26" ],
+            [ "model": "Nexus5", "version": "23" ]
+    ]
+    ```
+=== "Kotlin"
+    ``` kotlin
+    devices.set(listOf(
+        mapOf("model" to "Pixel2", "version" to "26" ),
+        mapOf("model" to "Nexus5", "version" to "23" )
+    ))
+    ```
 
 ### projectId
 The projectId is a unique identifier which can be found in the project's URL: `https://console.firebase.google.com/project/<projectId>`
 This is automatically discovered based on the service credential by default.
+
+=== "Groovy"
+    ``` groovy
+    projectId = "flank-gradle"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    projectId.set("flank-gradle")
+    ```
 
 ### flankVersion
 Need a different Flank version? Specify it with `flankVersion`.
@@ -146,6 +193,7 @@ To use a snapshot:
 Need more than 50 shards? Use Flank `8.1.0`.
 
 To use a different version:
+
 === "Groovy"
     ``` groovy
     flankVersion = "{{ fladle.flank_version }}"
@@ -156,7 +204,16 @@ To use a different version:
     ```
 
 ### flankCoordinates
-`flankCoordinates = "com.github.flank:flank"` to specify custom flank coordinates.
+Specify custom flank maven coordinates.
+
+=== "Groovy"
+    ``` groovy
+    flankCoordinates = "com.github.flank:flank"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    flankCoordinates.set("com.github.flank:flank")
+    ```
 
 ### debugApk
 This is a string representing the path to the app's debug apk.
@@ -218,35 +275,118 @@ It is not required to list an app apk here. If there is no app apk listed in add
 ### autoGoogleLogin
 Whether or not to automatically log in using a preconfigured google account. [More Info](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run#--auto-google-login)
 
+=== "Groovy"
+    ``` groovy
+    autoGoogleLogin = false
+    ```
+=== "Kotlin"
+    ``` kotlin
+    autoGoogleLogin.set(false)
+    ```
+
 ### environmentVariables
 Environment variables are mirrored as extra options to the am instrument -e KEY1 VALUE1 … command and passed to your test runner (typically AndroidJUnitRunner). Examples
-```
-environmentVariables = [
-    "clearPackageData": "true" // Whether or not to remove all shared state from your device's CPU and memory after each test. [More info](https://developer.android.com/training/testing/junit-runner)
-]
-```
 
+=== "Groovy"
+    ``` groovy
+    environmentVariables = [
+        // Whether or not to remove all shared state from your device's CPU and memory after each test. [More info](https://developer.android.com/training/testing/junit-runner)
+        "clearPackageData": "true"
+    ]
+    ```
+=== "Kotlin"
+    ``` kotlin
+    environmentVariables = mapOf(
+        // Whether or not to remove all shared state from your device's CPU and memory after each test. [More info](https://developer.android.com/training/testing/junit-runner)
+        "clearPackageData" to "true"
+    )
+    ```
 ### testShards
 Overrides the number of automatically determined test shards for Flank to use. Uses Flanks default value when not specified.
 
+=== "Groovy"
+    ``` groovy
+    testShards = 5
+    ```
+=== "Kotlin"
+    ``` kotlin
+    testShards.set(5)
+    ```
+
 ### shardTime
 The amount of time tests within a shard should take.
-When set to > 0, the shard count is dynamically set based on time up to the maximmum limit defined by maxTestShards
+When set to > 0, the shard count is dynamically set based on time up to the maximum limit defined by maxTestShards
 2 minutes (120) is recommended.
 default: -1 (unlimited)
 
+=== "Groovy"
+    ``` groovy
+    shardTime = 120
+    ```
+=== "Kotlin"
+    ``` kotlin
+    shardTime.set(120)
+    ```
+
 ### repeatTests
-The number of times to repeat each test. Uses Flanks default value when not specified.
+The number of times to repeat each test. Uses Flank's default value when not specified.
+
+=== "Groovy"
+    ``` groovy
+    repeatTests = 1
+    ```
+=== "Kotlin"
+    ``` kotlin
+    repeatTests.set(1)
+    ```
 
 ### configs
 Give a name to a custom flank task and configure its options. The name is appended to the end of the flank task. For example `runFlank` becomes `runFlank<name>`.
 
+=== "Groovy"
+    ``` groovy
+    configs {
+      repeatOneHundred {
+        // DSL sugar for container elements is missing (= syntax): https://github.com/gradle/gradle/issues/9987
+        repeatTests.set(100)
+      }
+    }
+    ```
+=== "Kotlin"
+    ``` kotlin
+    configs {
+      create("repeatOneHundred") {
+        repeatTests.set(100)
+      }
+    }
+    ```
+
+In the above example, the configuration is inherited from the outer fladle config but with the repeatTests property set to 100. Running `runFlankRepeateOneHundred` will execute this custom configuration.
+
 ### smartFlankGcsPath
 Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
 
+=== "Groovy"
+    ``` groovy
+    smartFlankGcsPath = 'gs://tmp_flank/tmp/JUnitReport.xml'
+    ```
+=== "Kotlin"
+    ``` kotlin
+    smartFlankGcsPath.set("gs://tmp_flank/tmp/JUnitReport.xml")
+    ```
 ### flakyTestAttempts
 The number of times to retry failed tests. Default is 0. Max is 10.
+Setting the value to 1 will mean that test are retried once. If the test fails then succeeds after the retry the run
+will be marked as "successful". The matrix with a flaky test will be marked as flaky.
 
+=== "Groovy"
+    ``` groovy
+    flakyTestAttempts = 0
+    ```
+=== "Kotlin"
+    ``` kotlin
+    flakyTestAttempts.set(0)
+    ```
 ### directoriesToPull
 A list of paths that will be copied from the device's storage to the designated results bucket after the test is complete. These must be absolute paths under `/sdcard` or `/data/local/tmp`.  Path names are restricted to the characters `a-zA-Z0-9_-./+`. The paths `/sdcard` and `/data` will be made available and treated as implicit path substitutions. E.g. if `/sdcard` on a particular device does not map to external storage, the system will replace it with the external storage path prefix for that device.
 
@@ -258,9 +398,9 @@ A list of paths that will be copied from the device's storage to the designated 
     ```
 === "Kotlin"
     ``` kotlin
-    directoriesToPull = listOf(
+    directoriesToPull.set(listOf(
       "/sdcard/tempDir1", "/data/local/tmp/tempDir2"
-    )
+    ))
     ```
 
 ### filesToDownload
@@ -274,9 +414,9 @@ List of regex that is matched against bucket paths (for example: `2019-01-09_00:
     ```
 === "Kotlin"
     ``` kotlin
-    filesToDownload = listOf(
+    filesToDownload.set(listOf(
       ".*/sdcard/tempDir1/.*", ".*/data/local/tmp/tempDir2/.*"
-    )
+    ))
     ```
 
 ### testTimeout
@@ -293,39 +433,133 @@ Examples:
     ```
 === "Kotlin"
     ``` kotlin
-    testTimeout = "1h"
+    testTimeout.set("1h")
     ```
 
 ### recordVideo
 Enable video recording during the test. Enabled by default.
 
+=== "Groovy"
+    ``` groovy
+    recordVideo = true
+    ```
+=== "Kotlin"
+    ``` kotlin
+    recordVideo.set(true)
+    ```
+
 ### performanceMetrics
 Monitor and record performance metrics: CPU, memory, network usage, and FPS (game-loop only). Enabled by default.
+
+=== "Groovy"
+    ``` groovy
+    performanceMetrics = true
+    ```
+=== "Kotlin"
+    ``` kotlin
+    performanceMetrics.set(true)
+    ```
 
 ### resultsBucket
 The name of a Google Cloud Storage bucket where raw test results will be stored.
 
+=== "Groovy"
+    ``` groovy
+    resultsBucket = "my-gcs-bucket-name"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    resultsBucket.set("my-gcs-bucket-name")
+    ```
+
 ### keepFilePath
 Keeps the full path of downloaded files from a Google Cloud Storage bucket. Required when file names are not unique. Disabled by default.
+
+=== "Groovy"
+    ``` groovy
+    keepFilePath = false
+    ```
+=== "Kotlin"
+    ``` kotlin
+    keepFilePath.set(false)
+    ```
 
 ### resultsDir
 The name of a unique Google Cloud Storage object within the results bucket where raw test results will be stored. The default is a timestamp with a random suffix.
 
+=== "Groovy"
+    ``` groovy
+    resultsDir = "result-dir-${getTimeStamp()}"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    resultsDir.set("result-dir-${getTimeStamp()}")
+    ```
+
 ### disableSharding
 Disables sharding. All tests will run on the same device. Useful for parameterized tests which do not support sharding. (default: false)
+
+=== "Groovy"
+    ``` groovy
+    disableSharding = false
+    ```
+=== "Kotlin"
+    ``` kotlin
+    disableSharding.set(false)
+    ```
 
 ### smartFlankDisableUpload
 Disables smart flank JUnit XML uploading. Useful for preventing timing data from being updated. (default: false)
 [What is Smart Flank?](https://github.com/Flank/flank/blob/master/docs/smart_flank.md)
 
+=== "Groovy"
+    ``` groovy
+    smartFlankDisableUpload = false
+    ```
+=== "Kotlin"
+    ``` kotlin
+    smartFlankDisableUpload.set(false)
+    ```
+
 ### testRunnerClass
 The fully-qualified Java class name of the instrumentation test runner (default: the test manifest is parsed to determine the class name).
+
+=== "Groovy"
+    ``` groovy
+    testRunnerClass = "com.example.MyCustomTestRunner"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    testRunnerClass.set("com.example.MyCustomTestRunner")
+    ```
 
 ### localResultsDir
 The local directory to store the test results. Folder is DELETED before each run to ensure only artifacts from the new run are saved.
 
+=== "Groovy"
+    ``` groovy
+    localResultsDir = "my-results-dir"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    localResultsDir.set("my-results-dir")
+    ```
+
 ### testTargetsAlwaysRun
 Always run - these tests are inserted at the beginning of every shard. Useful if you need to grant permissions or login before other tests run
+
+=== "Groovy"
+    ``` groovy
+    testTargetsAlwaysRun = [
+      'class com.example.MyTestClass'
+    ]
+    ```
+=== "Kotlin"
+    ``` kotlin
+    testTargetsAlwaysRun.set(listOf(
+      "class com.example.MyTestClass"
+    ))
+    ```
 
 !!! note ""
     The flags below are only available with Flank 20.05.0 or higher.
@@ -338,26 +572,119 @@ Examples:
 * 30m -> 30 minutes
 * 2h -> 2 hours
 
+=== "Groovy"
+    ``` groovy
+    runTimeout = "15m"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    runTimeout.set("15m")
+    ```
+
 ### ignoreFailedTests
 Always return successful task completion even when there are failed tests. Useful when parsing JUnit XML to determine failure. (default: false)
+
+=== "Groovy"
+    ``` groovy
+    ignoreFailedTest = false
+    ```
+=== "Kotlin"
+    ``` kotlin
+    ignoreFailedTest.set(false)
+    ```
 
 ### numUniformShards
 Specifies the number of shards into which you want to evenly distribute test cases. The shards are run in parallel on separate devices. For example, if your test execution contains 20 test cases and you specify four shards, each shard executes five test cases. The number of shards should be less than the total number of test cases. The number of shards specified must be >= 1 and <= 50. This option cannot be used along max-test-shards and is not compatible with smart sharding ([Smart Flank](https://github.com/Flank/flank/blob/master/docs/smart_flank.md)). If you want to take benefits of smart sharding use max-test-shards instead. (default: null)
 
+=== "Groovy"
+    ``` groovy
+    numUniformShards = 50
+    ```
+=== "Kotlin"
+    ``` kotlin
+    numUniformShards.set(50)
+    ```
+
 ### clientDetails
-A key-value map of additional details to attach to the test matrix.([clientDetails in Google Cloud Docs](https://cloud.google.com/sdk/gcloud/reference/beta/firebase/test/android/run#--client-details)) Arbitrary key-value pairs may be attached to a test matrix to provide additional context about the tests being run. When consuming the test results, such as in Cloud Functions or a CI system, these details can add additional context such as a link to the corresponding pull request. ([Access Client Details](https://firebase.google.com/docs/test-lab/extend-with-functions#access_client_details))
+A key-value map of additional details to attach to the test matrix.([clientDetails in Google Cloud Docs](https://cloud.google.com/sdk/gcloud/reference/beta/firebase/test/android/run#--client-details)) Arbitrary key-value pairs may be attached to a test matrix to provide additional context about the tests being run. When consuming the test results, such as in Cloud Functions or a CI system, these details can add additional context such as a link to the corresponding pull request. ([Access Client Details](https://firebase.google.com/docs/test-lab/extend-with-functions#access_client_details)).
+These can be used to provide additional context about the environment where the tests are being run.
+
+=== "Groovy"
+    ``` groovy
+    clientDetails = [
+        "test-type": "PR",
+        "build-number": "132"
+    ]
+    ```
+=== "Kotlin"
+    ``` kotlin
+    clientDetails.set(mapOf(
+        "test-type" to "PR",
+        "build-number" to "132"
+    ))
+    ```
 
 ### otherFiles
 A list of device-path: file-path pairs that indicate the device paths to push files to the device before starting tests, and the paths of files to push. Device paths must be under absolute, whitelisted paths (${EXTERNAL_STORAGE}, or ${ANDROID_DATA}/local/tmp). Source file paths may be in the local filesystem or in Google Cloud Storage (gs://…).
 
+=== "Groovy"
+    ``` groovy
+    otherFiles = [
+        "/sdcard/dir1/file1.txt": "local/file.txt",
+        "/sdcard/dir2/file2.jpg": "gs://bucket/file.jpg",
+    ]
+    ```
+=== "Kotlin"
+    ``` kotlin
+    otherFiles.set(mapOf(
+        "/sdcard/dir1/file1.txt" to "local/file.txt",
+        "/sdcard/dir2/file2.jpg" to "gs://bucket/file.jpg",
+    ))
+    ```
+
 ### networkProfile
 The name of the network traffic profile, for example LTE, HSPA, etc, which consists of a set of parameters to emulate network conditions when running the test (default: no network shaping; see available profiles listed by the `flank test network-profiles list` command). This feature only works on physical devices.
+
+=== "Groovy"
+    ``` groovy
+    networkProfile = "LTE"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    networkProfile.set("LTE")
+    ```
 
 ### roboScript
 The path to a Robo Script JSON file. The path may be in the local filesystem or in Google Cloud Storage using gs:// notation. You can guide the Robo test to perform specific actions by recording a Robo Script in Android Studio and then specifying this argument. Learn more at [DOCS](https://firebase.google.com/docs/test-lab/robo-ux-test#scripting).
 
+=== "Groovy"
+    ``` groovy
+    roboScript = "my-robo-script.json"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    roboScript.set("my-robo-script.json")
+    ```
+
 ### roboDirectives
 List of robo_directives that you can use to customize the behavior of Robo test. The type specifies the action type of the directive, which may take on values click, text or ignore. Each directive is list of String = [type, key, value]. Each key should be the Android resource name of a target UI element and each value should be the text input for that element. Values are only permitted for text type elements, so no value should be specified for click and ignore type elements.
+
+
+=== "Groovy"
+    ``` groovy
+    roboDirectives = [
+        ["test:input_resource_name", "message"],
+        ["click:button_resource_name", ""],
+    ]
+    ```
+=== "Kotlin"
+    ``` kotlin
+    roboDirectives.set(listOf(
+        listOf("test:input_resource_name", "message"),
+        listOf("click:button_resource_name", ""),
+    ))
+    ```
+
 
 ### outputStyle
 Output style of execution status. May be one of [`verbose`, `multi`, `single`].
