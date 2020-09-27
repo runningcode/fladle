@@ -68,6 +68,9 @@ class ConfigurationCacheTest {
            |}
            |
            |fladle {
+           |  // Flank Version is pinned at 20.08.3 because 20.08.4 introduce a backward incompatible change that causes the doctor to fail.
+           |  // We should eventually format the version code of the device as a string but that would make Fladle backward incompatible.
+           |  flankVersion = "20.08.3"
            |  serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service-account.json")
            |  debugApk = "debug.apk"
            |  instrumentationApk = "test.apk"

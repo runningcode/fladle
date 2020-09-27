@@ -18,7 +18,7 @@ android {
 }
 
 fladle {
-    flankVersion = "20.08.3"
+    flankVersion = "20.08.4"
     serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json")
     // Project Id is not needed if serviceAccountCredentials are set.
 //    projectId("flank-gradle")
