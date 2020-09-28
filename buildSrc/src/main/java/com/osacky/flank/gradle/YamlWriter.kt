@@ -13,13 +13,13 @@ internal class YamlWriter {
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
     if (base.sanityRobo.get() == false) {
-    check(base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank()) {
-      val prefix = if (base.instrumentationApk.isPresent && !base.roboScript.orNull.isNullOrBlank()) {
-        "Both instrumentationApk file and roboScript file were specified, but only one is expected."
-      } else {
-        "Must specify either a instrumentationApk file or a roboScript file."
-      }
-      """
+      check(base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank()) {
+        val prefix = if (base.instrumentationApk.isPresent && !base.roboScript.orNull.isNullOrBlank()) {
+          "Both instrumentationApk file and roboScript file were specified, but only one is expected."
+        } else {
+          "Must specify either a instrumentationApk file or a roboScript file."
+        }
+        """
       $prefix
       instrumentationApk=${base.instrumentationApk.orNull}
       roboScript=${base.roboScript.orNull}

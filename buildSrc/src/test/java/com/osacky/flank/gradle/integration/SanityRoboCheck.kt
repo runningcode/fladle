@@ -194,7 +194,7 @@ class SanityRoboCheck {
       |  ]
       |  configs {
       |    orange {
-      |      testTargets = ['override']
+      |      testTargets.set(project.provider { ['override'] })
       |      localResultsDir.set('overrideDir')
       |    }
       |  }
