@@ -374,6 +374,19 @@ Shard Android tests by time using historical run data. The amount of shards used
     ``` kotlin
     smartFlankGcsPath.set("gs://tmp_flank/tmp/JUnitReport.xml")
     ```
+
+### resultsHistoryName
+The history name for your test results (an arbitrary string label; default: the application's label from the APK manifest). All tests which use the same history name will have their results grouped together in the Firebase console in a time-ordered test history list.
+
+=== "Groovy"
+    ``` groovy
+    resultsHistoryName = 'android-history'
+    ```
+=== "Kotlin"
+    ``` kotlin
+    resultsHistoryName.set("android-history")
+    ```
+
 ### flakyTestAttempts
 The number of times to retry failed tests. Default is 0. Max is 10.
 Setting the value to 1 will mean that test are retried once. If the test fails then succeeds after the retry the run
