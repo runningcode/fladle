@@ -201,7 +201,7 @@ class YamlWriterTest {
     } catch (expected: IllegalStateException) {
       assertThat(expected).hasMessageThat().isEqualTo(
         """
-        Either instrumentationApk file or roboScript file must be specified but not both.
+        Must specify either a instrumentationApk file or a roboScript file.
         instrumentationApk=null
         roboScript=null
         """.trimIndent()
@@ -223,7 +223,7 @@ class YamlWriterTest {
     } catch (expected: IllegalStateException) {
       assertThat(expected).hasMessageThat().isEqualTo(
         """
-        Either instrumentationApk file or roboScript file must be specified but not both.
+        Both instrumentationApk file and roboScript file were specified, but only one is expected.
         instrumentationApk=build/test/*.apk
         roboScript=foo
         """.trimIndent()
