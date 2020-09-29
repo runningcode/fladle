@@ -20,96 +20,58 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   val flankCoordinates: Property<String> = objects.property(String::class.java).convention("com.github.flank:flank")
 
   @get:Input
-  val sanityRobo: Property<Boolean> = objects.property<Boolean>().convention(false)
-
-  @get:Input
   val flankVersion: Property<String> = objects.property(String::class.java).convention("20.09.3")
-  // Project id is automatically discovered by default. Use this to override the project id.
-  override val projectId: Property<String> = objects.property()
-  override val serviceAccountCredentials: RegularFileProperty = objects.fileProperty()
-  override val useOrchestrator: Property<Boolean> = objects.property<Boolean>().convention(false)
-  override val autoGoogleLogin: Property<Boolean> = objects.property<Boolean>().convention(false)
-  override val devices: ListProperty<Map<String, String>> = objects.listProperty<Map<String, String>>().convention(listOf(mapOf("model" to "NexusLowRes", "version" to "28")))
-
-  // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
-  override val testTargets: ListProperty<String> = objects.listProperty()
-
-  override val testShards: Property<Int> = objects.property()
-  override val shardTime: Property<Int> = objects.property()
-  override val repeatTests: Property<Int> = objects.property()
-
-  // Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
-  override val smartFlankGcsPath: Property<String> = objects.property()
-
-  override val resultsHistoryName: Property<String> = objects.property()
-
-  override val flakyTestAttempts: Property<Int> = objects.property<Int>().convention(0)
 
   // Variant to use for configuring output APK.
   @get:Input
   @get:Optional
   val variant: Property<String> = objects.property()
 
-  /**
-   * debugApk and instrumentationApk are [Property<String>] and not [RegularFileProperty] because we support wildcard characters.
-   */
-  @get:Input
-  @get:Optional
-  val debugApk: Property<String> = objects.property()
-  @get:Input
-  @get:Optional
-  val instrumentationApk: Property<String> = objects.property()
+  // Project id is automatically discovered by default. Use this to override the project id.
+  override val projectId: Property<String> = objects.property()
+  override val serviceAccountCredentials: RegularFileProperty = objects.fileProperty()
+  override val useOrchestrator: Property<Boolean> = objects.property<Boolean>().convention(false)
+  override val autoGoogleLogin: Property<Boolean> = objects.property<Boolean>().convention(false)
+  override val devices: ListProperty<Map<String, String>> = objects.listProperty<Map<String, String>>().convention(listOf(mapOf("model" to "NexusLowRes", "version" to "28")))
+  override val sanityRobo: Property<Boolean> = objects.property<Boolean>().convention(false)
 
+  // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
+  override val testTargets: ListProperty<String> = objects.listProperty()
+  override val testShards: Property<Int> = objects.property()
+  override val shardTime: Property<Int> = objects.property()
+  override val repeatTests: Property<Int> = objects.property()
+
+  // Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
+  override val smartFlankGcsPath: Property<String> = objects.property()
+  override val resultsHistoryName: Property<String> = objects.property()
+  override val flakyTestAttempts: Property<Int> = objects.property<Int>().convention(0)
+  override val debugApk: Property<String> = objects.property()
+  override val instrumentationApk: Property<String> = objects.property()
   override val directoriesToPull: ListProperty<String> = objects.listProperty()
-
   override val filesToDownload: ListProperty<String> = objects.listProperty()
-
   override val environmentVariables: MapProperty<String, String> = objects.mapProperty()
-
   override val recordVideo: Property<Boolean> = objects.property<Boolean>().convention(true)
-
   override val performanceMetrics: Property<Boolean> = objects.property<Boolean>().convention(true)
-
   override val resultsBucket: Property<String> = objects.property()
-
   override val keepFilePath: Property<Boolean> = objects.property<Boolean>().convention(false)
-
   override val resultsDir: Property<String> = objects.property()
-
   override val additionalTestApks: ListProperty<String> = objects.listProperty()
-
   override val runTimeout: Property<String> = objects.property()
-
   override val ignoreFailedTests: Property<Boolean> = objects.property<Boolean>().convention(false)
-
   override val disableSharding: Property<Boolean> = objects.property<Boolean>().convention(false)
-
   override val smartFlankDisableUpload: Property<Boolean> = objects.property<Boolean>().convention(false)
-
   override val testRunnerClass: Property<String> = objects.property()
-
   override val localResultsDir: Property<String> = objects.property()
-
   override val numUniformShards: Property<Int> = objects.property()
-
   override val clientDetails: MapProperty<String, String> = objects.mapProperty()
-
   override val testTargetsAlwaysRun: ListProperty<String> = objects.listProperty()
-
   override val otherFiles: MapProperty<String, String> = objects.mapProperty()
-
   override val networkProfile: Property<String> = objects.property()
-
   override val roboScript: Property<String> = objects.property()
-
   override val roboDirectives: ListProperty<List<String>> = objects.listProperty()
-
   override val testTimeout: Property<String> = objects.property<String>().convention("15m")
-
   override val outputStyle: Property<String> = objects.property<String>().convention("single")
-
   override val legacyJunitResult: Property<Boolean> = objects.property<Boolean>().convention(false)
-
   override val fullJunitResult: Property<Boolean> = objects.property<Boolean>().convention(false)
 
   @Internal
@@ -118,6 +80,9 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       name = it,
       projectId = objects.property<String>().convention(projectId),
       serviceAccountCredentials = objects.fileProperty().convention(serviceAccountCredentials),
+      debugApk = objects.property<String>().convention(debugApk),
+      instrumentationApk = objects.property<String>().convention(instrumentationApk),
+      sanityRobo = objects.property<Boolean>().convention(false),
       useOrchestrator = objects.property<Boolean>().convention(useOrchestrator),
       autoGoogleLogin = objects.property<Boolean>().convention(autoGoogleLogin),
       devices = objects.listProperty<Map<String, String>>().convention(devices),

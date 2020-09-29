@@ -12,31 +12,31 @@ internal class YamlWriter {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
-    if (base.sanityRobo.get() == false) {
-      check(base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank()) {
-        val prefix = if (base.instrumentationApk.isPresent && !base.roboScript.orNull.isNullOrBlank()) {
+    if (config.sanityRobo.get() == false) {
+      check(config.instrumentationApk.isPresent xor !config.roboScript.orNull.isNullOrBlank()) {
+        val prefix = if (base.instrumentationApk.isPresent && !config.roboScript.orNull.isNullOrBlank()) {
           "Both instrumentationApk file and roboScript file were specified, but only one is expected."
         } else {
           "Must specify either a instrumentationApk file or a roboScript file."
         }
         """
       $prefix
-      instrumentationApk=${base.instrumentationApk.orNull}
-      roboScript=${base.roboScript.orNull}
+      instrumentationApk=${config.instrumentationApk.orNull}
+      roboScript=${config.roboScript.orNull}
       """.trimIndent()
       }
     }
 
-    val shouldPrintTestAndRobo = base.sanityRobo.get().not()
+    val shouldPrintTestAndRobo = config.sanityRobo.get().not()
     val additionalProperties = writeAdditionalProperties(config, shouldPrintTestAndRobo)
     val flankProperties = writeFlankProperties(config, shouldPrintTestAndRobo)
 
     return buildString {
       appendln("gcloud:")
-      appendln("  app: ${base.debugApk.get()}")
+      appendln("  app: ${config.debugApk.get()}")
       // We don't want to print instrumentation apks if sanityRobo == true
-      if (shouldPrintTestAndRobo && base.instrumentationApk.isPresent) {
-        appendln("  test: ${base.instrumentationApk.get()}")
+      if (shouldPrintTestAndRobo && config.instrumentationApk.isPresent) {
+        appendln("  test: ${config.instrumentationApk.get()}")
       }
       if (config.devices.isPresentAndNotEmpty) appendln(createDeviceString(config.devices.get()))
       appendln(additionalProperties)

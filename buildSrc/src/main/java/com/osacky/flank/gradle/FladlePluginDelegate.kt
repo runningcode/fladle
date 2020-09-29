@@ -40,6 +40,9 @@ class FladlePluginDelegate {
       // Must be done afterEvaluate otherwise extension values will not be set.
       project.dependencies.add(FLADLE_CONFIG, "${base.flankCoordinates.get()}:${base.flankVersion.get()}")
 
+      checkIfSanityAndValidateConfigs(base)
+      base.configs.forEach(::checkIfSanityAndValidateConfigs)
+
       // Only use automatic apk path detection for 'com.android.application' projects.
       project.pluginManager.withPlugin("com.android.application") {
         if (!base.debugApk.isPresent || !base.instrumentationApk.isPresent) {

@@ -743,9 +743,3 @@ Enables creating an additional local junit result on local storage with failure 
     ``` kotlin
     fullJunitResult.set(false)
     ```
-
-## Sanity robo test 
-Just add `-PsanityRobo` -- this will launch simple robo test without robo scripts and/or robo directives. (`roboScript`, `roboDirectives`, `test`, `additionalTestApks` are skipped)
-```
-./gradlew runFlank -PsanityRobo
-```

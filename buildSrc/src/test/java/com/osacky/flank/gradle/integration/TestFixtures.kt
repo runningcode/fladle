@@ -13,9 +13,14 @@ internal fun makeGradleFile(where: TemporaryFolder, buildScript: String) = where
   .writeText(buildScript.trimMargin())
 
 internal fun gradleRun(projectDir: File, arguments: List<String> = emptyList()) =
+  commonGradleRunConfig(projectDir, arguments).build()
+
+internal fun failedGradleRun(projectDir: File, arguments: List<String> = emptyList()) =
+  commonGradleRunConfig(projectDir, arguments).buildAndFail()
+
+private fun commonGradleRunConfig(projectDir: File, arguments: List<String>) =
   GradleRunner.create()
     .withPluginClasspath()
     .withArguments(arguments)
     .forwardOutput()
     .withProjectDir(projectDir)
-    .build()
