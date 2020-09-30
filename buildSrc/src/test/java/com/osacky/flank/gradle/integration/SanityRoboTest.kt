@@ -18,7 +18,7 @@ class SanityRoboCheck {
 
   @Test
   fun `sanityRobo - should throw an error if instrumentationApk set`() {
-    makeGradleFile(
+    makeBuildDotGradle(
       where = testProjectRoot,
       buildScript =
         """
@@ -60,7 +60,7 @@ class SanityRoboCheck {
 
   @Test
   fun `sanityRobo - should throw an error if roboScript set`() {
-    makeGradleFile(
+    makeBuildDotGradle(
       where = testProjectRoot,
       buildScript =
         """
@@ -88,7 +88,7 @@ class SanityRoboCheck {
 
   @Test
   fun `sanityRobo - should throw an error if roboDirectives set`() {
-    makeGradleFile(
+    makeBuildDotGradle(
       where = testProjectRoot,
       buildScript =
         """
@@ -120,7 +120,7 @@ class SanityRoboCheck {
 
   @Test
   fun `sanityRobo - should throw an error if additionalTestApks set`() {
-    makeGradleFile(
+    makeBuildDotGradle(
       where = testProjectRoot,
       buildScript =
         """
@@ -152,7 +152,7 @@ class SanityRoboCheck {
 
   @Test
   fun `sanityRobo - should throw an error if roboScript set (multiple config)`() {
-    makeGradleFile(
+    makeBuildDotGradle(
       where = testProjectRoot,
       buildScript =
         """
@@ -200,7 +200,7 @@ class SanityRoboCheck {
 
   @Test
   fun `sanityRobo - should print correct config yamls (inner config is sanity run)`() {
-    makeGradleFile(
+    makeBuildDotGradle(
       where = testProjectRoot,
       buildScript =
         """
@@ -298,7 +298,7 @@ class SanityRoboCheck {
 
   @Test
   fun `sanityRobo - should print correct config yamls (base config is sanity run)`() {
-    makeGradleFile(
+    makeBuildDotGradle(
       where = testProjectRoot,
       buildScript =
         """

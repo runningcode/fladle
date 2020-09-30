@@ -153,6 +153,7 @@ fun org.gradle.api.publish.maven.MavenPom.configureForFladle(pluginName: String)
 tasks.withType(Test::class.java).configureEach {
   // Test fixtures are stored in here so we should re-run tests if the test projects change.
   inputs.dir("src/test/resources")
+  maxParallelForks = Runtime.getRuntime().availableProcessors()
   testLogging {
     events = setOf(TestLogEvent.SKIPPED, TestLogEvent.FAILED, TestLogEvent.PASSED)
   }

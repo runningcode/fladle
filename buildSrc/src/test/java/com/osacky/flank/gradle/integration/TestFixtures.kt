@@ -8,7 +8,7 @@ fun TemporaryFolder.setupFixture(fixtureName: String) {
   File(this::class.java.classLoader.getResource(fixtureName)!!.file).copyRecursively(newFile(fixtureName), true)
 }
 
-internal fun makeGradleFile(where: TemporaryFolder, buildScript: String) = where
+internal fun makeBuildDotGradle(where: TemporaryFolder, buildScript: String) = where
   .newFile("build.gradle")
   .writeText(buildScript.trimMargin())
 
