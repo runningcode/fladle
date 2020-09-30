@@ -13,10 +13,15 @@ internal class YamlWriter {
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
     check(base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank()) {
+      val prefix = if (base.instrumentationApk.isPresent && !base.roboScript.orNull.isNullOrBlank()) {
+        "Both instrumentationApk file and roboScript file were specified, but only one is expected."
+      } else {
+        "Must specify either a instrumentationApk file or a roboScript file."
+      }
       """
-     Either instrumentationApk file or roboScript file must be specified but not both.
-     instrumentationApk=${base.instrumentationApk.orNull}
-     roboScript=${base.roboScript.orNull}
+      $prefix
+      instrumentationApk=${base.instrumentationApk.orNull}
+      roboScript=${base.roboScript.orNull}
       """.trimIndent()
     }
 

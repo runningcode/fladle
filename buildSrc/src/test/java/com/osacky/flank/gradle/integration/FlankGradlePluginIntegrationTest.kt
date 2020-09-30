@@ -146,7 +146,7 @@ class FlankGradlePluginIntegrationTest {
       .withArguments("runFlank")
       .buildAndFail()
 
-    assertThat(result.output).contains("Either instrumentationApk file or roboScript file must be specified but not both.")
+    assertThat(result.output).contains("Must specify either a instrumentationApk file or a roboScript file.")
   }
 
   @Test
@@ -171,6 +171,6 @@ class FlankGradlePluginIntegrationTest {
       .withArguments("printYml")
       .buildAndFail()
 
-    assertThat(result.output).contains("Either instrumentationApk file or roboScript file must be specified but not both.")
+    assertThat(result.output).contains("Both instrumentationApk file and roboScript file were specified, but only one is expected.")
   }
 }
