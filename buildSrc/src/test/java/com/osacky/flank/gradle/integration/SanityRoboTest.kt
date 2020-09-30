@@ -9,7 +9,7 @@ import org.junit.rules.TemporaryFolder
 private fun baseConfigMessage(option: String) = "Incorrect [base] configuration. [$option] can't be used together with sanityRobo."
 private fun additionalConfigMessage(option: String, name: String) = "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo. If you want to launch robo test run without robo script place only sanityRoboRun() into [$name] configuration"
 
-class SanityRoboCheck {
+class SanityRoboTest {
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
