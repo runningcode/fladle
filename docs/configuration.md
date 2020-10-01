@@ -754,3 +754,16 @@ Enables creating an additional local junit result on local storage with failure 
     ``` kotlin
     fullJunitResult.set(false)
     ```
+
+### sanityRobo
+Runs a sanityRobo test.
+`instrumentationApk`, `roboDirectives`, `roboScript` and `additionalTestApks` must be blank or empty.
+
+=== "Groovy"
+``` groovy
+sanityRobo = true
+```
+=== "Kotlin"
+``` kotlin
+sanityRobo.set(true)
+```

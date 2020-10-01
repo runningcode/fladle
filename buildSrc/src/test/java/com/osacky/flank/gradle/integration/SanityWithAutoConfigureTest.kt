@@ -42,10 +42,8 @@ class SanityWithAutoConfigureTest {
 
   @Test
   fun `test auto configuration with sanityRobo set (inner config)`() {
-    makeBuildDotGradle(
-      where = testProjectRoot,
-      buildScript =
-        """
+    testProjectRoot.writeBuildDotGradle(
+      """
             $commonScriptPart
 
             fladle {
@@ -80,13 +78,11 @@ class SanityWithAutoConfigureTest {
                 }
               }
             }
-      """
+      """.trimMargin()
     )
 
-    val baseResult = gradleRun(
-      projectDir = testProjectRoot.root,
-      arguments = listOf("printYml")
-    )
+    val runner = testProjectRoot.gradleRunner()
+    val baseResult = runner.withArguments("printYml").build()
 
     assertThat(baseResult.output).contains("BUILD SUCCESSFUL")
     assertThat(baseResult.output).containsMatch(
@@ -123,10 +119,7 @@ class SanityWithAutoConfigureTest {
       """.trimIndent()
     )
 
-    val sanityResult = gradleRun(
-      projectDir = testProjectRoot.root,
-      arguments = listOf("printYmlSanity")
-    )
+    val sanityResult = runner.withArguments("printYmlSanity").build()
 
     assertThat(sanityResult.output).contains("BUILD SUCCESSFUL")
     assertThat(sanityResult.output).containsMatch(
@@ -162,10 +155,7 @@ class SanityWithAutoConfigureTest {
       """.trimIndent()
     )
 
-    val orangesResult = gradleRun(
-      projectDir = testProjectRoot.root,
-      arguments = listOf("printYmlOranges")
-    )
+    val orangesResult = runner.withArguments("printYmlOranges").build()
 
     assertThat(orangesResult.output).contains("BUILD SUCCESSFUL")
     assertThat(orangesResult.output).containsMatch(
@@ -205,10 +195,8 @@ class SanityWithAutoConfigureTest {
 
   @Test
   fun `test auto configuration with sanityRobo set (base config)`() {
-    makeBuildDotGradle(
-      where = testProjectRoot,
-      buildScript =
-        """
+    testProjectRoot.writeBuildDotGradle(
+      """
             $commonScriptPart
 
             fladle {
@@ -228,21 +216,21 @@ class SanityWithAutoConfigureTest {
               smartFlankGcsPath = "gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml"
               configs {
                 oranges {
+                  instrumentationApk.set("instrumentation-apk-not-detected-from-root.apk")
                   useOrchestrator.set(false)
                   testTargets.set(project.provider { [
                     "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
                   ] })
                   flakyTestAttempts.set(3)
+                  sanityRobo.set(false)
                 }
               }
             }
-      """
+      """.trimMargin()
     )
 
-    val baseResult = gradleRun(
-      projectDir = testProjectRoot.root,
-      arguments = listOf("printYml")
-    )
+    val runner = testProjectRoot.gradleRunner()
+    val baseResult = runner.withArguments("printYml").build()
 
     assertThat(baseResult.output).contains("BUILD SUCCESSFUL")
     assertThat(baseResult.output).containsMatch(
@@ -278,17 +266,14 @@ class SanityWithAutoConfigureTest {
       """.trimIndent()
     )
 
-    val orangesResult = gradleRun(
-      projectDir = testProjectRoot.root,
-      arguments = listOf("printYmlOranges")
-    )
+    val orangesResult = runner.withArguments("printYmlOranges").build()
 
     assertThat(orangesResult.output).contains("BUILD SUCCESSFUL")
     assertThat(orangesResult.output).containsMatch(
       """
         gcloud:
           app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
-          test: [0-9a-zA-Z\/_]*/build/outputs/apk/androidTest/debug/[0-9a-zA-Z\/_]*-debug-androidTest.apk
+          test: instrumentation-apk-not-detected-from-root.apk
           device:
           - model: Pixel2
             version: 26

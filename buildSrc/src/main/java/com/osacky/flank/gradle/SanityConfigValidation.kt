@@ -1,27 +1,26 @@
 package com.osacky.flank.gradle
 
-import org.gradle.api.GradleException
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import java.lang.IllegalArgumentException
 
-@Throws(GradleException::class)
 fun checkIfSanityAndValidateConfigs(config: FladleConfig) = when (config) {
-  is FlankGradleExtension -> config.checkAndValidateConfig() { option, _ ->
-    "Incorrect [base] configuration. [$option] can't be used together with sanityRobo."
+  is FlankGradleExtension -> config.checkAndValidateConfig { option, name ->
+    "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo."
   }
   is FladleConfigImpl -> config.checkAndValidateConfig(config.name) { option, name ->
     "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo. " +
-      "If you want to launch robo test run without robo script place only clearPropertiesForSanityRobo() into [$name] configuration"
+      "To configure sanityRobo, add clearPropertiesForSanityRobo() to the [$name] configuration"
   }
-  else -> throw GradleException("Unable to check for sanity, check config type")
+  else -> throw IllegalArgumentException("Unexpected configuration when validating parameters. Did not expect: $config.")
 }
 
 private fun FladleConfig.checkAndValidateConfig(name: String = "base", message: (String, String) -> String) {
-  if (sanityRobo.getOrElse(false)) when {
-    roboDirectives.isNotPresentOrEmpty -> throw GradleException(message("roboDirectives", name))
-    roboScript.isNotPresentOrBlank -> throw GradleException(message("roboScript", name))
-    instrumentationApk.isNotPresentOrBlank -> throw GradleException(message("instrumentationApk", name))
-    additionalTestApks.isNotPresentOrEmpty -> throw GradleException(message("additionalTestApks", name))
+  if (sanityRobo.get()) when {
+    roboDirectives.isNotPresentOrEmpty -> throw IllegalStateException(message("roboDirectives", name))
+    roboScript.isNotPresentOrBlank -> throw IllegalStateException(message("roboScript", name))
+    instrumentationApk.isNotPresentOrBlank -> throw IllegalStateException(message("instrumentationApk", name))
+    additionalTestApks.isNotPresentOrEmpty -> throw IllegalStateException(message("additionalTestApks", name))
   }
 }
 

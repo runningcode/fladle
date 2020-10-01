@@ -7,7 +7,7 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
 private fun baseConfigMessage(option: String) = "Incorrect [base] configuration. [$option] can't be used together with sanityRobo."
-private fun additionalConfigMessage(option: String, name: String) = "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo. If you want to launch robo test run without robo script place only clearPropertiesForSanityRobo() into [$name] configuration"
+private fun additionalConfigMessage(option: String, name: String) = "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo. To configure sanityRobo, add clearPropertiesForSanityRobo() to the [$name] configuration"
 
 class SanityRoboTest {
   @get:Rule
@@ -18,10 +18,8 @@ class SanityRoboTest {
 
   @Test
   fun `sanityRobo - should throw an error if instrumentationApk set`() {
-    makeBuildDotGradle(
-      where = testProjectRoot,
-      buildScript =
-        """
+    testProjectRoot.writeBuildDotGradle(
+      """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -37,21 +35,16 @@ class SanityRoboTest {
       |    }
       |  }
       |}
-    """
+    """.trimMargin()
     )
 
-    val result = failedGradleRun(
-      arguments = listOf("printYml"),
-      projectDir = testProjectRoot.root
-    )
+    val runner = testProjectRoot.gradleRunner()
+    val result = runner.withArguments("printYml").buildAndFail()
 
     assertThat(result.output).contains("FAILED")
     assertThat(result.output).contains(baseConfigMessage("instrumentationApk"))
 
-    val resultSanity = failedGradleRun(
-      arguments = listOf("printYmlSanity"),
-      projectDir = testProjectRoot.root
-    )
+    val resultSanity = runner.withArguments("printYmlSanity").buildAndFail()
 
     assertThat(resultSanity.output).contains("FAILED")
     assertThat(result.output).contains(baseConfigMessage("instrumentationApk"))
@@ -59,10 +52,8 @@ class SanityRoboTest {
 
   @Test
   fun `sanityRobo - should throw an error if roboScript set`() {
-    makeBuildDotGradle(
-      where = testProjectRoot,
-      buildScript =
-        """
+    testProjectRoot.writeBuildDotGradle(
+      """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -73,13 +64,10 @@ class SanityRoboTest {
       |  serviceAccountCredentials = layout.projectDirectory.file("flank-gradle-service.json")
       |  roboScript = "some/path/script.json"
       |}
-    """
+    """.trimMargin()
     )
 
-    val result = failedGradleRun(
-      arguments = listOf("printYml"),
-      projectDir = testProjectRoot.root
-    )
+    val result = testProjectRoot.gradleRunner().withArguments("printYml").buildAndFail()
 
     assertThat(result.output).contains("FAILED")
     assertThat(result.output).contains(baseConfigMessage("roboScript"))
@@ -87,8 +75,7 @@ class SanityRoboTest {
 
   @Test
   fun `sanityRobo - should throw an error if roboDirectives set`() {
-    makeBuildDotGradle(
-      where = testProjectRoot,
+    testProjectRoot.writeBuildDotGradle(
       buildScript =
         """
       |plugins {
@@ -105,13 +92,10 @@ class SanityRoboTest {
       |    ["text", "field1", "my text"],
       |  ]
       |}
-    """
+    """.trimMargin()
     )
 
-    val result = failedGradleRun(
-      arguments = listOf("printYml"),
-      projectDir = testProjectRoot.root
-    )
+    val result = testProjectRoot.gradleRunner().withArguments("printYml").buildAndFail()
 
     assertThat(result.output).contains("FAILED")
     assertThat(result.output).contains(baseConfigMessage("roboDirectives"))
@@ -119,8 +103,7 @@ class SanityRoboTest {
 
   @Test
   fun `sanityRobo - should throw an error if additionalTestApks set`() {
-    makeBuildDotGradle(
-      where = testProjectRoot,
+    testProjectRoot.writeBuildDotGradle(
       buildScript =
         """
       |plugins {
@@ -137,13 +120,10 @@ class SanityRoboTest {
       |    "- test: test3.apk"
       |  ]
       |}
-    """
+    """.trimMargin()
     )
 
-    val result = failedGradleRun(
-      arguments = listOf("printYml"),
-      projectDir = testProjectRoot.root
-    )
+    val result = testProjectRoot.gradleRunner().withArguments("printYml").buildAndFail()
 
     assertThat(result.output).contains("FAILED")
     assertThat(result.output).contains(baseConfigMessage("additionalTestApks"))
@@ -151,10 +131,8 @@ class SanityRoboTest {
 
   @Test
   fun `sanityRobo - should throw an error if roboScript set (multiple config)`() {
-    makeBuildDotGradle(
-      where = testProjectRoot,
-      buildScript =
-        """
+    testProjectRoot.writeBuildDotGradle(
+      """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -175,23 +153,18 @@ class SanityRoboTest {
       |    }
       |  }
       |}
-    """
+    """.trimMargin()
     )
 
     val expectedMessage = additionalConfigMessage("roboScript", "sanity")
 
-    val result = failedGradleRun(
-      arguments = listOf("printYml"),
-      projectDir = testProjectRoot.root
-    )
+    val runner = testProjectRoot.gradleRunner()
+    val result = runner.withArguments("printYml").buildAndFail()
 
     assertThat(result.output).contains("FAILED")
     assertThat(result.output).contains(expectedMessage)
 
-    val resultOrange = failedGradleRun(
-      arguments = listOf("printYmlSanity"),
-      projectDir = testProjectRoot.root
-    )
+    val resultOrange = runner.withArguments("printYmlSanity").buildAndFail()
 
     assertThat(resultOrange.output).contains("FAILED")
     assertThat(resultOrange.output).contains(expectedMessage)
@@ -199,10 +172,8 @@ class SanityRoboTest {
 
   @Test
   fun `sanityRobo - should print correct config yamls (inner config is sanity run)`() {
-    makeBuildDotGradle(
-      where = testProjectRoot,
-      buildScript =
-        """
+    testProjectRoot.writeBuildDotGradle(
+      """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -222,13 +193,11 @@ class SanityRoboTest {
       |    }
       |  }
       |}
-    """
+    """.trimMargin()
     )
 
-    val result = gradleRun(
-      arguments = listOf("printYml"),
-      projectDir = testProjectRoot.root
-    )
+    val runner = testProjectRoot.gradleRunner()
+    val result = runner.withArguments("printYml").build()
 
     assertThat(result.output).contains("SUCCESS")
     assertThat(result.output).contains(
@@ -262,10 +231,7 @@ class SanityRoboTest {
     """.trimMargin()
     )
 
-    val resultOrange = gradleRun(
-      arguments = listOf("printYmlOrange"),
-      projectDir = testProjectRoot.root
-    )
+    val resultOrange = runner.withArguments("printYmlOrange").build()
 
     assertThat(resultOrange.output).contains("SUCCESS")
     assertThat(resultOrange.output).contains(
@@ -297,10 +263,8 @@ class SanityRoboTest {
 
   @Test
   fun `sanityRobo - should print correct config yamls (base config is sanity run)`() {
-    makeBuildDotGradle(
-      where = testProjectRoot,
-      buildScript =
-        """
+    testProjectRoot.writeBuildDotGradle(
+      """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -317,16 +281,15 @@ class SanityRoboTest {
       |        "  test: test2.apk",
       |        "- test: test3.apk"
       |      ] })
+      |      sanityRobo.set(false)
       |    }
       |  }
       |}
-    """
+    """.trimMargin()
     )
 
-    val result = gradleRun(
-      arguments = listOf("printYml"),
-      projectDir = testProjectRoot.root
-    )
+    val runner = testProjectRoot.gradleRunner()
+    val result = runner.withArguments("printYml").build()
 
     assertThat(result.output).contains("SUCCESS")
     assertThat(result.output).contains(
@@ -355,10 +318,7 @@ class SanityRoboTest {
     """.trimMargin()
     )
 
-    val resultOrange = gradleRun(
-      arguments = listOf("printYmlOrange"),
-      projectDir = testProjectRoot.root
-    )
+    val resultOrange = runner.withArguments("printYmlOrange").build()
 
     assertThat(resultOrange.output).contains("SUCCESS")
     assertThat(resultOrange.output).contains(
