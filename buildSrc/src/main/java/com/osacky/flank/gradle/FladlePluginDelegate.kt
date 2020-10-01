@@ -45,9 +45,6 @@ class FladlePluginDelegate {
       // Must be done afterEvaluate otherwise extension values will not be set.
       project.dependencies.add(FLADLE_CONFIG, "${base.flankCoordinates.get()}:${base.flankVersion.get()}")
 
-      checkIfSanityAndValidateConfigs(base)
-      base.configs.forEach(::checkIfSanityAndValidateConfigs)
-
       // Only use automatic apk path detection for 'com.android.application' projects.
       project.pluginManager.withPlugin("com.android.application") {
         if (!base.debugApk.isPresent || !base.instrumentationApk.isPresent) {
@@ -65,6 +62,7 @@ class FladlePluginDelegate {
   }
 
   private fun TaskContainer.createTasksForConfig(base: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
+    checkIfSanityAndValidateConfigs(config)
     val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, base, config, name)
 
     register("printYml$name") {
@@ -127,7 +125,7 @@ class FladlePluginDelegate {
               project.log("Configuring fladle.debugApk from variant ${this@app.name}")
               extension.debugApk.set(this@app.outputFile.absolutePath)
             }
-            if (!extension.roboScript.isPresent && !extension.instrumentationApk.isPresent) {
+            if (!extension.roboScript.isPresent && !extension.instrumentationApk.isPresent && !extension.sanityRobo.get()) {
               // Don't set instrumentation apk if not already set. #172
               project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
               extension.instrumentationApk.set(this@test.outputFile.absolutePath)

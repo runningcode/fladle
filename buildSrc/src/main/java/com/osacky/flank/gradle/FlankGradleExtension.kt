@@ -116,7 +116,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       serviceAccountCredentials = objects.fileProperty().convention(serviceAccountCredentials),
       debugApk = objects.property<String>().convention(debugApk),
       instrumentationApk = objects.property<String>().convention(instrumentationApk),
-      sanityRobo = objects.property<Boolean>().convention(false),
+      sanityRobo = objects.property<Boolean>().convention(sanityRobo),
       useOrchestrator = objects.property<Boolean>().convention(useOrchestrator),
       autoGoogleLogin = objects.property<Boolean>().convention(autoGoogleLogin),
       devices = objects.listProperty<Map<String, String>>().convention(devices),
