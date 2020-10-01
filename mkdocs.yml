@@ -18,6 +18,7 @@ site_author: Nelson Osacky
 nav:
   - Home: index.md
   - Quick Start: quick-start.md
+  - Authentication: authentication.md
   - Configuration: configuration.md
   - Changelog: changelog.md
   - Results: results.md

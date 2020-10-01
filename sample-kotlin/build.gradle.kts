@@ -18,10 +18,8 @@ android {
 }
 
 fladle {
-    flankVersion.set("20.08.4")
-    serviceAccountCredentials.set(project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json"))
+    flankVersion.set("20.09.3")
     // Project Id is not needed if serviceAccountCredentials are set.
-//    projectId.set("flank-gradle")
     projectId.set("flank-gradle")
     useOrchestrator.set(true)
     environmentVariables.set(project.provider { mapOf("clearPackageData" to "true") })

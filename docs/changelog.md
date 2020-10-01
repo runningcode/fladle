@@ -3,6 +3,7 @@
 ## Unreleased
 
 ## 0.13.0
+* Add support for [user authentication](../authentication).
 * Bump Flank to [20.09.3](https://github.com/Flank/flank/releases/tag/v20.09.3)
 
 !!! Warning "Breaking API Change"

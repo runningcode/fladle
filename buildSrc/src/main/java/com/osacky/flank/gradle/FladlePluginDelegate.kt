@@ -19,6 +19,11 @@ class FladlePluginDelegate {
 
     val extension = target.extensions.create<FlankGradleExtension>("fladle", target.objects)
 
+    target.tasks.register("flankAuth", FlankJavaExec::class.java) {
+      classpath = project.fladleConfig
+      args = listOf("auth", "login")
+    }
+
     configureTasks(target, extension)
   }
 

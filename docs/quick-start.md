@@ -39,21 +39,8 @@ Using Fladle takes 3 steps:
         }
         ```
 
-2. Configure the Fladle extension.
+2. Configure [Authentication using these steps.](../authentication)
 
-    ===! "Groovy"
-        ``` groovy
-        fladle {
-            serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service-account.json")
-        }
-        ```
-    === "Kotlin"
-        ``` kotlin
-        fladle {
-            serviceAccountCredentials.set(project.layout.projectDirectory.file("flank-gradle-service-account.json"))
-        }
-        ```
-        
     !!! Warning
         If using buildFlavors or testing against a non default variant, [variant must also configured](/fladle/configuration#variant)
 
@@ -63,10 +50,10 @@ Using Fladle takes 3 steps:
     ``` bash
     ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
     ```
-   
+
     !!! note
         When using flavors, make sure to assemble your buildVariants.
-        
+
         `./gradlew :app:assembleFreeDebug :app:assembleFreeDebugAndroidTest`
 
     Run Flank!
