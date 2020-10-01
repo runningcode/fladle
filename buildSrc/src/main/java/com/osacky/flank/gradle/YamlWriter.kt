@@ -23,7 +23,7 @@ internal class YamlWriter {
       $prefix
       instrumentationApk=${config.instrumentationApk.orNull}
       roboScript=${config.roboScript.orNull}
-      """.trimIndent()
+        """.trimIndent()
       }
     }
 
