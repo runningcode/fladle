@@ -9,6 +9,9 @@ data class FladleConfigImpl(
   internal val name: String,
   override val projectId: Property<String>,
   override val serviceAccountCredentials: RegularFileProperty,
+  override val debugApk: Property<String>,
+  override val instrumentationApk: Property<String>,
+  override val sanityRobo: Property<Boolean>,
   override val useOrchestrator: Property<Boolean>,
   override val autoGoogleLogin: Property<Boolean>,
   override val devices: ListProperty<Map<String, String>>,
@@ -45,4 +48,19 @@ data class FladleConfigImpl(
   override val outputStyle: Property<String>,
   override val legacyJunitResult: Property<Boolean>,
   override val fullJunitResult: Property<Boolean>
-) : FladleConfig
+) : FladleConfig {
+  /**
+   * Prepare config to run sanity robo.
+   *
+   * Sets [sanityRobo] property as `true`.
+   *
+   * Cleans [instrumentationApk], [additionalTestApks], [roboDirectives], [roboScript] properties.
+   */
+  fun clearPropertiesForSanityRobo() {
+    sanityRobo.set(true)
+    additionalTestApks.empty()
+    instrumentationApk.set("")
+    roboDirectives.empty()
+    roboScript.set("")
+  }
+}

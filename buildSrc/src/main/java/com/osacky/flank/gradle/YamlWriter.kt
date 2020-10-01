@@ -12,27 +12,31 @@ internal class YamlWriter {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
-    check(base.instrumentationApk.isPresent xor !base.roboScript.orNull.isNullOrBlank()) {
-      val prefix = if (base.instrumentationApk.isPresent && !base.roboScript.orNull.isNullOrBlank()) {
-        "Both instrumentationApk file and roboScript file were specified, but only one is expected."
-      } else {
-        "Must specify either a instrumentationApk file or a roboScript file."
-      }
-      """
+    if (config.sanityRobo.get() == false) {
+      check(config.instrumentationApk.isPresent xor !config.roboScript.orNull.isNullOrBlank()) {
+        val prefix = if (base.instrumentationApk.isPresent && !config.roboScript.orNull.isNullOrBlank()) {
+          "Both instrumentationApk file and roboScript file were specified, but only one is expected."
+        } else {
+          "Must specify either a instrumentationApk file or a roboScript file."
+        }
+        """
       $prefix
-      instrumentationApk=${base.instrumentationApk.orNull}
-      roboScript=${base.roboScript.orNull}
-      """.trimIndent()
+      instrumentationApk=${config.instrumentationApk.orNull}
+      roboScript=${config.roboScript.orNull}
+        """.trimIndent()
+      }
     }
 
+    val shouldPrintTestAndRobo = config.sanityRobo.get().not()
     val additionalProperties = writeAdditionalProperties(config)
     val flankProperties = writeFlankProperties(config)
 
     return buildString {
       appendln("gcloud:")
-      appendln("  app: ${base.debugApk.get()}")
-      if (base.instrumentationApk.isPresent) {
-        appendln("  test: ${base.instrumentationApk.get()}")
+      appendln("  app: ${config.debugApk.get()}")
+      // We don't want to print instrumentation apks if sanityRobo == true
+      if (shouldPrintTestAndRobo && config.instrumentationApk.isPresent) {
+        appendln("  test: ${config.instrumentationApk.get()}")
       }
       if (config.devices.isPresentAndNotEmpty) appendln(createDeviceString(config.devices.get()))
       appendln(additionalProperties)
@@ -50,7 +54,8 @@ internal class YamlWriter {
     appendProperty(config.projectId, name = "project")
     appendProperty(config.keepFilePath, name = "keep-file-path")
     appendListProperty(config.filesToDownload, name = "files-to-download") { appendln("  - $it") }
-    appendListProperty(config.additionalTestApks, name = "additional-app-test-apks") { appendln("    $it") }
+    if (!config.sanityRobo.get())
+      appendListProperty(config.additionalTestApks, name = "additional-app-test-apks") { appendln("    $it") }
     appendProperty(config.runTimeout, name = "run-timeout")
     appendProperty(config.ignoreFailedTests, name = "ignore-failed-tests")
     appendProperty(config.disableSharding, name = "disable-sharding")
@@ -82,10 +87,12 @@ internal class YamlWriter {
     appendMapProperty(config.clientDetails, name = "client-details") { appendln("    ${it.key}: ${it.value}") }
     appendMapProperty(config.otherFiles, name = "other-files") { appendln("    ${it.key}: ${it.value}") }
     appendProperty(config.networkProfile, name = "network-profile")
-    appendProperty(config.roboScript, name = "robo-script")
-    appendListProperty(config.roboDirectives, name = "robo-directives") {
-      val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
-      appendln("    ${it[0]}:${it[1]}: $value")
+    if (!config.sanityRobo.get()) {
+      appendProperty(config.roboScript, name = "robo-script")
+      appendListProperty(config.roboDirectives, name = "robo-directives") {
+        val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
+        appendln("    ${it[0]}:${it[1]}: $value")
+      }
     }
   }
 

@@ -19,6 +19,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   @get:Input
   val flankCoordinates: Property<String> = objects.property(String::class.java).convention("com.github.flank:flank")
 
+  override val sanityRobo: Property<Boolean> = objects.property<Boolean>().convention(false)
+
   @get:Input
   val flankVersion: Property<String> = objects.property(String::class.java).convention("20.09.3")
   // Project id is automatically discovered by default. Use this to override the project id.
@@ -50,12 +52,9 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   /**
    * debugApk and instrumentationApk are [Property<String>] and not [RegularFileProperty] because we support wildcard characters.
    */
-  @get:Input
-  @get:Optional
-  val debugApk: Property<String> = objects.property()
-  @get:Input
-  @get:Optional
-  val instrumentationApk: Property<String> = objects.property()
+  override val debugApk: Property<String> = objects.property()
+
+  override val instrumentationApk: Property<String> = objects.property()
 
   override val directoriesToPull: ListProperty<String> = objects.listProperty()
 
@@ -115,6 +114,9 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       name = it,
       projectId = objects.property<String>().convention(projectId),
       serviceAccountCredentials = objects.fileProperty().convention(serviceAccountCredentials),
+      debugApk = objects.property<String>().convention(debugApk),
+      instrumentationApk = objects.property<String>().convention(instrumentationApk),
+      sanityRobo = objects.property<Boolean>().convention(false),
       useOrchestrator = objects.property<Boolean>().convention(useOrchestrator),
       autoGoogleLogin = objects.property<Boolean>().convention(autoGoogleLogin),
       devices = objects.listProperty<Map<String, String>>().convention(devices),

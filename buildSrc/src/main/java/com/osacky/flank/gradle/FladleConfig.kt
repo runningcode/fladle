@@ -18,6 +18,19 @@ interface FladleConfig {
   @get:Optional
   val serviceAccountCredentials: RegularFileProperty
 
+  /**
+   * debugApk and instrumentationApk are [Property<String>] and not [RegularFileProperty] because we support wildcard characters.
+   */
+  @get:Input
+  @get:Optional
+  val debugApk: Property<String>
+  @get:Input
+  @get:Optional
+  val instrumentationApk: Property<String>
+
+  @get:Input
+  val sanityRobo: Property<Boolean>
+
   @get:Input
   val useOrchestrator: Property<Boolean>
 
