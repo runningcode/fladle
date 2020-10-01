@@ -5,12 +5,23 @@ The following configuration options must be set inside the fladle block. See the
 ### serviceAccountCredentials
 
 !!! note ""
-    `serviceAccountCredentials` is the only required field in the Fladle configuration.
+    User Authentication is also possible. See [Authentication.](../authentication)
 
-The service account credential is a file which contains authentication credentials for a service account created in the Google Cloud Platform Console.
-It can be created with the editor role [here](https://console.cloud.google.com/iam-admin/serviceaccounts/).
-Instructions on how to create this account can be found [here](https://firebase.google.com/docs/test-lab/android/continuous).
-  Optionally, the serviceAccountCredentials can be set with [environment variables](https://github.com/TestArmada/flank#authenticate-with-a-service-account) but then the projectId parameter must be set.
+
+=== "Groovy"
+    ``` groovy
+    serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json")
+    ```
+=== "Kotlin"
+    ``` kotlin
+    serviceAccountCredentials.set("project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json")
+    ```
+
+Optionally, the serviceAccountCredentials can be set with [environment variables](https://github.com/Flank/flank#authenticate-with-a-service-account) but then the projectId parameter must be set.
+
+See [Authentication] for more info.
+
+[Authentication]: ../authentication
 
 
 ### variant
