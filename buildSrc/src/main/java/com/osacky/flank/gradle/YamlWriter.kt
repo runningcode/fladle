@@ -28,8 +28,8 @@ internal class YamlWriter {
     }
 
     val shouldPrintTestAndRobo = config.sanityRobo.get().not()
-    val additionalProperties = writeAdditionalProperties(config, shouldPrintTestAndRobo)
-    val flankProperties = writeFlankProperties(config, shouldPrintTestAndRobo)
+    val additionalProperties = writeAdditionalProperties(config)
+    val flankProperties = writeFlankProperties(config)
 
     return buildString {
       appendln("gcloud:")
@@ -44,7 +44,7 @@ internal class YamlWriter {
     }
   }
 
-  internal fun writeFlankProperties(config: FladleConfig, printApk: Boolean = true): String = buildString {
+  internal fun writeFlankProperties(config: FladleConfig): String = buildString {
     appendln("flank:")
 
     appendProperty(config.testShards, name = "max-test-shards")
@@ -54,7 +54,7 @@ internal class YamlWriter {
     appendProperty(config.projectId, name = "project")
     appendProperty(config.keepFilePath, name = "keep-file-path")
     appendListProperty(config.filesToDownload, name = "files-to-download") { appendln("  - $it") }
-    if (printApk)
+    if (!config.sanityRobo.get())
       appendListProperty(config.additionalTestApks, name = "additional-app-test-apks") { appendln("    $it") }
     appendProperty(config.runTimeout, name = "run-timeout")
     appendProperty(config.ignoreFailedTests, name = "ignore-failed-tests")
@@ -67,7 +67,7 @@ internal class YamlWriter {
     appendProperty(config.outputStyle, name = "output-style")
   }
 
-  internal fun writeAdditionalProperties(config: FladleConfig, printRobo: Boolean = true): String = buildString {
+  internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
     appendProperty(config.useOrchestrator, name = "use-orchestrator")
     appendProperty(config.autoGoogleLogin, name = "auto-google-login")
     appendProperty(config.recordVideo, name = "record-video")
@@ -87,7 +87,7 @@ internal class YamlWriter {
     appendMapProperty(config.clientDetails, name = "client-details") { appendln("    ${it.key}: ${it.value}") }
     appendMapProperty(config.otherFiles, name = "other-files") { appendln("    ${it.key}: ${it.value}") }
     appendProperty(config.networkProfile, name = "network-profile")
-    if (printRobo) {
+    if (!config.sanityRobo.get()) {
       appendProperty(config.roboScript, name = "robo-script")
       appendListProperty(config.roboDirectives, name = "robo-directives") {
         val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }

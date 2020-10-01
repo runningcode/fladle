@@ -49,7 +49,14 @@ data class FladleConfigImpl(
   override val legacyJunitResult: Property<Boolean>,
   override val fullJunitResult: Property<Boolean>
 ) : FladleConfig {
-  fun sanityRoboRun() {
+  /**
+   * Prepare config to run sanity robo.
+   *
+   * Sets [sanityRobo] property as `true`.
+   *
+   * Cleans [instrumentationApk], [additionalTestApks], [roboDirectives], [roboScript] properties.
+   */
+  fun clearPropertiesForSanityRobo() {
     sanityRobo.set(true)
     additionalTestApks.empty()
     instrumentationApk.set("")

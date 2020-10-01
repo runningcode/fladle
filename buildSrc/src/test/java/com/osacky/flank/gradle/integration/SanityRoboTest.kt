@@ -7,7 +7,7 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
 private fun baseConfigMessage(option: String) = "Incorrect [base] configuration. [$option] can't be used together with sanityRobo."
-private fun additionalConfigMessage(option: String, name: String) = "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo. If you want to launch robo test run without robo script place only sanityRoboRun() into [$name] configuration"
+private fun additionalConfigMessage(option: String, name: String) = "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo. If you want to launch robo test run without robo script place only clearPropertiesForSanityRobo() into [$name] configuration"
 
 class SanityRoboTest {
   @get:Rule
@@ -33,7 +33,6 @@ class SanityRoboTest {
       |  instrumentationApk = "test.apk"
       |  configs {
       |    sanity {
-      |      sanityRobo.set(true)
       |      makeSanityRun()
       |    }
       |  }
@@ -171,7 +170,7 @@ class SanityRoboTest {
       |  ]
       |  configs {
       |    sanity {
-      |      sanityRobo.set(true)
+      |      clearPropertiesForSanityRobo()
       |      roboScript.set("path/to/script.json")
       |    }
       |  }
@@ -219,7 +218,7 @@ class SanityRoboTest {
       |  ]
       |  configs {
       |    orange {
-      |      sanityRoboRun()
+      |      clearPropertiesForSanityRobo()
       |    }
       |  }
       |}

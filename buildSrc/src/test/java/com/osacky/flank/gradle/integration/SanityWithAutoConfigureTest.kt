@@ -64,7 +64,7 @@ class SanityWithAutoConfigureTest {
               smartFlankGcsPath = "gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml"
               configs {
                 sanity {
-                  sanityRoboRun()
+                  clearPropertiesForSanityRobo()
                   useOrchestrator.set(false)
                   testTargets.set(project.provider { [
                     "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail"
