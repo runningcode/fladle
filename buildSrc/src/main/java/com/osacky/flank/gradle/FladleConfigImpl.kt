@@ -59,8 +59,10 @@ data class FladleConfigImpl(
   fun clearPropertiesForSanityRobo() {
     sanityRobo.set(true)
     additionalTestApks.empty()
+    // Must be set to an empty string to override `convention` value inherited from base.
     instrumentationApk.set("")
     roboDirectives.empty()
+    // Must be set to an empty string to override `convention` value inherited from base.
     roboScript.set("")
   }
 }

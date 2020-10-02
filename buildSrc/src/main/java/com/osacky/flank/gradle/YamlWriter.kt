@@ -12,30 +12,28 @@ internal class YamlWriter {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
-    if (config.sanityRobo.get() == false) {
-      check(config.instrumentationApk.isPresent xor !config.roboScript.orNull.isNullOrBlank()) {
-        val prefix = if (base.instrumentationApk.isPresent && !config.roboScript.orNull.isNullOrBlank()) {
+    if (!config.sanityRobo.get()) {
+      check(config.instrumentationApk.isPresent xor config.roboScript.isNotPresentOrBlank) {
+        val prefix = if (base.instrumentationApk.isPresent && config.roboScript.isNotPresentOrBlank) {
           "Both instrumentationApk file and roboScript file were specified, but only one is expected."
         } else {
           "Must specify either a instrumentationApk file or a roboScript file."
         }
         """
-      $prefix
-      instrumentationApk=${config.instrumentationApk.orNull}
-      roboScript=${config.roboScript.orNull}
+        $prefix
+        instrumentationApk=${config.instrumentationApk.orNull}
+        roboScript=${config.roboScript.orNull}
         """.trimIndent()
       }
     }
 
-    val shouldPrintTestAndRobo = config.sanityRobo.get().not()
     val additionalProperties = writeAdditionalProperties(config)
     val flankProperties = writeFlankProperties(config)
 
     return buildString {
       appendln("gcloud:")
       appendln("  app: ${config.debugApk.get()}")
-      // We don't want to print instrumentation apks if sanityRobo == true
-      if (shouldPrintTestAndRobo && config.instrumentationApk.isPresent) {
+      if (config.instrumentationApk.isNotPresentOrBlank) {
         appendln("  test: ${config.instrumentationApk.get()}")
       }
       if (config.devices.isPresentAndNotEmpty) appendln(createDeviceString(config.devices.get()))

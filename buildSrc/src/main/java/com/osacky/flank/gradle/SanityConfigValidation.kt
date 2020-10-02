@@ -24,8 +24,8 @@ private fun FladleConfig.checkAndValidateConfig(name: String = "base", message: 
   }
 }
 
-private val Property<String>.isNotPresentOrBlank
+val Property<String>.isNotPresentOrBlank
   get() = orNull.isNullOrBlank().not()
 
 private val <T> ListProperty<T>.isNotPresentOrEmpty
-  get() = getOrElse(emptyList()).isEmpty().not()
+  get() = getOrElse(emptyList()).isNotEmpty()
