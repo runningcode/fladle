@@ -122,6 +122,13 @@ fladle {
     outputStyle = 'multi'
     legacyJunitResult = false
     fullJunitResult = false
+    additional-apks:
+      - gs://path/to/app1.apk
+      - localPath/to/app2.apk
+    default-test-time: 5.3
+    default-class-test-time: 180.5
+    use-average-test-time-for-new-tests: true
+    disable-results-upload: true
 }
 ```
 
@@ -766,4 +773,71 @@ sanityRobo = true
 === "Kotlin"
 ``` kotlin
 sanityRobo.set(true)
+```
+
+### defaultTestTime
+Set default test time expressed in seconds, used for calculating shards. (default: 120.0s)
+
+=== "Groovy"
+``` groovy
+defaultTestTime = 1.2
+```
+=== "Kotlin"
+``` kotlin
+defaultTestTime.set(1.2)
+```
+
+### defaultClassTestTime
+Set default parameterized class test time expressed in seconds, used for calculating shards. (default: 2x [defaultTestTime](configuration.md#defaulttesttime) => 240s)
+
+=== "Groovy"
+``` groovy
+defaultClassTestTime = 245.5
+```
+=== "Kotlin"
+``` kotlin
+defaultClassTestTime.set(245,5)
+```
+
+### additionalApks
+A list of up to 100 additional APKs to install, in addition to those being directly tested. The path may be in the local filesystem or in Google Cloud Storage using gs:// notation.
+
+=== "Groovy"
+``` groovy
+additionalApks = [
+  "gs://path/to/app1.apk",
+  "localPath/to/app2.apk"
+]
+```
+=== "Kotlin"
+``` kotlin
+additionalApks.set(
+  project.provider {
+    listOf("gs://path/to/app1.apk", "localPath/to/app2.apk")
+  }
+)
+```
+
+### useAverageTestTimeForNewTests
+Enable using average time from previous tests duration when using SmartShard and tests did not run before. (default: false)
+
+=== "Groovy"
+``` groovy
+useAverageTestTimeForNewTests = true
+```
+=== "Kotlin"
+``` kotlin
+useAverageTestTimeForNewTests.set(true)
+```
+
+### disableResultsUpload
+Disable flank results upload on gcloud storage. (default: false)
+
+=== "Groovy"
+``` groovy
+disableResultsUpload = true
+```
+=== "Kotlin"
+``` kotlin
+disableResultsUpload.set(true)
 ```

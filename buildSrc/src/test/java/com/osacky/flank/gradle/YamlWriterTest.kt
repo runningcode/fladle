@@ -1118,6 +1118,61 @@ class YamlWriterTest {
     )
   }
 
+  @Test
+  fun writeDefaultTestTime() {
+    val properties = emptyExtension {
+      defaultTestTime.set(240.5)
+    }.toFlankProperties()
+
+    assertThat(properties).contains("default-test-time: 240.5")
+  }
+
+  @Test
+  fun writeDefaultClassTestTime() {
+    val properties = emptyExtension {
+      defaultClassTestTime.set(681.8)
+    }.toFlankProperties()
+
+    assertThat(properties).contains("default-class-test-time: 681.8")
+  }
+
+  @Test
+  fun writeUseAverageTestTimeForNewTests() {
+    val properties = emptyExtension {
+      useAverageTestTimeForNewTests.set(true)
+    }.toFlankProperties()
+
+    assertThat(properties).contains("use-average-test-time-for-new-tests: true")
+  }
+
+  @Test
+  fun writeAdditionalApks() {
+    val properties = emptyExtension {
+      additionalApks.set(
+        project.provider {
+          listOf("gs://path/to/app1.apk", "localPath/to/app2.apk")
+        }
+      )
+    }.toAdditionalProperties()
+
+    assertThat(properties).contains(
+      """
+      |  additional-apks:
+      |    - gs://path/to/app1.apk
+      |    - localPath/to/app2.apk
+      """.trimMargin()
+    )
+  }
+
+  @Test
+  fun writeDisableResultsUpload() {
+    val properties = emptyExtension {
+      disableResultsUpload.set(true)
+    }.toFlankProperties()
+
+    assertThat(properties).contains("disable-results-upload: true")
+  }
+
   private fun emptyExtension() = FlankGradleExtension(project.objects)
   private fun emptyExtension(block: FlankGradleExtension.() -> Unit) = emptyExtension().apply(block)
   private fun FlankGradleExtension.toFlankProperties() = yamlWriter.writeFlankProperties(this).trimIndent()

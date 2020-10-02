@@ -273,4 +273,44 @@ interface FladleConfig {
   @SinceFlank("20.06.0")
   @get:Input
   val fullJunitResult: Property<Boolean>
+
+  /**
+   * A list of up to 100 additional APKs to install, in addition to those being directly tested.
+   * The path may be in the local filesystem or in Google Cloud Storage using gs:// notation.
+   */
+  @get:Input
+  @get:Optional
+  val additionalApks: ListProperty<String>
+
+  /**
+   * Enable using average time from previous tests duration when using SmartShard and tests did not run before.
+   * (default: false)
+   */
+  @get:Input
+  @get:Optional
+  val useAverageTestTimeForNewTests: Property<Boolean>
+
+  /**
+   * Set default test time expressed in seconds, used for calculating shards.
+   * (default: 120.0s)
+   */
+  @get:Input
+  @get:Optional
+  val defaultTestTime: Property<Double>
+
+  /**
+   * Set default parameterized class test time expressed in seconds, used for calculating shards.
+   * (default: 2x [defaultTestTime] => 240s)
+   */
+  @get:Input
+  @get:Optional
+  val defaultClassTestTime: Property<Double>
+
+  /**
+   * Disable flank results upload on gcloud storage.
+   * (default: false)
+   */
+  @get:Input
+  @get:Optional
+  val disableResultsUpload: Property<Boolean>
 }
