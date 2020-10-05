@@ -52,24 +52,10 @@ class MultipleConfigsTest {
       |gcloud:
       |  app: foo.apk
       |  test: instrument.apk
-      |  device:
-      |  - model: NexusLowRes
-      |    version: 28
-      |
-      |  use-orchestrator: false
-      |  auto-google-login: false
-      |  record-video: true
-      |  performance-metrics: true
-      |  timeout: 15m
       |  test-targets:
       |  - override
-      |  num-flaky-test-attempts: 0
       |
       |flank:
-      |  keep-file-path: false
-      |  ignore-failed-tests: false
-      |  disable-sharding: false
-      |  smart-flank-disable-upload: false
       |  local-result-dir: overrideDir
     """.trimMargin()
     )
@@ -89,24 +75,10 @@ class MultipleConfigsTest {
       |gcloud:
       |  app: foo.apk
       |  test: instrument.apk
-      |  device:
-      |  - model: NexusLowRes
-      |    version: 28
-      |
-      |  use-orchestrator: false
-      |  auto-google-login: false
-      |  record-video: true
-      |  performance-metrics: true
-      |  timeout: 15m
       |  test-targets:
       |  - default
-      |  num-flaky-test-attempts: 0
       |
       |flank:
-      |  keep-file-path: false
-      |  ignore-failed-tests: false
-      |  disable-sharding: false
-      |  smart-flank-disable-upload: false
       |  local-result-dir: defaultDir
       """.trimMargin()
     )

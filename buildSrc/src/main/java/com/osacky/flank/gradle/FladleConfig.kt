@@ -32,16 +32,20 @@ interface FladleConfig {
   val sanityRobo: Property<Boolean>
 
   @get:Input
+  @get:Optional
   val useOrchestrator: Property<Boolean>
 
   @get:Input
+  @get:Optional
   val autoGoogleLogin: Property<Boolean>
 
   @get:Input
+  @get:Optional
   val devices: ListProperty<Map<String, String>>
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
   @get:Input
+  @get:Optional
   val testTargets: ListProperty<String>
 
   @get:Input
@@ -71,22 +75,28 @@ interface FladleConfig {
   val resultsHistoryName: Property<String>
 
   @get:Input
+  @get:Optional
   val directoriesToPull: ListProperty<String>
 
   @get:Input
+  @get:Optional
   val filesToDownload: ListProperty<String>
 
   @get:Input
+  @get:Optional
   val environmentVariables: MapProperty<String, String>
 
   @get:Input
+  @get:Optional
   val recordVideo: Property<Boolean>
 
   @get:Input
+  @get:Optional
   val performanceMetrics: Property<Boolean>
 
   // The number of times to retry failed tests. Default is 0. Max is 10.
   @get:Input
+  @get:Optional
   val flakyTestAttempts: Property<Int>
 
   @get:Input
@@ -94,6 +104,7 @@ interface FladleConfig {
   val resultsBucket: Property<String>
 
   @get:Input
+  @get:Optional
   val keepFilePath: Property<Boolean>
 
   /**
@@ -105,6 +116,7 @@ interface FladleConfig {
   val resultsDir: Property<String>
 
   @get:Input
+  @get:Optional
   val additionalTestApks: ListProperty<String>
 
   /**
@@ -127,12 +139,14 @@ interface FladleConfig {
    * Disables sharding. Useful for parameterized tests. (default: false)
    */
   @get:Input
+  @get:Optional
   val disableSharding: Property<Boolean>
 
   /**
    * Disables smart flank JUnit XML uploading. Useful for preventing timing data from being updated. (default: false)
    */
   @get:Input
+  @get:Optional
   val smartFlankDisableUpload: Property<Boolean>
 
   /**
@@ -172,6 +186,7 @@ interface FladleConfig {
    * these details can add additional context such as a link to the corresponding pull request.
    */
   @get:Input
+  @get:Optional
   val clientDetails: MapProperty<String, String>
 
   /**
@@ -179,6 +194,7 @@ interface FladleConfig {
    * useful if you need to grant permissions or login before other tests run
    */
   @get:Input
+  @get:Optional
   val testTargetsAlwaysRun: ListProperty<String>
 
   /**
@@ -187,6 +203,7 @@ interface FladleConfig {
    * Source file paths may be in the local filesystem or in Google Cloud Storage (gs://…).
    */
   @get:Input
+  @get:Optional
   val otherFiles: MapProperty<String, String>
 
   /**
@@ -217,6 +234,7 @@ interface FladleConfig {
    * Values are only permitted for text type elements, so no value should be specified for click and ignore type elements.
    */
   @get:Input
+  @get:Optional
   val roboDirectives: ListProperty<List<String>>
 
   /**
@@ -232,6 +250,7 @@ interface FladleConfig {
    * * 100  -> 100 seconds
    */
   @get:Input
+  @get:Optional
   val testTimeout: Property<String>
 
   /**
@@ -241,6 +260,7 @@ interface FladleConfig {
    * which don't support ansi codes, to avoid corrupted output use single or verbose.
    */
   @get:Input
+  @get:Optional
   val outputStyle: Property<String>
 
   /**
@@ -249,11 +269,13 @@ interface FladleConfig {
    * This flag allows fallback for legacy xml junit results parsing
    */
   @get:Input
+  @get:Optional
   val legacyJunitResult: Property<Boolean>
 
   /**
    * Enables creating an additional local junit result on local storage with failure nodes on passed flaky tests.
    */
   @get:Input
+  @get:Optional
   val fullJunitResult: Property<Boolean>
 }

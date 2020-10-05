@@ -4,7 +4,6 @@ import com.google.common.truth.Truth.assertThat
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
@@ -152,26 +151,9 @@ class YamlWriterTest {
              gcloud:
                app: path
                test: instrument
-               device:
-               - model: NexusLowRes
-                 version: 28
-
-               use-orchestrator: false
-               auto-google-login: false
-               record-video: true
-               performance-metrics: true
-               timeout: 15m
-               num-flaky-test-attempts: 0
 
              flank:
                project: set
-               keep-file-path: false
-               ignore-failed-tests: false
-               disable-sharding: false
-               smart-flank-disable-upload: false
-               legacy-junit-result: false
-               full-junit-result: false
-               output-style: single
       """.trimIndent() + '\n' // Dunno why this needs to be here to make the tests pass.
     )
   }
@@ -243,26 +225,9 @@ class YamlWriterTest {
       """
     gcloud:
       app: path
-      device:
-      - model: NexusLowRes
-        version: 28
-
-      use-orchestrator: false
-      auto-google-login: false
-      record-video: true
-      performance-metrics: true
-      timeout: 15m
-      num-flaky-test-attempts: 0
       robo-script: foo
 
     flank:
-      keep-file-path: false
-      ignore-failed-tests: false
-      disable-sharding: false
-      smart-flank-disable-upload: false
-      legacy-junit-result: false
-      full-junit-result: false
-      output-style: single
       """.trimIndent() + '\n'
     )
   }
@@ -270,116 +235,52 @@ class YamlWriterTest {
   @Test
   fun writeNoTestShards() {
     val extension = emptyExtension {
-    }
+    }.toFlankProperties()
 
-    assertEquals(
-      "flank:\n" +
-        "  keep-file-path: false\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  legacy-junit-result: false\n" +
-        "  full-junit-result: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
-    )
+    assertThat(extension).doesNotContain("max-test-shards")
   }
 
   @Test
   fun writeProjectIdOption() {
     val extension = emptyExtension {
       projectId.set("foo")
-    }
+    }.toFlankProperties()
 
-    assertEquals(
-      "flank:\n" +
-        "  project: foo\n" +
-        "  keep-file-path: false\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  legacy-junit-result: false\n" +
-        "  full-junit-result: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
-    )
+    assertThat(extension).containsMatch("project: foo")
   }
 
   @Test
   fun writeTestShardOption() {
     val extension = emptyExtension {
       testShards.set(5)
-    }
+    }.toFlankProperties()
 
-    assertEquals(
-      "flank:\n" +
-        "  max-test-shards: 5\n" +
-        "  keep-file-path: false\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  legacy-junit-result: false\n" +
-        "  full-junit-result: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
-    )
+    assertThat(extension).containsMatch("max-test-shards: 5")
   }
 
   @Test
   fun writeShardTimeOption() {
     val extension = emptyExtension {
       shardTime.set(120)
-    }
+    }.toFlankProperties()
 
-    assertEquals(
-      "flank:\n" +
-        "  shard-time: 120\n" +
-        "  keep-file-path: false\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  legacy-junit-result: false\n" +
-        "  full-junit-result: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
-    )
+    assertThat(extension).containsMatch("shard-time: 120")
   }
 
   @Test
   fun writeNoTestRepeats() {
-    val extension = emptyExtension {}
+    val extension = emptyExtension {}.toFlankProperties()
 
-    assertEquals(
-      "flank:\n" +
-        "  keep-file-path: false\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  legacy-junit-result: false\n" +
-        "  full-junit-result: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
-    )
+    assertThat(extension).doesNotContain("num-test-runs")
   }
 
   @Test
   fun writeTestRepeats() {
     val extension = emptyExtension {
       repeatTests.set(5)
-    }
+    }.toFlankProperties()
 
-    assertEquals(
-      "flank:\n" +
-        "  num-test-runs: 5\n" +
-        "  keep-file-path: false\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  legacy-junit-result: false\n" +
-        "  full-junit-result: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
-    )
+    assertThat(extension).containsMatch("num-test-runs: 5")
   }
 
   @Test
@@ -387,75 +288,37 @@ class YamlWriterTest {
     val extension = emptyExtension {
       testShards.set(5)
       repeatTests.set(2)
-    }
+    }.toFlankProperties()
 
-    assertEquals(
-      "flank:\n" +
-        "  max-test-shards: 5\n" +
-        "  num-test-runs: 2\n" +
-        "  keep-file-path: false\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  legacy-junit-result: false\n" +
-        "  full-junit-result: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
-    )
+    assertThat(extension).containsMatch("num-test-runs: 2")
+    assertThat(extension).containsMatch("max-test-shards: 5")
   }
 
   @Test
   fun writeResultsHistoryName() {
     val extension = emptyExtension {
       resultsHistoryName.set("androidtest")
-    }
+    }.toAdditionalProperties()
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  results-history-name: androidtest\n" +
-        "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension)
-    )
+    assertThat(extension).containsMatch("results-history-name: androidtest")
   }
 
   @Test
   fun writeResultsBucket() {
     val extension = emptyExtension {
       resultsBucket.set("fake-project.appspot.com")
-    }
+    }.toAdditionalProperties()
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  results-bucket: fake-project.appspot.com\n" +
-        "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension)
-    )
+    assertThat(extension).containsMatch("results-bucket: fake-project.appspot.com")
   }
 
   @Test
   fun writeResultsDir() {
     val extension = emptyExtension {
       resultsDir.set("resultsGoHere")
-    }
+    }.toAdditionalProperties()
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  num-flaky-test-attempts: 0\n" +
-        "  results-dir: resultsGoHere\n",
-      yamlWriter.writeAdditionalProperties(extension)
-    )
+    assertThat(extension).containsMatch("results-dir: resultsGoHere")
   }
 
   @Test
@@ -467,35 +330,22 @@ class YamlWriterTest {
           listOf("class com.example.Foo")
         }
       )
-    }
+    }.toAdditionalProperties()
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  results-history-name: androidtest\n" +
-        "  test-targets:\n" +
-        "  - class com.example.Foo\n" +
-        "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension)
+    assertThat(extension).containsMatch("results-history-name: androidtest")
+    assertThat(extension).containsMatch(
+      """
+    |  test-targets:
+    |  - class com.example.Foo
+      """.trimMargin()
     )
   }
 
   @Test
   fun writeNoTestTargets() {
-    val extension = emptyExtension {}
+    val extension = emptyExtension {}.toAdditionalProperties()
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension)
-    )
+    assertThat(extension).doesNotContain("additional-test-apks")
   }
 
   @Test
@@ -506,18 +356,13 @@ class YamlWriterTest {
           listOf("class com.example.Foo#testThing")
         }
       )
-    }
+    }.toAdditionalProperties()
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  test-targets:\n" +
-        "  - class com.example.Foo#testThing\n" +
-        "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension)
+    assertThat(extension).containsMatch(
+      """
+    |  test-targets:
+    |  - class com.example.Foo#testThing
+      """.trimMargin()
     )
   }
 
@@ -529,19 +374,14 @@ class YamlWriterTest {
           listOf("class com.example.Foo#testThing", "class com.example.Foo#testThing2")
         }
       )
-    }
+    }.toAdditionalProperties()
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  test-targets:\n" +
-        "  - class com.example.Foo#testThing\n" +
-        "  - class com.example.Foo#testThing2\n" +
-        "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension)
+    assertThat(extension).containsMatch(
+      """
+    |  test-targets:
+    |  - class com.example.Foo#testThing
+    |  - class com.example.Foo#testThing2
+      """.trimMargin()
     )
   }
 
@@ -549,20 +389,9 @@ class YamlWriterTest {
   fun writeSmartFlankGcsPath() {
     val extension = emptyExtension {
       smartFlankGcsPath.set("gs://test/fakepath.xml")
-    }
+    }.toFlankProperties()
 
-    assertEquals(
-      "flank:\n" +
-        "  smart-flank-gcs-path: gs://test/fakepath.xml\n" +
-        "  keep-file-path: false\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  legacy-junit-result: false\n" +
-        "  full-junit-result: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
-    )
+    assertThat(extension).containsMatch("smart-flank-gcs-path: gs://test/fakepath.xml")
   }
 
   @Test
@@ -573,17 +402,9 @@ class YamlWriterTest {
           emptyList<String>()
         }
       )
-    }
+    }.toAdditionalProperties()
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension)
-    )
+    assertThat(extension).doesNotContain("directories-to-pull")
   }
 
   @Test
@@ -594,18 +415,13 @@ class YamlWriterTest {
           listOf("/sdcard/screenshots")
         }
       )
-    }
+    }.toAdditionalProperties()
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  directories-to-pull:\n" +
-        "  - /sdcard/screenshots\n" +
-        "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension)
+    assertThat(extension).containsMatch(
+      """
+    |  directories-to-pull:
+    |  - /sdcard/screenshots
+      """.trimMargin()
     )
   }
 
@@ -617,19 +433,14 @@ class YamlWriterTest {
           listOf("/sdcard/screenshots", "/sdcard/reports")
         }
       )
-    }
+    }.toAdditionalProperties()
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  directories-to-pull:\n" +
-        "  - /sdcard/screenshots\n" +
-        "  - /sdcard/reports\n" +
-        "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension)
+    assertThat(extension).containsMatch(
+      """
+    |  directories-to-pull:
+    |  - /sdcard/screenshots
+    |  - /sdcard/reports
+      """.trimMargin()
     )
   }
 
@@ -641,19 +452,9 @@ class YamlWriterTest {
           emptyList<String>()
         }
       )
-    }
+    }.toFlankProperties()
 
-    assertEquals(
-      "flank:\n" +
-        "  keep-file-path: false\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  legacy-junit-result: false\n" +
-        "  full-junit-result: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
-    )
+    assertThat(extension).doesNotContain("files-to-download")
   }
 
   @Test
@@ -664,20 +465,13 @@ class YamlWriterTest {
           listOf(".*/screenshots/.*")
         }
       )
-    }
+    }.toFlankProperties()
 
-    assertEquals(
-      "flank:\n" +
-        "  keep-file-path: false\n" +
-        "  files-to-download:\n" +
-        "  - .*/screenshots/.*\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  legacy-junit-result: false\n" +
-        "  full-junit-result: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
+    assertThat(extension).containsMatch(
+      """
+    |  files-to-download:
+    |  - .*/screenshots/.*
+      """.trimMargin()
     )
   }
 
@@ -689,21 +483,14 @@ class YamlWriterTest {
           listOf(".*/screenshots/.*", ".*/reports/.*")
         }
       )
-    }
+    }.toFlankProperties()
 
-    assertEquals(
-      "flank:\n" +
-        "  keep-file-path: false\n" +
-        "  files-to-download:\n" +
-        "  - .*/screenshots/.*\n" +
-        "  - .*/reports/.*\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  legacy-junit-result: false\n" +
-        "  full-junit-result: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
+    assertThat(extension).containsMatch(
+      """
+    |  files-to-download:
+    |  - .*/screenshots/.*
+    |  - .*/reports/.*
+      """.trimMargin()
     )
   }
 
@@ -717,18 +504,13 @@ class YamlWriterTest {
           )
         }
       )
-    }
+    }.toAdditionalProperties()
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  environment-variables:\n" +
-        "    listener: com.osacky.flank.sample.Listener\n" +
-        "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension)
+    assertThat(extension).containsMatch(
+      """
+    |  environment-variables:
+    |    listener: com.osacky.flank.sample.Listener
+      """.trimMargin()
     )
   }
 
@@ -743,77 +525,31 @@ class YamlWriterTest {
           )
         }
       )
-    }
+    }.toAdditionalProperties()
 
-    assertEquals(
-      "  use-orchestrator: false\n" +
-        "  auto-google-login: false\n" +
-        "  record-video: true\n" +
-        "  performance-metrics: true\n" +
-        "  timeout: 15m\n" +
-        "  environment-variables:\n" +
-        "    clearPackageData: true\n" +
-        "    listener: com.osacky.flank.sample.Listener\n" +
-        "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension)
-    )
-  }
-
-  @Test
-  fun writeDefaultProperties() {
-    val extension = emptyExtension {
-      useOrchestrator.set(true)
-      autoGoogleLogin.set(true)
-      recordVideo.set(false)
-      performanceMetrics.set(false)
-      testTimeout.set("45m")
-    }
-
-    assertEquals(
-      "  use-orchestrator: true\n" +
-        "  auto-google-login: true\n" +
-        "  record-video: false\n" +
-        "  performance-metrics: false\n" +
-        "  timeout: 45m\n" +
-        "  num-flaky-test-attempts: 0\n",
-      yamlWriter.writeAdditionalProperties(extension)
+    assertThat(extension).containsMatch(
+      """
+    |  environment-variables:
+    |    clearPackageData: true
+    |    listener: com.osacky.flank.sample.Listener
+      """.trimMargin()
     )
   }
 
   @Test
   fun writeNoKeepFilePath() {
-    val extension = emptyExtension()
+    val extension = emptyExtension().toFlankProperties()
 
-    assertEquals(
-      "flank:\n" +
-        "  keep-file-path: false\n" +
-        "  ignore-failed-tests: false\n" +
-        "  disable-sharding: false\n" +
-        "  smart-flank-disable-upload: false\n" +
-        "  legacy-junit-result: false\n" +
-        "  full-junit-result: false\n" +
-        "  output-style: single\n",
-      yamlWriter.writeFlankProperties(extension)
-    )
+    assertThat(extension).doesNotContain("keep-file-path")
   }
 
   @Test
   fun writeKeepFilePath() {
     val extension = emptyExtension {
       keepFilePath.set(true)
-    }
+    }.toFlankProperties()
 
-    assertThat(yamlWriter.writeFlankProperties(extension))
-      .isEqualTo(
-        "flank:\n" +
-          "  keep-file-path: true\n" +
-          "  ignore-failed-tests: false\n" +
-          "  disable-sharding: false\n" +
-          "  smart-flank-disable-upload: false\n" +
-          "  legacy-junit-result: false\n" +
-          "  full-junit-result: false\n" +
-          "  output-style: single\n"
-      )
+    assertThat(extension).containsMatch("keep-file-path: true")
   }
 
   @Test
@@ -833,69 +569,28 @@ class YamlWriterTest {
           )
         }
       )
-    }
+    }.toFlankProperties()
 
-    assertThat(
-      yamlWriter.writeFlankProperties(extension)
-    ).isEqualTo(
+    assertThat(extension).containsMatch(
       """
-             flank:
-               keep-file-path: false
-               additional-app-test-apks:
-                 - app: ../orange/build/output/app.apk
-                   test: ../orange/build/output/app-test2.apk
-                 - app: ../bob/build/output/app.apk
-                   test: ../bob/build/output/app-test.apk
-                 - test: ../bob/build/output/app-test2.apk
-                 - test: ../bob/build/output/app-test3.apk
-               ignore-failed-tests: false
-               disable-sharding: false
-               smart-flank-disable-upload: false
-               legacy-junit-result: false
-               full-junit-result: false
-               output-style: single
-      """.trimIndent() + '\n'
+    |  additional-app-test-apks:
+    |    - app: ../orange/build/output/app.apk
+    |      test: ../orange/build/output/app-test2.apk
+    |    - app: ../bob/build/output/app.apk
+    |      test: ../bob/build/output/app-test.apk
+    |    - test: ../bob/build/output/app-test2.apk
+    |    - test: ../bob/build/output/app-test3.apk
+      """.trimMargin()
     )
-  }
-
-  @Test
-  fun verifyDefaultValues() {
-    val defaultFlankProperties = emptyExtension().toFlankProperties()
-    val defaultAdditionalProperties = emptyExtension().toAdditionalProperties().trimIndent()
-
-    val expectedFlank =
-      """
-      flank:
-        keep-file-path: false
-        ignore-failed-tests: false
-        disable-sharding: false
-        smart-flank-disable-upload: false
-        legacy-junit-result: false
-        full-junit-result: false
-        output-style: single
-      """.trimIndent()
-
-    val expectedAdditional =
-      """
-        use-orchestrator: false
-        auto-google-login: false
-        record-video: true
-        performance-metrics: true
-        timeout: 15m
-        num-flaky-test-attempts: 0
-      """.trimIndent()
-
-    assertEquals(expectedFlank, defaultFlankProperties)
-    assertEquals(expectedAdditional, defaultAdditionalProperties)
   }
 
   @Test
   fun writeRunTimeout() {
     val extension = emptyExtension {
       runTimeout.set("20m")
-    }
+    }.toFlankProperties()
 
-    assertTrue(yamlWriter.writeFlankProperties(extension).contains("  run-timeout: 20m"))
+    assertThat(extension).containsMatch("run-timeout: 20m")
   }
 
   @Test
@@ -904,7 +599,7 @@ class YamlWriterTest {
       ignoreFailedTests.set(true)
     }.toFlankProperties()
 
-    assertTrue(properties.contains("  ignore-failed-tests: true"))
+    assertThat(properties).containsMatch("ignore-failed-tests: true")
   }
 
   @Test
@@ -913,7 +608,7 @@ class YamlWriterTest {
       disableSharding.set(true)
     }.toFlankProperties()
 
-    assertTrue(properties.contains("  disable-sharding: true"))
+    assertThat(properties).containsMatch("disable-sharding: true")
   }
 
   @Test
@@ -922,7 +617,7 @@ class YamlWriterTest {
       smartFlankDisableUpload.set(true)
     }.toFlankProperties()
 
-    assertTrue(properties.contains("  smart-flank-disable-upload: true"))
+    assertThat(properties).containsMatch("smart-flank-disable-upload: true")
   }
 
   @Test
@@ -931,7 +626,7 @@ class YamlWriterTest {
       testRunnerClass.set("any.class.Runner")
     }.toAdditionalProperties()
 
-    assertTrue(properties.contains("  test-runner-class: any.class.Runner"))
+    assertThat(properties).containsMatch("test-runner-class: any.class.Runner")
   }
 
   @Test
@@ -940,7 +635,7 @@ class YamlWriterTest {
       localResultsDir.set("~/my/results/dir")
     }.toFlankProperties()
 
-    assertTrue(properties.contains("  local-result-dir: ~/my/results/dir"))
+    assertThat(properties).containsMatch("local-result-dir: ~/my/results/dir")
   }
 
   @Test
@@ -949,7 +644,7 @@ class YamlWriterTest {
       numUniformShards.set(20)
     }.toAdditionalProperties()
 
-    assertTrue(properties.contains("  num-uniform-shards: 20"))
+    assertThat(properties).containsMatch("num-uniform-shards: 20")
   }
 
   @Test
@@ -958,14 +653,14 @@ class YamlWriterTest {
       outputStyle.set("anyString")
     }.toFlankProperties()
 
-    assertTrue(properties.contains("  output-style: anyString"))
+    assertThat(properties).containsMatch("output-style: anyString")
   }
 
   @Test
   fun missingOutputStyle() {
     val properties = emptyExtension().toFlankProperties()
 
-    assertTrue(properties.contains("  output-style: single"))
+    assertThat(properties).doesNotContainMatch("output-style")
   }
 
   @Test
@@ -974,14 +669,14 @@ class YamlWriterTest {
       legacyJunitResult.set(true)
     }.toFlankProperties()
 
-    assertTrue(properties.contains("  legacy-junit-result: true"))
+    assertThat(properties).containsMatch("legacy-junit-result: true")
   }
 
   @Test
   fun missingLegacyJunitResult() {
     val properties = emptyExtension().toFlankProperties()
 
-    assertTrue(properties.contains("  legacy-junit-result: false"))
+    assertThat(properties).doesNotContainMatch("legacy-junit-result")
   }
 
   @Test
@@ -990,14 +685,14 @@ class YamlWriterTest {
       fullJunitResult.set(true)
     }.toFlankProperties()
 
-    assertTrue(properties.contains("  full-junit-result: true"))
+    assertThat(properties).containsMatch("full-junit-result: true")
   }
 
   @Test
   fun missingFullJunitResult() {
     val properties = emptyExtension().toFlankProperties()
 
-    assertTrue(properties.contains("  full-junit-result: false"))
+    assertThat(properties).doesNotContainMatch("full-junit-result")
   }
 
   @Test
@@ -1013,14 +708,12 @@ class YamlWriterTest {
       )
     }.toAdditionalProperties()
 
-    assertTrue(
-      properties.contains(
-        """
+    assertThat(properties).containsMatch(
+      """
       |  client-details:
       |    anyDetail1: anyValue1
       |    anyDetail2: anyValue2
-    """.trimMargin()
-      )
+      """.trimMargin()
     )
   }
 
@@ -1038,15 +731,13 @@ class YamlWriterTest {
       )
     }.toFlankProperties()
 
-    assertTrue(
-      properties.contains(
-        """
+    assertThat(properties).containsMatch(
+      """
       |  test-targets-always-run:
       |  - class com.example.FirstTests#test1
       |  - class com.example.FirstTests#test2
       |  - class com.example.FirstTests#test3
-    """.trimMargin()
-      )
+      """.trimMargin()
     )
   }
 
@@ -1063,14 +754,12 @@ class YamlWriterTest {
       )
     }.toAdditionalProperties()
 
-    assertTrue(
-      properties.contains(
-        """
+    assertThat(properties).containsMatch(
+      """
         |  other-files:
         |    /example/path/test1: anyfile.txt
         |    /example/path/test2: anyfile2.txt
-    """.trimMargin()
-      )
+      """.trimMargin()
     )
   }
 
@@ -1080,7 +769,7 @@ class YamlWriterTest {
       networkProfile.set("LTE")
     }.toAdditionalProperties()
 
-    assertTrue(properties.contains("  network-profile: LTE"))
+    assertThat(properties).containsMatch("network-profile: LTE")
   }
 
   @Test
@@ -1089,7 +778,7 @@ class YamlWriterTest {
       roboScript.set("~/my/dir/with/script.json")
     }.toAdditionalProperties()
 
-    assertTrue(properties.contains("  robo-script: ~/my/dir/with/script.json"))
+    assertThat(properties).containsMatch("robo-script: ~/my/dir/with/script.json")
   }
 
   @Test
@@ -1106,15 +795,13 @@ class YamlWriterTest {
       )
     }.toAdditionalProperties()
 
-    assertTrue(
-      properties.contains(
-        """
+    assertThat(properties).containsMatch(
+      """
         |  robo-directives:
         |    click:button3: ""
         |    ignore:button1: ""
         |    text:field1: my common text
-    """.trimMargin()
-      )
+      """.trimMargin()
     )
   }
 

@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 package com.osacky.flank.gradle
 
 import groovy.lang.Closure
@@ -26,9 +28,9 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   // Project id is automatically discovered by default. Use this to override the project id.
   override val projectId: Property<String> = objects.property()
   override val serviceAccountCredentials: RegularFileProperty = objects.fileProperty()
-  override val useOrchestrator: Property<Boolean> = objects.property<Boolean>().convention(false)
-  override val autoGoogleLogin: Property<Boolean> = objects.property<Boolean>().convention(false)
-  override val devices: ListProperty<Map<String, String>> = objects.listProperty<Map<String, String>>().convention(listOf(mapOf("model" to "NexusLowRes", "version" to "28")))
+  override val useOrchestrator: Property<Boolean> = objects.property()
+  override val autoGoogleLogin: Property<Boolean> = objects.property()
+  override val devices: ListProperty<Map<String, String>> = objects.listProperty()
 
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
   override val testTargets: ListProperty<String> = objects.listProperty()
@@ -42,7 +44,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val resultsHistoryName: Property<String> = objects.property()
 
-  override val flakyTestAttempts: Property<Int> = objects.property<Int>().convention(0)
+  override val flakyTestAttempts: Property<Int> = objects.property()
 
   // Variant to use for configuring output APK.
   @get:Input
@@ -62,13 +64,13 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val environmentVariables: MapProperty<String, String> = objects.mapProperty()
 
-  override val recordVideo: Property<Boolean> = objects.property<Boolean>().convention(true)
+  override val recordVideo: Property<Boolean> = objects.property()
 
-  override val performanceMetrics: Property<Boolean> = objects.property<Boolean>().convention(true)
+  override val performanceMetrics: Property<Boolean> = objects.property()
 
   override val resultsBucket: Property<String> = objects.property()
 
-  override val keepFilePath: Property<Boolean> = objects.property<Boolean>().convention(false)
+  override val keepFilePath: Property<Boolean> = objects.property()
 
   override val resultsDir: Property<String> = objects.property()
 
@@ -76,11 +78,11 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val runTimeout: Property<String> = objects.property()
 
-  override val ignoreFailedTests: Property<Boolean> = objects.property<Boolean>().convention(false)
+  override val ignoreFailedTests: Property<Boolean> = objects.property()
 
-  override val disableSharding: Property<Boolean> = objects.property<Boolean>().convention(false)
+  override val disableSharding: Property<Boolean> = objects.property()
 
-  override val smartFlankDisableUpload: Property<Boolean> = objects.property<Boolean>().convention(false)
+  override val smartFlankDisableUpload: Property<Boolean> = objects.property()
 
   override val testRunnerClass: Property<String> = objects.property()
 
@@ -100,13 +102,13 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val roboDirectives: ListProperty<List<String>> = objects.listProperty()
 
-  override val testTimeout: Property<String> = objects.property<String>().convention("15m")
+  override val testTimeout: Property<String> = objects.property()
 
-  override val outputStyle: Property<String> = objects.property<String>().convention("single")
+  override val outputStyle: Property<String> = objects.property()
 
-  override val legacyJunitResult: Property<Boolean> = objects.property<Boolean>().convention(false)
+  override val legacyJunitResult: Property<Boolean> = objects.property()
 
-  override val fullJunitResult: Property<Boolean> = objects.property<Boolean>().convention(false)
+  override val fullJunitResult: Property<Boolean> = objects.property()
 
   @Internal
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {

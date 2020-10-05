@@ -5,7 +5,7 @@ import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesting
 
-internal class YamlWriter {
+class YamlWriter {
 
   internal fun createConfigProps(config: FladleConfig, base: FlankGradleExtension): String {
     if (base.projectId.orNull == null) {

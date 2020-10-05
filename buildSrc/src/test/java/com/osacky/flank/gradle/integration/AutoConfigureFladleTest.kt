@@ -61,25 +61,13 @@ class AutoConfigureFladleTest {
             version: 23
 
           use-orchestrator: true
-          auto-google-login: false
-          record-video: true
-          performance-metrics: true
-          timeout: 15m
           environment-variables:
             clearPackageData: true
           test-targets:
           - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView
-          num-flaky-test-attempts: 0
 
         flank:
           smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
-          keep-file-path: false
-          ignore-failed-tests: false
-          disable-sharding: false
-          smart-flank-disable-upload: false
-          legacy-junit-result: false
-          full-junit-result: false
-          output-style: single
       """.trimIndent()
     )
   }

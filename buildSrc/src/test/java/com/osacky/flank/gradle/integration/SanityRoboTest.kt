@@ -205,29 +205,12 @@ class SanityRoboTest {
       |gcloud:
       |  app: foo.apk
       |  test: test.apk
-      |  device:
-      |  - model: NexusLowRes
-      |    version: 28
-      |
-      |  use-orchestrator: false
-      |  auto-google-login: false
-      |  record-video: true
-      |  performance-metrics: true
-      |  timeout: 15m
-      |  num-flaky-test-attempts: 0
       |
       |flank:
-      |  keep-file-path: false
       |  additional-app-test-apks:
       |    - app: debug2.apk
       |      test: test2.apk
       |    - test: test3.apk
-      |  ignore-failed-tests: false
-      |  disable-sharding: false
-      |  smart-flank-disable-upload: false
-      |  legacy-junit-result: false
-      |  full-junit-result: false
-      |  output-style: single
     """.trimMargin()
     )
 
@@ -238,25 +221,8 @@ class SanityRoboTest {
       """
       |gcloud:
       |  app: foo.apk
-      |  device:
-      |  - model: NexusLowRes
-      |    version: 28
-      |
-      |  use-orchestrator: false
-      |  auto-google-login: false
-      |  record-video: true
-      |  performance-metrics: true
-      |  timeout: 15m
-      |  num-flaky-test-attempts: 0
       |
       |flank:
-      |  keep-file-path: false
-      |  ignore-failed-tests: false
-      |  disable-sharding: false
-      |  smart-flank-disable-upload: false
-      |  legacy-junit-result: false
-      |  full-junit-result: false
-      |  output-style: single
     """.trimMargin()
     )
   }
@@ -296,25 +262,8 @@ class SanityRoboTest {
       """
       |gcloud:
       |  app: foo.apk
-      |  device:
-      |  - model: NexusLowRes
-      |    version: 28
-      |
-      |  use-orchestrator: false
-      |  auto-google-login: false
-      |  record-video: true
-      |  performance-metrics: true
-      |  timeout: 15m
-      |  num-flaky-test-attempts: 0
       |
       |flank:
-      |  keep-file-path: false
-      |  ignore-failed-tests: false
-      |  disable-sharding: false
-      |  smart-flank-disable-upload: false
-      |  legacy-junit-result: false
-      |  full-junit-result: false
-      |  output-style: single
     """.trimMargin()
     )
 
@@ -326,29 +275,12 @@ class SanityRoboTest {
       |gcloud:
       |  app: foo.apk
       |  test: test.apk
-      |  device:
-      |  - model: NexusLowRes
-      |    version: 28
-      |
-      |  use-orchestrator: false
-      |  auto-google-login: false
-      |  record-video: true
-      |  performance-metrics: true
-      |  timeout: 15m
-      |  num-flaky-test-attempts: 0
       |
       |flank:
-      |  keep-file-path: false
       |  additional-app-test-apks:
       |    - app: debug2.apk
       |      test: test2.apk
       |    - test: test3.apk
-      |  ignore-failed-tests: false
-      |  disable-sharding: false
-      |  smart-flank-disable-upload: false
-      |  legacy-junit-result: false
-      |  full-junit-result: false
-      |  output-style: single
     """.trimMargin()
     )
   }
