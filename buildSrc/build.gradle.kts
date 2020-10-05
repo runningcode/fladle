@@ -156,4 +156,5 @@ tasks.withType(Test::class.java).configureEach {
   testLogging {
     events = setOf(TestLogEvent.SKIPPED, TestLogEvent.FAILED, TestLogEvent.PASSED)
   }
+  maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
 }
