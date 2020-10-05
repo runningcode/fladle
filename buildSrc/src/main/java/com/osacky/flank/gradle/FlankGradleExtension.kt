@@ -21,8 +21,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val sanityRobo: Property<Boolean> = objects.property<Boolean>().convention(false)
 
-  @get:Input
-  val flankVersion: Property<String> = objects.property(String::class.java).convention("20.09.3")
+  override val flankVersion: Property<String> = objects.property<String>().convention("20.09.3")
   // Project id is automatically discovered by default. Use this to override the project id.
   override val projectId: Property<String> = objects.property()
   override val serviceAccountCredentials: RegularFileProperty = objects.fileProperty()
@@ -113,6 +112,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
     FladleConfigImpl(
       name = it,
       projectId = objects.property<String>().convention(projectId),
+      flankVersion = objects.property<String>().convention(flankVersion),
       serviceAccountCredentials = objects.fileProperty().convention(serviceAccountCredentials),
       debugApk = objects.property<String>().convention(debugApk),
       instrumentationApk = objects.property<String>().convention(instrumentationApk),

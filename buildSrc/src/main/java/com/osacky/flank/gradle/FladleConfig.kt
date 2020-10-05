@@ -1,5 +1,6 @@
 package com.osacky.flank.gradle
 
+import com.osacky.flank.gradle.validation.SinceFlank
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
@@ -17,6 +18,9 @@ interface FladleConfig {
   @get:InputFile
   @get:Optional
   val serviceAccountCredentials: RegularFileProperty
+
+  @get:Input
+  val flankVersion: Property<String>
 
   /**
    * debugApk and instrumentationApk are [Property<String>] and not [RegularFileProperty] because we support wildcard characters.
@@ -195,6 +199,7 @@ interface FladleConfig {
    * (default: no network shaping; see available profiles listed by the `flank test network-profiles list` command).
    * This feature only works on physical devices.
    */
+  @get:SinceFlank("21.0.0")
   @get:Input
   @get:Optional
   val networkProfile: Property<String>
