@@ -29,8 +29,8 @@ class ValidateOptionsTest {
   fun `should throw an error when unavailable option used`() {
     config.outputStyle.set("single")
 
-    assertThrows(IllegalStateException::class.java) { validateOptionsUsed(config, "20.00.0") }.run {
-      assertThat(message).containsMatch("Option outputStyle is available since flank 20.06.0, which is higher than used 20.00.0")
+    assertThrows(IllegalStateException::class.java) { validateOptionsUsed(config, "20.05.0") }.run {
+      assertThat(message).containsMatch("Option outputStyle is available since flank 20.06.0, which is higher than used 20.05.0")
     }
   }
 
@@ -64,7 +64,7 @@ class ValidateOptionsTest {
       |  serviceAccountCredentials = layout.projectDirectory.file("flank-gradle-service.json")
       |  debugApk = "foo.apk"
       |  instrumentationApk = "test.apk"      
-      |  flankVersion.set("20.0.0")
+      |  flankVersion.set("20.05.0")
       |  configs {
       |    newNetwork {
       |      outputStyle.set("verbose")
@@ -81,17 +81,17 @@ class ValidateOptionsTest {
 
     runner.withArguments("printYml").buildAndFail().run {
       assertThat(output).contains("FAILED")
-      assertThat(output).contains("Option outputStyle is available since flank 20.06.0, which is higher than used 20.00.0")
+      assertThat(output).contains("Option outputStyle is available since flank 20.06.0, which is higher than used 20.05.0")
     }
 
     runner.withArguments("printYmlNewNetwork").buildAndFail().run {
       assertThat(output).contains("FAILED")
-      assertThat(output).contains("Option outputStyle is available since flank 20.06.0, which is higher than used 20.00.0")
+      assertThat(output).contains("Option outputStyle is available since flank 20.06.0, which is higher than used 20.05.0")
     }
 
     runner.withArguments("printYmlNoSharding").buildAndFail().run {
       assertThat(output).contains("FAILED")
-      assertThat(output).contains("Option outputStyle is available since flank 20.06.0, which is higher than used 20.00.0")
+      assertThat(output).contains("Option outputStyle is available since flank 20.06.0, which is higher than used 20.05.0")
     }
   }
 

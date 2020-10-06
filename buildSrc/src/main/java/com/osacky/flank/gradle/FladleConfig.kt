@@ -59,6 +59,7 @@ interface FladleConfig {
   @get:Optional
   val shardTime: Property<Int>
 
+  @SinceFlank("8.0.0")
   @get:Input
   @get:Optional
   val repeatTests: Property<Int>
@@ -87,6 +88,7 @@ interface FladleConfig {
   val performanceMetrics: Property<Boolean>
 
   // The number of times to retry failed tests. Default is 0. Max is 10.
+  @get:SinceFlank("8.0.0")
   @get:Input
   val flakyTestAttempts: Property<Int>
 
@@ -94,6 +96,7 @@ interface FladleConfig {
   @get:Optional
   val resultsBucket: Property<String>
 
+  @get:SinceFlank("8.1.0")
   @get:Input
   val keepFilePath: Property<Boolean>
 
@@ -105,12 +108,14 @@ interface FladleConfig {
   @get:Optional
   val resultsDir: Property<String>
 
+  @SinceFlank("6.1.0")
   @get:Input
   val additionalTestApks: ListProperty<String>
 
   /**
    * The max time this test run can execute before it is cancelled (default: unlimited).
    */
+  @get:SinceFlank("20.05.0")
   @get:Input
   @get:Optional
   val runTimeout: Property<String>
@@ -120,6 +125,7 @@ interface FladleConfig {
    * Useful for Fladle and other gradle plugins that don't expect the process to have a non-zero exit code.
    * The JUnit XML is used to determine failure. (default: false)
    */
+  @get:SinceFlank("20.05.0")
   @get:Input
   @get:Optional
   val ignoreFailedTests: Property<Boolean>
@@ -140,6 +146,7 @@ interface FladleConfig {
    * The fully-qualified Java class name of the instrumentation test runner
    * (default: the last name extracted from the APK manifest).
    */
+  @get:SinceFlank("6.2.0")
   @get:Input
   @get:Optional
   val testRunnerClass: Property<String>
@@ -162,6 +169,7 @@ interface FladleConfig {
    * If you want to take benefits of smart sharding use max-test-shards instead.
    * (default: null)
    */
+  @get:SinceFlank("20.05.0")
   @get:Input
   @get:Optional
   val numUniformShards: Property<Int>
@@ -172,6 +180,7 @@ interface FladleConfig {
    * When consuming the test results, such as in Cloud Functions or a CI system,
    * these details can add additional context such as a link to the corresponding pull request.
    */
+  @get:SinceFlank("20.05.0")
   @get:Input
   val clientDetails: MapProperty<String, String>
 
@@ -187,6 +196,7 @@ interface FladleConfig {
    * Device paths must be under absolute, whitelisted paths (${EXTERNAL_STORAGE}, or ${ANDROID_DATA}/local/tmp).
    * Source file paths may be in the local filesystem or in Google Cloud Storage (gs://…).
    */
+  @get:SinceFlank("20.05.0")
   @get:Input
   val otherFiles: MapProperty<String, String>
 
@@ -196,6 +206,7 @@ interface FladleConfig {
    * (default: no network shaping; see available profiles listed by the `flank test network-profiles list` command).
    * This feature only works on physical devices.
    */
+  @get:SinceFlank("20.05.0")
   @get:Input
   @get:Optional
   val networkProfile: Property<String>
@@ -206,6 +217,7 @@ interface FladleConfig {
    * You can guide the Robo test to perform specific actions by recording a Robo Script in Android Studio and then specifying this argument.
    * Learn more at [https://firebase.google.com/docs/test-lab/robo-ux-test#scripting].
    */
+  @get:SinceFlank("20.05.0")
   @get:Input
   @get:Optional
   val roboScript: Property<String>
@@ -217,6 +229,7 @@ interface FladleConfig {
    * Each key should be the Android resource name of a target UI element and each value should be the text input for that element.
    * Values are only permitted for text type elements, so no value should be specified for click and ignore type elements.
    */
+  @get:SinceFlank("20.05.0")
   @get:Input
   val roboDirectives: ListProperty<List<String>>
 
@@ -250,12 +263,14 @@ interface FladleConfig {
    * New way uses google api instead of merging xml files, but can generate slightly different output format.
    * This flag allows fallback for legacy xml junit results parsing
    */
+  @get:SinceFlank("20.05.0")
   @get:Input
   val legacyJunitResult: Property<Boolean>
 
   /**
    * Enables creating an additional local junit result on local storage with failure nodes on passed flaky tests.
    */
+  @SinceFlank("20.06.0")
   @get:Input
   val fullJunitResult: Property<Boolean>
 }
