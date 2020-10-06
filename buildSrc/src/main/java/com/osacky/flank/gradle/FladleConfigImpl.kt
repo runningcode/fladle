@@ -7,7 +7,6 @@ import org.gradle.api.provider.Property
 
 data class FladleConfigImpl(
   internal val name: String,
-  override val flankVersion: Property<String>,
   override val projectId: Property<String>,
   override val serviceAccountCredentials: RegularFileProperty,
   override val debugApk: Property<String>,

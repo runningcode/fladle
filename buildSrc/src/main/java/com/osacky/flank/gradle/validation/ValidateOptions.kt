@@ -6,10 +6,10 @@ import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import kotlin.reflect.full.memberProperties
 
-fun FladleConfig.validateOptionsUsed() = this::class.memberProperties
+fun validateOptionsUsed(config: FladleConfig, flank: String) = config::class.memberProperties
   .asSequence()
   .filter {
-    when (val prop = it.call(this)) {
+    when (val prop = it.call(config)) {
       is Property<*> -> prop.isPresent
       is MapProperty<*, *> -> prop.isPresent
       is ListProperty<*> -> prop.isPresent
@@ -18,28 +18,34 @@ fun FladleConfig.validateOptionsUsed() = this::class.memberProperties
   }
   .mapNotNull { property -> properties[property.name]?.let { property to it } }
   .forEach { (property, version) ->
-    val configFlankVersion = flankVersion.get().toVersion()
+    val configFlankVersion = flank.toVersion()
     if (version > configFlankVersion) throw IllegalStateException("Option ${property.name} is available since flank $version, which is higher than used $configFlankVersion")
   }
 
 private data class FlankVersion(
   val year: Int,
   val month: Int,
-  val minor: Int
+  val minor: Int = 0
 ) {
-  operator fun compareTo(second: FlankVersion): Int {
-    if (year > second.year) return 1
-    if (month > second.month) return 1
-    return if (minor > second.minor) 1
-    else -1
+  operator fun compareTo(second: FlankVersion) = when {
+    year > second.year -> 1
+    year == second.year && month > second.month -> 1
+    year == second.year && month == second.month && minor > second.minor -> 1
+    minor == second.minor -> 0
+    else -> -1
   }
 
-  override fun toString() = "$year.$month.$minor"
+  override fun toString() = "$year.${if (month < 10) "0$month" else month}.$minor"
 }
 
 private fun String.toVersion(): FlankVersion {
-  val numbers = split(".")
-  return FlankVersion(Integer.valueOf(numbers[0]), Integer.valueOf(numbers[1]), Integer.valueOf(numbers[2]))
+  val numbers = split(".").map { Integer.valueOf(it) }
+  return when (numbers.size) {
+    // for legacy 6/7/8.x versions
+    2 -> FlankVersion(numbers[0], numbers[1])
+    3 -> FlankVersion(numbers[0], numbers[1], numbers[2])
+    else -> throw IllegalStateException("Incorrect flank version format $this. Should consists of 3 numbers (example: 20.08.3)")
+  }
 }
 
 private val properties = FladleConfig::class.memberProperties

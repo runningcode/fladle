@@ -1,6 +1,5 @@
 package com.osacky.flank.gradle
 
-import com.osacky.flank.gradle.validation.validateOptionsUsed
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
@@ -9,7 +8,6 @@ import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesti
 internal class YamlWriter {
 
   internal fun createConfigProps(config: FladleConfig, base: FlankGradleExtension): String {
-    config.validateOptionsUsed()
     if (base.projectId.orNull == null) {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials" }
     }

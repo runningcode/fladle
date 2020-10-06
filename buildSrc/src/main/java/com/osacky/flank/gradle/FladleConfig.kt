@@ -19,9 +19,6 @@ interface FladleConfig {
   @get:Optional
   val serviceAccountCredentials: RegularFileProperty
 
-  @get:Input
-  val flankVersion: Property<String>
-
   /**
    * debugApk and instrumentationApk are [Property<String>] and not [RegularFileProperty] because we support wildcard characters.
    */
@@ -199,7 +196,6 @@ interface FladleConfig {
    * (default: no network shaping; see available profiles listed by the `flank test network-profiles list` command).
    * This feature only works on physical devices.
    */
-  @get:SinceFlank("21.0.0")
   @get:Input
   @get:Optional
   val networkProfile: Property<String>
@@ -245,6 +241,7 @@ interface FladleConfig {
    * 'multi' is used as the default. The output style 'multi' is not displayed correctly on consoles
    * which don't support ansi codes, to avoid corrupted output use single or verbose.
    */
+  @get:SinceFlank("20.06.0")
   @get:Input
   val outputStyle: Property<String>
 
