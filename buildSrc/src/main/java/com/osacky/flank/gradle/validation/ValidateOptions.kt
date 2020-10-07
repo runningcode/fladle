@@ -23,22 +23,6 @@ fun validateOptionsUsed(config: FladleConfig, flank: String) = config::class.mem
     if (version > configFlankVersion) throw IllegalStateException("Option ${property.name} is available since flank $version, which is higher than used $configFlankVersion")
   }
 
-private data class FlankVersion(
-  val year: Int,
-  val month: Int,
-  val minor: Int = 0
-) {
-  operator fun compareTo(second: FlankVersion) = when {
-    year > second.year -> 1
-    year == second.year && month > second.month -> 1
-    year == second.year && month == second.month && minor > second.minor -> 1
-    minor == second.minor -> 0
-    else -> -1
-  }
-
-  override fun toString() = "$year.${if (month < 10) "0$month" else month}.$minor"
-}
-
 private fun String.toVersion() = VersionNumber.parse(this)
 
 private val properties = FladleConfig::class.memberProperties
