@@ -4,6 +4,7 @@ import com.osacky.flank.gradle.FladleConfig
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
+import org.gradle.util.VersionNumber
 import kotlin.reflect.full.memberProperties
 
 fun validateOptionsUsed(config: FladleConfig, flank: String) = config::class.memberProperties
@@ -38,15 +39,7 @@ private data class FlankVersion(
   override fun toString() = "$year.${if (month < 10) "0$month" else month}.$minor"
 }
 
-private fun String.toVersion(): FlankVersion {
-  val numbers = split(".").map { Integer.valueOf(it) }
-  return when (numbers.size) {
-    // for legacy 6/7/8.x versions
-    2 -> FlankVersion(numbers[0], numbers[1])
-    3 -> FlankVersion(numbers[0], numbers[1], numbers[2])
-    else -> throw IllegalStateException("Incorrect flank version format $this. Should consists of 3 numbers (example: 20.08.3)")
-  }
-}
+private fun String.toVersion() = VersionNumber.parse(this)
 
 private val properties = FladleConfig::class.memberProperties
   .asSequence()

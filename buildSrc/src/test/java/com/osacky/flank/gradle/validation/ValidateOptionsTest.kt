@@ -30,19 +30,7 @@ class ValidateOptionsTest {
     config.outputStyle.set("single")
 
     assertThrows(IllegalStateException::class.java) { validateOptionsUsed(config, "20.05.0") }.run {
-      assertThat(message).containsMatch("Option outputStyle is available since flank 20.06.0, which is higher than used 20.05.0")
-    }
-  }
-
-  @Test
-  fun `should throw an error when incorrect flank version used`() {
-    config.networkProfile.set("LET")
-
-    assertThrows(IllegalStateException::class.java) { validateOptionsUsed(config, "1.2.3.4") }.run {
-      assertThat(message).isEqualTo("Incorrect flank version format 1.2.3.4. Should consists of 3 numbers (example: 20.08.3)")
-    }
-    assertThrows(IllegalStateException::class.java) { validateOptionsUsed(config, "1") }.run {
-      assertThat(message).isEqualTo("Incorrect flank version format 1. Should consists of 3 numbers (example: 20.08.3)")
+      assertThat(message).containsMatch("Option outputStyle is available since flank 20.6.0, which is higher than used 20.5.0")
     }
   }
 
@@ -81,17 +69,17 @@ class ValidateOptionsTest {
 
     runner.withArguments("printYml").buildAndFail().run {
       assertThat(output).contains("FAILED")
-      assertThat(output).contains("Option outputStyle is available since flank 20.06.0, which is higher than used 20.05.0")
+      assertThat(output).contains("Option outputStyle is available since flank 20.6.0, which is higher than used 20.5.0")
     }
 
     runner.withArguments("printYmlNewNetwork").buildAndFail().run {
       assertThat(output).contains("FAILED")
-      assertThat(output).contains("Option outputStyle is available since flank 20.06.0, which is higher than used 20.05.0")
+      assertThat(output).contains("Option outputStyle is available since flank 20.6.0, which is higher than used 20.5.0")
     }
 
     runner.withArguments("printYmlNoSharding").buildAndFail().run {
       assertThat(output).contains("FAILED")
-      assertThat(output).contains("Option outputStyle is available since flank 20.06.0, which is higher than used 20.05.0")
+      assertThat(output).contains("Option outputStyle is available since flank 20.6.0, which is higher than used 20.5.0")
     }
   }
 
