@@ -27,10 +27,10 @@ class ValidateOptionsTest {
 
   @Test
   fun `should throw an error when unavailable option used`() {
-    config.outputStyle.set("single")
+    config.useAverageTestTimeForNewTests.set(true)
 
     assertThrows(IllegalStateException::class.java) { validateOptionsUsed(config, "20.05.0") }.run {
-      assertThat(message).containsMatch("Option outputStyle is available since flank 20.6.0, which is higher than used 20.5.0")
+      assertThat(message).containsMatch("Option useAverageTestTimeForNewTests is available since flank 20.8.4, which is higher than used 20.5.0")
     }
   }
 
@@ -55,7 +55,7 @@ class ValidateOptionsTest {
       |  flankVersion.set("20.05.0")
       |  configs {
       |    newNetwork {
-      |      outputStyle.set("verbose")
+      |      useAverageTestTimeForNewTests.set(true)
       |    }
       |    noSharding {
       |      disableSharding.set(true)
@@ -69,17 +69,17 @@ class ValidateOptionsTest {
 
     runner.withArguments("printYml").buildAndFail().run {
       assertThat(output).contains("FAILED")
-      assertThat(output).contains("Option outputStyle is available since flank 20.6.0, which is higher than used 20.5.0")
+      assertThat(output).contains("Option useAverageTestTimeForNewTests is available since flank 20.8.4, which is higher than used 20.5.0")
     }
 
     runner.withArguments("printYmlNewNetwork").buildAndFail().run {
       assertThat(output).contains("FAILED")
-      assertThat(output).contains("Option outputStyle is available since flank 20.6.0, which is higher than used 20.5.0")
+      assertThat(output).contains("Option useAverageTestTimeForNewTests is available since flank 20.8.4, which is higher than used 20.5.0")
     }
 
     runner.withArguments("printYmlNoSharding").buildAndFail().run {
       assertThat(output).contains("FAILED")
-      assertThat(output).contains("Option outputStyle is available since flank 20.6.0, which is higher than used 20.5.0")
+      assertThat(output).contains("Option useAverageTestTimeForNewTests is available since flank 20.8.4, which is higher than used 20.5.0")
     }
   }
 

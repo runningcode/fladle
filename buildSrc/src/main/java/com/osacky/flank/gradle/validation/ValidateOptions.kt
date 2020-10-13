@@ -28,6 +28,8 @@ private fun String.toVersion() = VersionNumber.parse(this)
 private val properties = FladleConfig::class.memberProperties
   .asSequence()
   .map { it to it.getter.annotations }
-  .filter { it.second.any { annotation -> annotation is SinceFlank } }
+  // we also need to exclude properties with default values to preserve backward compatibility
+  // to be fixed
+  .filter { it.second.any { annotation -> annotation is SinceFlank && !annotation.hasDefaultValue } }
   .map { it.first.name to it.second.filterIsInstance<SinceFlank>().first().version.toVersion() }
   .toMap()
