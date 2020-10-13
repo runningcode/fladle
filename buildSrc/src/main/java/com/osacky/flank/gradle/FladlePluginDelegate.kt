@@ -81,19 +81,14 @@ class FladlePluginDelegate {
       dependsOn(writeConfigProps)
     }
 
-    val execFlank = register("execFlank$name", FlankExecutionTask::class.java, config)
+    val execFlank = register("execFlank$name", FlankExecutionTask::class.java)
     execFlank.configure {
-      description = "Runs instrumentation tests using flank on firebase test lab."
-      classpath = project.fladleConfig
-      args = if (project.hasProperty("dumpShards")) {
-        listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath, "--dump-shards")
-      } else {
-        listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath)
-      }
-      if (config.serviceAccountCredentials.isPresent) {
-        environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to config.serviceAccountCredentials.get()))
-      }
+      dumpShards.set(project.hasProperty("dumpShards"))
+      serviceAccountCredentials.set(config.serviceAccountCredentials)
+
+      fladleConfig.from(project.fladleConfig)
       dependsOn(writeConfigProps)
+      yamlFile.value(writeConfigProps.flatMap { it.fladleConfigFile })
     }
 
     register("runFlank$name", RunFlankTask::class.java).configure {
