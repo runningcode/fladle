@@ -123,7 +123,7 @@ fladle {
     legacyJunitResult = false
     fullJunitResult = false
     additionalApks = [
-      "gs://path/to/app1.apk"
+      "gs://path/to/app1.apk",
       "localPath/to/app2.apk"
     ]
     defaultTestTime = 5.3
@@ -768,77 +768,77 @@ Runs a sanityRobo test.
 `instrumentationApk`, `roboDirectives`, `roboScript` and `additionalTestApks` must be blank or empty.
 
 === "Groovy"
-``` groovy
-sanityRobo = true
-```
+    ``` groovy
+    sanityRobo = true
+    ```
 === "Kotlin"
-``` kotlin
-sanityRobo.set(true)
-```
+    ``` kotlin
+    sanityRobo.set(true)
+    ```
 
 ### defaultTestTime
 Set default test time expressed in seconds, used for calculating shards. (default: 120.0s)
 
 === "Groovy"
-``` groovy
-defaultTestTime = 1.2
-```
+    ``` groovy
+    defaultTestTime = 1.2
+    ```
 === "Kotlin"
-``` kotlin
-defaultTestTime.set(1.2)
-```
+    ``` kotlin
+    defaultTestTime.set(1.2)
+    ```
 
 ### defaultClassTestTime
 Set default parameterized class test time expressed in seconds, used for calculating shards. (default: 2x [defaultTestTime](configuration.md#defaulttesttime) => 240s)
 
 === "Groovy"
-``` groovy
-defaultClassTestTime = 245.5
-```
+    ``` groovy
+    defaultClassTestTime = 245.5
+    ```
 === "Kotlin"
-``` kotlin
-defaultClassTestTime.set(245,5)
-```
+    ``` kotlin
+    defaultClassTestTime.set(245,5)
+    ```
 
 ### additionalApks
 A list of up to 100 additional APKs to install, in addition to those being directly tested. The path may be in the local filesystem or in Google Cloud Storage using gs:// notation.
 
 === "Groovy"
-``` groovy
-additionalApks = [
-  "gs://path/to/app1.apk",
-  "localPath/to/app2.apk"
-]
-```
+    ``` groovy
+    additionalApks = [
+      "gs://path/to/app1.apk",
+      "localPath/to/app2.apk"
+    ]
+    ```
 === "Kotlin"
-``` kotlin
-additionalApks.set(
-  project.provider {
-    listOf("gs://path/to/app1.apk", "localPath/to/app2.apk")
-  }
-)
-```
+    ``` kotlin
+    additionalApks.set(
+      project.provider {
+         listOf("gs://path/to/app1.apk", "localPath/to/app2.apk")
+      }
+    )
+    ```
 
 ### useAverageTestTimeForNewTests
 Enable using average time from previous tests duration when using SmartShard and tests did not run before. (default: false)
 
 === "Groovy"
-``` groovy
-useAverageTestTimeForNewTests = true
-```
+    ``` groovy
+    useAverageTestTimeForNewTests = true
+    ```
 === "Kotlin"
-``` kotlin
-useAverageTestTimeForNewTests.set(true)
-```
+    ``` kotlin
+    useAverageTestTimeForNewTests.set(true)
+    ```
 
 ### disableResultsUpload
 Disable flank results upload on gcloud storage. (default: false)
 
 === "Groovy"
-``` groovy
-disableResultsUpload = true
-```
+    ``` groovy
+    disableResultsUpload = true
+    ```
 === "Kotlin"
-``` kotlin
-disableResultsUpload.set(true)
-```
+    ``` kotlin
+    disableResultsUpload.set(true)
+    ```
