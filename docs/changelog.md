@@ -1,6 +1,12 @@
 # Changelog
 
 ## Unreleased
+* Add support for newly added flank options [PR#186](https://github.com/runningcode/fladle/pull/186) Thanks [pawelpasterz](https://github.com/pawelpasterz): 
+    * `default-test-time`
+    * `default-class-test-time`
+    * `additional-apks`
+    * `use-average-test-time-for-new-tests`
+    * `disable-results-upload`
 
 ## 0.13.0
 * Add support for sanityRobo tests [Fixes #165](https://github.com/runningcode/fladle/issues/165) [PR](https://github.com/runningcode/fladle/pull/177) Thanks [pawelpasterz](https://github.com/pawelpasterz)

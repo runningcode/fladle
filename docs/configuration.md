@@ -95,7 +95,7 @@ fladle {
     }
     resultsBucket("my-results-bucket-name")
     keepFilePath = true
-    runTimout = 45m
+    runTimout = "45m"
     ignoreFailedTests = false
     disableSharding = false
     smartFlankDisableUpload = false
@@ -122,13 +122,14 @@ fladle {
     outputStyle = 'multi'
     legacyJunitResult = false
     fullJunitResult = false
-    additional-apks:
-      - gs://path/to/app1.apk
-      - localPath/to/app2.apk
-    default-test-time: 5.3
-    default-class-test-time: 180.5
-    use-average-test-time-for-new-tests: true
-    disable-results-upload: true
+    additionalApks = [
+      "gs://path/to/app1.apk"
+      "localPath/to/app2.apk"
+    ]
+    defaultTestTime = 5.3
+    defaultClassTestTime = 180.5
+    useAverageTestTimeForNewTests = true
+    disableResultsUpload = true
 }
 ```
 
