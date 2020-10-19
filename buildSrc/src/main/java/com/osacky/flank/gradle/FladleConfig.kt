@@ -59,7 +59,7 @@ interface FladleConfig {
   @get:Optional
   val shardTime: Property<Int>
 
-  @SinceFlank("8.0.0")
+  @get:SinceFlank("8.0.0")
   @get:Input
   @get:Optional
   val repeatTests: Property<Int>
@@ -96,7 +96,7 @@ interface FladleConfig {
   @get:Optional
   val resultsBucket: Property<String>
 
-  @get:SinceFlank("8.1.0")
+  @get:SinceFlank("8.1.0", hasDefaultValue = true)
   @get:Input
   val keepFilePath: Property<Boolean>
 
@@ -108,7 +108,7 @@ interface FladleConfig {
   @get:Optional
   val resultsDir: Property<String>
 
-  @SinceFlank("6.1.0")
+  @get:SinceFlank("6.1.0")
   @get:Input
   val additionalTestApks: ListProperty<String>
 
@@ -125,7 +125,7 @@ interface FladleConfig {
    * Useful for Fladle and other gradle plugins that don't expect the process to have a non-zero exit code.
    * The JUnit XML is used to determine failure. (default: false)
    */
-  @get:SinceFlank("20.05.0")
+  @get:SinceFlank("20.05.0", hasDefaultValue = true)
   @get:Input
   @get:Optional
   val ignoreFailedTests: Property<Boolean>
@@ -254,7 +254,7 @@ interface FladleConfig {
    * 'multi' is used as the default. The output style 'multi' is not displayed correctly on consoles
    * which don't support ansi codes, to avoid corrupted output use single or verbose.
    */
-  @get:SinceFlank("20.06.0")
+  @get:SinceFlank("20.06.0", hasDefaultValue = true)
   @get:Input
   val outputStyle: Property<String>
 
@@ -263,14 +263,59 @@ interface FladleConfig {
    * New way uses google api instead of merging xml files, but can generate slightly different output format.
    * This flag allows fallback for legacy xml junit results parsing
    */
-  @get:SinceFlank("20.05.0")
+  @get:SinceFlank("20.05.0", hasDefaultValue = true)
   @get:Input
   val legacyJunitResult: Property<Boolean>
 
   /**
    * Enables creating an additional local junit result on local storage with failure nodes on passed flaky tests.
    */
-  @SinceFlank("20.06.0")
+  @get:SinceFlank("20.06.0", hasDefaultValue = true)
   @get:Input
   val fullJunitResult: Property<Boolean>
+
+  /**
+   * A list of up to 100 additional APKs to install, in addition to those being directly tested.
+   * The path may be in the local filesystem or in Google Cloud Storage using gs:// notation.
+   */
+  @get:SinceFlank("20.05.0")
+  @get:Input
+  @get:Optional
+  val additionalApks: ListProperty<String>
+
+  /**
+   * Enable using average time from previous tests duration when using SmartShard and tests did not run before.
+   * (default: false)
+   */
+  @get:SinceFlank("20.08.4")
+  @get:Input
+  @get:Optional
+  val useAverageTestTimeForNewTests: Property<Boolean>
+
+  /**
+   * Set default test time expressed in seconds, used for calculating shards.
+   * (default: 120.0s)
+   */
+  @get:SinceFlank("20.08.4")
+  @get:Input
+  @get:Optional
+  val defaultTestTime: Property<Double>
+
+  /**
+   * Set default parameterized class test time expressed in seconds, used for calculating shards.
+   * (default: 2x [defaultTestTime] => 240s)
+   */
+  @get:SinceFlank("20.08.4")
+  @get:Input
+  @get:Optional
+  val defaultClassTestTime: Property<Double>
+
+  /**
+   * Disable flank results upload on gcloud storage.
+   * (default: false)
+   */
+  @get:SinceFlank("20.07.0")
+  @get:Input
+  @get:Optional
+  val disableResultsUpload: Property<Boolean>
 }

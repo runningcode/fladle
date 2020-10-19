@@ -47,7 +47,12 @@ data class FladleConfigImpl(
   override val testTimeout: Property<String>,
   override val outputStyle: Property<String>,
   override val legacyJunitResult: Property<Boolean>,
-  override val fullJunitResult: Property<Boolean>
+  override val fullJunitResult: Property<Boolean>,
+  override val additionalApks: ListProperty<String>,
+  override val defaultTestTime: Property<Double>,
+  override val useAverageTestTimeForNewTests: Property<Boolean>,
+  override val defaultClassTestTime: Property<Double>,
+  override val disableResultsUpload: Property<Boolean>
 ) : FladleConfig {
   /**
    * Prepare config to run sanity robo.

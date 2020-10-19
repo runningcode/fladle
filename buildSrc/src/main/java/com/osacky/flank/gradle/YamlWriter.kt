@@ -63,6 +63,10 @@ internal class YamlWriter {
     appendProperty(config.legacyJunitResult, name = "legacy-junit-result")
     appendProperty(config.fullJunitResult, name = "full-junit-result")
     appendProperty(config.outputStyle, name = "output-style")
+    appendProperty(config.defaultTestTime, name = "default-test-time")
+    appendProperty(config.defaultClassTestTime, name = "default-class-test-time")
+    appendProperty(config.useAverageTestTimeForNewTests, name = "use-average-test-time-for-new-tests")
+    appendProperty(config.disableResultsUpload, name = "disable-results-upload")
   }
 
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
@@ -92,6 +96,7 @@ internal class YamlWriter {
         appendln("    ${it[0]}:${it[1]}: $value")
       }
     }
+    appendListProperty(config.additionalApks, name = "additional-apks") { appendln("    - $it") }
   }
 
   private fun <T> StringBuilder.appendProperty(prop: Property<T>, name: String) {

@@ -108,6 +108,15 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val fullJunitResult: Property<Boolean> = objects.property<Boolean>().convention(false)
 
+  override val additionalApks: ListProperty<String> = objects.listProperty()
+
+  override val defaultTestTime: Property<Double> = objects.property()
+
+  override val useAverageTestTimeForNewTests: Property<Boolean> = objects.property()
+
+  override val defaultClassTestTime: Property<Double> = objects.property()
+
+  override val disableResultsUpload: Property<Boolean> = objects.property()
   @Internal
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
@@ -152,7 +161,12 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       testTimeout = objects.property<String>().convention(testTimeout),
       outputStyle = objects.property<String>().convention(outputStyle),
       legacyJunitResult = objects.property<Boolean>().convention(legacyJunitResult),
-      fullJunitResult = objects.property<Boolean>().convention(fullJunitResult)
+      fullJunitResult = objects.property<Boolean>().convention(fullJunitResult),
+      additionalApks = objects.listProperty<String>().convention(additionalApks),
+      useAverageTestTimeForNewTests = objects.property<Boolean>().convention(useAverageTestTimeForNewTests),
+      defaultTestTime = objects.property<Double>().convention(defaultTestTime),
+      defaultClassTestTime = objects.property<Double>().convention(defaultClassTestTime),
+      disableResultsUpload = objects.property<Boolean>().convention(disableResultsUpload)
     )
   }
 
