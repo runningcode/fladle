@@ -2,11 +2,11 @@ package com.osacky.flank.gradle
 
 import com.android.build.gradle.AppExtension
 import com.android.builder.model.TestOptions
-import com.osacky.flank.gradle.results.createDefaultResultsDir
 import com.osacky.flank.gradle.validation.validateOptionsUsed
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.kotlin.dsl.create
 import org.gradle.util.GradleVersion
@@ -66,8 +66,9 @@ class FladlePluginDelegate {
   private fun TaskContainer.createTasksForConfig(base: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
     checkIfSanityAndValidateConfigs(config)
     validateOptionsUsed(config = config, flank = base.flankVersion.get())
-    val resultsDir = if (config.localResultsDir.isPresent) null
-    else "--local-result-dir=${createDefaultResultsDir(project, name)}"
+    val configCamelCase = name.decapitalize()
+    val configDir: JavaExec.() -> Unit = { if (configCamelCase.isNotBlank()) workingDir(project.layout.buildDirectory.dir("fladle/$configCamelCase")) }
+    if (configCamelCase.isNotBlank()) project.mkdir(project.buildDir.absolutePath + "/fladle/$configCamelCase")
     val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, base, config, name)
 
     register("printYml$name") {
@@ -80,6 +81,7 @@ class FladlePluginDelegate {
     }
 
     register("flankDoctor$name", FlankJavaExec::class.java) {
+      configDir()
       description = "Finds problems with the current configuration."
       classpath = project.fladleConfig
       args = listOf("firebase", "test", "android", "doctor", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath)
@@ -88,12 +90,13 @@ class FladlePluginDelegate {
 
     val execFlank = register("execFlank$name", FlankExecutionTask::class.java, config)
     execFlank.configure {
+      configDir()
       description = "Runs instrumentation tests using flank on firebase test lab."
       classpath = project.fladleConfig
       args = if (project.hasProperty("dumpShards")) {
         listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath, "--dump-shards")
       } else {
-        listOfNotNull("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath, resultsDir)
+        listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath)
       }
       if (config.serviceAccountCredentials.isPresent) {
         environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to config.serviceAccountCredentials.get()))
