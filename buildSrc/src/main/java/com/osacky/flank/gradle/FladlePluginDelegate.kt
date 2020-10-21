@@ -2,6 +2,7 @@ package com.osacky.flank.gradle
 
 import com.android.build.gradle.AppExtension
 import com.android.builder.model.TestOptions
+import com.osacky.flank.gradle.results.createDefaultResultsDir
 import com.osacky.flank.gradle.validation.validateOptionsUsed
 import org.gradle.api.GradleException
 import org.gradle.api.Project
@@ -65,6 +66,8 @@ class FladlePluginDelegate {
   private fun TaskContainer.createTasksForConfig(base: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
     checkIfSanityAndValidateConfigs(config)
     validateOptionsUsed(config = config, flank = base.flankVersion.get())
+    val resultsDir = if (config.localResultsDir.isPresent) null
+    else "--local-result-dir=${createDefaultResultsDir(project, name)}"
     val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, base, config, name)
 
     register("printYml$name") {
@@ -90,7 +93,7 @@ class FladlePluginDelegate {
       args = if (project.hasProperty("dumpShards")) {
         listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath, "--dump-shards")
       } else {
-        listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath)
+        listOfNotNull("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath, resultsDir)
       }
       if (config.serviceAccountCredentials.isPresent) {
         environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to config.serviceAccountCredentials.get()))
