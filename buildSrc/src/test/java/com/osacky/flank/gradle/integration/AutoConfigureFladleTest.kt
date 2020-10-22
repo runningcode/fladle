@@ -101,7 +101,7 @@ class AutoConfigureFladleTest {
       .buildAndFail()
 
     assertThat(
-      File(testProjectRoot.root.absolutePath + "/android-project/build/fladle/flash/flank.yaml").exists()
+      File(testProjectRoot.root.absolutePath + "/android-project/build/fladle/flash/flank.yml").exists()
     ).isTrue()
   }
 }

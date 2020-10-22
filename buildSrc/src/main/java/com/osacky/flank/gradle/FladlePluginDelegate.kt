@@ -67,7 +67,8 @@ class FladlePluginDelegate {
     checkIfSanityAndValidateConfigs(config)
     validateOptionsUsed(config = config, flank = base.flankVersion.get())
     val configCamelCase = name.decapitalize()
-    val configDir: JavaExec.() -> Unit = { if (configCamelCase.isNotBlank()) workingDir(project.layout.buildDirectory.dir("fladle/$configCamelCase")) }
+    val useDefaultDir = config.localResultsDir.isPresent.not() && configCamelCase.isNotBlank()
+    val configDir: JavaExec.() -> Unit = { if (useDefaultDir) workingDir(project.layout.buildDirectory.dir("fladle/$configCamelCase")) }
     if (configCamelCase.isNotBlank()) project.mkdir(project.buildDir.absolutePath + "/fladle/$configCamelCase")
     val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, base, config, name)
 
