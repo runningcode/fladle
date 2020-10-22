@@ -5,6 +5,7 @@ import org.gradle.testkit.runner.GradleRunner
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import java.io.File
 
 class AutoConfigureFladleTest {
 
@@ -82,5 +83,25 @@ class AutoConfigureFladleTest {
           output-style: single
       """.trimIndent()
     )
+
+    GradleRunner.create()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withArguments("runFlankOranges", "-PdumpShards")
+      .build()
+
+    assertThat(
+      File(testProjectRoot.root.absolutePath + "/android-project/build/fladle/oranges/android_shards.json").exists()
+    ).isTrue()
+
+    GradleRunner.create()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withArguments("runFlankFlash")
+      .buildAndFail()
+
+    assertThat(
+      File(testProjectRoot.root.absolutePath + "/android-project/build/fladle/flash/flank.yaml").exists()
+    ).isTrue()
   }
 }
