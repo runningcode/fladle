@@ -40,11 +40,6 @@ fladle {
             ] })
             flakyTestAttempts.set(3)
         }
-        flash {
-            // we want this configuration to fail
-            projectId.set("not-existing")
-            runTimeout.set("1s")
-        }
     }
 }
 
