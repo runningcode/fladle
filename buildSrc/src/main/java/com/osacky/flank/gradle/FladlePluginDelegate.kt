@@ -6,7 +6,6 @@ import com.osacky.flank.gradle.validation.validateOptionsUsed
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.kotlin.dsl.create
 import org.gradle.util.GradleVersion
@@ -67,8 +66,8 @@ class FladlePluginDelegate {
     checkIfSanityAndValidateConfigs(config)
     validateOptionsUsed(config = config, flank = base.flankVersion.get())
     val configName = name.toLowerCase()
-    val useDefaultDir = config.localResultsDir.isPresent.not() && configName.isNotBlank()
-    val setUpWorkingDir: JavaExec.() -> Unit = { if (useDefaultDir) workingDir(project.layout.buildDirectory.dir("fladle/$configName")) }
+    // we want to use default dir only if user did not set own `localResultsDir`
+    val useDefaultDir = config.localResultsDir.isPresent.not()
     val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, base, config, name)
 
     register("printYml$name") {
@@ -81,7 +80,7 @@ class FladlePluginDelegate {
     }
 
     register("flankDoctor$name", FlankJavaExec::class.java) {
-      setUpWorkingDir()
+      if (useDefaultDir) setUpWorkingDir(configName)
       description = "Finds problems with the current configuration."
       classpath = project.fladleConfig
       args = listOf("firebase", "test", "android", "doctor", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath)
@@ -90,7 +89,7 @@ class FladlePluginDelegate {
 
     val execFlank = register("execFlank$name", FlankExecutionTask::class.java, config)
     execFlank.configure {
-      setUpWorkingDir()
+      if (useDefaultDir) setUpWorkingDir(configName)
       description = "Runs instrumentation tests using flank on firebase test lab."
       classpath = project.fladleConfig
       args = if (project.hasProperty("dumpShards")) {

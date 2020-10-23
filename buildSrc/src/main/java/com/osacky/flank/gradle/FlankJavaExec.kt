@@ -10,4 +10,6 @@ open class FlankJavaExec @Inject constructor(projectLayout: ProjectLayout) : Jav
     main = "ftl.Main"
     workingDir(projectLayout.fladleDir)
   }
+
+  fun setUpWorkingDir(configName: String) = workingDir(project.layout.buildDirectory.dir("fladle/$configName"))
 }
