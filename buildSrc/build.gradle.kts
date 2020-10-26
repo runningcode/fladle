@@ -1,7 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 group = "com.osacky.flank.gradle"
-version = "0.13.1"
+version = "0.13.2-SNAPSHOT"
 description = "Easily Scale your Android Instrumentation Tests with Firebase Test Lab with Flank"
 
 repositories {
