@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+
+## 0.13.1
+* Fix flankAuth task throwing exception. [Fixes #195](https://github.com/runningcode/fladle/issues/195)
 * Add support for newly added flank options [PR#186](https://github.com/runningcode/fladle/pull/186) Thanks [pawelpasterz](https://github.com/pawelpasterz): 
     * `default-test-time`
     * `default-class-test-time`
