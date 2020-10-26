@@ -4,8 +4,8 @@
 
 extra:
   fladle:
-    current_release: '0.13.0'
-    next_release: '0.13.1'
+    current_release: '0.13.1'
+    next_release: '0.13.2'
     flank_version: '20.09.3'
 
 site_name: Fladle
