@@ -18,7 +18,7 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         message: |
-          Buildscan url for run [${{ github.run_id }}](https://github.com/runningcode/fladle/actions/runs/${{ github.run_id }})**
+          Buildscan url for run [${{ github.run_id }}](https://github.com/runningcode/fladle/actions/runs/${{ github.run_id }})
           ${{ steps.gradle.outputs.build-scan-url }}
     - uses: burrunan/gradle-cache-action@v1
       name: Publish Snapshot
