@@ -11,8 +11,15 @@ jobs:
       name: Check Fladle
       with:
         job-id: jdk8
-        arguments: -I gradle/buildScanInit.gradle assembleDebug assembleDebugAndroidTest printYml check
+        arguments: assembleDebug assembleDebugAndroidTest printYml check
         gradle-version: wrapper
+    - name: Add Build Scan URL to Pull Request
+      uses: mshick/add-pr-comment@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        message: |
+          Buildscan url for run [${{ github.run_id }}](https://github.com/runningcode/fladle/actions/runs/${{ github.run_id }})**
+          ${{ steps.gradle.outputs.build-scan-url }}
     - uses: burrunan/gradle-cache-action@v1
       name: Publish Snapshot
       if: ${{ github.ref == 'refs/heads/master' && github.event_name != 'pull_request' }}
