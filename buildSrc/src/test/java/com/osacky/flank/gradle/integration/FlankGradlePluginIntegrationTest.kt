@@ -102,7 +102,7 @@ class FlankGradlePluginIntegrationTest {
       .withGradleVersion(minSupportGradleVersion)
       .withArguments("printYml")
       .buildAndFail()
-    assertThat(result.output).contains("ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials")
+    assertThat(result.output).contains("ServiceAccountCredentials in fladle extension not set. https://runningcode.github.io/fladle/configuration/#serviceaccountcredentials")
   }
 
   @Test
