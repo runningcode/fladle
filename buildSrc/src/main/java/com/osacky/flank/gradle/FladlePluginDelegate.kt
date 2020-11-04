@@ -68,6 +68,9 @@ class FladlePluginDelegate {
   private fun TaskContainer.createTasksForConfig(base: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
     checkIfSanityAndValidateConfigs(config)
     validateOptionsUsed(config = config, flank = base.flankVersion.get())
+    val configName = name.toLowerCase()
+    // we want to use default dir only if user did not set own `localResultsDir`
+    val useDefaultDir = config.localResultsDir.isPresent.not()
     val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, base, config, name)
 
     register("printYml$name") {
@@ -80,6 +83,7 @@ class FladlePluginDelegate {
     }
 
     register("flankDoctor$name", FlankJavaExec::class.java) {
+      if (useDefaultDir) setUpWorkingDir(configName)
       description = "Finds problems with the current configuration."
       classpath = project.fladleConfig
       args = listOf("firebase", "test", "android", "doctor", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath)
@@ -88,6 +92,7 @@ class FladlePluginDelegate {
 
     val execFlank = register("execFlank$name", FlankExecutionTask::class.java, config)
     execFlank.configure {
+      if (useDefaultDir) setUpWorkingDir(configName)
       description = "Runs instrumentation tests using flank on firebase test lab."
       classpath = project.fladleConfig
       args = if (project.hasProperty("dumpShards")) {
