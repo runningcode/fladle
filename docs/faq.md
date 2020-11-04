@@ -22,7 +22,7 @@ No signature of method: flank_4vvjv7w3oopge32w1tl9cs6e4.fladle() is applicable f
 			Possible solutions: file(java.lang.Object), find(), findAll(), file(java.lang.Object, org.gradle.api.PathValidation), files([Ljava.lang.Object;), findAll(groovy.lang.Closure)
 ```
 
-If you receive a similar error, please check [configuration](configuration/#sample-configuration) for a sample configuration.
+If you receive a similar error, please check [configuration](configuration.md#sample-configuration) for a sample configuration.
 
 ## Debugging
 `./gradlew runFlank -PdumpShards` Will dump shards and exit the process without running the tests.
