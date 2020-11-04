@@ -133,7 +133,7 @@ class YamlWriterTest {
       fail()
     } catch (expected: IllegalStateException) {
       assertEquals(
-        "ServiceAccountCredentials in fladle extension not set. https://github.com/runningcode/fladle#serviceaccountcredentials",
+        "ServiceAccountCredentials in fladle extension not set. https://runningcode.github.io/fladle/configuration/#serviceaccountcredentials",
         expected.message
       )
     }
