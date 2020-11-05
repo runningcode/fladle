@@ -17,7 +17,7 @@ The following configuration options must be set inside the fladle block. See the
     serviceAccountCredentials.set("project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json")
     ```
 
-Optionally, the serviceAccountCredentials can be set with [environment variables](https://github.com/Flank/flank#authenticate-with-a-service-account) but then the projectId parameter must be set.
+Optionally, the serviceAccountCredentials can be set with [environment variables](https://flank.github.io/flank/#authenticate-with-a-service-account) but then the projectId parameter must be set.
 
 See [Authentication] for more info.
 
@@ -542,7 +542,7 @@ Disables sharding. All tests will run on the same device. Useful for parameteriz
 
 ### smartFlankDisableUpload
 Disables smart flank JUnit XML uploading. Useful for preventing timing data from being updated. (default: false)
-[What is Smart Flank?](https://github.com/Flank/flank/blob/master/docs/smart_flank.md)
+[What is Smart Flank?](https://flank.github.io/flank/smart_flank/)
 
 === "Groovy"
     ``` groovy
@@ -626,7 +626,7 @@ Always return successful task completion even when there are failed tests. Usefu
     ```
 
 ### numUniformShards
-Specifies the number of shards into which you want to evenly distribute test cases. The shards are run in parallel on separate devices. For example, if your test execution contains 20 test cases and you specify four shards, each shard executes five test cases. The number of shards should be less than the total number of test cases. The number of shards specified must be >= 1 and <= 50. This option cannot be used along max-test-shards and is not compatible with smart sharding ([Smart Flank](https://github.com/Flank/flank/blob/master/docs/smart_flank.md)). If you want to take benefits of smart sharding use max-test-shards instead. (default: null)
+Specifies the number of shards into which you want to evenly distribute test cases. The shards are run in parallel on separate devices. For example, if your test execution contains 20 test cases and you specify four shards, each shard executes five test cases. The number of shards should be less than the total number of test cases. The number of shards specified must be >= 1 and <= 50. This option cannot be used along max-test-shards and is not compatible with smart sharding ([Smart Flank](https://flank.github.io/flank/smart_flank/)). If you want to take benefits of smart sharding use max-test-shards instead. (default: null)
 
 === "Groovy"
     ``` groovy
