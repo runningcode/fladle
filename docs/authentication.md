@@ -37,4 +37,4 @@ See also Flank's instructions for [authenticating with a service account].
 [these steps]: https://firebase.google.com/docs/test-lab/android/continuous#requirements
 [Fladle extension serviceAccountCredentials]: ../configuration/#serviceaccountcredentials
 [authenticating with CI]: https://firebase.google.com/docs/test-lab/android/continuous
-[authenticating with a service account]: https://github.com/Flank/flank#authenticate-with-a-service-account
+[authenticating with a service account]: https://flank.github.io/flank/#authenticate-with-a-service-account
