@@ -33,7 +33,7 @@ dependencies {
   }
 
   testImplementation(gradleTestKit())
-  testImplementation("junit:junit:4.13")
+  testImplementation("junit:junit:4.13.1")
   testImplementation("com.google.truth:truth:1.0.1")
 }
 
@@ -72,15 +72,9 @@ gradlePlugin {
 kotlinDslPluginOptions {
   experimentalWarning.set(false)
 }
-
-tasks.register<Jar>("sourcesJar") {
-  from(sourceSets.main.get().allSource)
-  archiveClassifier.set("sources")
-}
-
-tasks.register<Jar>("javadocJar") {
-  from(tasks.javadoc)
-  archiveClassifier.set("javadoc")
+java {
+  withJavadocJar()
+  withSourcesJar()
 }
 
 val isReleaseBuild : Boolean = !version.toString().endsWith("SNAPSHOT")
