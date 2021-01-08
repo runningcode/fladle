@@ -618,11 +618,11 @@ Always return successful task completion even when there are failed tests. Usefu
 
 === "Groovy"
     ``` groovy
-    ignoreFailedTest = false
+    ignoreFailedTests = false
     ```
 === "Kotlin"
     ``` kotlin
-    ignoreFailedTest.set(false)
+    ignoreFailedTests.set(false)
     ```
 
 ### numUniformShards
