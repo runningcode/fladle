@@ -72,9 +72,15 @@ gradlePlugin {
 kotlinDslPluginOptions {
   experimentalWarning.set(false)
 }
-java {
-  withJavadocJar()
-  withSourcesJar()
+
+tasks.register<Jar>("sourcesJar") {
+  from(sourceSets.main.get().allSource)
+  archiveClassifier.set("sources")
+}
+
+tasks.register<Jar>("javadocJar") {
+  from(tasks.javadoc)
+  archiveClassifier.set("javadoc")
 }
 
 val isReleaseBuild : Boolean = !version.toString().endsWith("SNAPSHOT")
