@@ -105,7 +105,7 @@ class ConfigurationCacheTest {
            |}
            |""".trimMargin()
     )
-    testProjectRoot.newFile("flank-gradle-service-account.json").writeText("foo")
+    testProjectRoot.newFile("flank-gradle-service-account.json").writeText("{ \"project_id\": \"foo\" }")
     val result = configCachingRunner("runFlank").buildAndFail()
 
     assertThat(result.output).contains("Error: Failed to read service account credential.")

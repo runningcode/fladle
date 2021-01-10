@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+* Bump Flank version to 21.01.1
 
 ## 0.13.1
 * Fix flankAuth task throwing exception. [Fixes #195](https://github.com/runningcode/fladle/issues/195)
