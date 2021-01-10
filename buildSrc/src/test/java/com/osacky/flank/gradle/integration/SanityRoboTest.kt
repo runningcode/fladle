@@ -77,7 +77,7 @@ class SanityRoboTest {
   fun `sanityRobo - should throw an error if roboDirectives set`() {
     testProjectRoot.writeBuildDotGradle(
       buildScript =
-        """
+      """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -105,7 +105,7 @@ class SanityRoboTest {
   fun `sanityRobo - should throw an error if additionalTestApks set`() {
     testProjectRoot.writeBuildDotGradle(
       buildScript =
-        """
+      """
       |plugins {
       |  id "com.osacky.fladle"
       |}
