@@ -101,6 +101,14 @@ internal class YamlWriter {
       }
     }
     appendListProperty(config.additionalApks, name = "additional-apks") { appendln("    - $it") }
+    appendProperty(config.grantPermissions, name = "grant-permissions")
+    appendProperty(config.type, name = "type")
+    appendListProperty(config.scenarioLabels, name = "scenario-labels") { appendln("    - $it") }
+    appendListProperty(config.scenarioNumbers, name = "scenario-numbers") { appendln("    - $it") }
+    appendListProperty(config.obbFiles, name = "obb-files") { appendln("    - $it") }
+    appendListProperty(config.obbNames, name = "obb-names") { appendln("    - $it") }
+    appendListProperty(config.testTargetsForShard, name = "test-targets-for-shard") { appendln("    - $it") }
+    appendProperty(config.failFast, name = "fail-fast")
   }
 
   private fun <T> StringBuilder.appendProperty(prop: Property<T>, name: String) {

@@ -25,6 +25,7 @@ interface FladleConfig {
   @get:Input
   @get:Optional
   val debugApk: Property<String>
+
   @get:Input
   @get:Optional
   val instrumentationApk: Property<String>
@@ -331,4 +332,74 @@ interface FladleConfig {
   @get:Input
   @get:Optional
   val testTargetsForShard: ListProperty<String>
+
+  /**
+   * Whether to grant runtime permissions on the device before the test begins.
+   * By default, all permissions are granted. PERMISSIONS must be one of: all, none
+   * (default: all)
+   */
+  @get:SinceFlank("20.12.0")
+  @get:Input
+  @get:Optional
+  val grantPermissions: Property<String>
+
+  /**
+   * The type of test to run. TYPE must be one of: instrumentation, robo, game-loop.
+   * Use if you want to be sure there is only one type of tests being run
+   * (flank enables to run mixed types of test in one run).
+   */
+  @get:SinceFlank("20.12.0")
+  @get:Input
+  @get:Optional
+  val type: Property<String>
+
+  /**
+   * A list of game-loop scenario labels (default: None). Each game-loop scenario may be labeled in the
+   * APK manifest file with one or more arbitrary strings, creating logical groupings (e.g. GPU_COMPATIBILITY_TESTS).
+   * If --scenario-numbers and --scenario-labels are specified together, Firebase Test Lab will first execute each scenario from --scenario-numbers.
+   * It will then expand each given scenario label into a list of scenario numbers marked with that label, and execute those scenarios.
+   */
+  @get:SinceFlank("20.12.0")
+  @get:Input
+  @get:Optional
+  val scenarioLabels: ListProperty<String>
+
+  /**
+   * A list of game-loop scenario numbers which will be run as part of the test (default: all scenarios).
+   * A maximum of 1024 scenarios may be specified in one test matrix, but the maximum number may also be limited by the overall test --timeout setting.
+   */
+  @get:SinceFlank("20.12.0")
+  @get:Input
+  @get:Optional
+  val scenarioNumbers: ListProperty<Int>
+
+  /**
+   * A list of one or two Android OBB file names which will be copied to each test device before the tests will run (default: None).
+   * Each OBB file name must conform to the format as specified by Android (e.g. [main|patch].0300110.com.example.android.obb) and will be installed into <shared-storage>/Android/obb/<package-name>/ on the test device.
+   */
+  @get:SinceFlank("20.12.0")
+  @get:Input
+  @get:Optional
+  val obbFiles: ListProperty<String>
+
+  /**
+   * A list of OBB required filenames. OBB file name must conform to the format as specified by Android e.g.
+   * [main|patch].0300110.com.example.android.obb which will be installed into <shared-storage>/Android/obb/<package-name>/ on the device.
+   */
+  @get:SinceFlank("20.12.0")
+  @get:Input
+  @get:Optional
+  val obbNames: ListProperty<String>
+
+  /**
+   * If true, only a single attempt at most will be made to run each execution/shard in the matrix.
+   * Flaky test attempts are not affected. Normally, 2 or more attempts are made if a potential
+   * infrastructure issue is detected. This feature is for latency sensitive workloads. The
+   * incidence of execution failures may be significantly greater for fail-fast matrices and support
+   * is more limited because of that expectation.
+   */
+  @get:SinceFlank("21.01.0")
+  @get:Input
+  @get:Optional
+  val failFast: Property<Boolean>
 }

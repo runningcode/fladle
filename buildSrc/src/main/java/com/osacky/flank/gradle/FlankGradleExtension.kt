@@ -120,6 +120,20 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val testTargetsForShard: ListProperty<String> = objects.listProperty()
 
+  override val grantPermissions: Property<String> = objects.property()
+
+  override val type: Property<String> = objects.property()
+
+  override val scenarioLabels: ListProperty<String> = objects.listProperty()
+
+  override val scenarioNumbers: ListProperty<Int> = objects.listProperty()
+
+  override val obbFiles: ListProperty<String> = objects.listProperty()
+
+  override val obbNames: ListProperty<String> = objects.listProperty()
+
+  override val failFast: Property<Boolean> = objects.property()
+
   @Internal
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
@@ -171,6 +185,14 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       defaultClassTestTime = objects.property<Double>().convention(defaultClassTestTime),
       disableResultsUpload = objects.property<Boolean>().convention(disableResultsUpload),
       testTargetsForShard = objects.listProperty<String>().convention(testTargetsForShard)
+      disableResultsUpload = objects.property<Boolean>().convention(disableResultsUpload),
+      grantPermissions = objects.property<String>().convention(grantPermissions),
+      type = objects.property<String>().convention(type),
+      scenarioLabels = objects.listProperty<String>().convention(scenarioLabels),
+      scenarioNumbers = objects.listProperty<Int>().convention(scenarioNumbers),
+      obbFiles = objects.listProperty<String>().convention(obbFiles),
+      obbNames = objects.listProperty<String>().convention(obbNames),
+      failFast = objects.property<Boolean>().convention(failFast)
     )
   }
 

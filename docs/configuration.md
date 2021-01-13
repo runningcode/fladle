@@ -130,6 +130,8 @@ fladle {
     defaultClassTestTime = 180.5
     useAverageTestTimeForNewTests = true
     disableResultsUpload = true
+    grantPermissions = "none"
+    type = "game-loop"
 }
 ```
 
@@ -870,4 +872,128 @@ To specify both package and class in the same shard, separate package and class 
         )
       }
     )
+    ```
+
+### grantPermissions
+Whether to grant runtime permissions on the device before the test begins. By default, all permissions are granted. PERMISSIONS must be one of: all, none
+
+=== "Groovy"
+    ``` groovy
+    grantPermissions = "none"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    grantPermissions.set("none")
+    ```
+
+### type
+The type of test to run. TYPE must be one of: instrumentation, robo, game-loop. Use if you want to be sure there is only one type of tests being run (flank enables to run mixed types of test in one run).
+
+=== "Groovy"
+    ``` groovy
+    type = "game-loop"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    type.set("game-loop")
+    ```
+
+### scenarioLabels
+A list of game-loop scenario labels (default: None). Each game-loop scenario may be labeled in the APK manifest file with one or more arbitrary strings, creating logical groupings (e.g. GPU_COMPATIBILITY_TESTS).
+If --scenario-numbers and --scenario-labels are specified together, Firebase Test Lab will first execute each scenario from --scenario-numbers.
+It will then expand each given scenario label into a list of scenario numbers marked with that label, and execute those scenarios.
+
+=== "Groovy"
+    ```
+    scenarioLabels = [
+      "label1",
+      "label2" 
+    ]
+    ```
+=== "Kotlin"
+    ```
+    scenarioLabels.set(
+      project.provider {
+        listOf("label1", "label2")
+      }
+    )
+    ```
+
+### scenarioNumbers
+A list of game-loop scenario numbers which will be run as part of the test (default: all scenarios).
+A maximum of 1024 scenarios may be specified in one test matrix, but the maximum number may also be limited by the overall test --timeout setting.
+
+=== "Groovy"
+    ```
+    scenarioNumbers = [ 1, 23, 52 ]
+    ```
+=== "Kotlin"
+    ```
+    scenarioNumbers.set(
+      project.provider {
+        listOf(1, 23, 52)
+      }
+    )
+    ```
+
+### obbFiles
+A list of one or two Android OBB file names which will be copied to each test device before the tests will run (default: None).
+Each OBB file name must conform to the format as specified by Android (e.g. [main|patch].0300110.com.example.android.obb) and will be installed into <shared-storage>/Android/obb/<package-name>/ on the test device.
+
+=== "Groovy"
+    ```
+    obbFiles = [
+      "local/file/path/test1.obb",
+      "local/file/path/test2.obb"
+    ]
+    ```
+=== "Kotlin"
+    ```
+    obbFiles.set(
+      project.provider {
+        listOf(
+          "local/file/path/test1.obb",
+          "local/file/path/test2.obb"
+        )
+      }
+    )
+    ```
+
+### obbNames
+A list of OBB required filenames. OBB file name must conform to the format as specified by Android e.g.
+[main|patch].0300110.com.example.android.obb which will be installed into <shared-storage>/Android/obb/<package-name>/ on the device.
+
+=== "Groovy"
+    ```
+    obbNames = [
+      "patch.0300110.com.example.android.obb",
+      "patch.0300111.com.example.android.obb"
+    ]
+    ```
+=== "Kotlin"
+    ```
+    obbNames.set(
+      project.provider {
+        listOf(
+          "patch.0300110.com.example.android.obb",
+          "patch.0300111.com.example.android.obb"
+        )
+      }
+    )
+    ```
+
+### failFast
+If true, only a single attempt at most will be made to run each execution/shard in the matrix. Flaky test attempts are not affected.
+Normally, 2 or more attempts are made if a potential infrastructure issue is detected.
+This feature is for latency sensitive workloads. The incidence of execution failures may be significantly greater for
+fail-fast matrices and support is more limited because of that expectation.
+
+=== "Groovy"
+    ```
+    failFast = true
+    ```
+
+=== "Kotlin"
+    ```
+    failFast.set(true)
     ```

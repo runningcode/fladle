@@ -1191,6 +1191,116 @@ class YamlWriterTest {
     )
   }
 
+  @Test
+  fun writeGrantPermissions() {
+    val properties = emptyExtension {
+      grantPermissions.set("none")
+    }.toAdditionalProperties()
+
+    assertThat(properties).contains("grant-permissions: none")
+  }
+
+  @Test
+  fun writeType() {
+    val properties = emptyExtension {
+      type.set("game-loop")
+    }.toAdditionalProperties()
+
+    assertThat(properties).contains("type: game-loop")
+  }
+
+  @Test
+  fun writeScenarioLabels() {
+    val properties = emptyExtension {
+      scenarioLabels.set(
+        project.provider {
+          listOf("label1", "label2")
+        }
+      )
+    }.toAdditionalProperties()
+
+    assertThat(properties).contains(
+      """
+      |  scenario-labels:
+      |    - label1
+      |    - label2
+      """.trimMargin()
+    )
+  }
+
+  @Test
+  fun writeScenarioNumbers() {
+    val properties = emptyExtension {
+      scenarioNumbers.set(
+        project.provider {
+          listOf(1, 123, 543)
+        }
+      )
+    }.toAdditionalProperties()
+
+    assertThat(properties).contains(
+      """
+      |  scenario-numbers:
+      |    - 1
+      |    - 123
+      |    - 543
+      """.trimMargin()
+    )
+  }
+
+  @Test
+  fun writeObbFiles() {
+    val properties = emptyExtension {
+      obbFiles.set(
+        project.provider {
+          listOf(
+            "local/file/path/test1.obb",
+            "local/file/path/test2.obb"
+          )
+        }
+      )
+    }.toAdditionalProperties()
+
+    assertThat(properties).contains(
+      """
+      |  obb-files:
+      |    - local/file/path/test1.obb
+      |    - local/file/path/test2.obb
+      """.trimMargin()
+    )
+  }
+
+  @Test
+  fun writeObbNames() {
+    val properties = emptyExtension {
+      obbNames.set(
+        project.provider {
+          listOf(
+            "patch.0300110.com.example.android.obb",
+            "patch.0300111.com.example.android.obb"
+          )
+        }
+      )
+    }.toAdditionalProperties()
+
+    assertThat(properties).contains(
+      """
+      |  obb-names:
+      |    - patch.0300110.com.example.android.obb
+      |    - patch.0300111.com.example.android.obb
+      """.trimMargin()
+    )
+  }
+
+  @Test
+  fun writeFailFast() {
+    val properties = emptyExtension {
+      failFast.set(true)
+    }.toAdditionalProperties()
+
+    assertThat(properties).contains("fail-fast: true")
+  }
+
   private fun emptyExtension() = FlankGradleExtension(project.objects)
   private fun emptyExtension(block: FlankGradleExtension.() -> Unit) = emptyExtension().apply(block)
   private fun FlankGradleExtension.toFlankProperties() = yamlWriter.writeFlankProperties(this).trimIndent()
