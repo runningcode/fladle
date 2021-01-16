@@ -40,6 +40,23 @@ class ValidateOptionsTest {
 
     validateOptionsUsed(config, "20.09.10")
   }
+
+  @Test
+  fun `ListProperty check also checks for empty list`() {
+    config.testTargetsForShard.set(listOf())
+    validateOptionsUsed(config, "20.09.10")
+  }
+
+  @Test
+  fun `ListProperty isPresent when set`() {
+    config.testTargetsForShard.set(listOf("class com.example.Bar"))
+    try {
+      validateOptionsUsed(config, "20.09.10")
+    } catch (e: IllegalStateException) {
+      assertThat(e).hasMessageThat().contains("Option testTargetsForShard is available since flank 21.1.1, which is higher than used 20.9.10")
+    }
+  }
+
   @Test
   fun `should throw an error when unavailable option used -- multi config`() {
     testProjectRoot.writeBuildDotGradle(

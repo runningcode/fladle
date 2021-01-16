@@ -52,8 +52,9 @@ internal class YamlWriter {
     appendProperty(config.projectId, name = "project")
     appendProperty(config.keepFilePath, name = "keep-file-path")
     appendListProperty(config.filesToDownload, name = "files-to-download") { appendln("  - $it") }
-    if (!config.sanityRobo.get())
+    if (!config.sanityRobo.get()) {
       appendListProperty(config.additionalTestApks, name = "additional-app-test-apks") { appendln("    $it") }
+    }
     appendProperty(config.runTimeout, name = "run-timeout")
     appendProperty(config.ignoreFailedTests, name = "ignore-failed-tests")
     appendProperty(config.disableSharding, name = "disable-sharding")
@@ -67,6 +68,9 @@ internal class YamlWriter {
     appendProperty(config.defaultClassTestTime, name = "default-class-test-time")
     appendProperty(config.useAverageTestTimeForNewTests, name = "use-average-test-time-for-new-tests")
     appendProperty(config.disableResultsUpload, name = "disable-results-upload")
+    appendListProperty(config.testTargetsForShard, name = "test-targets-for-shard") {
+      appendln("    - $it")
+    }
   }
 
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {

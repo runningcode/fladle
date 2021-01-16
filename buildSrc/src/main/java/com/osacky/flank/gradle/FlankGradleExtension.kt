@@ -117,6 +117,9 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   override val defaultClassTestTime: Property<Double> = objects.property()
 
   override val disableResultsUpload: Property<Boolean> = objects.property()
+
+  override val testTargetsForShard: ListProperty<String> = objects.listProperty()
+
   @Internal
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
@@ -166,7 +169,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       useAverageTestTimeForNewTests = objects.property<Boolean>().convention(useAverageTestTimeForNewTests),
       defaultTestTime = objects.property<Double>().convention(defaultTestTime),
       defaultClassTestTime = objects.property<Double>().convention(defaultClassTestTime),
-      disableResultsUpload = objects.property<Boolean>().convention(disableResultsUpload)
+      disableResultsUpload = objects.property<Boolean>().convention(disableResultsUpload),
+      testTargetsForShard = objects.listProperty<String>().convention(testTargetsForShard)
     )
   }
 

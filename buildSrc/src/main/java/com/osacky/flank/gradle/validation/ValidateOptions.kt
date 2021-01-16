@@ -13,7 +13,7 @@ fun validateOptionsUsed(config: FladleConfig, flank: String) = config::class.mem
     when (val prop = it.call(config)) {
       is Property<*> -> prop.isPresent
       is MapProperty<*, *> -> prop.isPresent
-      is ListProperty<*> -> prop.isPresent
+      is ListProperty<*> -> prop.isPresent && prop.get().isNotEmpty()
       else -> false
     }
   }

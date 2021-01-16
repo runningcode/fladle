@@ -2,6 +2,7 @@
 
 ## Unreleased
 * Bump Flank version to 21.01.1
+* Add support for test-targets-for-shard [Fixes #205](https://github.com/runningcode/fladle/issues/205)
 
 ## 0.13.1
 * Fix flankAuth task throwing exception. [Fixes #195](https://github.com/runningcode/fladle/issues/195)

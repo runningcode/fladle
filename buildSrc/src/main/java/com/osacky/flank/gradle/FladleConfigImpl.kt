@@ -52,7 +52,8 @@ data class FladleConfigImpl(
   override val defaultTestTime: Property<Double>,
   override val useAverageTestTimeForNewTests: Property<Boolean>,
   override val defaultClassTestTime: Property<Double>,
-  override val disableResultsUpload: Property<Boolean>
+  override val disableResultsUpload: Property<Boolean>,
+  override val testTargetsForShard: ListProperty<String>
 ) : FladleConfig {
   /**
    * Prepare config to run sanity robo.
