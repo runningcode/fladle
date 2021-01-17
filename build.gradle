@@ -25,16 +25,6 @@ kotlinter {
 }
 
 allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        // jcenter is required for "org.jetbrains.trove4j:trove4j:20160824."
-        jcenter() {
-            content {
-                includeVersion 'org.jetbrains.trove4j', 'trove4j', '20160824'
-            }
-        }
-    }
     apply plugin: "org.jmailen.kotlinter"
 
     kotlinter {
