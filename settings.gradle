@@ -7,3 +7,15 @@ include ':sample'
 include ':sample-kotlin'
 include ':sample-flavors-kotlin'
 include ':sample-android-library'
+
+dependencyResolutionManagement {
+  repositories {
+    mavenCentral()
+    google()
+    jcenter() {
+      content {
+        includeVersion 'org.jetbrains.trove4j', 'trove4j', '20160824'
+      }
+    }
+  }
+}
