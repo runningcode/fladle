@@ -1173,6 +1173,24 @@ class YamlWriterTest {
     assertThat(properties).contains("disable-results-upload: true")
   }
 
+  @Test
+  fun writeTestTargetsForShard() {
+    val properties = emptyExtension {
+      testTargetsForShard.addAll(
+        "class com.example.test_app.bar.BarInstrumentedTest",
+        "class com.example.test_app.foo.FooInstrumentedTest"
+      )
+    }.toFlankProperties()
+
+    assertThat(properties).contains(
+      """
+      |  test-targets-for-shard:
+      |    - class com.example.test_app.bar.BarInstrumentedTest
+      |    - class com.example.test_app.foo.FooInstrumentedTest
+      """.trimMargin()
+    )
+  }
+
   private fun emptyExtension() = FlankGradleExtension(project.objects)
   private fun emptyExtension(block: FlankGradleExtension.() -> Unit) = emptyExtension().apply(block)
   private fun FlankGradleExtension.toFlankProperties() = yamlWriter.writeFlankProperties(this).trimIndent()

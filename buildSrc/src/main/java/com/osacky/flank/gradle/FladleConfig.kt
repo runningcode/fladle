@@ -318,4 +318,9 @@ interface FladleConfig {
   @get:Input
   @get:Optional
   val disableResultsUpload: Property<Boolean>
+
+  @get:SinceFlank("21.01.1")
+  @get:Input
+  @get:Optional
+  val testTargetsForShard: ListProperty<String>
 }
