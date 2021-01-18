@@ -132,6 +132,25 @@ fladle {
     disableResultsUpload = true
     grantPermissions = "none"
     type = "game-loop"
+    scenarioLabels = [
+      "label1",
+      "label2" 
+    ]
+    scenarioNumbers = [ 1, 23, 52 ]
+    obbFiles = [
+      "local/file/path/test1.obb",
+      "local/file/path/test2.obb"
+    ]
+    obbNames = [
+      "patch.0300110.com.example.android.obb",
+      "patch.0300111.com.example.android.obb"
+    ]
+    testTargetsForShard = [
+      "package com.package1.for.shard1, com.package2.for.shard1",
+      "class com.foo.ClassForShard2#testMethod1, com.foo.ClassForShard2#testMethod2",
+      "class com.foo.ClassForShard3; package com.package.for.shard3"
+    ]
+    failFast = true
 }
 ```
 
