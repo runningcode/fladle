@@ -850,6 +850,7 @@ or up to 500 times when no physical devices are selected.
 Note: If you include the flags environment-variable or test-targets when running test-targets-for-shard, the flags are applied to all the shards you create.
 You can also specify multiple packages, classes, or test cases in the same shard by separating each item with a comma.
 To specify both package and class in the same shard, separate package and class with semi-colons.
+
 === "Groovy"
     ```
     testTargetsForShard = [
