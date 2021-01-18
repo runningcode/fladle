@@ -319,7 +319,15 @@ interface FladleConfig {
   @get:Optional
   val disableResultsUpload: Property<Boolean>
 
-  @get:SinceFlank("21.01.1")
+  /**
+   * Specifies a group of packages, classes, and/or test cases to run in each shard (a group of test cases).
+   * The shards are run in parallel on separate devices. You can use this option up to 50 times to specify multiple shards when one or more physical devices are selected,
+   * or up to 500 times when no physical devices are selected.
+   * Note: If you include the flags environment-variable or test-targets when running test-targets-for-shard, the flags are applied to all the shards you create.
+   * You can also specify multiple packages, classes, or test cases in the same shard by separating each item with a comma.
+   * To specify both package and class in the same shard, separate package and class with semi-colons.
+   */
+  @get:SinceFlank("20.12.0")
   @get:Input
   @get:Optional
   val testTargetsForShard: ListProperty<String>

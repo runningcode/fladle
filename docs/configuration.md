@@ -814,7 +814,7 @@ A list of up to 100 additional APKs to install, in addition to those being direc
     ``` kotlin
     additionalApks.set(
       project.provider {
-         listOf("gs://path/to/app1.apk", "localPath/to/app2.apk")
+        listOf("gs://path/to/app1.apk", "localPath/to/app2.apk")
       }
     )
     ```
@@ -841,4 +841,32 @@ Disable flank results upload on gcloud storage. (default: false)
 === "Kotlin"
     ``` kotlin
     disableResultsUpload.set(true)
+    ```
+
+### testTargetsForShard
+Specifies a group of packages, classes, and/or test cases to run in each shard (a group of test cases).
+The shards are run in parallel on separate devices. You can use this option up to 50 times to specify multiple shards when one or more physical devices are selected,
+or up to 500 times when no physical devices are selected.
+Note: If you include the flags environment-variable or test-targets when running test-targets-for-shard, the flags are applied to all the shards you create.
+You can also specify multiple packages, classes, or test cases in the same shard by separating each item with a comma.
+To specify both package and class in the same shard, separate package and class with semi-colons.
+=== "Groovy"
+    ```
+    testTargetsForShard = [
+      "package com.package1.for.shard1, com.package2.for.shard1",
+      "class com.foo.ClassForShard2#testMethod1, com.foo.ClassForShard2#testMethod2",
+      "class com.foo.ClassForShard3; package com.package.for.shard3"
+      ]
+    ```
+=== "Kotlin"
+    ```
+    testTargetsForShard.set(
+      project.provider {
+        listOf(
+          "package com.package1.for.shard1, com.package2.for.shard1",
+          "class com.foo.ClassForShard2#testMethod1, com.foo.ClassForShard2#testMethod2",
+          "class com.foo.ClassForShard3; package com.package.for.shard3"
+        )
+      }
+    )
     ```
