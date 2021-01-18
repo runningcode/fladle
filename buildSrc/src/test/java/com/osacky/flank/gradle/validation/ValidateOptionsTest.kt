@@ -53,7 +53,7 @@ class ValidateOptionsTest {
     try {
       validateOptionsUsed(config, "20.09.10")
     } catch (e: IllegalStateException) {
-      assertThat(e).hasMessageThat().contains("Option testTargetsForShard is available since flank 21.1.1, which is higher than used 20.9.10")
+      assertThat(e).hasMessageThat().contains("Option testTargetsForShard is available since flank 20.12.0, which is higher than used 20.9.10")
     }
   }
 
