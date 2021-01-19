@@ -46,9 +46,23 @@ interface FladleConfig {
   @get:Input
   val testTargets: ListProperty<String>
 
+  @Deprecated(
+    message = "testShards was deprecated. Use maxTestShards instead",
+    replaceWith = ReplaceWith("maxTestShards")
+  )
+  /**
+   * The maximum number of shards. Value will be overwritten by [maxTestShards] if both used in configuration
+   */
   @get:Input
   @get:Optional
   val testShards: Property<Int>
+
+  /**
+   * The maximum number of shards
+   */
+  @get:Input
+  @get:Optional
+  val maxTestShards: Property<Int>
 
   /**
    * shardTime - the amount of time tests within a shard should take

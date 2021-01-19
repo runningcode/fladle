@@ -82,7 +82,8 @@ fladle {
         "- test: ${rootProject.buildDir}/database/module/outputs/apk/database-module-androidTest.apk"
     ]
     autoGoogleLogin = true
-    testShards = 5 //or numUniformShards=5 cannot use both
+    testShards = 5 //or numUniformShards=5 cannot use both. Deprecated use maxTestShards
+    maxTestShards = 8
     shardTime = 120
     smartFlankGcsPath = "gs://tmp_flank/flank/test_app_android.xml"
     configs {
@@ -342,7 +343,8 @@ Environment variables are mirrored as extra options to the am instrument -e KEY1
     )
     ```
 ### testShards
-Overrides the number of automatically determined test shards for Flank to use. Uses Flanks default value when not specified.
+#### deprecated
+The maximum number of shards. Value will be overwritten by [maxTestShards](./configuration.md#maxtestshards) if both used in configuration
 
 === "Groovy"
     ``` groovy
@@ -352,6 +354,18 @@ Overrides the number of automatically determined test shards for Flank to use. U
     ``` kotlin
     testShards.set(5)
     ```
+
+### maxTestShards
+The maximum number of shards.
+
+=== "Groovy"
+``` groovy
+maxTestShards = 8
+```
+=== "Kotlin"
+``` kotlin
+maxTestShards.set(8)
+```
 
 ### shardTime
 The amount of time tests within a shard should take.

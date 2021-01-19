@@ -60,7 +60,8 @@ data class FladleConfigImpl(
   override val scenarioNumbers: ListProperty<Int>,
   override val obbFiles: ListProperty<String>,
   override val obbNames: ListProperty<String>,
-  override val failFast: Property<Boolean>
+  override val failFast: Property<Boolean>,
+  override val maxTestShards: Property<Int>
 ) : FladleConfig {
   /**
    * Prepare config to run sanity robo.

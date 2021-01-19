@@ -45,7 +45,12 @@ internal class YamlWriter {
   internal fun writeFlankProperties(config: FladleConfig): String = buildString {
     appendln("flank:")
 
-    appendProperty(config.testShards, name = "max-test-shards")
+    // To preserve backward compatibility. To be removed once testShards is deleted
+    if (config.maxTestShards.isPresent) {
+      appendProperty(config.maxTestShards, name = "max-test-shards")
+    } else {
+      appendProperty(config.testShards, name = "max-test-shards")
+    }
     appendProperty(config.shardTime, name = "shard-time")
     appendProperty(config.repeatTests, name = "num-test-runs")
     appendProperty(config.smartFlankGcsPath, name = "smart-flank-gcs-path")

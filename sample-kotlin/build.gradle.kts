@@ -23,6 +23,7 @@ fladle {
     projectId.set("flank-gradle")
     useOrchestrator.set(true)
     environmentVariables.set(project.provider { mapOf("clearPackageData" to "true") })
+    testShards.set(10)
     testTargets.set(listOf(
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
     ))

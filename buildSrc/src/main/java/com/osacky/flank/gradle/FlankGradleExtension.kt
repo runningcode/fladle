@@ -134,6 +134,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val failFast: Property<Boolean> = objects.property()
 
+  override val maxTestShards: Property<Int> = objects.property()
+
   @Internal
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
@@ -191,7 +193,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       scenarioNumbers = objects.listProperty<Int>().convention(scenarioNumbers),
       obbFiles = objects.listProperty<String>().convention(obbFiles),
       obbNames = objects.listProperty<String>().convention(obbNames),
-      failFast = objects.property<Boolean>().convention(failFast)
+      failFast = objects.property<Boolean>().convention(failFast),
+      maxTestShards = objects.property<Int>().convention(maxTestShards)
     )
   }
 

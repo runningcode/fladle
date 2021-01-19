@@ -1301,6 +1301,16 @@ class YamlWriterTest {
     assertThat(properties).contains("fail-fast: true")
   }
 
+  @Test
+  fun writeMaxTestShardOption() {
+    val properties = emptyExtension {
+      testShards.set(5)
+      maxTestShards.set(8)
+    }.toFlankProperties()
+
+    assertThat(properties).contains("max-test-shards: 8")
+  }
+
   private fun emptyExtension() = FlankGradleExtension(project.objects)
   private fun emptyExtension(block: FlankGradleExtension.() -> Unit) = emptyExtension().apply(block)
   private fun FlankGradleExtension.toFlankProperties() = yamlWriter.writeFlankProperties(this).trimIndent()
