@@ -53,8 +53,7 @@ data class FladleConfigImpl(
   override val useAverageTestTimeForNewTests: Property<Boolean>,
   override val defaultClassTestTime: Property<Double>,
   override val disableResultsUpload: Property<Boolean>,
-  override val testTargetsForShard: ListProperty<String>
-  override val disableResultsUpload: Property<Boolean>,
+  override val testTargetsForShard: ListProperty<String>,
   override val grantPermissions: Property<String>,
   override val type: Property<String>,
   override val scenarioLabels: ListProperty<String>,

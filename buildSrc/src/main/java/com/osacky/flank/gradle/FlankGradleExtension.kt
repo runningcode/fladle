@@ -184,8 +184,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       defaultTestTime = objects.property<Double>().convention(defaultTestTime),
       defaultClassTestTime = objects.property<Double>().convention(defaultClassTestTime),
       disableResultsUpload = objects.property<Boolean>().convention(disableResultsUpload),
-      testTargetsForShard = objects.listProperty<String>().convention(testTargetsForShard)
-      disableResultsUpload = objects.property<Boolean>().convention(disableResultsUpload),
+      testTargetsForShard = objects.listProperty<String>().convention(testTargetsForShard),
       grantPermissions = objects.property<String>().convention(grantPermissions),
       type = objects.property<String>().convention(type),
       scenarioLabels = objects.listProperty<String>().convention(scenarioLabels),
