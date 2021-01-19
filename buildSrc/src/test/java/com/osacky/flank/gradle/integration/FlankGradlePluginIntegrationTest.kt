@@ -11,8 +11,8 @@ class FlankGradlePluginIntegrationTest {
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
-  val minSupportGradleVersion = "5.5"
-  val oldVersion = "5.3.1"
+  val minSupportGradleVersion = "6.0"
+  val oldVersion = "5.5"
 
   fun writeBuildGradle(build: String) {
     val file = testProjectRoot.newFile("build.gradle")
@@ -31,7 +31,7 @@ class FlankGradlePluginIntegrationTest {
       .withPluginClasspath()
       .withGradleVersion(oldVersion)
       .buildAndFail()
-    assertThat(result.output).contains("Fladle requires at minimum version Gradle 5.5. Detected version Gradle 5.3.1")
+    assertThat(result.output).contains("Fladle requires at minimum version Gradle 6.0. Detected version Gradle 5.5")
   }
 
   @Test
