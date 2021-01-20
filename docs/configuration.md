@@ -660,7 +660,7 @@ Always return successful task completion even when there are failed tests. Usefu
     ```
 
 ### numUniformShards
-Specifies the number of shards into which you want to evenly distribute test cases. The shards are run in parallel on separate devices. For example, if your test execution contains 20 test cases and you specify four shards, each shard executes five test cases. The number of shards should be less than the total number of test cases. The number of shards specified must be >= 1 and <= 50. This option cannot be used along max-test-shards and is not compatible with smart sharding ([Smart Flank](https://flank.github.io/flank/smart_flank/)). If you want to take benefits of smart sharding use max-test-shards instead. (default: null)
+Specifies the number of shards into which you want to evenly distribute test cases. The shards are run in parallel on separate devices. For example, if your test execution contains 20 test cases and you specify four shards, each shard executes five test cases. The number of shards should be less than the total number of test cases. The number of shards specified must be >= 1 and <= 50. This option cannot be used along maxTestShards and is not compatible with smart sharding ([Smart Flank](https://flank.github.io/flank/smart_flank/)). If you want to take benefits of smart sharding use maxTestShards instead. (default: null)
 
 === "Groovy"
     ``` groovy
