@@ -82,8 +82,7 @@ fladle {
         "- test: ${rootProject.buildDir}/database/module/outputs/apk/database-module-androidTest.apk"
     ]
     autoGoogleLogin = true
-    testShards = 5 //or numUniformShards=5 cannot use both. Deprecated use maxTestShards
-    maxTestShards = 8
+    maxTestShards = 8 //or numUniformShards=5 cannot use both.
     shardTime = 120
     smartFlankGcsPath = "gs://tmp_flank/flank/test_app_android.xml"
     configs {
@@ -343,8 +342,8 @@ Environment variables are mirrored as extra options to the am instrument -e KEY1
     )
     ```
 ### testShards
-#### deprecated
-The maximum number of shards. Value will be overwritten by [maxTestShards](./configuration.md#maxtestshards) if both used in configuration
+#### deprecated (use maxTestShards instead)
+The maximum number of shards. Fladle will throw an error when used together with [maxTestShards](./configuration.md#maxtestshards) or [numUniformShards](./configuration.md#numuniformshards). 
 
 === "Groovy"
     ``` groovy
@@ -356,7 +355,7 @@ The maximum number of shards. Value will be overwritten by [maxTestShards](./con
     ```
 
 ### maxTestShards
-The maximum number of shards.
+The maximum number of shards. Fladle will throw an error when used together with [testShards](./configuration.md#testshards) or [numUniformShards](./configuration.md#numuniformshards).
 
 === "Groovy"
     ``` groovy

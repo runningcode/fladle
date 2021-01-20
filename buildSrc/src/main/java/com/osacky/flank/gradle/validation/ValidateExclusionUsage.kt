@@ -9,7 +9,7 @@ fun checkForExclusionUsage(config: FladleConfig) {
 
   exclusions.forEach {
     if (usersProperties.contains(it.first) && usersProperties.contains(it.second)) {
-      throw IllegalStateException("Options ${it.first} and ${it.second} cannot be used both! Choose one of them.")
+      throw IllegalStateException("Options ${it.first} and ${it.second} cannot be used together. Choose one of them.")
     }
   }
 }

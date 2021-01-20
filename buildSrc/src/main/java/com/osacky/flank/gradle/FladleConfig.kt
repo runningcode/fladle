@@ -8,6 +8,7 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
+import kotlin.reflect.full.memberProperties
 
 interface FladleConfig {
   // Project id is automatically discovered by default. Use this to override the project id.
@@ -416,4 +417,14 @@ interface FladleConfig {
   @get:Input
   @get:Optional
   val failFast: Property<Boolean>
+
+  fun getPresentProperties() = this::class.memberProperties
+    .filter {
+      when (val prop = it.call(this)) {
+        is Property<*> -> prop.isPresent
+        is MapProperty<*, *> -> prop.isPresent && prop.get().isNotEmpty()
+        is ListProperty<*> -> prop.isPresent && prop.get().isNotEmpty()
+        else -> false
+      }
+    }
 }

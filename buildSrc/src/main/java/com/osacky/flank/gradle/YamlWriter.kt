@@ -45,7 +45,7 @@ internal class YamlWriter {
   internal fun writeFlankProperties(config: FladleConfig): String = buildString {
     appendln("flank:")
 
-    // Fladle should fail in configuration phase if both options are present
+    // Fladle will fail in configuration phase if both maxTestShards and testShards are present
     appendProperty(config.maxTestShards, name = "max-test-shards")
     appendProperty(config.testShards, name = "max-test-shards")
 
