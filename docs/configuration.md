@@ -1,6 +1,6 @@
 # Configuration
 
-The following configuration options must be set inside the fladle block. See the [sample configuration](#sample-configuration) below. There is also a [groovy sample](https://github.com/runningcode/fladle/blob/master/sample/build.gradle) and a [kotlin sample](https://github.com/runningcode/fladle/blob/master/sample-kotlin/build.gradle.kts).
+The following configuration options must be set inside the fladle block. See the [sample configuration](../configuration/#sample-configuration) below. There is also a [groovy sample](https://github.com/runningcode/fladle/blob/master/sample/build.gradle) and a [kotlin sample](https://github.com/runningcode/fladle/blob/master/sample-kotlin/build.gradle.kts).
 
 ### serviceAccountCredentials
 
@@ -258,7 +258,7 @@ Specify custom flank maven coordinates.
 ### debugApk
 This is a string representing the path to the app's debug apk.
 Supports wildcard characters.
-Optional, prefer to set [variant](#variant).
+Optional, prefer to set [variant](../configuration/#variant).
 
 === "Groovy"
     ``` groovy
@@ -272,8 +272,8 @@ Optional, prefer to set [variant](#variant).
 ### instrumentationApk
 This is a string representing the path to the app's instrumentaiton apk.
 Supports wildcard characters.
-Optional, prefer to set [variant](#variant).
-InstrumenationApk should not be set when using [roboScript](#roboscript).
+Optional, prefer to set [variant](../configuration/#variant).
+InstrumenationApk should not be set when using [roboScript](../configuration/#roboscript).
 
 === "Groovy"
     ``` groovy
@@ -288,7 +288,7 @@ InstrumenationApk should not be set when using [roboScript](#roboscript).
 Paths to additional test configurations.
 Order matters. A test apk is run with the nearest previous listed app apk.
 For library modules, add them to the list with a `- test:` in front. For test apks which belong to an application module, add them with `  test:`.
-It is not required to list an app apk here. If there is no app apk listed in additionalTestApks, the test apks are run against the [debugApk](#debugapk).
+It is not required to list an app apk here. If there is no app apk listed in additionalTestApks, the test apks are run against the [debugApk](../configuration/#debugapk).
 
 === "Groovy"
     ```groovy
@@ -345,9 +345,9 @@ Environment variables are mirrored as extra options to the `am instrument -e KEY
 ### testShards
 
 !!! warning "Deprecated"
-    Use [`maxTestShards`](#maxtestshards) instead.
+    Use [`maxTestShards`](../configuration/#maxtestshards) instead.
 
-The maximum number of shards. Fladle will throw an error when used together with [maxTestShards](#maxtestshards) or [numUniformShards](#numuniformshards). 
+The maximum number of shards. Fladle will throw an error when used together with [maxTestShards](../configuration/#maxtestshards) or [numUniformShards](../configuration/#numuniformshards). 
 
 === "Groovy"
     ``` groovy
@@ -359,7 +359,7 @@ The maximum number of shards. Fladle will throw an error when used together with
     ```
 
 ### maxTestShards
-The maximum number of shards. Fladle will throw an error when used together with [testShards](#testshards) or [numUniformShards](#numuniformshards).
+The maximum number of shards. Fladle will throw an error when used together with [testShards](../configuration/#testshards) or [numUniformShards](../configuration/#numuniformshards).
 
 === "Groovy"
     ``` groovy
@@ -474,7 +474,7 @@ A list of paths that will be copied from the device's storage to the designated 
     ```
 
 ### filesToDownload
-List of regex that is matched against bucket paths (for example: `2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt`) for files to be downloaded after a flank run. The results are downloaded to the `APP_MODULE/build/fladle/RESULTS` directory where RESULTS can be set by [`localResultsDir`](#localresultsdir) var otherwise defaulting to `results/`.
+List of regex that is matched against bucket paths (for example: `2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt`) for files to be downloaded after a flank run. The results are downloaded to the `APP_MODULE/build/fladle/RESULTS` directory where RESULTS can be set by [`localResultsDir`](../configuration/#localresultsdir) var otherwise defaulting to `results/`.
 
 === "Groovy"
     ``` groovy
@@ -827,7 +827,7 @@ Set default test time expressed in seconds, used for calculating shards. (defaul
     ```
 
 ### defaultClassTestTime
-Set default parameterized class test time expressed in seconds, used for calculating shards. (default: 2x [defaultTestTime](#defaulttesttime) => 240s)
+Set default parameterized class test time expressed in seconds, used for calculating shards. (default: 2x [defaultTestTime](../configuration/#defaulttesttime) => 240s)
 
 === "Groovy"
     ``` groovy
@@ -885,7 +885,7 @@ Disable flank results upload on gcloud storage. (default: false)
 Specifies a group of packages, classes, and/or test cases to run in each shard (a group of test cases).
 The shards are run in parallel on separate devices. You can use this option up to 50 times to specify multiple shards when one or more physical devices are selected,
 or up to 500 times when no physical devices are selected.
-Note: If you include the flags environment-variable or test-targets when running test-targets-for-shard, the flags are applied to all the shards you create.
+Note: If you include the flags `environmentVariables` or `testTargets` when running `testTargetsForShard`, the flags are applied to all the shards you create.
 You can also specify multiple packages, classes, or test cases in the same shard by separating each item with a comma.
 To specify both package and class in the same shard, separate package and class with semi-colons.
 
@@ -936,7 +936,7 @@ The type of test to run. TYPE must be one of: instrumentation, robo, game-loop. 
 
 ### scenarioLabels
 A list of game-loop scenario labels (default: None). Each game-loop scenario may be labeled in the APK manifest file with one or more arbitrary strings, creating logical groupings (e.g. GPU_COMPATIBILITY_TESTS).
-If --scenario-numbers and --scenario-labels are specified together, Firebase Test Lab will first execute each scenario from --scenario-numbers.
+If `--scenario-numbers` and `--scenario-labels` are specified together, Firebase Test Lab will first execute each scenario from `--scenario-numbers`.
 It will then expand each given scenario label into a list of scenario numbers marked with that label, and execute those scenarios.
 
 === "Groovy"
@@ -957,7 +957,7 @@ It will then expand each given scenario label into a list of scenario numbers ma
 
 ### scenarioNumbers
 A list of game-loop scenario numbers which will be run as part of the test (default: all scenarios).
-A maximum of 1024 scenarios may be specified in one test matrix, but the maximum number may also be limited by the overall test --timeout setting.
+A maximum of 1024 scenarios may be specified in one test matrix, but the maximum number may also be limited by the overall test `--timeout` setting.
 
 === "Groovy"
     ```
@@ -974,7 +974,7 @@ A maximum of 1024 scenarios may be specified in one test matrix, but the maximum
 
 ### obbFiles
 A list of one or two Android OBB file names which will be copied to each test device before the tests will run (default: None).
-Each OBB file name must conform to the format as specified by Android (e.g. [main|patch].0300110.com.example.android.obb) and will be installed into <shared-storage>/Android/obb/<package-name>/ on the test device.
+Each OBB file name must conform to the format as specified by Android (e.g. `[main|patch].0300110.com.example.android.obb`) and will be installed into `<shared-storage>/Android/obb/<package-name>/` on the test device.
 
 === "Groovy"
     ```
@@ -997,7 +997,7 @@ Each OBB file name must conform to the format as specified by Android (e.g. [mai
 
 ### obbNames
 A list of OBB required filenames. OBB file name must conform to the format as specified by Android e.g.
-[main|patch].0300110.com.example.android.obb which will be installed into <shared-storage>/Android/obb/<package-name>/ on the device.
+`[main|patch].0300110.com.example.android.obb` which will be installed into `<shared-storage>/Android/obb/<package-name>/` on the device.
 
 === "Groovy"
     ```
