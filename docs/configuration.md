@@ -312,8 +312,9 @@ It is not required to list an app apk here. If there is no app apk listed in add
     "- test: ../library/databases/build/output/apk/androidTest/debug/sample-databases-test.apk"
     )})
     ```
+
 ### autoGoogleLogin
-Whether or not to automatically log in using a preconfigured google account. [More Info](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run#--auto-google-login)
+Whether to automatically log in using a preconfigured google account. [More Info](https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run#--auto-google-login)
 
 === "Groovy"
     ``` groovy
@@ -325,7 +326,7 @@ Whether or not to automatically log in using a preconfigured google account. [Mo
     ```
 
 ### environmentVariables
-Environment variables are mirrored as extra options to the am instrument -e KEY1 VALUE1 … command and passed to your test runner (typically AndroidJUnitRunner). Examples
+Environment variables are mirrored as extra options to the `am instrument -e KEY1 VALUE1 …` command and passed to your test runner (typically AndroidJUnitRunner). Examples
 
 === "Groovy"
     ``` groovy
@@ -342,8 +343,11 @@ Environment variables are mirrored as extra options to the am instrument -e KEY1
     )
     ```
 ### testShards
-#### deprecated (use maxTestShards instead)
-The maximum number of shards. Fladle will throw an error when used together with [maxTestShards](./configuration.md#maxtestshards) or [numUniformShards](./configuration.md#numuniformshards). 
+
+!!! warning Deprecated
+    Use [`maxTestShards`](/configuration.md#maxtestshards) instead.
+
+The maximum number of shards. Fladle will throw an error when used together with [maxTestShards](/configuration.md#maxtestshards) or [numUniformShards](./configuration.md#numuniformshards). 
 
 === "Groovy"
     ``` groovy
@@ -355,7 +359,7 @@ The maximum number of shards. Fladle will throw an error when used together with
     ```
 
 ### maxTestShards
-The maximum number of shards. Fladle will throw an error when used together with [testShards](./configuration.md#testshards) or [numUniformShards](./configuration.md#numuniformshards).
+The maximum number of shards. Fladle will throw an error when used together with [testShards](/configuration.md#testshards) or [numUniformShards](./configuration.md#numuniformshards).
 
 === "Groovy"
     ``` groovy
@@ -417,7 +421,7 @@ Give a name to a custom flank task and configure its options. The name is append
 In the above example, the configuration is inherited from the outer fladle config but with the repeatTests property set to 100. Running `runFlankRepeateOneHundred` will execute this custom configuration.
 
 ### smartFlankGcsPath
-Shard Android tests by time using historical run data. The amount of shards used is set by `testShards`.
+Shard Android tests by time using historical run data. The amount of shards used is set by `maxTestShards`.
 
 === "Groovy"
     ``` groovy
