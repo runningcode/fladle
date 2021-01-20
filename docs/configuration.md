@@ -344,7 +344,7 @@ Environment variables are mirrored as extra options to the `am instrument -e KEY
     ```
 ### testShards
 
-!!! warning Deprecated
+!!! warning "Deprecated"
     Use [`maxTestShards`](/configuration.md#maxtestshards) instead.
 
 The maximum number of shards. Fladle will throw an error when used together with [maxTestShards](/configuration.md#maxtestshards) or [numUniformShards](./configuration.md#numuniformshards). 
