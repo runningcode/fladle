@@ -1,11 +1,11 @@
 # Configuration
 
-The following configuration options must be set inside the fladle block. See the [sample configuration](/fladle/configuration#sample-configuration) below. There is also a [groovy sample](https://github.com/runningcode/fladle/blob/master/sample/build.gradle) and a [kotlin sample](https://github.com/runningcode/fladle/blob/master/sample-kotlin/build.gradle.kts).
+The following configuration options must be set inside the fladle block. See the [sample configuration](#sample-configuration) below. There is also a [groovy sample](https://github.com/runningcode/fladle/blob/master/sample/build.gradle) and a [kotlin sample](https://github.com/runningcode/fladle/blob/master/sample-kotlin/build.gradle.kts).
 
 ### serviceAccountCredentials
 
 !!! note ""
-    User Authentication is also possible. See [Authentication.](../authentication)
+    User Authentication is also possible. See [Authentication].
 
 
 === "Groovy"
@@ -258,7 +258,7 @@ Specify custom flank maven coordinates.
 ### debugApk
 This is a string representing the path to the app's debug apk.
 Supports wildcard characters.
-Optional, prefer to set [variant](/configuration#variant).
+Optional, prefer to set [variant](#variant).
 
 === "Groovy"
     ``` groovy
@@ -272,8 +272,8 @@ Optional, prefer to set [variant](/configuration#variant).
 ### instrumentationApk
 This is a string representing the path to the app's instrumentaiton apk.
 Supports wildcard characters.
-Optional, prefer to set [variant](/configuration#variant).
-InstrumenationApk should not be set when using [roboScript](/configuration#roboscript).
+Optional, prefer to set [variant](#variant).
+InstrumenationApk should not be set when using [roboScript](#roboscript).
 
 === "Groovy"
     ``` groovy
@@ -345,9 +345,9 @@ Environment variables are mirrored as extra options to the `am instrument -e KEY
 ### testShards
 
 !!! warning "Deprecated"
-    Use [`maxTestShards`](/configuration.md#maxtestshards) instead.
+    Use [`maxTestShards`](#maxtestshards) instead.
 
-The maximum number of shards. Fladle will throw an error when used together with [maxTestShards](/configuration.md#maxtestshards) or [numUniformShards](./configuration.md#numuniformshards). 
+The maximum number of shards. Fladle will throw an error when used together with [maxTestShards](#maxtestshards) or [numUniformShards](#numuniformshards). 
 
 === "Groovy"
     ``` groovy
@@ -359,7 +359,7 @@ The maximum number of shards. Fladle will throw an error when used together with
     ```
 
 ### maxTestShards
-The maximum number of shards. Fladle will throw an error when used together with [testShards](/configuration.md#testshards) or [numUniformShards](./configuration.md#numuniformshards).
+The maximum number of shards. Fladle will throw an error when used together with [testShards](#testshards) or [numUniformShards](#numuniformshards).
 
 === "Groovy"
     ``` groovy
@@ -827,7 +827,7 @@ Set default test time expressed in seconds, used for calculating shards. (defaul
     ```
 
 ### defaultClassTestTime
-Set default parameterized class test time expressed in seconds, used for calculating shards. (default: 2x [defaultTestTime](configuration.md#defaulttesttime) => 240s)
+Set default parameterized class test time expressed in seconds, used for calculating shards. (default: 2x [defaultTestTime](#defaulttesttime) => 240s)
 
 === "Groovy"
     ``` groovy
