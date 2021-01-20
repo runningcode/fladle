@@ -2,7 +2,7 @@ package com.osacky.flank.gradle.validation
 
 import com.osacky.flank.gradle.FladleConfig
 
-fun checkForDeprecationUsageConflict(config: FladleConfig) {
+fun checkForExclusionUsage(config: FladleConfig) {
   val usersProperties = config
     .getPresentProperties()
     .map { it.name }
