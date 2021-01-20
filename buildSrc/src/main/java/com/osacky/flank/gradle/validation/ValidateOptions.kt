@@ -1,22 +1,11 @@
 package com.osacky.flank.gradle.validation
 
 import com.osacky.flank.gradle.FladleConfig
-import org.gradle.api.provider.ListProperty
-import org.gradle.api.provider.MapProperty
-import org.gradle.api.provider.Property
 import org.gradle.util.VersionNumber
 import kotlin.reflect.full.memberProperties
 
-fun validateOptionsUsed(config: FladleConfig, flank: String) = config::class.memberProperties
-  .asSequence()
-  .filter {
-    when (val prop = it.call(config)) {
-      is Property<*> -> prop.isPresent
-      is MapProperty<*, *> -> prop.isPresent && prop.get().isNotEmpty()
-      is ListProperty<*> -> prop.isPresent && prop.get().isNotEmpty()
-      else -> false
-    }
-  }
+fun validateOptionsUsed(config: FladleConfig, flank: String) = config
+  .getPresentProperties()
   .mapNotNull { property -> properties[property.name]?.let { property to it } }
   .forEach { (property, version) ->
     val configFlankVersion = flank.toVersion()
