@@ -7,6 +7,7 @@ import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import kotlin.reflect.full.memberProperties
 
@@ -418,6 +419,7 @@ interface FladleConfig {
   @get:Optional
   val failFast: Property<Boolean>
 
+  @Internal
   fun getPresentProperties() = this::class.memberProperties
     .filter {
       when (val prop = it.call(this)) {

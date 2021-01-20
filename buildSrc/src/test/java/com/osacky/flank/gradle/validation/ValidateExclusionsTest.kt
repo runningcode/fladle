@@ -30,12 +30,12 @@ class ValidateExclusionsTest {
     """.trimMargin()
     )
 
-    val runner = testProjectRoot.gradleRunner()
+    val result = testProjectRoot.gradleRunner()
+      .withArguments("printYml")
+      .buildAndFail()
 
-    runner.withArguments("printYml").buildAndFail().run {
-      assertThat(output).contains("FAILED")
-      assertThat(output).contains("Options testShards and maxTestShards cannot be used together. Choose one of them.")
-    }
+    assertThat(result.output).contains("FAILED")
+    assertThat(result.output).contains("Options testShards and maxTestShards cannot be used together. Choose one of them.")
   }
 
   @Test
