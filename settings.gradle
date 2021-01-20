@@ -7,6 +7,7 @@ include ':sample'
 include ':sample-kotlin'
 include ':sample-flavors-kotlin'
 include ':sample-android-library'
+includeBuild 'fladle-plugin'
 
 dependencyResolutionManagement {
   repositories {

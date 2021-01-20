@@ -7,7 +7,7 @@ git pull
 git checkout -b release_{{ fladle.next_release }}
 ```
 
-* Update `version` in `buildSrc/build.gradle.kts` (remove `-SNAPSHOT`)
+* Update `version` in `fladle-plugin/build.gradle.kts` (remove `-SNAPSHOT`)
 ```kotlin
 version = "{{ fladle.next_release }}"
 ```
@@ -38,11 +38,11 @@ git push origin v{{ fladle.next_release }}
 
 * Upload to Maven Central
 ``` bash
-./gradlew -b buildSrc/build.gradle.kts publishAllPublicationsToMavenRepository -Pfladle.releaseMode -Dorg.gradle.internal.publish.checksums.insecure=true
+./gradlew :fladle-plugin:publishAllPublicationsToMavenRepository -Pfladle.releaseMode -Dorg.gradle.internal.publish.checksums.insecure=true
 ```
 * Upload to Gradle Plugin Portal
 ```bash
-./gradlew -b buildSrc/build.gradle.kts publishPlugins -Pfladle.releaseMode -Dorg.gradle.internal.publish.checksums.insecure=true
+./gradlew :fladle-plugin:publishPlugins -Pfladle.releaseMode -Dorg.gradle.internal.publish.checksums.insecure=true
 ```
 
 * Release to Maven Central
@@ -55,7 +55,7 @@ git checkout master
 git pull
 git merge --no-ff release_{{ fladle.next_release }}
 ```
-* Update `version` in `buildSrc/build.gradle.kts` (increase version and add `-SNAPSHOT`)
+* Update `version` in `fladle-plugin/build.gradle.kts` (increase version and add `-SNAPSHOT`)
 ```kotlin
 version = "REPLACE_WITH_NEXT_VERSION_NUMBER-SNAPSHOT"
 ```

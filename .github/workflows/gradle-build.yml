@@ -11,7 +11,7 @@ jobs:
       name: Check Fladle
       with:
         job-id: jdk8
-        arguments: assembleDebug assembleDebugAndroidTest printYml check
+        arguments: assembleDebug assembleDebugAndroidTest printYml check :fladle-plugin:check
         gradle-version: wrapper
     - name: Add Build Scan URL to Pull Request
       uses: mshick/add-pr-comment@v1
@@ -25,5 +25,5 @@ jobs:
       if: ${{ github.ref == 'refs/heads/master' && github.event_name != 'pull_request' }}
       with:
         job-id: jdk8
-        arguments: -b buildSrc/build.gradle.kts publishAllPublicationsToMavenRepository -Pfladle.releaseMode -PsonatypeUsername=${{ secrets.SONATYPE_USERNAME }} -PsonatypePassword=${{ secrets.SONATYPE_PASSWORD }}
+        arguments: :fladle-plugin:publishAllPublicationsToMavenRepository -Pfladle.releaseMode -PsonatypeUsername=${{ secrets.SONATYPE_USERNAME }} -PsonatypePassword=${{ secrets.SONATYPE_PASSWORD }}
         gradle-version: wrapper
