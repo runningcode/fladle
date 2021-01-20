@@ -359,13 +359,13 @@ The maximum number of shards. Value will be overwritten by [maxTestShards](./con
 The maximum number of shards.
 
 === "Groovy"
-``` groovy
-maxTestShards = 8
-```
+    ``` groovy
+    maxTestShards = 8
+    ```
 === "Kotlin"
-``` kotlin
-maxTestShards.set(8)
-```
+    ``` kotlin
+    maxTestShards.set(8)
+    ```
 
 ### shardTime
 The amount of time tests within a shard should take.

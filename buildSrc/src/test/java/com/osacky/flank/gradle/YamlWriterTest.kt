@@ -1304,7 +1304,6 @@ class YamlWriterTest {
   @Test
   fun writeMaxTestShardOption() {
     val properties = emptyExtension {
-      testShards.set(5)
       maxTestShards.set(8)
     }.toFlankProperties()
 

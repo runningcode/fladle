@@ -2,6 +2,7 @@ package com.osacky.flank.gradle
 
 import com.android.build.gradle.AppExtension
 import com.android.builder.model.TestOptions
+import com.osacky.flank.gradle.validation.checkForDeprecationUsageConflict
 import com.osacky.flank.gradle.validation.validateOptionsUsed
 import org.gradle.api.GradleException
 import org.gradle.api.Project
@@ -68,6 +69,7 @@ class FladlePluginDelegate {
   private fun TaskContainer.createTasksForConfig(base: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
     checkIfSanityAndValidateConfigs(config)
     validateOptionsUsed(config = config, flank = base.flankVersion.get())
+    checkForDeprecationUsageConflict(config)
     val configName = name.toLowerCase()
     // we want to use default dir only if user did not set own `localResultsDir`
     val useDefaultDir = config.localResultsDir.isPresent.not()

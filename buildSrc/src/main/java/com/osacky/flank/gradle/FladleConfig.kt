@@ -47,7 +47,7 @@ interface FladleConfig {
   val testTargets: ListProperty<String>
 
   @Deprecated(
-    message = "testShards was deprecated. Use maxTestShards instead",
+    message = "testShards is deprecated. Use maxTestShards instead",
     replaceWith = ReplaceWith("maxTestShards")
   )
   /**
