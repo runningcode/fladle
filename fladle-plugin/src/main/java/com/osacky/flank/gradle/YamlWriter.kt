@@ -112,6 +112,7 @@ internal class YamlWriter {
     appendListProperty(config.obbFiles, name = "obb-files") { appendln("    - $it") }
     appendListProperty(config.obbNames, name = "obb-names") { appendln("    - $it") }
     appendListProperty(config.testTargetsForShard, name = "test-targets-for-shard") { appendln("    - $it") }
+    appendProperty(config.failFast, name = "fail-fast")
     appendAdditionalProperty(config.additionalGcloudConfig)
   }
 
