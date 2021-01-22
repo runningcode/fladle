@@ -419,6 +419,22 @@ interface FladleConfig {
   @get:Optional
   val failFast: Property<Boolean>
 
+  /**
+   * Allow appending additional config to flank root yaml. This option is useful when you would like to test option
+   * before it is available on Fladle. Supports both single and multiple properties.
+   */
+  @get:Input
+  @get:Optional
+  val additionalFlankConfig: Property<String>
+
+  /**
+   * Allow appending additional config to gcloud root yaml. This option is useful when you would like to test option
+   * before it is available on Fladle. Supports both single and multiple properties.
+   */
+  @get:Input
+  @get:Optional
+  val additionalGcloudConfig: Property<String>
+
   @Internal
   fun getPresentProperties() = this::class.memberProperties
     .filter {

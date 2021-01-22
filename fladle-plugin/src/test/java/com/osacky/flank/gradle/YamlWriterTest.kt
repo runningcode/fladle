@@ -1310,6 +1310,44 @@ class YamlWriterTest {
     assertThat(properties).contains("max-test-shards: 8")
   }
 
+  @Test
+  fun writeSingleLineAdditionalFlankProperty() {
+    val properties = emptyExtension {
+      additionalFlankConfig.set("new_version_property: test")
+    }.toFlankProperties()
+
+    assertThat(properties).contains("  new_version_property: test")
+  }
+
+  @Test
+  fun writeSingleLineAdditionalGcloudProperty() {
+    val properties = emptyExtension {
+      additionalGcloudConfig.set("new_version_property: test")
+    }.toAdditionalProperties()
+
+    assertThat(properties).contains("  new_version_property: test")
+  }
+
+  @Test
+  fun writeMultiLineAdditionalFlankProperies() {
+    val properties = emptyExtension {
+      additionalFlankConfig.set("new_version_property: test\nnew_version_property2: test2")
+    }.toFlankProperties()
+
+    assertThat(properties).contains("  new_version_property: test")
+    assertThat(properties).contains("  new_version_property2: test2")
+  }
+
+  @Test
+  fun writeMultiLineAdditionalGcloudProperties() {
+    val properties = emptyExtension {
+      additionalGcloudConfig.set("new_version_property: test\nnew_version_property2: test2")
+    }.toAdditionalProperties()
+
+    assertThat(properties).contains("  new_version_property: test")
+    assertThat(properties).contains("  new_version_property2: test2")
+  }
+
   private fun emptyExtension() = FlankGradleExtension(project.objects)
   private fun emptyExtension(block: FlankGradleExtension.() -> Unit) = emptyExtension().apply(block)
   private fun FlankGradleExtension.toFlankProperties() = yamlWriter.writeFlankProperties(this).trimIndent()

@@ -1033,3 +1033,67 @@ fail-fast matrices and support is more limited because of that expectation.
     ```
     failFast.set(true)
     ```
+
+
+### additionalFlankConfig
+Allow appending additional config to flank root yaml. This option is useful when you would like to test option
+before it is available on Fladle. Supports both single and multiple properties.
+
+Single property
+
+=== "Groovy"
+```
+additionalFlankConfig = "new-property: true"
+```
+
+=== "Kotlin"
+```
+additionalFlankConfig.set("new-property: true")
+```
+
+Multiple properties
+
+=== "Groovy"
+```
+additionalFlankConfig = "new-property: true\nother-new-property: force"
+```
+
+=== "Kotlin"
+```
+additionalFlankConfig.set("""
+    new-property: true
+    other-new-property: force
+""".trimIndent())
+```
+
+### additionalGcloudConfig
+Allow appending additional config to gcloud root yaml. This option is useful when you would like to test option
+before it is available on Fladle. Supports both single and multiple properties.
+
+
+Single property
+
+=== "Groovy"
+```
+additionalGcloudConfig = "new-property: true"
+```
+
+=== "Kotlin"
+```
+additionalGcloudConfig.set("new-property: true")
+```
+
+Multiple properties
+
+=== "Groovy"
+```
+additionalGcloudConfig = "new-property: true\nother-new-property: force"
+```
+
+=== "Kotlin"
+```
+additionalGcloudConfig.set("""
+    new-property: true
+    other-new-property: force
+""".trimIndent())
+```

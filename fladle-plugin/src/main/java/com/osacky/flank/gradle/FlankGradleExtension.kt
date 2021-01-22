@@ -136,6 +136,10 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val maxTestShards: Property<Int> = objects.property()
 
+  override val additionalFlankConfig: Property<String> = objects.property()
+
+  override val additionalGcloudConfig: Property<String> = objects.property()
+
   @Internal
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
@@ -194,7 +198,9 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       obbFiles = objects.listProperty<String>().convention(obbFiles),
       obbNames = objects.listProperty<String>().convention(obbNames),
       failFast = objects.property<Boolean>().convention(failFast),
-      maxTestShards = objects.property<Int>().convention(maxTestShards)
+      maxTestShards = objects.property<Int>().convention(maxTestShards),
+      additionalFlankConfig = objects.property<String>().convention(additionalFlankConfig),
+      additionalGcloudConfig = objects.property<String>().convention(additionalGcloudConfig)
     )
   }
 

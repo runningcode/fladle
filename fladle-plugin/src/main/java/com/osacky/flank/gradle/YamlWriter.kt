@@ -74,6 +74,7 @@ internal class YamlWriter {
     appendListProperty(config.testTargetsForShard, name = "test-targets-for-shard") {
       appendln("    - $it")
     }
+    appendAdditionalProperty(config.additionalFlankConfig)
   }
 
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
@@ -111,7 +112,7 @@ internal class YamlWriter {
     appendListProperty(config.obbFiles, name = "obb-files") { appendln("    - $it") }
     appendListProperty(config.obbNames, name = "obb-names") { appendln("    - $it") }
     appendListProperty(config.testTargetsForShard, name = "test-targets-for-shard") { appendln("    - $it") }
-    appendProperty(config.failFast, name = "fail-fast")
+    appendAdditionalProperty(config.additionalGcloudConfig)
   }
 
   private fun <T> StringBuilder.appendProperty(prop: Property<T>, name: String) {
@@ -139,6 +140,18 @@ internal class YamlWriter {
       prop.get().forEach { custom(it) }
     }
   }
+
+  private fun StringBuilder.appendAdditionalProperty(property: Property<String>) {
+    if (property.isPresent) {
+      property.get()
+        .normalizeLineEnding()
+        .split("\n")
+        .map { "  $it" }
+        .forEach { appendln(it) }
+    }
+  }
+
+  private fun String.normalizeLineEnding() = replace("\r\n", "\n")
 
   private val <T> ListProperty<T>.isPresentAndNotEmpty
     get() = isPresent && get().isNotEmpty()
