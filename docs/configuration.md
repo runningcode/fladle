@@ -1037,7 +1037,7 @@ fail-fast matrices and support is more limited because of that expectation.
 
 ### additionalFlankOptions
 Appending additional option to flank root yaml. This option is useful when you would like to test options before official fladle support is added.
-before it is available on Fladle. Supports both single and multiple properties.
+Multiple options are supported.
 
 Single option
 
