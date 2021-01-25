@@ -1089,7 +1089,8 @@ Multiple options
     ```groovy
     additionalGcloudOptions = """
         new-property: true
-        other-new-property: force""".stripIndent()
+        other-new-property: force
+      """.stripIndent()
     ```
 
 === "Kotlin"
