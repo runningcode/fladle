@@ -145,14 +145,11 @@ internal class YamlWriter {
   private fun StringBuilder.appendAdditionalProperty(property: Property<String>) {
     if (property.isPresent) {
       property.get()
-        .normalizeLineEnding()
         .split("\n")
         .map { "  $it" }
         .forEach { appendln(it) }
     }
   }
-
-  private fun String.normalizeLineEnding() = replace("\r\n", "\n")
 
   private val <T> ListProperty<T>.isPresentAndNotEmpty
     get() = isPresent && get().isNotEmpty()
