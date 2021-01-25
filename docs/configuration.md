@@ -1055,7 +1055,10 @@ Multiple options
 
 === "Groovy"
     ```groovy
-    additionalFlankOptions = "new-property: true\nother-new-property: force"
+    additionalFlankOptions = """
+      new-property: true
+      other-new-property: force
+    """.stripIndent()
     ```
 
 === "Kotlin"
