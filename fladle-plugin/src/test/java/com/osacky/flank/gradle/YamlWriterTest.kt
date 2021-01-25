@@ -1313,7 +1313,7 @@ class YamlWriterTest {
   @Test
   fun writeSingleLineAdditionalFlankProperty() {
     val properties = emptyExtension {
-      additionalFlankConfig.set("new_version_property: test")
+      additionalFlankOptions.set("new_version_property: test")
     }.toFlankProperties()
 
     assertThat(properties).contains("  new_version_property: test")
@@ -1322,7 +1322,7 @@ class YamlWriterTest {
   @Test
   fun writeSingleLineAdditionalGcloudProperty() {
     val properties = emptyExtension {
-      additionalGcloudConfig.set("new_version_property: test")
+      additionalGcloudOptions.set("new_version_property: test")
     }.toAdditionalProperties()
 
     assertThat(properties).contains("  new_version_property: test")
@@ -1331,7 +1331,7 @@ class YamlWriterTest {
   @Test
   fun writeMultiLineAdditionalFlankProperies() {
     val properties = emptyExtension {
-      additionalFlankConfig.set("new_version_property: test\nnew_version_property2: test2")
+      additionalFlankOptions.set("new_version_property: test\nnew_version_property2: test2")
     }.toFlankProperties()
 
     assertThat(properties).contains("  new_version_property: test")
@@ -1341,7 +1341,7 @@ class YamlWriterTest {
   @Test
   fun writeMultiLineAdditionalGcloudProperties() {
     val properties = emptyExtension {
-      additionalGcloudConfig.set("new_version_property: test\nnew_version_property2: test2")
+      additionalGcloudOptions.set("new_version_property: test\nnew_version_property2: test2")
     }.toAdditionalProperties()
 
     assertThat(properties).contains("  new_version_property: test")

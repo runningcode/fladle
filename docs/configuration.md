@@ -940,14 +940,14 @@ If `--scenario-numbers` and `--scenario-labels` are specified together, Firebase
 It will then expand each given scenario label into a list of scenario numbers marked with that label, and execute those scenarios.
 
 === "Groovy"
-    ```
+    ```groovy
     scenarioLabels = [
       "label1",
       "label2" 
     ]
     ```
 === "Kotlin"
-    ```
+    ```kotlin
     scenarioLabels.set(
       project.provider {
         listOf("label1", "label2")
@@ -960,11 +960,11 @@ A list of game-loop scenario numbers which will be run as part of the test (defa
 A maximum of 1024 scenarios may be specified in one test matrix, but the maximum number may also be limited by the overall test `--timeout` setting.
 
 === "Groovy"
-    ```
+    ```groovy
     scenarioNumbers = [ 1, 23, 52 ]
     ```
 === "Kotlin"
-    ```
+    ```kotlin
     scenarioNumbers.set(
       project.provider {
         listOf(1, 23, 52)
@@ -977,14 +977,14 @@ A list of one or two Android OBB file names which will be copied to each test de
 Each OBB file name must conform to the format as specified by Android (e.g. `[main|patch].0300110.com.example.android.obb`) and will be installed into `<shared-storage>/Android/obb/<package-name>/` on the test device.
 
 === "Groovy"
-    ```
+    ```groovy
     obbFiles = [
       "local/file/path/test1.obb",
       "local/file/path/test2.obb"
     ]
     ```
 === "Kotlin"
-    ```
+    ```kotlin
     obbFiles.set(
       project.provider {
         listOf(
@@ -1000,14 +1000,14 @@ A list of OBB required filenames. OBB file name must conform to the format as sp
 `[main|patch].0300110.com.example.android.obb` which will be installed into `<shared-storage>/Android/obb/<package-name>/` on the device.
 
 === "Groovy"
-    ```
+    ```groovy
     obbNames = [
       "patch.0300110.com.example.android.obb",
       "patch.0300111.com.example.android.obb"
     ]
     ```
 === "Kotlin"
-    ```
+    ```kotlin
     obbNames.set(
       project.provider {
         listOf(
@@ -1025,75 +1025,77 @@ This feature is for latency sensitive workloads. The incidence of execution fail
 fail-fast matrices and support is more limited because of that expectation.
 
 === "Groovy"
-    ```
+    ```groovy
     failFast = true
     ```
 
 === "Kotlin"
-    ```
+    ```kotlin
     failFast.set(true)
     ```
 
 
-### additionalFlankConfig
+### additionalFlankOptions
 Appending additional option to flank root yaml. This option is useful when you would like to test options before official fladle support is added.
 before it is available on Fladle. Supports both single and multiple properties.
 
-Single property
+Single option
 
 === "Groovy"
-```
-additionalFlankConfig = "new-property: true"
-```
+    ```groovy
+    additionalFlankOptions = "new-property: true"
+    ```
 
 === "Kotlin"
-```
-additionalFlankConfig.set("new-property: true")
-```
+    ```kotlin
+    additionalFlankOptions.set("new-property: true")
+    ```
 
-Multiple properties
+Multiple options
 
 === "Groovy"
-```
-additionalFlankConfig = "new-property: true\nother-new-property: force"
-```
+    ```groovy
+    additionalFlankOptions = "new-property: true\nother-new-property: force"
+    ```
 
 === "Kotlin"
-```
-additionalFlankConfig.set("""
-    new-property: true
-    other-new-property: force
-""".trimIndent())
-```
+    ```kotlin
+    additionalFlankOptions.set("""
+        new-property: true
+        other-new-property: force
+    """.trimIndent())
+    ```
 
-### additionalGcloudConfig
+### additionalGcloudOptions
 Allow appending additional config to gcloud root yaml. This option is useful when you would like to test option
 before it is available on Fladle. Supports both single and multiple properties.
 
 
-Single property
+Single option
 
 === "Groovy"
-```
-additionalGcloudConfig = "new-property: true"
-```
+    ```groovy
+    additionalGcloudOptions = "new-property: true"
+    ```
 
 === "Kotlin"
-```
-additionalGcloudConfig.set("new-property: true")
-```
+    ```kotlin
+    additionalGcloudOptions.set("new-property: true")
+    ```
 
-Multiple properties
+Multiple options
 
 === "Groovy"
-```
-additionalGcloudConfig = "new-property: true\nother-new-property: force"
-```
+    ```groovy
+    additionalGcloudOptions = """
+        new-property: true
+        other-new-property: force""".stripIndent()
+    ```
 
 === "Kotlin"
-```
-additionalGcloudConfig.set("""
-    new-property: true
-    other-new-property: force
-""".trimIndent())
-```
+    ```kotlin
+    additionalGcloudOptions.set("""
+        new-property: true
+        other-new-property: force
+    """.trimIndent())
+    ```

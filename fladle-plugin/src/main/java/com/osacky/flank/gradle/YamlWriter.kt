@@ -74,7 +74,7 @@ internal class YamlWriter {
     appendListProperty(config.testTargetsForShard, name = "test-targets-for-shard") {
       appendln("    - $it")
     }
-    appendAdditionalProperty(config.additionalFlankConfig)
+    appendAdditionalProperty(config.additionalFlankOptions)
   }
 
   internal fun writeAdditionalProperties(config: FladleConfig): String = buildString {
@@ -113,7 +113,7 @@ internal class YamlWriter {
     appendListProperty(config.obbNames, name = "obb-names") { appendln("    - $it") }
     appendListProperty(config.testTargetsForShard, name = "test-targets-for-shard") { appendln("    - $it") }
     appendProperty(config.failFast, name = "fail-fast")
-    appendAdditionalProperty(config.additionalGcloudConfig)
+    appendAdditionalProperty(config.additionalGcloudOptions)
   }
 
   private fun <T> StringBuilder.appendProperty(prop: Property<T>, name: String) {

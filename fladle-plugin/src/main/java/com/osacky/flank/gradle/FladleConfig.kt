@@ -425,7 +425,7 @@ interface FladleConfig {
    */
   @get:Input
   @get:Optional
-  val additionalFlankConfig: Property<String>
+  val additionalFlankOptions: Property<String>
 
   /**
    * Allow appending additional config to gcloud root yaml. This option is useful when you would like to test option
@@ -433,7 +433,7 @@ interface FladleConfig {
    */
   @get:Input
   @get:Optional
-  val additionalGcloudConfig: Property<String>
+  val additionalGcloudOptions: Property<String>
 
   @Internal
   fun getPresentProperties() = this::class.memberProperties
