@@ -61,7 +61,9 @@ data class FladleConfigImpl(
   override val obbFiles: ListProperty<String>,
   override val obbNames: ListProperty<String>,
   override val failFast: Property<Boolean>,
-  override val maxTestShards: Property<Int>
+  override val maxTestShards: Property<Int>,
+  override val additionalFlankOptions: Property<String>,
+  override val additionalGcloudOptions: Property<String>
 ) : FladleConfig {
   /**
    * Prepare config to run sanity robo.
