@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## 0.14.1
 * Support new Flank options without updating Fladle [Fixes #146](https://github.com/runningcode/fladle/issues/146) [PR](https://github.com/runningcode/fladle/pull/214) Thanks [piotradamczyk5](https://github.com/piotradamczyk5)
 
 ## 0.14.0
