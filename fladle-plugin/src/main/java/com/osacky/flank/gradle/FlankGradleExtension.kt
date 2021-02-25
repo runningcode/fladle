@@ -29,7 +29,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
   override val useOrchestrator: Property<Boolean> = objects.property<Boolean>().convention(false)
   override val autoGoogleLogin: Property<Boolean> = objects.property<Boolean>().convention(false)
   override val devices: ListProperty<Map<String, String>> = objects.listProperty<Map<String, String>>().convention(listOf(mapOf("model" to "NexusLowRes", "version" to "28")))
-
+  override val dependOnAssemble: Property<Boolean> = objects.property<Boolean>().convention(false)
   // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run
   override val testTargets: ListProperty<String> = objects.listProperty()
 
@@ -200,7 +200,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       failFast = objects.property<Boolean>().convention(failFast),
       maxTestShards = objects.property<Int>().convention(maxTestShards),
       additionalFlankOptions = objects.property<String>().convention(additionalFlankOptions),
-      additionalGcloudOptions = objects.property<String>().convention(additionalGcloudOptions)
+      additionalGcloudOptions = objects.property<String>().convention(additionalGcloudOptions),
+      dependOnAssemble = objects.property<Boolean>().convention(dependOnAssemble)
     )
   }
 

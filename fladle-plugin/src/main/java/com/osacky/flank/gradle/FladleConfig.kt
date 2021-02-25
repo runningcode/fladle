@@ -428,6 +428,14 @@ interface FladleConfig {
   val additionalFlankOptions: Property<String>
 
   /**
+   * Boolean to allow assembling application and test code automatically
+   * before flank runs
+   */
+  @get:Input
+  @get:Optional
+  val dependOnAssemble: Property<Boolean>
+
+  /**
    * Allow appending additional config to gcloud root yaml. This option is useful when you would like to test option
    * before it is available on Fladle. Supports both single and multiple properties.
    */
