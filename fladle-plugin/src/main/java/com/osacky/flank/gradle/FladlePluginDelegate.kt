@@ -108,8 +108,13 @@ class FladlePluginDelegate {
       }
       dependsOn(writeConfigProps)
       if (config.dependOnAssemble.isPresent && config.dependOnAssemble.get()) {
+        val testedExtension = project.extensions.findByType(TestedExtension::class.java)
+        testedExtension?.testVariants?.configureEach {
+          if (testedVariant.assembleProvider.isPresent) {
+            dependsOn(testedVariant.assembleProvider.get())
+          }
+        }
         dependsOn(ASSEMBLE_ANDROID_TEST)
-        dependsOn("assemble")
       }
     }
 
