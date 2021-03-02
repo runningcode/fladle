@@ -1,6 +1,7 @@
 package com.osacky.flank.gradle.integration
 
 import com.google.common.truth.Truth.assertThat
+import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.Rule
 import org.junit.Test
@@ -124,6 +125,69 @@ class FlankGradlePluginIntegrationTest {
       .withArguments("runFlank")
       .buildAndFail()
     assertThat(result.output).contains("debugApk must be specified")
+  }
+
+  fun setUpDependOnAssemble(dependsOnAssemble: Boolean): BuildResult  {
+      writeBuildGradle(
+          """plugins {
+          id "com.osacky.fladle"
+          id "com.android.application"
+         }
+         repositories {
+              google()
+              mavenCentral()
+          }
+         android {
+             compileSdkVersion 29
+             defaultConfig {
+                 applicationId "com.osacky.flank.gradle.sample"
+                 minSdkVersion 23
+                 targetSdkVersion 29
+                 versionCode 1
+                 versionName "1.0"
+                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+             }
+             testOptions {
+                 execution 'ANDROIDX_TEST_ORCHESTRATOR'
+              }
+         }
+         fladle {
+           serviceAccountCredentials = project.layout.projectDirectory.file("foo")
+           dependOnAssemble = $dependsOnAssemble
+         }
+    """.trimIndent()
+      )
+      testProjectRoot.newFile("foo").writeText("{}")
+      testProjectRoot.newFolder("src/main")
+      testProjectRoot.newFile("src/main/AndroidManifest.xml").writeText("""
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest package="com.osacky.flank.gradle.sample" xmlns:android="http://schemas.android.com/apk/res/android" />
+      """.trimIndent())
+      return GradleRunner.create()
+          .withProjectDir(testProjectRoot.root)
+          .withPluginClasspath()
+          .withGradleVersion("6.1.1")
+          .withArguments("runFlank")
+          .buildAndFail()
+  }
+
+  @Test
+  fun testWithDependOnAssemble() {
+      val result =  setUpDependOnAssemble(true)
+      result.tasks.filter { it.path.startsWith(":assembleDebug") }.map { it.path }.let { tasks ->
+          assertThat(tasks).isNotEmpty()
+          assertThat(tasks).contains(":assembleDebug")
+          assertThat(tasks).contains(":assembleDebugAndroidTest")
+      }
+
+  }
+
+  @Test
+  fun testWithOutDependOnAssemble() {
+    val result =  setUpDependOnAssemble(false)
+    result.tasks.filter { it.path.startsWith(":assembleDebug") }.map { it.path }.let { tasks ->
+      assertThat(tasks).isEmpty()
+    }
   }
 
   @Test
