@@ -2,7 +2,6 @@ package com.osacky.flank.gradle
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.TestedExtension
-import com.android.build.gradle.internal.TaskManager.ASSEMBLE_ANDROID_TEST
 import com.android.builder.model.TestOptions
 import com.osacky.flank.gradle.validation.checkForExclusionUsage
 import com.osacky.flank.gradle.validation.validateOptionsUsed
