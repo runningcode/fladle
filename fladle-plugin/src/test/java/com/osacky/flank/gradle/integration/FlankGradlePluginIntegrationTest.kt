@@ -167,7 +167,6 @@ class FlankGradlePluginIntegrationTest {
     return GradleRunner.create()
         .withProjectDir(testProjectRoot.root)
         .withPluginClasspath()
-        .withGradleVersion("6.1.1")
         .withArguments("runFlank")
         .buildAndFail()
   }
