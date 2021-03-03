@@ -176,7 +176,7 @@ class FlankGradlePluginIntegrationTest {
   @Test
   fun testWithDependOnAssemble() {
     val result = setUpDependOnAssemble(true)
-    assertThat(result.output).contains("PERMISSION_DENIED")
+    assertThat(result.output).contains("There are no tests to run.")
     assertThat(result.task(":assembleDebug")!!.outcome).isEqualTo(TaskOutcome.SUCCESS)
     assertThat(result.task(":assembleDebugAndroidTest")!!.outcome).isEqualTo(TaskOutcome.SUCCESS)
   }
