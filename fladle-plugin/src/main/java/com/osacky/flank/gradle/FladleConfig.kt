@@ -428,7 +428,7 @@ interface FladleConfig {
   val additionalFlankOptions: Property<String>
 
   /**
-   * Boolean to allow assembling application and test code automatically
+   * When enabled, the execution of flank will depend on the Gradle tasks to assemble the debug and instrumentation APKs.
    * before flank runs
    */
   @get:Input
