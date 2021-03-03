@@ -155,6 +155,7 @@ class FlankGradlePluginIntegrationTest {
          fladle {
            serviceAccountCredentials = project.layout.projectDirectory.file("foo")
            dependOnAssemble = $dependsOnAssemble
+           projectId("flank-gradle")
          }
       """.trimIndent()
     )
