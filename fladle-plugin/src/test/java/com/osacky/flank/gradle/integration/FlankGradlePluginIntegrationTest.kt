@@ -174,7 +174,8 @@ class FlankGradlePluginIntegrationTest {
   @Test
   fun testWithDependOnAssemble() {
       val result =  setUpDependOnAssemble(true)
-      result.tasks.filter { it.path.startsWith(":assembleDebug") }.map { it.path }.let { tasks ->
+        assertThat(result.task(":assembleDebug")!!.outcome).isEqualTo(TaskOutcome.SUCCESS)
+        assertThat(result.task(":assembleDebugAndroidTest")!!.outcome).isEqualTo(TaskOutcome.SUCCESS)
           assertThat(tasks).isNotEmpty()
           assertThat(tasks).contains(":assembleDebug")
           assertThat(tasks).contains(":assembleDebugAndroidTest")
