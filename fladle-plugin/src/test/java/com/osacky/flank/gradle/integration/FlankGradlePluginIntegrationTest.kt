@@ -169,26 +169,24 @@ class FlankGradlePluginIntegrationTest {
     val result = GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
       .withPluginClasspath()
-      .withArguments("runFlank")
-      .buildAndFail()
-    // if this assertion fails, make sure you don't have a ~/.flank dir
-    assertThat(result.output).contains("Error: Failed to read service account credential.")
+      .withArguments("runFlank", "--dry-run")
+      .build()
+
     return result
   }
 
   @Test
   fun testWithDependOnAssemble() {
     val result = setUpDependOnAssemble(true)
-    assertThat(result.task(":assembleDebug")!!.outcome).isEqualTo(TaskOutcome.SUCCESS)
-    assertThat(result.task(":assembleDebugAndroidTest")!!.outcome).isEqualTo(TaskOutcome.SUCCESS)
+    assertThat(result.output).contains(":assembleDebug")
+    assertThat(result.output).contains(":assembleDebugAndroidTest")
   }
 
   @Test
   fun testWithOutDependOnAssemble() {
     val result = setUpDependOnAssemble(false)
-    result.tasks.filter { it.path.startsWith(":assembleDebug") }.map { it.path }.let { tasks ->
-      assertThat(tasks).isEmpty()
-    }
+    assertThat(result.output).doesNotContain(":assembleDebug")
+    assertThat(result.output).doesNotContain(":assembleDebugAndroidTest")
   }
 
   @Test
