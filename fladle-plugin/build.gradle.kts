@@ -33,8 +33,8 @@ dependencies {
   }
 
   testImplementation(gradleTestKit())
-  testImplementation("junit:junit:4.13.1")
-  testImplementation("com.google.truth:truth:1.0.1")
+  testImplementation("junit:junit:4.13.2")
+  testImplementation("com.google.truth:truth:1.1.2")
 }
 
 kotlinter {
@@ -156,4 +156,9 @@ tasks.withType(Test::class.java).configureEach {
   testLogging {
     events = setOf(TestLogEvent.SKIPPED, TestLogEvent.FAILED, TestLogEvent.PASSED)
   }
+}
+
+tasks.withType(ValidatePlugins::class.java).configureEach {
+  failOnWarning.set(true)
+  enableStricterValidation.set(true)
 }
