@@ -3,7 +3,6 @@ package com.osacky.flank.gradle.integration
 import com.google.common.truth.Truth.assertThat
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
-import org.gradle.testkit.runner.TaskOutcome
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
