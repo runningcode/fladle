@@ -9,6 +9,8 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import kotlin.reflect.full.memberProperties
 
 interface FladleConfig {
@@ -18,6 +20,7 @@ interface FladleConfig {
   val projectId: Property<String>
 
   @get:InputFile
+  @get:PathSensitive(PathSensitivity.RELATIVE)
   @get:Optional
   val serviceAccountCredentials: RegularFileProperty
 

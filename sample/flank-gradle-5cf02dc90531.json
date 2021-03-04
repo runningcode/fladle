@@ -1,1 +1,8 @@
-{}
+{
+  "type": "service_account",
+  "project_id": "foo",
+  "client_id": "foo",
+  "client_email": "myfake@gmail.com",
+  "private_key": "foo",
+  "private_key_id": "foo"
+}
