@@ -1106,13 +1106,13 @@ Multiple options
     ```
 
 ### dependOnAssemble
-If true, automatically builds app and test APKs before `runFlank` executes.
+Enable to automatically build the app and test APKs before `runFlank` executes. (default: `false`)
 
 === "Groovy"
     ``` groovy
-    dependOnAssemble = false
+    dependOnAssemble = true
     ```
 === "Kotlin"
     ``` kotlin
-    dependOnAssemble.set(false)
+    dependOnAssemble.set(true)
     ```

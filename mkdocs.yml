@@ -5,8 +5,8 @@
 extra:
   fladle:
     current_release: '0.14.1'
-    next_release: '0.14.2'
-    flank_version: '21.01.1'
+    next_release: '0.15.0'
+    flank_version: '21.03.0'
 
 site_name: Fladle
 site_url: https://runningcode.github.io/fladle/
@@ -20,6 +20,7 @@ nav:
   - Quick Start: quick-start.md
   - Authentication: authentication.md
   - Configuration: configuration.md
+  - Recipes: recipes.md
   - Changelog: changelog.md
   - Results: results.md
   - Multi Module Testing: multi-module-testing.md
