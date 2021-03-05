@@ -1,6 +1,7 @@
 package com.osacky.flank.gradle
 
 import com.android.build.gradle.AppExtension
+import com.android.build.gradle.TestedExtension
 import com.android.builder.model.TestOptions
 import com.osacky.flank.gradle.validation.checkForExclusionUsage
 import com.osacky.flank.gradle.validation.validateOptionsUsed
@@ -106,6 +107,18 @@ class FladlePluginDelegate {
         environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to config.serviceAccountCredentials.get()))
       }
       dependsOn(writeConfigProps)
+      if (config.dependOnAssemble.isPresent && config.dependOnAssemble.get()) {
+        project.extensions.findByType(TestedExtension::class.java)?.let { testedExtension ->
+          testedExtension.testVariants.configureEach {
+            if (testedVariant.assembleProvider.isPresent) {
+              dependsOn(testedVariant.assembleProvider.get())
+            }
+            if (assembleProvider.isPresent) {
+              dependsOn(assembleProvider.get())
+            }
+          }
+        }
+      }
     }
 
     register("runFlank$name", RunFlankTask::class.java).configure {

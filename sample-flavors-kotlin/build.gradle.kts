@@ -68,6 +68,7 @@ fladle {
         }
     }
     flakyTestAttempts.set(1)
+    dependOnAssemble.set(true)
 }
 
 dependencies {

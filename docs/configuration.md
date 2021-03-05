@@ -151,6 +151,7 @@ fladle {
       "class com.foo.ClassForShard3; package com.package.for.shard3"
     ]
     failFast = true
+    dependOnAssemble = true
 }
 ```
 
@@ -1102,4 +1103,16 @@ Multiple options
         new-property: true
         other-new-property: force
     """.trimIndent())
+    ```
+
+### dependOnAssemble
+If true, automatically builds app and test APKs before `runFlank` executes.
+
+=== "Groovy"
+    ``` groovy
+    dependOnAssemble = false
+    ```
+=== "Kotlin"
+    ``` kotlin
+    dependOnAssemble.set(false)
     ```
