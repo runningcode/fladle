@@ -18,7 +18,7 @@ android {
 }
 
 fladle {
-    flankVersion = "21.02.0"
+    flankVersion = "21.+"
     serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json")
     // Project Id is not needed if serviceAccountCredentials are set.
 //    projectId("flank-gradle")
@@ -57,6 +57,18 @@ fladle {
                 "test: ../feature/room/build/output/apk/androidTest/debug/feature-room-test.apk",
                 "test: ../library/databases/build/output/apk/androidTest/debug/sample-databases-test.apk"
             ]})
+        }
+        perfTests {
+            devices.set([[ "model" : "Nexus5", "version" : "28" ], ["model" : "Nexus5", "version": "28"]])
+            testTargets.set([
+                    "class com.sample.MyPerformanceTest"
+            ])
+        }
+        regressionTests {
+            devices.set([[ "model" : "Nexus5LowRes", "version" : "28" ]])
+            testTargets.set([
+                    "class com.sample.MyRegressionTest"
+            ])
         }
     }
     flakyTestAttempts = 1

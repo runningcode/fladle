@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.15.0
+* Add flag for depending on assembling of debug apk and instrumentation apk automatically. `dependOnAssemble` [PR](https://github.com/runningcode/fladle/pull/223/files) Thanks [asadsalman](https://github.com/asadsalman)
+
 ## 0.14.1
 * Support new Flank options without updating Fladle [Fixes #146](https://github.com/runningcode/fladle/issues/146) [PR](https://github.com/runningcode/fladle/pull/214) Thanks [piotradamczyk5](https://github.com/piotradamczyk5)
 
