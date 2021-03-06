@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.4.21'
+    ext.kotlin_version = '1.4.31'
     repositories {
         google()
         mavenCentral()
@@ -13,7 +13,7 @@ buildscript {
 }
 
 plugins {
-    id "com.github.ben-manes.versions" version "0.36.0"
+    id "com.github.ben-manes.versions" version "0.38.0"
     id "com.osacky.fulladle"
     id "org.jmailen.kotlinter" version "3.3.0"
 }
@@ -43,8 +43,7 @@ buildScan {
 }
 
 tasks.wrapper.configure {
-    distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = '6.8'
+    gradleVersion = '6.8.3'
 }
 
 def isNonStable = { String version ->
