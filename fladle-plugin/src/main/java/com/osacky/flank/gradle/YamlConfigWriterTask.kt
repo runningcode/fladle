@@ -5,7 +5,6 @@ import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
@@ -19,6 +18,11 @@ open class YamlConfigWriterTask @Inject constructor(
   projectLayout: ProjectLayout
 ) : DefaultTask() {
 
+  init {
+    description = "Writes a flank.yml file based on the current FlankGradleExtension configuration."
+    group = FladlePluginDelegate.TASK_GROUP
+  }
+
   private val yamlWriter = YamlWriter()
 
   private val fladleDir = projectLayout.fladleDir.map {
@@ -31,16 +35,6 @@ open class YamlConfigWriterTask @Inject constructor(
 
   @OutputFile
   val fladleConfigFile: Provider<RegularFile> = fladleDir.map { it.file("flank.yml") }
-
-  @Internal
-  override fun getDescription(): String {
-    return "Writes a flank.yml file based on the current FlankGradleExtension configuration."
-  }
-
-  @Internal
-  override fun getGroup(): String {
-    return FladlePluginDelegate.TASK_GROUP
-  }
 
   @TaskAction
   fun writeFile() {
