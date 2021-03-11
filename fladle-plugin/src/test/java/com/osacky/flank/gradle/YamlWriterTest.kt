@@ -992,6 +992,13 @@ class YamlWriterTest {
 
     assertTrue(properties.contains("  full-junit-result: true"))
   }
+  @Test
+  fun writeAsyncFlag() {
+    val properties = emptyExtension {
+      async.set(true)
+    }.toAdditionalProperties()
+    assertTrue(properties.contains("  async: true"))
+  }
 
   @Test
   fun missingFullJunitResult() {
