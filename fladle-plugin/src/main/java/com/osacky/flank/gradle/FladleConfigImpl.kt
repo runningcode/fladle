@@ -64,7 +64,8 @@ data class FladleConfigImpl(
   override val maxTestShards: Property<Int>,
   override val additionalFlankOptions: Property<String>,
   override val additionalGcloudOptions: Property<String>,
-  override val dependOnAssemble: Property<Boolean>
+  override val dependOnAssemble: Property<Boolean>,
+  override val async: Property<Boolean>
 ) : FladleConfig {
   /**
    * Prepare config to run sanity robo.
