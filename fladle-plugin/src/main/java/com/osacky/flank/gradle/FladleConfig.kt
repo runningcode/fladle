@@ -438,7 +438,6 @@ interface FladleConfig {
   @get:Optional
   val dependOnAssemble: Property<Boolean>
 
-
   /**
    * When enabled, tests are invoked asynchronously, without waiting for results.
    */
