@@ -83,7 +83,9 @@ internal class YamlWriter {
     appendProperty(config.recordVideo, name = "record-video")
     appendProperty(config.performanceMetrics, name = "performance-metrics")
     appendProperty(config.testTimeout, name = "timeout")
-    appendProperty(config.async, name = "async")
+    if (config.async.isPresent && config.async.get()) {
+      appendProperty(config.async, name = "async")
+    }
     appendProperty(config.resultsHistoryName, name = "results-history-name")
     appendProperty(config.resultsBucket, name = "results-bucket")
     appendMapProperty(config.environmentVariables, name = "environment-variables") {
