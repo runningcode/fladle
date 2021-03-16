@@ -439,6 +439,13 @@ interface FladleConfig {
   val dependOnAssemble: Property<Boolean>
 
   /**
+   * When enabled, tests are invoked asynchronously, without waiting for results.
+   */
+  @get:Input
+  @get:Optional
+  val async: Property<Boolean>
+
+  /**
    * Allow appending additional config to gcloud root yaml. This option is useful when you would like to test option
    * before it is available on Fladle. Supports both single and multiple properties.
    */

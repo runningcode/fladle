@@ -142,6 +142,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val dependOnAssemble: Property<Boolean> = objects.property<Boolean>().convention(false)
 
+  override val async: Property<Boolean> = objects.property<Boolean>().convention(false)
+
   @Internal
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
@@ -203,7 +205,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       maxTestShards = objects.property<Int>().convention(maxTestShards),
       additionalFlankOptions = objects.property<String>().convention(additionalFlankOptions),
       additionalGcloudOptions = objects.property<String>().convention(additionalGcloudOptions),
-      dependOnAssemble = objects.property<Boolean>().convention(dependOnAssemble)
+      dependOnAssemble = objects.property<Boolean>().convention(dependOnAssemble),
+      async = objects.property<Boolean>().convention(async)
     )
   }
 

@@ -1116,3 +1116,16 @@ Enable to automatically build the app and test APKs before `runFlank` executes. 
     ``` kotlin
     dependOnAssemble.set(true)
     ```
+
+
+### async
+Enable to return immediately after invoking tests, without waiting for results. (default: `false`)
+
+=== "Groovy"
+    ``` groovy
+    async = true
+    ```
+=== "Kotlin"
+    ``` kotlin
+    async.set(true)
+    ```
