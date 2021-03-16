@@ -2,10 +2,8 @@
 
 ## Unreleased
 
-## 0.16.0
-* Add support for [`async`](https://runningcode.github.io/fladle/configuration/#async) flag. [PR](https://github.com/runningcode/fladle/pull/228).
-
 ## 0.15.0
+* Add support for [`async`](https://runningcode.github.io/fladle/configuration/#async) flag. [PR](https://github.com/runningcode/fladle/pull/228).
 * Add flag for depending on assembling of debug apk and instrumentation apk automatically. `dependOnAssemble` [PR](https://github.com/runningcode/fladle/pull/223/files) Thanks [asadsalman](https://github.com/asadsalman)
 
 ## 0.14.1
