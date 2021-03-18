@@ -4,9 +4,10 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Internal
 
 data class FladleConfigImpl(
-  internal val name: String,
+  @get:Internal internal val name: String,
   override val projectId: Property<String>,
   override val serviceAccountCredentials: RegularFileProperty,
   override val debugApk: Property<String>,

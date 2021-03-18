@@ -3,6 +3,7 @@ package com.osacky.flank.gradle.integration
 import com.google.common.truth.Truth.assertThat
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
+import org.gradle.testkit.runner.TaskOutcome
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -212,7 +213,7 @@ class FlankGradlePluginIntegrationTest {
   }
 
   @Test
-  fun testSpecifyingBothInstrumenationAndRoboscriptFailsBuild() {
+  fun testSpecifyingBothInstrumentationAndRoboscriptFailsBuild() {
     writeBuildGradle(
       """plugins {
             id "com.osacky.fladle"
@@ -220,7 +221,7 @@ class FlankGradlePluginIntegrationTest {
            fladle {
              serviceAccountCredentials = project.layout.projectDirectory.file("foo")
              debugApk = "test-debug.apk"
-             instrumentationApk = "instrumenation-debug.apk"
+             instrumentationApk = "instrumentation-debug.apk"
              roboScript = "foo.script"
            }
       """.trimIndent()
@@ -234,5 +235,32 @@ class FlankGradlePluginIntegrationTest {
       .buildAndFail()
 
     assertThat(result.output).contains("Both instrumentationApk file and roboScript file were specified, but only one is expected.")
+  }
+
+  @Test
+  fun testGradleSevenCompat() {
+    writeBuildGradle(
+      """plugins {
+           id "com.osacky.fladle"
+         }
+         fladle {
+           serviceAccountCredentials = project.layout.projectDirectory.file("foo")
+           debugApk = "test-debug.apk"
+           instrumentationApk = "instrumentation-debug.apk"
+           configs {
+             fooConfig {
+             }
+           }
+         }
+         """.trimMargin()
+    )
+    testProjectRoot.newFile("foo").writeText("{}")
+    val result = GradleRunner.create()
+      .withProjectDir(testProjectRoot.root)
+      .withPluginClasspath()
+      .withGradleVersion("7.0-milestone-3")
+      .withArguments("printYmlFooConfig")
+      .build()
+    assertThat(result.task(":printYmlFooConfig")!!.outcome).isEqualTo(TaskOutcome.SUCCESS)
   }
 }
