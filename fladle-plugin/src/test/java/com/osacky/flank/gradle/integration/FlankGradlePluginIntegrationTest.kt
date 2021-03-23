@@ -180,12 +180,14 @@ class FlankGradlePluginIntegrationTest {
     val result = setUpDependOnAssemble(true)
     assertThat(result.output).contains(":assembleDebug")
     assertThat(result.output).contains(":assembleDebugAndroidTest")
+    assertThat(result.output).doesNotContain(":assembleRelease")
   }
 
   @Test
   fun testWithOutDependOnAssemble() {
     val result = setUpDependOnAssemble(false)
     assertThat(result.output).doesNotContain(":assembleDebug")
+    assertThat(result.output).doesNotContain(":assembleRelease")
     assertThat(result.output).doesNotContain(":assembleDebugAndroidTest")
   }
 
