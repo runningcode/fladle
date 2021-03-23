@@ -111,10 +111,10 @@ class FladlePluginDelegate {
         project.extensions.findByType(TestedExtension::class.java)?.let { testedExtension ->
           testedExtension.testVariants.configureEach {
             if (testedVariant.assembleProvider.isPresent) {
-              dependsOn(testedVariant.assembleProvider.get())
+              dependsOn(testedVariant.assembleProvider)
             }
             if (assembleProvider.isPresent) {
-              dependsOn(assembleProvider.get())
+              dependsOn(assembleProvider)
             }
           }
         }
