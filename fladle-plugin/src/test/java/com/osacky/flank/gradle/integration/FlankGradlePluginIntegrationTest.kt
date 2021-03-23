@@ -128,64 +128,20 @@ class FlankGradlePluginIntegrationTest {
     assertThat(result.output).contains("debugApk must be specified")
   }
 
-  private fun setUpDependOnAssemble(dependsOnAssemble: Boolean): BuildResult {
-    writeBuildGradle(
-      """plugins {
-          id "com.osacky.fladle"
-          id "com.android.application"
-         }
-         repositories {
-              google()
-              mavenCentral()
-          }
-         android {
-             compileSdkVersion 29
-             defaultConfig {
-                 applicationId "com.osacky.flank.gradle.sample"
-                 minSdkVersion 23
-                 targetSdkVersion 29
-                 versionCode 1
-                 versionName "1.0"
-                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-             }
-             testOptions {
-                 execution 'ANDROIDX_TEST_ORCHESTRATOR'
-              }
-         }
-         fladle {
-           serviceAccountCredentials = project.layout.projectDirectory.file("foo")
-           dependOnAssemble = $dependsOnAssemble
-         }
-      """.trimIndent()
-    )
-    testProjectRoot.newFile("foo").writeText("{}")
-    testProjectRoot.newFolder("src/main")
-    testProjectRoot.newFile("src/main/AndroidManifest.xml").writeText(
-      """
-        <?xml version="1.0" encoding="utf-8"?>
-        <manifest package="com.osacky.flank.gradle.sample" xmlns:android="http://schemas.android.com/apk/res/android" />
-      """.trimIndent()
-    )
-    val result = GradleRunner.create()
-      .withProjectDir(testProjectRoot.root)
-      .withPluginClasspath()
-      .withArguments("runFlank", "--dry-run")
-      .build()
-
-    return result
-  }
-
   @Test
-  fun testWithDependOnAssemble() {
+  fun testWithDependOnAssembleAndFlavors() {
     val result = setUpDependOnAssemble(true)
-    assertThat(result.output).contains(":assembleDebug")
-    assertThat(result.output).contains(":assembleDebugAndroidTest")
-    assertThat(result.output).doesNotContain(":assembleRelease")
+    assertThat(result.output).contains(":assembleChocolateDebug")
+    assertThat(result.output).contains(":assembleChocolateDebugAndroidTest")
+    assertThat(result.output).doesNotContain(":assembleChocolateRelease")
+    assertThat(result.output).doesNotContain(":assembleVanilla")
   }
 
   @Test
-  fun testWithOutDependOnAssemble() {
+  fun testWithOutDependOnAssembleAndFlavors() {
     val result = setUpDependOnAssemble(false)
+    assertThat(result.output).doesNotMatch(":assemble.*")
+    assertThat(result.output).doesNotContain(":assembleChocolateDebug")
     assertThat(result.output).doesNotContain(":assembleDebug")
     assertThat(result.output).doesNotContain(":assembleRelease")
     assertThat(result.output).doesNotContain(":assembleDebugAndroidTest")
@@ -229,9 +185,7 @@ class FlankGradlePluginIntegrationTest {
       """.trimIndent()
     )
     testProjectRoot.newFile("foo").writeText("{}")
-    val result = GradleRunner.create()
-      .withProjectDir(testProjectRoot.root)
-      .withPluginClasspath()
+    val result = testProjectRoot.gradleRunner()
       .withGradleVersion(minSupportGradleVersion)
       .withArguments("printYml")
       .buildAndFail()
@@ -257,12 +211,56 @@ class FlankGradlePluginIntegrationTest {
          """.trimMargin()
     )
     testProjectRoot.newFile("foo").writeText("{}")
-    val result = GradleRunner.create()
-      .withProjectDir(testProjectRoot.root)
-      .withPluginClasspath()
-      .withGradleVersion("7.0-milestone-3")
+    val result = testProjectRoot.gradleRunner()
+      .withGradleVersion("7.0-rc-1")
       .withArguments("printYmlFooConfig")
       .build()
     assertThat(result.task(":printYmlFooConfig")!!.outcome).isEqualTo(TaskOutcome.SUCCESS)
+  }
+
+  private fun setUpDependOnAssemble(dependsOnAssemble: Boolean): BuildResult {
+    testProjectRoot.setupFixture("android-project")
+    writeBuildGradle(
+      """plugins {
+          id "com.osacky.fladle"
+          id "com.android.application"
+         }
+         repositories {
+              google()
+              mavenCentral()
+          }
+         android {
+             compileSdkVersion 29
+             defaultConfig {
+                 applicationId "com.osacky.flank.gradle.sample"
+                 minSdkVersion 23
+                 targetSdkVersion 29
+                 versionCode 1
+                 versionName "1.0"
+                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+             }
+             testOptions {
+                 execution 'ANDROIDX_TEST_ORCHESTRATOR'
+             }
+             flavorDimensions "flavor"
+             productFlavors {
+                 chocolate {
+                     dimension "flavor"
+                 }
+                 vanilla {
+                     dimension "flavor"
+                 }
+             }
+         }
+         fladle {
+           serviceAccountCredentials = project.layout.projectDirectory.file("foo")
+           dependOnAssemble = $dependsOnAssemble
+           variant = "chocolateDebug"
+         }
+      """.trimIndent()
+    )
+    return testProjectRoot.gradleRunner()
+      .withArguments("runFlank", "--dry-run")
+      .build()
   }
 }

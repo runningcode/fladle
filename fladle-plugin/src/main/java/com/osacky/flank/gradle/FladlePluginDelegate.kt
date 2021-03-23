@@ -2,6 +2,7 @@ package com.osacky.flank.gradle
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.TestedExtension
+import com.android.build.gradle.api.BaseVariant
 import com.android.builder.model.TestOptions
 import com.osacky.flank.gradle.validation.checkForExclusionUsage
 import com.osacky.flank.gradle.validation.validateOptionsUsed
@@ -108,8 +109,9 @@ class FladlePluginDelegate {
       }
       dependsOn(writeConfigProps)
       if (config.dependOnAssemble.isPresent && config.dependOnAssemble.get()) {
-        project.extensions.findByType(TestedExtension::class.java)?.let { testedExtension ->
-          testedExtension.testVariants.configureEach {
+        val testedExtension = requireNotNull(project.extensions.findByType(TestedExtension::class.java)) { "Could not find TestedExtension in ${project.name}" }
+        testedExtension.testVariants.configureEach {
+          if (base.isExpectedVariant(testedVariant)) {
             if (testedVariant.assembleProvider.isPresent) {
               dependsOn(testedVariant.assembleProvider)
             }
@@ -143,7 +145,7 @@ class FladlePluginDelegate {
       val appVariant = testedVariant
       outputs.configureEach test@{
         appVariant.outputs.configureEach app@{
-          if (!extension.variant.isPresent || (extension.variant.isPresent && extension.variant.get() == appVariant.name)) {
+          if (extension.isExpectedVariant(appVariant)) {
 
             if (!extension.debugApk.isPresent) {
               // Don't set debug apk if not already set. #172
@@ -160,6 +162,10 @@ class FladlePluginDelegate {
       }
     }
   }
+
+  private fun FlankGradleExtension.isExpectedVariant(
+    appVariant: BaseVariant
+  ) = !variant.isPresent || (variant.isPresent && variant.get() == appVariant.name)
 
   private val Project.fladleConfig: Configuration
     get() = configurations.getByName(FLADLE_CONFIG)
