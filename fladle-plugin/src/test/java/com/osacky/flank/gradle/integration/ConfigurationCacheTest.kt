@@ -108,12 +108,12 @@ class ConfigurationCacheTest {
     testProjectRoot.newFile("flank-gradle-service-account.json").writeText("{ \"project_id\": \"foo\" }")
     val result = configCachingRunner("runFlank").buildAndFail()
 
-    assertThat(result.output).contains("Error: Failed to read service account credential.")
+    assertThat(result.output).contains("Flank encountered a 403 error when running on project foo")
     assertThat(result.output).contains("Configuration cache entry stored.")
 
     val secondResult = configCachingRunner("runFlank").buildAndFail()
 
-    assertThat(secondResult.output).contains("Error: Failed to read service account credential.")
+    assertThat(secondResult.output).contains("Flank encountered a 403 error when running on project foo")
     assertThat(secondResult.output).contains("Reusing configuration cache.")
   }
 
