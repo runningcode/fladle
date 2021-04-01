@@ -224,11 +224,11 @@ Need a different Flank version? Specify it with `flankVersion`.
 To use a snapshot:
 === "Groovy"
     ``` groovy
-    flankVersion = "flank_snapshot"`
+    flankVersion = "flank-snapshot"`
     ```
 === "Kotlin"
     ``` kotlin
-    flankVersion.set("flank_snapshot")
+    flankVersion.set("flank-snapshot")
     ```
 
 Need more than 50 shards? Use Flank `8.1.0`.
