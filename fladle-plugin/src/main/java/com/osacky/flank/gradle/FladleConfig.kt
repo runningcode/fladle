@@ -112,6 +112,11 @@ interface FladleConfig {
   @get:Input
   val flakyTestAttempts: Property<Int>
 
+  // Variant to use for configuring output APK.
+  @get:Input
+  @get:Optional
+  val variant: Property<String>
+
   @get:Input
   @get:Optional
   val resultsBucket: Property<String>

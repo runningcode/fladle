@@ -17,3 +17,7 @@ fun TemporaryFolder.gradleRunner() =
     .withPluginClasspath()
     .forwardOutput()
     .withProjectDir(root)
+
+fun TemporaryFolder.writeEmptyServiceCredential() {
+  newFile("foo").writeText("{}")
+}

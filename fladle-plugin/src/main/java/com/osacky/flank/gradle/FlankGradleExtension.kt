@@ -9,7 +9,6 @@ import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.Optional
 import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.mapProperty
 import org.gradle.kotlin.dsl.property
@@ -50,10 +49,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val flakyTestAttempts: Property<Int> = objects.property<Int>().convention(0)
 
-  // Variant to use for configuring output APK.
-  @get:Input
-  @get:Optional
-  val variant: Property<String> = objects.property()
+  override val variant: Property<String> = objects.property()
 
   /**
    * debugApk and instrumentationApk are [Property<String>] and not [RegularFileProperty] because we support wildcard characters.
@@ -169,6 +165,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       smartFlankGcsPath = objects.property<String>().convention(smartFlankGcsPath),
       resultsHistoryName = objects.property<String>().convention(resultsHistoryName),
       flakyTestAttempts = objects.property<Int>().convention(flakyTestAttempts),
+      variant = objects.property<String>().convention(variant),
       directoriesToPull = objects.listProperty<String>().convention(directoriesToPull),
       filesToDownload = objects.listProperty<String>().convention(filesToDownload),
       environmentVariables = objects.mapProperty<String, String>().convention(environmentVariables),

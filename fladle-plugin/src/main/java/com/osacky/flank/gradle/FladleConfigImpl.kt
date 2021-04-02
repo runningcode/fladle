@@ -23,6 +23,7 @@ data class FladleConfigImpl(
   override val smartFlankGcsPath: Property<String>,
   override val resultsHistoryName: Property<String>,
   override val flakyTestAttempts: Property<Int>,
+  override val variant: Property<String>,
   override val directoriesToPull: ListProperty<String>,
   override val filesToDownload: ListProperty<String>,
   override val environmentVariables: MapProperty<String, String>,
