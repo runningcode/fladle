@@ -12,6 +12,7 @@ This recipe will keep track of test durations automatically on firebase test lab
     fladle {
         maxTestShards = 50
         shardTime = 120
+        smartFlankGcsPath = "gs://fladle-results/smart-flank/JUnitReport.xml"
     }
     ```
 === "Kotlin"
@@ -19,6 +20,7 @@ This recipe will keep track of test durations automatically on firebase test lab
     fladle {
         maxTestShards.set(50)
         shardTime.set(120)
+        smartFlankGcsPath.set("gs://fladle-results/smart-flank/JUnitReport.xml")
     }
     ```
 
