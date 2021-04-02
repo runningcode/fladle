@@ -129,8 +129,24 @@ class FlankGradlePluginIntegrationTest {
   }
 
   @Test
+  fun testWithDependOnAssembleNoFlavors() {
+    val result = setUpDependOnAssemble(true, withFlavors = false)
+    assertThat(result.output).contains(":assembleDebug")
+    assertThat(result.output).contains(":assembleDebugAndroidTest")
+    assertThat(result.output).doesNotContain(":assembleRelease")
+  }
+
+  @Test
+  fun testWithOutDependOnAssembleNoFlavors() {
+    val result = setUpDependOnAssemble(false, withFlavors = false)
+    assertThat(result.output).doesNotContain(":assembleDebug")
+    assertThat(result.output).doesNotContain(":assembleDebugAndroidTest")
+    assertThat(result.output).doesNotContain(":assembleRelease")
+  }
+
+  @Test
   fun testWithDependOnAssembleAndFlavors() {
-    val result = setUpDependOnAssemble(true)
+    val result = setUpDependOnAssemble(true, withFlavors = true)
     assertThat(result.output).contains(":assembleChocolateDebug")
     assertThat(result.output).contains(":assembleChocolateDebugAndroidTest")
     assertThat(result.output).doesNotContain(":assembleChocolateRelease")
@@ -139,7 +155,7 @@ class FlankGradlePluginIntegrationTest {
 
   @Test
   fun testWithOutDependOnAssembleAndFlavors() {
-    val result = setUpDependOnAssemble(false)
+    val result = setUpDependOnAssemble(false, withFlavors = true)
     assertThat(result.output).doesNotMatch(":assemble.*")
     assertThat(result.output).doesNotContain(":assembleChocolateDebug")
     assertThat(result.output).doesNotContain(":assembleDebug")
@@ -218,8 +234,22 @@ class FlankGradlePluginIntegrationTest {
     assertThat(result.task(":printYmlFooConfig")!!.outcome).isEqualTo(TaskOutcome.SUCCESS)
   }
 
-  private fun setUpDependOnAssemble(dependsOnAssemble: Boolean): BuildResult {
+  private fun setUpDependOnAssemble(dependsOnAssemble: Boolean, withFlavors: Boolean = false): BuildResult {
     testProjectRoot.setupFixture("android-project")
+    val flavors = if (withFlavors) {
+      """
+             flavorDimensions "flavor"
+             productFlavors {
+                 chocolate {
+                     dimension "flavor"
+                 }
+                 vanilla {
+                     dimension "flavor"
+                 }
+             }
+      """.trimIndent()
+    } else { "" }
+    val variant = if (withFlavors) { """variant = "chocolateDebug"""" } else { "" }
     writeBuildGradle(
       """plugins {
           id "com.osacky.fladle"
@@ -242,20 +272,12 @@ class FlankGradlePluginIntegrationTest {
              testOptions {
                  execution 'ANDROIDX_TEST_ORCHESTRATOR'
              }
-             flavorDimensions "flavor"
-             productFlavors {
-                 chocolate {
-                     dimension "flavor"
-                 }
-                 vanilla {
-                     dimension "flavor"
-                 }
-             }
+             $flavors
          }
          fladle {
            serviceAccountCredentials = project.layout.projectDirectory.file("foo")
            dependOnAssemble = $dependsOnAssemble
-           variant = "chocolateDebug"
+           $variant
          }
       """.trimIndent()
     )
