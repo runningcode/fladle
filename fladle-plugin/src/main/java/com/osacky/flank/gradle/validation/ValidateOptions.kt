@@ -1,16 +1,21 @@
 package com.osacky.flank.gradle.validation
 
 import com.osacky.flank.gradle.FladleConfig
+import com.osacky.flank.gradle.FlankGradleExtension.Companion.FLANK_SNAPSHOT_VERSION
+import com.osacky.flank.gradle.FlankGradleExtension.Companion.FLANK_VERSION
 import org.gradle.util.VersionNumber
 import kotlin.reflect.full.memberProperties
 
-fun validateOptionsUsed(config: FladleConfig, flank: String) = config
-  .getPresentProperties()
-  .mapNotNull { property -> properties[property.name]?.let { property to it } }
-  .forEach { (property, version) ->
-    val configFlankVersion = flank.toVersion()
-    if (version > configFlankVersion) throw IllegalStateException("Option ${property.name} is available since flank $version, which is higher than used $configFlankVersion")
-  }
+fun validateOptionsUsed(config: FladleConfig, flank: String) {
+  // if using snapshot version default to the latest known version of flank for validation checks
+  val configFlankVersion = if (flank == FLANK_SNAPSHOT_VERSION) FLANK_VERSION.toVersion() else flank.toVersion()
+
+  config.getPresentProperties()
+    .mapNotNull { property -> properties[property.name]?.let { property to it } }
+    .forEach { (property, version) ->
+      if (version > configFlankVersion) throw IllegalStateException("Option ${property.name} is available since flank $version, which is higher than used $configFlankVersion")
+    }
+}
 
 private fun String.toVersion() = VersionNumber.parse(this)
 
