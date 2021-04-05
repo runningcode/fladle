@@ -93,9 +93,8 @@ class ValidateOptionsTest {
       assertThat(output).contains("Option useAverageTestTimeForNewTests is available since flank 20.8.4, which is higher than used 20.5.0")
     }
 
-    runner.withArguments("printYmlNoSharding").buildAndFail().run {
-      assertThat(output).contains("FAILED")
-      assertThat(output).contains("Option useAverageTestTimeForNewTests is available since flank 20.8.4, which is higher than used 20.5.0")
+    runner.withArguments("printYmlNoSharding").build().run {
+      assertThat(output).contains("SUCCESS")
     }
   }
 

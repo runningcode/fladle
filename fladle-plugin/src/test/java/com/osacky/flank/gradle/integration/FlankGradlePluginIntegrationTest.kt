@@ -16,8 +16,7 @@ class FlankGradlePluginIntegrationTest {
   val oldVersion = "5.3.1"
 
   fun writeBuildGradle(build: String) {
-    val file = testProjectRoot.newFile("build.gradle")
-    file.writeText(build)
+    testProjectRoot.writeBuildDotGradle(build)
   }
 
   @Test

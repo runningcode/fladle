@@ -53,6 +53,14 @@ class FladlePluginDelegate {
       // Must be done afterEvaluate otherwise extension values will not be set.
       project.dependencies.add(FLADLE_CONFIG, "${base.flankCoordinates.get()}:${base.flankVersion.get()}")
 
+      // Only use automatic apk path detection for 'com.android.application' projects.
+      project.pluginManager.withPlugin("com.android.application") {
+        // This doesn't work properly for multiple configs since they likely are inheriting the config from root already. See #60 https://github.com/runningcode/fladle/issues/60
+        if (!base.debugApk.isPresent || !base.instrumentationApk.isPresent) {
+          findDebugAndInstrumentationApk(project, base)
+        }
+      }
+
       tasks.apply {
         createTasksForConfig(base, base, project, "")
 
@@ -64,13 +72,6 @@ class FladlePluginDelegate {
   }
 
   private fun TaskContainer.createTasksForConfig(base: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
-    // Only use automatic apk path detection for 'com.android.application' projects.
-    project.pluginManager.withPlugin("com.android.application") {
-      // This doesn't work properly for multiple configs since they likely are inheriting the config from root already. See #60 https://github.com/runningcode/fladle/issues/60
-      if (!config.debugApk.isPresent || !config.instrumentationApk.isPresent) {
-        findDebugAndInstrumentationApk(project, config)
-      }
-    }
 
     val configName = name.toLowerCase()
     // we want to use default dir only if user did not set own `localResultsDir`

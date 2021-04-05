@@ -31,7 +31,7 @@ class SanityRoboTest {
       |  instrumentationApk = "test.apk"
       |  configs {
       |    sanity {
-      |      makeSanityRun()
+      |      clearPropertiesForSanityRobo()
       |    }
       |  }
       |}
@@ -44,10 +44,9 @@ class SanityRoboTest {
     assertThat(result.output).contains("FAILED")
     assertThat(result.output).contains(baseConfigMessage("instrumentationApk"))
 
-    val resultSanity = runner.withArguments("printYmlSanity").buildAndFail()
+    val resultSanity = runner.withArguments("printYmlSanity").build()
 
-    assertThat(resultSanity.output).contains("FAILED")
-    assertThat(result.output).contains(baseConfigMessage("instrumentationApk"))
+    assertThat(resultSanity.output).contains("SUCCESS")
   }
 
   @Test
@@ -159,10 +158,9 @@ class SanityRoboTest {
     val expectedMessage = additionalConfigMessage("roboScript", "sanity")
 
     val runner = testProjectRoot.gradleRunner()
-    val result = runner.withArguments("printYml").buildAndFail()
+    val result = runner.withArguments("printYml").build()
 
-    assertThat(result.output).contains("FAILED")
-    assertThat(result.output).contains(expectedMessage)
+    assertThat(result.output).contains("SUCCESS")
 
     val resultOrange = runner.withArguments("printYmlSanity").buildAndFail()
 
