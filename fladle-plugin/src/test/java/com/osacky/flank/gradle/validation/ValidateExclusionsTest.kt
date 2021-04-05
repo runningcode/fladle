@@ -3,6 +3,7 @@ package com.osacky.flank.gradle.validation
 import com.google.common.truth.Truth.assertThat
 import com.osacky.flank.gradle.integration.gradleRunner
 import com.osacky.flank.gradle.integration.writeBuildDotGradle
+import com.osacky.flank.gradle.integration.writeEmptyServiceCredential
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -61,11 +62,11 @@ class ValidateExclusionsTest {
     """.trimMargin()
     )
 
+    testProjectRoot.writeEmptyServiceCredential()
     val runner = testProjectRoot.gradleRunner()
 
-    runner.withArguments("printYml").buildAndFail().run {
-      assertThat(output).contains("FAILED")
-      assertThat(output).contains("Options testShards and maxTestShards cannot be used together. Choose one of them.")
+    runner.withArguments("printYml").build().run {
+      assertThat(output).contains("SUCCESS")
     }
 
     runner.withArguments("printYmlNewSharding").buildAndFail().run {
