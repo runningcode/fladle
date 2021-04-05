@@ -1,7 +1,6 @@
 package com.osacky.flank.gradle.integration
 
 import com.google.common.truth.Truth.assertThat
-import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.Rule
@@ -129,41 +128,6 @@ class FlankGradlePluginIntegrationTest {
   }
 
   @Test
-  fun testWithDependOnAssembleNoFlavors() {
-    val result = setUpDependOnAssemble(true, withFlavors = false)
-    assertThat(result.output).contains(":assembleDebug")
-    assertThat(result.output).contains(":assembleDebugAndroidTest")
-    assertThat(result.output).doesNotContain(":assembleRelease")
-  }
-
-  @Test
-  fun testWithOutDependOnAssembleNoFlavors() {
-    val result = setUpDependOnAssemble(false, withFlavors = false)
-    assertThat(result.output).doesNotContain(":assembleDebug")
-    assertThat(result.output).doesNotContain(":assembleDebugAndroidTest")
-    assertThat(result.output).doesNotContain(":assembleRelease")
-  }
-
-  @Test
-  fun testWithDependOnAssembleAndFlavors() {
-    val result = setUpDependOnAssemble(true, withFlavors = true)
-    assertThat(result.output).contains(":assembleChocolateDebug")
-    assertThat(result.output).contains(":assembleChocolateDebugAndroidTest")
-    assertThat(result.output).doesNotContain(":assembleChocolateRelease")
-    assertThat(result.output).doesNotContain(":assembleVanilla")
-  }
-
-  @Test
-  fun testWithOutDependOnAssembleAndFlavors() {
-    val result = setUpDependOnAssemble(false, withFlavors = true)
-    assertThat(result.output).doesNotMatch(":assemble.*")
-    assertThat(result.output).doesNotContain(":assembleChocolateDebug")
-    assertThat(result.output).doesNotContain(":assembleDebug")
-    assertThat(result.output).doesNotContain(":assembleRelease")
-    assertThat(result.output).doesNotContain(":assembleDebugAndroidTest")
-  }
-
-  @Test
   fun testMissingInstrumentationApkFailsBuild() {
     writeBuildGradle(
       """plugins {
@@ -200,7 +164,7 @@ class FlankGradlePluginIntegrationTest {
            }
       """.trimIndent()
     )
-    testProjectRoot.newFile("foo").writeText("{}")
+    testProjectRoot.writeEmptyServiceCredential()
     val result = testProjectRoot.gradleRunner()
       .withGradleVersion(minSupportGradleVersion)
       .withArguments("printYml")
@@ -232,57 +196,5 @@ class FlankGradlePluginIntegrationTest {
       .withArguments("printYmlFooConfig")
       .build()
     assertThat(result.task(":printYmlFooConfig")!!.outcome).isEqualTo(TaskOutcome.SUCCESS)
-  }
-
-  private fun setUpDependOnAssemble(dependsOnAssemble: Boolean, withFlavors: Boolean = false): BuildResult {
-    testProjectRoot.setupFixture("android-project")
-    val flavors = if (withFlavors) {
-      """
-             flavorDimensions "flavor"
-             productFlavors {
-                 chocolate {
-                     dimension "flavor"
-                 }
-                 vanilla {
-                     dimension "flavor"
-                 }
-             }
-      """.trimIndent()
-    } else { "" }
-    val variant = if (withFlavors) { """variant = "chocolateDebug"""" } else { "" }
-    writeBuildGradle(
-      """plugins {
-          id "com.osacky.fladle"
-          id "com.android.application"
-         }
-         repositories {
-              google()
-              mavenCentral()
-          }
-         android {
-             compileSdkVersion 29
-             defaultConfig {
-                 applicationId "com.osacky.flank.gradle.sample"
-                 minSdkVersion 23
-                 targetSdkVersion 29
-                 versionCode 1
-                 versionName "1.0"
-                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-             }
-             testOptions {
-                 execution 'ANDROIDX_TEST_ORCHESTRATOR'
-             }
-             $flavors
-         }
-         fladle {
-           serviceAccountCredentials = project.layout.projectDirectory.file("foo")
-           dependOnAssemble = $dependsOnAssemble
-           $variant
-         }
-      """.trimIndent()
-    )
-    return testProjectRoot.gradleRunner()
-      .withArguments("runFlank", "--dry-run")
-      .build()
   }
 }

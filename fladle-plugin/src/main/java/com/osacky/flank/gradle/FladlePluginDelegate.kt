@@ -52,12 +52,6 @@ class FladlePluginDelegate {
       // Must be done afterEvaluate otherwise extension values will not be set.
       project.dependencies.add(FLADLE_CONFIG, "${base.flankCoordinates.get()}:${base.flankVersion.get()}")
 
-      // Only use automatic apk path detection for 'com.android.application' projects.
-      project.pluginManager.withPlugin("com.android.application") {
-        if (!base.debugApk.isPresent || !base.instrumentationApk.isPresent) {
-          findDebugAndInstrumentationApk(project, base)
-        }
-      }
       tasks.apply {
         createTasksForConfig(base, base, project, "")
 
@@ -69,6 +63,14 @@ class FladlePluginDelegate {
   }
 
   private fun TaskContainer.createTasksForConfig(base: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
+    // Only use automatic apk path detection for 'com.android.application' projects.
+    project.pluginManager.withPlugin("com.android.application") {
+      // This doesn't work properly for multiple configs since they likely are inheriting the config from root already. See #60 https://github.com/runningcode/fladle/issues/60
+      if (!config.debugApk.isPresent || !config.instrumentationApk.isPresent) {
+        findDebugAndInstrumentationApk(project, config)
+      }
+    }
+
     checkIfSanityAndValidateConfigs(config)
     validateOptionsUsed(config = config, flank = base.flankVersion.get())
     checkForExclusionUsage(config)
@@ -111,7 +113,7 @@ class FladlePluginDelegate {
       if (config.dependOnAssemble.isPresent && config.dependOnAssemble.get()) {
         val testedExtension = requireNotNull(project.extensions.findByType(TestedExtension::class.java)) { "Could not find TestedExtension in ${project.name}" }
         testedExtension.testVariants.configureEach {
-          if (base.isExpectedVariant(testedVariant)) {
+          if (config.isExpectedVariant(testedVariant)) {
             if (testedVariant.assembleProvider.isPresent) {
               dependsOn(testedVariant.assembleProvider)
             }
@@ -128,34 +130,34 @@ class FladlePluginDelegate {
     }
   }
 
-  private fun automaticallyConfigureTestOrchestrator(project: Project, extension: FlankGradleExtension, androidExtension: AppExtension) {
+  private fun automaticallyConfigureTestOrchestrator(project: Project, config: FladleConfig, androidExtension: AppExtension) {
     project.afterEvaluate {
       val useOrchestrator = androidExtension.testOptions.executionEnum == TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR || androidExtension.testOptions.executionEnum == TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR
       if (useOrchestrator) {
         log("Automatically detected the use of Android Test Orchestrator")
       }
-      extension.useOrchestrator.set(useOrchestrator)
+      config.useOrchestrator.set(useOrchestrator)
     }
   }
 
-  private fun findDebugAndInstrumentationApk(project: Project, extension: FlankGradleExtension) {
+  private fun findDebugAndInstrumentationApk(project: Project, config: FladleConfig) {
     val baseExtension = requireNotNull(project.extensions.findByType(AppExtension::class.java)) { "Could not find AppExtension in ${project.name}" }
-    automaticallyConfigureTestOrchestrator(project, extension, baseExtension)
+    automaticallyConfigureTestOrchestrator(project, config, baseExtension)
     baseExtension.testVariants.configureEach {
       val appVariant = testedVariant
       outputs.configureEach test@{
         appVariant.outputs.configureEach app@{
-          if (extension.isExpectedVariant(appVariant)) {
+          if (config.isExpectedVariant(appVariant)) {
 
-            if (!extension.debugApk.isPresent) {
+            if (!config.debugApk.isPresent) {
               // Don't set debug apk if not already set. #172
               project.log("Configuring fladle.debugApk from variant ${this@app.name}")
-              extension.debugApk.set(this@app.outputFile.absolutePath)
+              config.debugApk.set(this@app.outputFile.absolutePath)
             }
-            if (!extension.roboScript.isPresent && !extension.instrumentationApk.isPresent && !extension.sanityRobo.get()) {
+            if (!config.roboScript.isPresent && !config.instrumentationApk.isPresent && !config.sanityRobo.get()) {
               // Don't set instrumentation apk if not already set. #172
               project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
-              extension.instrumentationApk.set(this@test.outputFile.absolutePath)
+              config.instrumentationApk.set(this@test.outputFile.absolutePath)
             }
           }
         }
@@ -163,7 +165,7 @@ class FladlePluginDelegate {
     }
   }
 
-  private fun FlankGradleExtension.isExpectedVariant(
+  private fun FladleConfig.isExpectedVariant(
     appVariant: BaseVariant
   ) = !variant.isPresent || (variant.isPresent && variant.get() == appVariant.name)
 
