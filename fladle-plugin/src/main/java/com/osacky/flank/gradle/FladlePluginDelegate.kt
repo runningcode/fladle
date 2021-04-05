@@ -3,6 +3,7 @@ package com.osacky.flank.gradle
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.api.BaseVariant
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.builder.model.TestOptions
 import com.osacky.flank.gradle.validation.checkForExclusionUsage
 import com.osacky.flank.gradle.validation.validateOptionsUsed
@@ -71,13 +72,23 @@ class FladlePluginDelegate {
       }
     }
 
-    checkIfSanityAndValidateConfigs(config)
-    validateOptionsUsed(config = config, flank = base.flankVersion.get())
-    checkForExclusionUsage(config)
     val configName = name.toLowerCase()
     // we want to use default dir only if user did not set own `localResultsDir`
     val useDefaultDir = config.localResultsDir.isPresent.not()
+
+    val validateFladle = register("validateFladleConfig$name") {
+      description = "Perform validation actions"
+      group = TASK_GROUP
+      doLast {
+        checkIfSanityAndValidateConfigs(config)
+        validateOptionsUsed(config = config, flank = base.flankVersion.get())
+        checkForExclusionUsage(config)
+      }
+    }
+
     val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, base, config, name)
+
+    writeConfigProps.dependsOn(validateFladle)
 
     register("printYml$name") {
       description = "Print the flank.yml file to the console."

@@ -157,7 +157,7 @@ class FlankGradlePluginIntegrationTest {
             id "com.osacky.fladle"
            }
            fladle {
-             serviceAccountCredentials = project.layout.projectDirectory.file("foo")
+             serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
              debugApk = "test-debug.apk"
              instrumentationApk = "instrumentation-debug.apk"
              roboScript = "foo.script"
@@ -180,7 +180,7 @@ class FlankGradlePluginIntegrationTest {
            id "com.osacky.fladle"
          }
          fladle {
-           serviceAccountCredentials = project.layout.projectDirectory.file("foo")
+           serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
            debugApk = "test-debug.apk"
            instrumentationApk = "instrumentation-debug.apk"
            configs {
@@ -190,7 +190,7 @@ class FlankGradlePluginIntegrationTest {
          }
          """.trimMargin()
     )
-    testProjectRoot.newFile("foo").writeText("{}")
+    testProjectRoot.writeEmptyServiceCredential()
     val result = testProjectRoot.gradleRunner()
       .withGradleVersion("7.0-rc-1")
       .withArguments("printYmlFooConfig")

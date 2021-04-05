@@ -19,5 +19,5 @@ fun TemporaryFolder.gradleRunner() =
     .withProjectDir(root)
 
 fun TemporaryFolder.writeEmptyServiceCredential() {
-  newFile("foo").writeText("{}")
+  newFile("flank-gradle-service.json").writeText("{}")
 }
