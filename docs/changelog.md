@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 0.15.1
+* Allow Flank snapshot usage [PR](https://github.com/runningcode/fladle/pull/238) Thanks [AndrewReitz](https://github.com/AndrewReitz)
+* Fix incorrect task group name. [PR](https://github.com/runningcode/fladle/pull/249)
+* Snapshots are now compatible with java 8 [PR](https://github.com/runningcode/fladle/pull/247)
+* Configuration validation happens at task execution time. [Fixes #239](https://github.com/runningcode/fladle/issues/239)
+* Configure assemble dependency per variant. [Fixes #233](https://github.com/runningcode/fladle/issues/233)
+* Add required `smartFlankGcsPath` to samples [Fixes #236](https://github.com/runningcode/fladle/issues/236)
+
 ## 0.15.0
 * Add support for [`async`](https://runningcode.github.io/fladle/configuration/#async) flag. [PR](https://github.com/runningcode/fladle/pull/228).
 * Add flag for depending on assembling of debug apk and instrumentation apk automatically. `dependOnAssemble` [PR](https://github.com/runningcode/fladle/pull/223/files) Thanks [asadsalman](https://github.com/asadsalman)
