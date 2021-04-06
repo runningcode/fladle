@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 open class FlankJavaExec @Inject constructor(projectLayout: ProjectLayout) : JavaExec() {
   init {
-    group = TASK_GROUP
+    group = FladlePluginDelegate.TASK_GROUP
     main = "ftl.Main"
     workingDir(projectLayout.fladleDir)
   }
