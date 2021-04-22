@@ -144,7 +144,8 @@ class FladlePluginDelegate {
 
   private fun automaticallyConfigureTestOrchestrator(project: Project, config: FladleConfig, androidExtension: AppExtension) {
     project.afterEvaluate {
-      val useOrchestrator = androidExtension.testOptions.executionEnum == TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR || androidExtension.testOptions.executionEnum == TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR
+      val useOrchestrator = androidExtension.testOptions.getExecutionEnum() == TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR ||
+        androidExtension.testOptions.getExecutionEnum() == TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR
       if (useOrchestrator) {
         log("Automatically detected the use of Android Test Orchestrator")
       }

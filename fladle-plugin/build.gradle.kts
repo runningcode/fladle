@@ -13,8 +13,8 @@ repositories {
 plugins {
   `kotlin-dsl`
   `java-gradle-plugin`
-  id("com.gradle.plugin-publish") version "0.12.0"
-  id("org.jmailen.kotlinter") version "3.3.0"
+  id("com.gradle.plugin-publish") version "0.14.0"
+  id("org.jmailen.kotlinter") version "3.4.0"
   `maven-publish`
   signing
 }
@@ -27,9 +27,9 @@ val isReleaseMode : Boolean = hasProperty("fladle.releaseMode")
 dependencies {
   compileOnly(gradleApi())
   if (isReleaseMode) {
-    compileOnly("com.android.tools.build:gradle:4.0.1")
+    compileOnly("com.android.tools.build:gradle:4.1.3")
   } else {
-    implementation("com.android.tools.build:gradle:4.0.1")
+    implementation("com.android.tools.build:gradle:4.1.3")
   }
 
   testImplementation(gradleTestKit())
