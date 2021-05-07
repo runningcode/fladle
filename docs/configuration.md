@@ -422,15 +422,15 @@ Give a name to a custom flank task and configure its options. The name is append
 In the above example, the configuration is inherited from the outer fladle config but with the repeatTests property set to 100. Running `runFlankRepeateOneHundred` will execute this custom configuration.
 
 ### smartFlankGcsPath
-Shard Android tests by time using historical run data. The amount of shards used is set by `maxTestShards`.
+The cloud storage location for historical test runs. This must be set in order to use smart sharding. The amount of shards used is set by `maxTestShards`. The bucket (such as `flank_data` in the example) must already exist in order for it to be used.
 
 === "Groovy"
     ``` groovy
-    smartFlankGcsPath = 'gs://tmp_flank/tmp/JUnitReport.xml'
+    smartFlankGcsPath = 'gs://flank_data/results/JUnitReport.xml'
     ```
 === "Kotlin"
     ``` kotlin
-    smartFlankGcsPath.set("gs://tmp_flank/tmp/JUnitReport.xml")
+    smartFlankGcsPath.set("gs://flank_data/results/JUnitReport.xml")
     ```
 
 ### resultsHistoryName
