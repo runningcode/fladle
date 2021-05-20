@@ -163,7 +163,7 @@ tasks.withType(ValidatePlugins::class.java).configureEach {
   enableStricterValidation.set(true)
 }
 
-// Ensure Java 8 Compatibilty. See https://github.com/runningcode/fladle/issues/246
+// Ensure Java 8 Compatibility. See https://github.com/runningcode/fladle/issues/246
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).configureEach {
   kotlinOptions.jvmTarget = "1.8"
 }

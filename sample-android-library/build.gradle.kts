@@ -3,6 +3,10 @@ plugins {
   kotlin("android")
 }
 
+fulladleModuleConfig {
+  enabled.set(false)
+}
+
 android {
   compileSdkVersion(29)
   defaultConfig {

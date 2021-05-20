@@ -16,6 +16,11 @@ class FulladlePlugin : Plugin<Project> {
 
     val flankGradleExtension = root.extensions.getByType(FlankGradleExtension::class)
 
+    root.subprojects {
+      // Yuck, cross project configuration
+      extensions.create("fulladleModuleConfig", FulladleModuleExtension::class.java)
+    }
+
     val fulladleConfigureTask = root.tasks.register("configureFulladle") {
       doLast {
         root.subprojects {
@@ -64,18 +69,21 @@ class FulladlePlugin : Plugin<Project> {
             }
           }
           pluginManager.withPlugin("com.android.library") {
-            val library = extensions.getByType<LibraryExtension>()
-            library.testVariants.configureEach {
-              if (file("$projectDir/src/androidTest").exists()) {
-                outputs.configureEach {
-                  flankGradleExtension.additionalTestApks.add(
-                    root.provider {
-                      "- test: $outputFile"
-                    }
-                  )
+            val fulladleModuleExtension = extensions.getByType(FulladleModuleExtension::class.java)
+            if (fulladleModuleExtension.enabled.get()) {
+              val library = extensions.getByType<LibraryExtension>()
+              library.testVariants.configureEach {
+                if (file("$projectDir/src/androidTest").exists()) {
+                  outputs.configureEach {
+                    flankGradleExtension.additionalTestApks.add(
+                      root.provider {
+                        "- test: $outputFile"
+                      }
+                    )
+                  }
+                } else {
+                  println("ignoring variant for $this in $projectDir")
                 }
-              } else {
-                println("ignoring variant for $this in $projectDir")
               }
             }
           }
