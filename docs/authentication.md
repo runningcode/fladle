@@ -10,7 +10,7 @@ Credentials are stored in `~/.flank`.
 
 1. `./gradlew flankAuth`
 2. Sign in to web browser.
-3. Specify [projectId](../configuration/#projectid)
+3. Specify [projectId](../configuration/#projectid) in fladle configuration
 4. `./gradlew runFlank`
 
 ## Service account credentials
