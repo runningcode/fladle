@@ -74,22 +74,38 @@ class FulladlePlugin : Plugin<Project> {
               val library = extensions.getByType<LibraryExtension>()
               library.testVariants.configureEach {
                 if (file("$projectDir/src/androidTest").exists()) {
-                  val debugApk = fulladleModuleExtension.debugApk.orNull.let {
-                    if (it == null) return@let ""
-                    "      app: $it"
-                  }
-                  val maxTestShards = fulladleModuleExtension.maxTestShards.orNull.let {
-                    if (it == null) return@let ""
-                    "      max-test-shards: $it"
-                  }
-                  val clientDetails = fulladleModuleExtension.clientDetails.get().let {
-                    if (it.isEmpty()) return@let ""
-                    "      client-details:\n${it.toYaml(5)}"
-                  }
-                  val environmentVariables = fulladleModuleExtension.environmentVariables.get().let {
-                    if (it.isEmpty()) return@let ""
-                    "      environment-variables:\n${it.toYaml(5)}"
-                  }
+
+                  val debugApk = fulladleModuleExtension.debugApk.let {
+                    buildString {
+                      if (it.isPresent) { append("    ") }
+                      appendProperty(it, name = "app")
+                    }
+                  }.trimEnd()
+
+                  val maxTestShards = fulladleModuleExtension.maxTestShards.let {
+                    buildString {
+                      if (it.isPresent) { append("    ") }
+                      appendProperty(it, name = "max-test-shards")
+                    }
+                  }.trimEnd()
+
+                  val clientDetails = fulladleModuleExtension.clientDetails.let {
+                    buildString {
+                      if (it.isPresentAndNotEmpty) { append("    ") }
+                      appendMapProperty(it, name = "client-details") {
+                        appendLine("          \"${it.key}\": \"${it.value}\"")
+                      }
+                    }
+                  }.trimEnd()
+
+                  val environmentVariables = fulladleModuleExtension.environmentVariables.let {
+                    buildString {
+                      if (it.isPresentAndNotEmpty) { append("    ") }
+                      appendMapProperty(it, name = "environment-variables") {
+                        appendLine("          \"${it.key}\": \"${it.value}\"")
+                      }
+                    }
+                  }.trimEnd()
 
                   outputs.configureEach {
                     flankGradleExtension.additionalTestApks.add(
@@ -122,9 +138,3 @@ class FulladlePlugin : Plugin<Project> {
     }
   }
 }
-
-fun Map<String, String>.toYaml(indent: Int = 0) = this
-  .mapKeys { "\"${it.key}\"" }
-  .mapValues { "\"${it.value}\"" }
-  .toList()
-  .joinToString("\n") { "${"  ".repeat(indent)}${it.first}: ${it.second}" }
