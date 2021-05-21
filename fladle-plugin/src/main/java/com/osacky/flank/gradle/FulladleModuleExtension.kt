@@ -17,7 +17,7 @@ open class FulladleModuleExtension @Inject constructor(objects: ObjectFactory) {
   val enabled: Property<Boolean> = objects.property<Boolean>().convention(true)
 
   /**
-   * The maximum number of shards
+   * The maximum number of shards to be used for this specific test apk.
    */
   val maxTestShards: Property<Int> = objects.property<Int>().convention(null as Int?)
 
