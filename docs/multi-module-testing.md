@@ -53,7 +53,52 @@ Multi module testing can be done by manually specifying [additionalTestApks](/fl
     ./gradlew runFlank
     ```
 
+### Overriding configurations in modules
+Fulladle will pick Flank configurations from the `fladle` block in the root level `build.gradle` file. You may want to override some of these configurations for certain modules, you can add the following block to any Android library module to override its configurations:
+    ===! "Groovy"
+        ``` groovy
+       fulladleModuleConfig {
+          clientDetails = [
+              "test-type": "PR",
+              "build-number": "132"
+          ]
+          maxTestShards = 3
+          environmentVariables = [
+              "clearPackageData": "true"
+          ]
+          debugApk = "app.apk"
+        }
+        ```
+    === "Kotlin"
+        ``` kotlin
+        fulladleModuleConfig {
+          clientDetails.set(mapOf(
+            "test-type" to "PR",
+            "build-number" to "132",
+          ))
+          maxTestShards.set(3)
+          environmentVariables.set(mapOf(
+            "clearPackageData" to "true"
+          ))
+          debugApk.set("app.apk")
+        }
+        ```
+All of the above configurations are optional, Flank will default to the top-level configurations if you don't override anything here. For details about what these configurations, refer to [configuration docs](./configuration.md).
 
+#### Disabling a module
+You may want to exclude a library module from testing when using Fulladle. You can do so by setting the `enabled` configuration in the module's `fulladleModuleConfig` block like so:
+    ===! "Groovy"
+        ``` groovy
+       fulladleModuleConfig {
+          enabled = false
+        }
+        ```
+    === "Kotlin"
+        ``` kotlin
+        fulladleModuleConfig {
+            enabled.set(false)
+        }
+        ```
 ## Troubleshooting
 Fulladle might still have some rough edges, but we'd love feedback. Please join us in the [Firebase Community Slack](https://firebase.community/) with any feedback you may have.
 You can also file [Fladle Github issues](https://github.com/runningcode/fladle/issues).
