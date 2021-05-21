@@ -19,7 +19,7 @@ open class FulladleModuleExtension @Inject constructor(objects: ObjectFactory) {
   /**
    * The maximum number of shards
    */
-  val maxTestShard: Property<Int> = objects.property<Int>().convention(null as Int?)
+  val maxTestShards: Property<Int> = objects.property<Int>().convention(null as Int?)
 
   /**
    * A key-value map of additional details to attach to the test matrix.

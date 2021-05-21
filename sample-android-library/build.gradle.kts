@@ -10,7 +10,7 @@ fulladleModuleConfig {
     "build-number" to "132",
     "module-name" to project.path,
   ))
-  maxTestShard.set(3)
+  maxTestShards.set(3)
   environmentVariables.set(mapOf(
     "clearPackageData" to "true"
   ))

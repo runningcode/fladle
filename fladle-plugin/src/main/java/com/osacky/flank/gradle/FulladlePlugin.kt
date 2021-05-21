@@ -78,7 +78,7 @@ class FulladlePlugin : Plugin<Project> {
                     if (it == null) return@let ""
                     "      app: $it"
                   }
-                  val maxTestShards = fulladleModuleExtension.maxTestShard.orNull.let {
+                  val maxTestShards = fulladleModuleExtension.maxTestShards.orNull.let {
                     if (it == null) return@let ""
                     "      max-test-shards: $it"
                   }
