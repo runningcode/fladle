@@ -74,10 +74,29 @@ class FulladlePlugin : Plugin<Project> {
               val library = extensions.getByType<LibraryExtension>()
               library.testVariants.configureEach {
                 if (file("$projectDir/src/androidTest").exists()) {
+                  val debugApk = fulladleModuleExtension.debugApk.orNull.let {
+                    if (it == null) return@let ""
+                    "      app: $it"
+                  }
+                  val maxTestShards = fulladleModuleExtension.maxTestShard.orNull.let {
+                    if (it == null) return@let ""
+                    "      max-test-shards: $it"
+                  }
+                  val clientDetails = fulladleModuleExtension.clientDetails.get().let {
+                    if (it.isEmpty()) return@let ""
+                    "      client-details:\n${it.toYaml(5)}"
+                  }
+                  val environmentVariables = fulladleModuleExtension.environmentVariables.get().let {
+                    if (it.isEmpty()) return@let ""
+                    "      environment-variables:\n${it.toYaml(5)}"
+                  }
+
                   outputs.configureEach {
                     flankGradleExtension.additionalTestApks.add(
                       root.provider {
-                        "- test: $outputFile"
+                        listOf("- test: $outputFile", debugApk, maxTestShards, clientDetails, environmentVariables)
+                          .filter { it.isNotEmpty() }
+                          .joinToString("\n")
                       }
                     )
                   }
@@ -103,3 +122,9 @@ class FulladlePlugin : Plugin<Project> {
     }
   }
 }
+
+fun Map<String, String>.toYaml(indent: Int = 0) = this
+  .mapKeys { "\"${it.key}\"" }
+  .mapValues { "\"${it.value}\"" }
+  .toList()
+  .joinToString("\n") { "${"  ".repeat(indent)}${it.first}: ${it.second}" }
