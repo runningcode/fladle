@@ -8,13 +8,12 @@ fulladleModuleConfig {
   clientDetails.set(mapOf(
     "test-type" to "PR",
     "build-number" to "132",
-    "module-name" to project.name,
+    "module-name" to project.path,
   ))
   maxTestShard.set(3)
   environmentVariables.set(mapOf(
     "clearPackageData" to "true"
   ))
-  debugApk.set("${project.rootDir.absolutePath}/dummy_app.apk")
 }
 
 android {
