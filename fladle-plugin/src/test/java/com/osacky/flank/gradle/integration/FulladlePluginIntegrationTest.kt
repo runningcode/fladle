@@ -123,13 +123,13 @@ class FulladlePluginIntegrationTest {
     )
   }
 
-    @Test
-    fun fulladleWithSubmoduleOverrides() {
-        val appFixture = "android-project"
-        val libraryFixture = "android-library-project"
-        val libraryFixture2 = "android-lib2"
-        testProjectRoot.newFile("settings.gradle").writeText(
-            """
+  @Test
+  fun fulladleWithSubmoduleOverrides() {
+    val appFixture = "android-project"
+    val libraryFixture = "android-library-project"
+    val libraryFixture2 = "android-lib2"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
         include '$appFixture'
         include '$libraryFixture'
         include '$libraryFixture2'
@@ -141,13 +141,13 @@ class FulladlePluginIntegrationTest {
           }
         }
       """.trimIndent()
-        )
-        testProjectRoot.setupFixture(appFixture)
-        testProjectRoot.setupFixture(libraryFixture)
-        File(testProjectRoot.root, libraryFixture).copyRecursively(testProjectRoot.newFile(libraryFixture2), overwrite = true)
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(libraryFixture)
+    File(testProjectRoot.root, libraryFixture).copyRecursively(testProjectRoot.newFile(libraryFixture2), overwrite = true)
 
-        writeBuildGradle(
-            """
+    writeBuildGradle(
+      """
         buildscript {
             repositories {
                 google()
@@ -167,36 +167,35 @@ class FulladlePluginIntegrationTest {
           serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
         }
       """.trimIndent()
-        )
+    )
 
-
-        File(testProjectRoot.root, "$libraryFixture2/build.gradle").appendText(
-            """
+    File(testProjectRoot.root, "$libraryFixture2/build.gradle").appendText(
+      """
       fulladleModuleConfig {
         maxTestShards = 4
         clientDetails = ["test-type": "PR","build-number": "132"]
       }
       """.trimIndent()
-        )
+    )
 
-        File(testProjectRoot.root, "$libraryFixture/build.gradle").appendText(
-            """
+    File(testProjectRoot.root, "$libraryFixture/build.gradle").appendText(
+      """
       fulladleModuleConfig {
         maxTestShards = 7
         environmentVariables = ["clearPackageData": "true"]
         debugApk = "dummy_app.apk"
       }
       """.trimIndent()
-        )
+    )
 
-        val result = testProjectRoot.gradleRunner()
-            .withArguments(":printYml")
-            .withGradleVersion("6.9")
-            .build()
+    val result = testProjectRoot.gradleRunner()
+      .withArguments(":printYml")
+      .withGradleVersion("6.9")
+      .build()
 
-        assertThat(result.output).contains("SUCCESS")
-        assertThat(result.output).containsMatch(
-            """
+    assertThat(result.output).contains("SUCCESS")
+    assertThat(result.output).containsMatch(
+      """
      > Task :printYml
      gcloud:
        app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
@@ -232,6 +231,6 @@ class FulladlePluginIntegrationTest {
        full-junit-result: false
        output-style: single
       """.trimIndent()
-        )
-    }
+    )
+  }
 }
