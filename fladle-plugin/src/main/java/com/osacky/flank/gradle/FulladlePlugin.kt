@@ -16,6 +16,11 @@ class FulladlePlugin : Plugin<Project> {
 
     val flankGradleExtension = root.extensions.getByType(FlankGradleExtension::class)
 
+    root.subprojects {
+      // Yuck, cross project configuration
+      extensions.create("fulladleModuleConfig", FulladleModuleExtension::class.java)
+    }
+
     val fulladleConfigureTask = root.tasks.register("configureFulladle") {
       doLast {
         root.subprojects {
@@ -64,18 +69,56 @@ class FulladlePlugin : Plugin<Project> {
             }
           }
           pluginManager.withPlugin("com.android.library") {
-            val library = extensions.getByType<LibraryExtension>()
-            library.testVariants.configureEach {
-              if (file("$projectDir/src/androidTest").exists()) {
-                outputs.configureEach {
-                  flankGradleExtension.additionalTestApks.add(
-                    root.provider {
-                      "- test: $outputFile"
+            val fulladleModuleExtension = extensions.getByType(FulladleModuleExtension::class.java)
+            if (fulladleModuleExtension.enabled.get()) {
+              val library = extensions.getByType<LibraryExtension>()
+              library.testVariants.configureEach {
+                if (file("$projectDir/src/androidTest").exists()) {
+
+                  val debugApk = fulladleModuleExtension.debugApk.let {
+                    buildString {
+                      if (it.isPresent) { append("    ") }
+                      appendProperty(it, name = "app")
                     }
-                  )
+                  }.trimEnd()
+
+                  val maxTestShards = fulladleModuleExtension.maxTestShards.let {
+                    buildString {
+                      if (it.isPresent) { append("    ") }
+                      appendProperty(it, name = "max-test-shards")
+                    }
+                  }.trimEnd()
+
+                  val clientDetails = fulladleModuleExtension.clientDetails.let {
+                    buildString {
+                      if (it.isPresentAndNotEmpty) { append("    ") }
+                      appendMapProperty(it, name = "client-details") {
+                        appendLine("          \"${it.key}\": \"${it.value}\"")
+                      }
+                    }
+                  }.trimEnd()
+
+                  val environmentVariables = fulladleModuleExtension.environmentVariables.let {
+                    buildString {
+                      if (it.isPresentAndNotEmpty) { append("    ") }
+                      appendMapProperty(it, name = "environment-variables") {
+                        appendLine("          \"${it.key}\": \"${it.value}\"")
+                      }
+                    }
+                  }.trimEnd()
+
+                  outputs.configureEach {
+                    flankGradleExtension.additionalTestApks.add(
+                      root.provider {
+                        listOf("- test: $outputFile", debugApk, maxTestShards, clientDetails, environmentVariables)
+                          .filter { it.isNotEmpty() }
+                          .joinToString("\n")
+                      }
+                    )
+                  }
+                } else {
+                  println("ignoring variant for $this in $projectDir")
                 }
-              } else {
-                println("ignoring variant for $this in $projectDir")
               }
             }
           }

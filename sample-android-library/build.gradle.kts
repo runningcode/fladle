@@ -3,6 +3,19 @@ plugins {
   kotlin("android")
 }
 
+fulladleModuleConfig {
+  enabled.set(true)
+  clientDetails.set(mapOf(
+    "test-type" to "PR",
+    "build-number" to "132",
+    "module-name" to project.path,
+  ))
+  maxTestShards.set(3)
+  environmentVariables.set(mapOf(
+    "clearPackageData" to "true"
+  ))
+}
+
 android {
   compileSdkVersion(29)
   defaultConfig {

@@ -37,9 +37,6 @@ class AutoConfigureFladleTest {
     )
 
     testProjectRoot.setupFixture(fixtureName)
-    testProjectRoot.root.walk().forEach {
-      println(it)
-    }
 
     val result = GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
