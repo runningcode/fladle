@@ -18,7 +18,7 @@ android {
 }
 
 fladle {
-    flankVersion.set("21.04.1")
+    flankVersion.set("21.06.0")
     // Project Id is not needed if serviceAccountCredentials are set.
     projectId.set("flank-gradle")
     useOrchestrator.set(true)
