@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.16.0
+* Allow excluding modules from Fulladle (TODO ADD LINK)
+* Allow configuring extra parameters on additionalTestApks (TODO ADD LINK)
+
 ## 0.15.1
 * Allow Flank snapshot usage [PR](https://github.com/runningcode/fladle/pull/238) Thanks [AndrewReitz](https://github.com/AndrewReitz)
 * Fix incorrect task group name. [PR](https://github.com/runningcode/fladle/pull/249)
