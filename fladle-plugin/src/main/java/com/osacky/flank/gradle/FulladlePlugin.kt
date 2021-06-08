@@ -117,7 +117,7 @@ class FulladlePlugin : Plugin<Project> {
                     )
                   }
                 } else {
-                  println("ignoring variant for $this in $projectDir")
+                  println("Ignoring $name test variant in $path: No tests in $projectDir/src/androidTest")
                 }
               }
             }
