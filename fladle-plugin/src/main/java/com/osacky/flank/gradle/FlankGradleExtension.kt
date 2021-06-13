@@ -18,7 +18,6 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   companion object {
     const val FLANK_VERSION = "21.06.0"
-    const val FLANK_SNAPSHOT_VERSION = "flank-snapshot"
   }
 
   @get:Input
