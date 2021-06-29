@@ -68,9 +68,9 @@ fun configureLibraryModule(project: Project, flankGradleExtension: FlankGradleEx
             }
           }.trimEnd()
 
-          val clientDetails = mapPropertyToYaml(fulladleModuleExtension.clientDetails)
+          val clientDetails = mapPropertyToYaml(fulladleModuleExtension.clientDetails, "client-details")
 
-          val environmentVariables = mapPropertyToYaml(fulladleModuleExtension.environmentVariables)
+          val environmentVariables = mapPropertyToYaml(fulladleModuleExtension.environmentVariables, "environment-variables")
 
           outputs.configureEach {
             flankGradleExtension.additionalTestApks.add(
@@ -108,29 +108,23 @@ fun configureApplicationModule(project: Project, flankGradleExtension: FlankGrad
       appVariant.outputs.configureEach app@{
 
         this@testVariant.outputs.configureEach test@{
+          val strs = mutableListOf<String>()
           // TODO is this racy?
           // If the debugApk isn't yet set, let's use this one.
           if (!flankGradleExtension.debugApk.isPresent) {
             flankGradleExtension.debugApk.set(rootProject.provider { this@app.outputFile.absolutePath })
           } else {
             // Otherwise, let's just add it to the list.
-            flankGradleExtension.additionalTestApks.add(
-              rootProject.provider {
-                "- app: ${this@app.outputFile}"
-              }
-            )
+            strs.add("- app: ${this@app.outputFile}")
           }
 
           // If the instrumentation apk isn't yet set, let's use this one.
           if (!flankGradleExtension.instrumentationApk.isPresent) {
             flankGradleExtension.instrumentationApk.set(rootProject.provider { this@test.outputFile.absolutePath })
+
           } else {
             // Otherwise, let's just add it to the list.
-            flankGradleExtension.additionalTestApks.add(
-              rootProject.provider {
-                "  test: ${this@test.outputFile}"
-              }
-            )
+            strs.add("      test: ${this@test.outputFile}")
           }
           val maxTestShards = fulladleModuleExtension.maxTestShards.let {
             buildString {
@@ -138,14 +132,19 @@ fun configureApplicationModule(project: Project, flankGradleExtension: FlankGrad
             }
           }.trimEnd()
 
-          val clientDetails = mapPropertyToYaml(fulladleModuleExtension.clientDetails)
+          if (strs.isEmpty() || strs[0].isEmpty()) // root module, should not be added as additional test apk
+            return@test
 
-          val environmentVariables = mapPropertyToYaml(fulladleModuleExtension.environmentVariables)
+          val clientDetails = mapPropertyToYaml(fulladleModuleExtension.clientDetails, "client-details")
+
+          val environmentVariables = mapPropertyToYaml(fulladleModuleExtension.environmentVariables, "environment-variables")
+
+          strs.addAll(listOf(maxTestShards, clientDetails, environmentVariables))
 
           flankGradleExtension.additionalTestApks.add(
             rootProject.provider {
-              listOf(maxTestShards, clientDetails, environmentVariables)
-                .filter { it.isNotEmpty() }
+              strs
+                .filter { it.trim().isNotEmpty() }
                 .joinToString("\n")
                 .trimEnd()
             }
@@ -159,11 +158,11 @@ fun configureApplicationModule(project: Project, flankGradleExtension: FlankGrad
   }
 }
 
-fun mapPropertyToYaml(map: MapProperty<String, String>) =
+fun mapPropertyToYaml(map: MapProperty<String, String>, propName: String) =
   map.let {
     buildString {
       if (it.isPresentAndNotEmpty) { append("    ") }
-      appendMapProperty(it, name = "environment-variables") {
+      appendMapProperty(it, name = propName) {
         appendLine("          \"${it.key}\": \"${it.value}\"")
       }
     }
