@@ -121,7 +121,6 @@ fun configureApplicationModule(project: Project, flankGradleExtension: FlankGrad
           // If the instrumentation apk isn't yet set, let's use this one.
           if (!flankGradleExtension.instrumentationApk.isPresent) {
             flankGradleExtension.instrumentationApk.set(rootProject.provider { this@test.outputFile.absolutePath })
-
           } else {
             // Otherwise, let's just add it to the list.
             strs.add("      test: ${this@test.outputFile}")
