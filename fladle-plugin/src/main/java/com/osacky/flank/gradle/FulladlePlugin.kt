@@ -4,6 +4,7 @@ import com.android.build.gradle.AppExtension
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.provider.MapProperty
 import org.gradle.kotlin.dsl.getByType
 
 /**
@@ -24,104 +25,10 @@ class FulladlePlugin : Plugin<Project> {
     val fulladleConfigureTask = root.tasks.register("configureFulladle") {
       doLast {
         root.subprojects {
-          pluginManager.withPlugin("com.android.application") {
-            val appExtension = extensions.getByType<AppExtension>()
-            // Only configure the first test variant per module.
-            // Does anyone test more than one variant per module?
-            var addedTestsForModule = false
-
-            // TODO deal with ignored/filtered variants
-            appExtension.testVariants.configureEach testVariant@{
-              if (addedTestsForModule) {
-                return@testVariant
-              }
-              val appVariant = testedVariant
-              appVariant.outputs.configureEach app@{
-
-                this@testVariant.outputs.configureEach test@{
-                  // TODO is this racy?
-                  // If the debugApk isn't yet set, let's use this one.
-                  if (!flankGradleExtension.debugApk.isPresent) {
-                    flankGradleExtension.debugApk.set(root.provider { this@app.outputFile.absolutePath })
-                  } else {
-                    // Otherwise, let's just add it to the list.
-                    flankGradleExtension.additionalTestApks.add(
-                      root.provider {
-                        "- app: ${this@app.outputFile}"
-                      }
-                    )
-                  }
-                  // If the instrumentation apk isn't yet set, let's use this one.
-                  if (!flankGradleExtension.instrumentationApk.isPresent) {
-                    flankGradleExtension.instrumentationApk.set(root.provider { this@test.outputFile.absolutePath })
-                  } else {
-                    // Otherwise, let's just add it to the list.
-                    flankGradleExtension.additionalTestApks.add(
-                      root.provider {
-                        "  test: ${this@test.outputFile}"
-                      }
-                    )
-                  }
-                  addedTestsForModule = true
-                  return@test
-                }
-              }
-            }
-          }
-          pluginManager.withPlugin("com.android.library") {
-            val fulladleModuleExtension = extensions.getByType(FulladleModuleExtension::class.java)
-            if (fulladleModuleExtension.enabled.get()) {
-              val library = extensions.getByType<LibraryExtension>()
-              library.testVariants.configureEach {
-                if (file("$projectDir/src/androidTest").exists()) {
-
-                  val debugApk = fulladleModuleExtension.debugApk.let {
-                    buildString {
-                      if (it.isPresent) { append("    ") }
-                      appendProperty(it, name = "app")
-                    }
-                  }.trimEnd()
-
-                  val maxTestShards = fulladleModuleExtension.maxTestShards.let {
-                    buildString {
-                      if (it.isPresent) { append("    ") }
-                      appendProperty(it, name = "max-test-shards")
-                    }
-                  }.trimEnd()
-
-                  val clientDetails = fulladleModuleExtension.clientDetails.let {
-                    buildString {
-                      if (it.isPresentAndNotEmpty) { append("    ") }
-                      appendMapProperty(it, name = "client-details") {
-                        appendLine("          \"${it.key}\": \"${it.value}\"")
-                      }
-                    }
-                  }.trimEnd()
-
-                  val environmentVariables = fulladleModuleExtension.environmentVariables.let {
-                    buildString {
-                      if (it.isPresentAndNotEmpty) { append("    ") }
-                      appendMapProperty(it, name = "environment-variables") {
-                        appendLine("          \"${it.key}\": \"${it.value}\"")
-                      }
-                    }
-                  }.trimEnd()
-
-                  outputs.configureEach {
-                    flankGradleExtension.additionalTestApks.add(
-                      root.provider {
-                        listOf("- test: $outputFile", debugApk, maxTestShards, clientDetails, environmentVariables)
-                          .filter { it.isNotEmpty() }
-                          .joinToString("\n")
-                      }
-                    )
-                  }
-                } else {
-                  println("Ignoring $name test variant in $path: No tests in $projectDir/src/androidTest")
-                }
-              }
-            }
-          }
+          if (plugins.findPlugin("com.android.application") != null)
+            configureApplicationModule(this, flankGradleExtension)
+          else if (plugins.findPlugin("com.android.library") != null)
+            configureLibraryModule(this, flankGradleExtension)
         }
       }
     }
@@ -138,3 +45,126 @@ class FulladlePlugin : Plugin<Project> {
     }
   }
 }
+
+fun configureLibraryModule(project: Project, flankGradleExtension: FlankGradleExtension) = project.run {
+  pluginManager.withPlugin("com.android.library") {
+    val fulladleModuleExtension = extensions.getByType(FulladleModuleExtension::class.java)
+    if (fulladleModuleExtension.enabled.get()) {
+      val library = extensions.getByType<LibraryExtension>()
+      library.testVariants.configureEach {
+        if (file("$projectDir/src/androidTest").exists()) {
+
+          val debugApk = fulladleModuleExtension.debugApk.let {
+            buildString {
+              if (it.isPresent) { append("    ") }
+              appendProperty(it, name = "app")
+            }
+          }.trimEnd()
+
+          val maxTestShards = fulladleModuleExtension.maxTestShards.let {
+            buildString {
+              if (it.isPresent) { append("    ") }
+              appendProperty(it, name = "max-test-shards")
+            }
+          }.trimEnd()
+
+          val clientDetails = mapPropertyToYaml(fulladleModuleExtension.clientDetails)
+
+          val environmentVariables = mapPropertyToYaml(fulladleModuleExtension.environmentVariables)
+
+          outputs.configureEach {
+            flankGradleExtension.additionalTestApks.add(
+              project.rootProject.provider {
+                listOf("- test: $outputFile", debugApk, maxTestShards, clientDetails, environmentVariables)
+                  .filter { it.isNotEmpty() }
+                  .joinToString("\n")
+                  .trimStart()
+                  .trimEnd()
+              }
+            )
+          }
+        } else {
+          println("Ignoring $name test variant in $path: No tests in $projectDir/src/androidTest")
+        }
+      }
+    }
+  }
+}
+
+fun configureApplicationModule(project: Project, flankGradleExtension: FlankGradleExtension) = project.run {
+  pluginManager.withPlugin("com.android.application") {
+    val fulladleModuleExtension = extensions.getByType(FulladleModuleExtension::class.java)
+    val appExtension = extensions.getByType<AppExtension>()
+    // Only configure the first test variant per module.
+    // Does anyone test more than one variant per module?
+    var addedTestsForModule = false
+
+    // TODO deal with ignored/filtered variants
+    appExtension.testVariants.configureEach testVariant@{
+      if (addedTestsForModule) {
+        return@testVariant
+      }
+      val appVariant = testedVariant
+      appVariant.outputs.configureEach app@{
+
+        this@testVariant.outputs.configureEach test@{
+          // TODO is this racy?
+          // If the debugApk isn't yet set, let's use this one.
+          if (!flankGradleExtension.debugApk.isPresent) {
+            flankGradleExtension.debugApk.set(rootProject.provider { this@app.outputFile.absolutePath })
+          } else {
+            // Otherwise, let's just add it to the list.
+            flankGradleExtension.additionalTestApks.add(
+              rootProject.provider {
+                "- app: ${this@app.outputFile}"
+              }
+            )
+          }
+
+          // If the instrumentation apk isn't yet set, let's use this one.
+          if (!flankGradleExtension.instrumentationApk.isPresent) {
+            flankGradleExtension.instrumentationApk.set(rootProject.provider { this@test.outputFile.absolutePath })
+          } else {
+            // Otherwise, let's just add it to the list.
+            flankGradleExtension.additionalTestApks.add(
+              rootProject.provider {
+                "  test: ${this@test.outputFile}"
+              }
+            )
+          }
+          val maxTestShards = fulladleModuleExtension.maxTestShards.let {
+            buildString {
+              appendProperty(it, name = "max-test-shards")
+            }
+          }.trimEnd()
+
+          val clientDetails = mapPropertyToYaml(fulladleModuleExtension.clientDetails)
+
+          val environmentVariables = mapPropertyToYaml(fulladleModuleExtension.environmentVariables)
+
+          flankGradleExtension.additionalTestApks.add(
+            rootProject.provider {
+              listOf(maxTestShards, clientDetails, environmentVariables)
+                .filter { it.isNotEmpty() }
+                .joinToString("\n")
+                .trimEnd()
+            }
+          )
+
+          addedTestsForModule = true
+          return@test
+        }
+      }
+    }
+  }
+}
+
+fun mapPropertyToYaml(map: MapProperty<String, String>) =
+  map.let {
+    buildString {
+      if (it.isPresentAndNotEmpty) { append("    ") }
+      appendMapProperty(it, name = "environment-variables") {
+        appendLine("          \"${it.key}\": \"${it.value}\"")
+      }
+    }
+  }.trimEnd()
