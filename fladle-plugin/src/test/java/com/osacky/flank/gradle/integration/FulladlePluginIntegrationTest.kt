@@ -126,11 +126,13 @@ class FulladlePluginIntegrationTest {
   @Test
   fun fulladleWithSubmoduleOverrides() {
     val appFixture = "android-project"
+    val appFixture2 = "android-project2"
     val libraryFixture = "android-library-project"
     val libraryFixture2 = "android-lib2"
     testProjectRoot.newFile("settings.gradle").writeText(
       """
         include '$appFixture'
+        include '$appFixture2'
         include '$libraryFixture'
         include '$libraryFixture2'
 
@@ -143,6 +145,7 @@ class FulladlePluginIntegrationTest {
       """.trimIndent()
     )
     testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(appFixture2)
     testProjectRoot.setupFixture(libraryFixture)
     File(testProjectRoot.root, libraryFixture).copyRecursively(testProjectRoot.newFile(libraryFixture2), overwrite = true)
 
@@ -222,6 +225,11 @@ class FulladlePluginIntegrationTest {
          - test: [0-9a-zA-Z\/_]*/$libraryFixture/build/outputs/apk/androidTest/debug/android-library-project-debug-androidTest.apk
            app: dummy_app.apk
            max-test-shards: 7
+           environment-variables:
+               "clearPackageData": "true"
+         - app: [0-9a-zA-Z\/_]*/android-project2/build/outputs/apk/debug/android-project2-debug.apk
+           test: [0-9a-zA-Z\/_]*/android-project2/build/outputs/apk/androidTest/debug/android-project2-debug-androidTest.apk
+           max-test-shards: 5
            environment-variables:
                "clearPackageData": "true"
        ignore-failed-tests: false

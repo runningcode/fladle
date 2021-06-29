@@ -127,6 +127,7 @@ fun configureApplicationModule(project: Project, flankGradleExtension: FlankGrad
           }
           val maxTestShards = fulladleModuleExtension.maxTestShards.let {
             buildString {
+              if (it.isPresent) { append("    ") }
               appendProperty(it, name = "max-test-shards")
             }
           }.trimEnd()
