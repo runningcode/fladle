@@ -94,6 +94,8 @@ fun configureLibraryModule(project: Project, flankGradleExtension: FlankGradleEx
 fun configureApplicationModule(project: Project, flankGradleExtension: FlankGradleExtension) = project.run {
   pluginManager.withPlugin("com.android.application") {
     val fulladleModuleExtension = extensions.getByType(FulladleModuleExtension::class.java)
+    if (!fulladleModuleExtension.enabled.get())
+      return@withPlugin
     val appExtension = extensions.getByType<AppExtension>()
     // Only configure the first test variant per module.
     // Does anyone test more than one variant per module?
