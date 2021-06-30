@@ -5,6 +5,7 @@ import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.getByType
 
 /**
@@ -49,43 +50,28 @@ class FulladlePlugin : Plugin<Project> {
 fun configureLibraryModule(project: Project, flankGradleExtension: FlankGradleExtension) = project.run {
   pluginManager.withPlugin("com.android.library") {
     val fulladleModuleExtension = extensions.getByType(FulladleModuleExtension::class.java)
-    if (fulladleModuleExtension.enabled.get()) {
-      val library = extensions.getByType<LibraryExtension>()
-      library.testVariants.configureEach {
-        if (file("$projectDir/src/androidTest").exists()) {
+    if (!fulladleModuleExtension.enabled.get())
+      return@withPlugin
 
-          val debugApk = fulladleModuleExtension.debugApk.let {
-            buildString {
-              if (it.isPresent) { append("    ") }
-              appendProperty(it, name = "app")
-            }
-          }.trimEnd()
+    val library = extensions.getByType<LibraryExtension>()
 
-          val maxTestShards = fulladleModuleExtension.maxTestShards.let {
-            buildString {
-              if (it.isPresent) { append("    ") }
-              appendProperty(it, name = "max-test-shards")
-            }
-          }.trimEnd()
+    library.testVariants.configureEach {
+      if (!file("$projectDir/src/androidTest").exists()) {
+        println("Ignoring $name test variant in $path: No tests in $projectDir/src/androidTest")
+        return@configureEach
+      }
 
-          val clientDetails = mapPropertyToYaml(fulladleModuleExtension.clientDetails, "client-details")
+      val debugApk = propertyToYaml(fulladleModuleExtension.debugApk, "app")
 
-          val environmentVariables = mapPropertyToYaml(fulladleModuleExtension.environmentVariables, "environment-variables")
+      val maxTestShards = propertyToYaml(fulladleModuleExtension.maxTestShards, "max-test-shards")
 
-          outputs.configureEach {
-            flankGradleExtension.additionalTestApks.add(
-              project.rootProject.provider {
-                listOf("- test: $outputFile", debugApk, maxTestShards, clientDetails, environmentVariables)
-                  .filter { it.isNotEmpty() }
-                  .joinToString("\n")
-                  .trimStart()
-                  .trimEnd()
-              }
-            )
-          }
-        } else {
-          println("Ignoring $name test variant in $path: No tests in $projectDir/src/androidTest")
-        }
+      val clientDetails = mapPropertyToYaml(fulladleModuleExtension.clientDetails, "client-details")
+
+      val environmentVariables = mapPropertyToYaml(fulladleModuleExtension.environmentVariables, "environment-variables")
+
+      outputs.configureEach {
+        val strs = listOf("- test: $outputFile", debugApk, maxTestShards, clientDetails, environmentVariables)
+        writeAdditionalTestApps(strs, flankGradleExtension, rootProject)
       }
     }
   }
@@ -127,15 +113,14 @@ fun configureApplicationModule(project: Project, flankGradleExtension: FlankGrad
             // Otherwise, let's just add it to the list.
             strs.add("      test: ${this@test.outputFile}")
           }
-          val maxTestShards = fulladleModuleExtension.maxTestShards.let {
-            buildString {
-              if (it.isPresent) { append("    ") }
-              appendProperty(it, name = "max-test-shards")
-            }
-          }.trimEnd()
 
-          if (strs.isEmpty() || strs[0].isEmpty()) // root module, should not be added as additional test apk
+          if (strs.isEmpty()) {
+            // this is the root module
+            // should not be added as additional test apk
             return@test
+          }
+
+          val maxTestShards = propertyToYaml(fulladleModuleExtension.maxTestShards, "max-test-shards")
 
           val clientDetails = mapPropertyToYaml(fulladleModuleExtension.clientDetails, "client-details")
 
@@ -143,14 +128,7 @@ fun configureApplicationModule(project: Project, flankGradleExtension: FlankGrad
 
           strs.addAll(listOf(maxTestShards, clientDetails, environmentVariables))
 
-          flankGradleExtension.additionalTestApks.add(
-            rootProject.provider {
-              strs
-                .filter { it.trim().isNotEmpty() }
-                .joinToString("\n")
-                .trimEnd()
-            }
-          )
+          writeAdditionalTestApps(strs, flankGradleExtension, rootProject)
 
           addedTestsForModule = true
           return@test
@@ -169,3 +147,22 @@ fun mapPropertyToYaml(map: MapProperty<String, String>, propName: String) =
       }
     }
   }.trimEnd()
+
+fun propertyToYaml(prop: Property<*>, propName: String) =
+  prop.let {
+    buildString {
+      if (it.isPresent) { append("    ") }
+      appendProperty(it, name = propName)
+    }
+  }.trimEnd()
+
+fun writeAdditionalTestApps(strs: List<String>, flankGradleExtension: FlankGradleExtension, rootProject: Project) {
+  flankGradleExtension.additionalTestApks.add(
+    rootProject.provider {
+      strs
+        .filter { it.trim().isNotEmpty() }
+        .joinToString("\n")
+        .trimEnd()
+    }
+  )
+}
