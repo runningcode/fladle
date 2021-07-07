@@ -71,6 +71,20 @@ fladle {
     dependOnAssemble.set(true)
 }
 
+fulladleModuleConfig {
+    maxTestShards.set(24)
+    clientDetails.set(
+        mapOf(
+            "key1" to "val1"
+        )
+    )
+    environmentVariables.set(
+        mapOf(
+            "clearPackageData" to "true"
+        )
+    )
+}
+
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7")
     implementation("androidx.appcompat:appcompat:1.1.0")
