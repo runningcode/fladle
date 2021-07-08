@@ -21,31 +21,32 @@ class FulladlePlugin : Plugin<Project> {
       // Yuck, cross project configuration
       extensions.create("fulladleModuleConfig", FulladleModuleExtension::class.java)
     }
-    var allModulesDisabled = true
+
     val fulladleConfigureTask = root.tasks.register("configureFulladle") {
-      doLast {
+      var allModulesDisabled = true
+      doFirst {
         root.subprojects {
-          val fulladleModuleExtension = extensions.findByType(FulladleModuleExtension::class.java) ?: return@subprojects
-          if (!fulladleModuleExtension.enabled.get()) {
+          if (!hasAndroidTest)
             return@subprojects
-          }
           allModulesDisabled = false
+        }
+      }
+
+      doLast {
+        check(!allModulesDisabled) { "All modules were disabled for testing in fulladleModuleConfig or the enabled modules had no tests" }
+        root.subprojects {
           configureModule(this, flankGradleExtension)
         }
       }
     }
 
-    if (allModulesDisabled) {
-      println("All modules were disabled for testing in fulladle")
+    root.tasks.withType(YamlConfigWriterTask::class.java).configureEach {
+      dependsOn(fulladleConfigureTask)
     }
 
     root.afterEvaluate {
       // TODO add other printYml tasks from other configs
       root.tasks.named("printYml").configure {
-        dependsOn(fulladleConfigureTask)
-      }
-
-      root.tasks.withType(YamlConfigWriterTask::class.java).configureEach {
         dependsOn(fulladleConfigureTask)
       }
     }
@@ -54,13 +55,16 @@ class FulladlePlugin : Plugin<Project> {
 
 fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension) = project.run {
   val fulladleModuleExtension = extensions.findByType(FulladleModuleExtension::class.java) ?: return
-
+  if (!fulladleModuleExtension.enabled.get()) {
+    return
+  }
   if (project.isAndroidLibraryModule) {
     // we need library modules to specify the app apk to test against, even if it's a dummy one
     check(fulladleModuleExtension.debugApk.isPresent && fulladleModuleExtension.debugApk.orNull != null) {
       "Library module ${project.path} did not specify a debug apk. Library modules do not generate a debug apk and one needs to be specified in the fulladleModuleConfig block"
     }
   }
+
   val testedExtension = extensions.getByType<TestedExtension>()
   // Only configure the first test variant per module.
   // Does anyone test more than one variant per module?
@@ -68,13 +72,10 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
 
   // TODO deal with ignored/filtered variants
   testedExtension.testVariants.configureEach testVariant@{
-    if (!file("$projectDir/src/androidTest").exists()) {
-      println("Ignoring $name test variant in $path: No tests in $projectDir/src/androidTest")
-      return@testVariant
-    }
     if (addedTestsForModule) {
       return@testVariant
     }
+
     testedVariant.outputs.configureEach app@{
       this@testVariant.outputs.configureEach test@{
         val strs = mutableListOf<String>()
@@ -159,3 +160,24 @@ val Project.isAndroidAppModule
   get() = plugins.hasPlugin("com.android.application")
 val Project.isAndroidLibraryModule
   get() = plugins.hasPlugin("com.android.library")
+
+
+// returns false if the module explicitly disabled testing or if it simply had no tests
+val Project.hasAndroidTest: Boolean
+  get() {
+    val fulladleModuleExtension = extensions.findByType(FulladleModuleExtension::class.java) ?: return false
+    if ((isAndroidLibraryModule || isAndroidAppModule) && !fulladleModuleExtension.enabled.get()) {
+      return false
+    }
+
+    val testedExtension = extensions.getByType<TestedExtension>()
+    var testsFound = true
+    testedExtension.testVariants.configureEach testVariant@{
+      if (!file("$projectDir/src/androidTest").exists()) {
+        println("Ignoring $name test variant in $path: No tests in $projectDir/src/androidTest")
+        testsFound = false
+      }
+      return@testVariant
+    }
+    return testsFound
+  }
