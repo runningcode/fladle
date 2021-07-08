@@ -21,13 +21,22 @@ class FulladlePlugin : Plugin<Project> {
       // Yuck, cross project configuration
       extensions.create("fulladleModuleConfig", FulladleModuleExtension::class.java)
     }
-
+    var allModulesDisabled = true
     val fulladleConfigureTask = root.tasks.register("configureFulladle") {
       doLast {
         root.subprojects {
+          val fulladleModuleExtension = extensions.findByType(FulladleModuleExtension::class.java) ?: return@subprojects
+          if (!fulladleModuleExtension.enabled.get()) {
+            return@subprojects
+          }
+          allModulesDisabled = false
           configureModule(this, flankGradleExtension)
         }
       }
+    }
+
+    if (allModulesDisabled) {
+      println("All modules were disabled for testing in fulladle")
     }
 
     root.afterEvaluate {
@@ -45,8 +54,6 @@ class FulladlePlugin : Plugin<Project> {
 
 fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension) = project.run {
   val fulladleModuleExtension = extensions.findByType(FulladleModuleExtension::class.java) ?: return
-  if (!fulladleModuleExtension.enabled.get())
-    return
 
   if (project.isAndroidLibraryModule) {
     // we need library modules to specify the app apk to test against, even if it's a dummy one
