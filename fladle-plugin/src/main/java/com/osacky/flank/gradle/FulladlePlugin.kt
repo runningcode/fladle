@@ -25,7 +25,7 @@ class FulladlePlugin : Plugin<Project> {
     val fulladleConfigureTask = root.tasks.register("configureFulladle") {
       doLast {
         root.subprojects {
-          configureModule(this,flankGradleExtension)
+          configureModule(this, flankGradleExtension)
         }
       }
     }
@@ -83,8 +83,8 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
           }
         } else {
           // Otherwise, let's just add it to the list.
-          if (project.isAndroidAppModule){
-              strs.add("- app: ${this@app.outputFile}")
+          if (project.isAndroidAppModule) {
+            strs.add("- app: ${this@app.outputFile}")
           } else if (project.isAndroidLibraryModule) {
             strs.add("- app: ${fulladleModuleExtension.debugApk.get()}")
           }
@@ -118,7 +118,6 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
     }
   }
 }
-
 
 fun mapPropertyToYaml(map: MapProperty<String, String>, propName: String) =
   map.let {
