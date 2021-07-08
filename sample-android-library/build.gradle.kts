@@ -14,6 +14,7 @@ fulladleModuleConfig {
   environmentVariables.set(mapOf(
     "clearPackageData" to "true"
   ))
+  debugApk.set(rootProject.file("dummy_app.apk").path)
 }
 
 android {

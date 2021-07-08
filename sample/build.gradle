@@ -75,6 +75,10 @@ fladle {
     flakyTestAttempts = 1
 }
 
+fulladleModuleConfig {
+    debugApk.set("${rootProject.file("dummy_app.apk")}")
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
