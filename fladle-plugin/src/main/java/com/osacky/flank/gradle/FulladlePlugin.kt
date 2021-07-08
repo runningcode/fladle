@@ -1,7 +1,5 @@
 package com.osacky.flank.gradle
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.TestedExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -74,6 +72,7 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
       this@testVariant.outputs.configureEach test@{
         val strs = mutableListOf<String>()
 
+        // If the debugApk isn't yet set, let's use this one.
         if (!flankGradleExtension.debugApk.isPresent) {
           if (project.isAndroidAppModule) {
             // app modules produce app apks that we can consume
