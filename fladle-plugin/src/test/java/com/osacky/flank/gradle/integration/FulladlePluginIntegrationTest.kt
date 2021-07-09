@@ -243,6 +243,65 @@ class FulladlePluginIntegrationTest {
   }
 
   @Test
+  fun `test root level module overrides with fulladleModuleConfig`() {
+    val appFixture = "android-project"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+        include '$appFixture'
+
+        dependencyResolutionManagement {
+          repositories {
+            mavenCentral()
+            google()
+          }
+        }
+      """.trimIndent()
+    )
+    testProjectRoot.setupFixture(appFixture)
+
+    writeBuildGradle(
+      """
+        buildscript {
+            repositories {
+                google()
+                jcenter()
+            }
+
+            dependencies {
+                classpath 'com.android.tools.build:gradle:4.2.1'
+            }
+        }
+
+        plugins {
+          id "com.osacky.fulladle"
+        }
+
+        fladle {
+          serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+          maxTestShards = 4
+        }
+      """.trimIndent()
+    )
+
+    File(testProjectRoot.root, "$appFixture/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+        enabled = true
+        maxTestShards = 7
+      }
+      """.trimIndent()
+    )
+
+    val result = testProjectRoot.gradleRunner()
+      .withArguments(":printYml")
+      .withGradleVersion("6.9")
+      .build()
+    assertThat(result.output).doesNotContain("max-test-shards: 4")
+    assertThat(result.output).contains("max-test-shards: 7")
+    assertThat(result.output).doesNotContain("additional-app-test-apks")
+  }
+
+  @Test
   fun testAllModulesDisabled() {
     val appFixture = "android-project"
     testProjectRoot.newFile("settings.gradle").writeText(
