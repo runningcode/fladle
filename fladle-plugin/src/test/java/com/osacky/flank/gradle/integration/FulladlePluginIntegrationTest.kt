@@ -217,19 +217,19 @@ class FulladlePluginIntegrationTest {
      flank:
        keep-file-path: false
        additional-app-test-apks:
+         - app: [0-9a-zA-Z\/_]*/android-project2/build/outputs/apk/debug/android-project2-debug.apk
+           test: [0-9a-zA-Z\/_]*/android-project2/build/outputs/apk/androidTest/debug/android-project2-debug-androidTest.apk
+           max-test-shards: 5
+           environment-variables:
+               "clearPackageData": "true"
          - test: [0-9a-zA-Z\/_]*/$libraryFixture2/build/outputs/apk/androidTest/debug/android-lib2-debug-androidTest.apk
            max-test-shards: 4
            client-details:
                "test-type": "PR"
                "build-number": "132"
-         - test: [0-9a-zA-Z\/_]*/$libraryFixture/build/outputs/apk/androidTest/debug/android-library-project-debug-androidTest.apk
-           app: dummy_app.apk
+         - app: dummy_app.apk
+           test: [0-9a-zA-Z\/_]*/$libraryFixture/build/outputs/apk/androidTest/debug/android-library-project-debug-androidTest.apk
            max-test-shards: 7
-           environment-variables:
-               "clearPackageData": "true"
-         - app: [0-9a-zA-Z\/_]*/android-project2/build/outputs/apk/debug/android-project2-debug.apk
-           test: [0-9a-zA-Z\/_]*/android-project2/build/outputs/apk/androidTest/debug/android-project2-debug-androidTest.apk
-           max-test-shards: 5
            environment-variables:
                "clearPackageData": "true"
        ignore-failed-tests: false
