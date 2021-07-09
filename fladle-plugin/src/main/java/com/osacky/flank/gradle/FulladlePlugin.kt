@@ -92,7 +92,6 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
     testedVariant.outputs.configureEach app@{
       this@testVariant.outputs.configureEach test@{
         val strs = mutableListOf<String>()
-
         // If the debugApk isn't yet set, let's use this one.
         if (!flankGradleExtension.debugApk.isPresent) {
           if (project.isAndroidAppModule) {
@@ -129,15 +128,17 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
         if (strs.isEmpty()) {
           // this is the root module
           // should not be added as additional test apk
+          overrideRootLevelConfigs(flankGradleExtension, fulladleModuleExtension)
           return@test
         }
+        // the first element can be "app" or "test", whatever it is prepend - to it
+        strs[0] = "- ${strs[0].trim()}"
 
         val maxTestShards = propertyToYaml(fulladleModuleExtension.maxTestShards, "max-test-shards")
         val clientDetails = mapPropertyToYaml(fulladleModuleExtension.clientDetails, "client-details")
         val environmentVariables = mapPropertyToYaml(fulladleModuleExtension.environmentVariables, "environment-variables")
 
         strs.addAll(listOf(maxTestShards, clientDetails, environmentVariables))
-        strs[0] = "- ${strs[0].trim()}"
 
         writeAdditionalTestApps(strs, flankGradleExtension, rootProject)
 
@@ -202,3 +203,25 @@ val Project.hasAndroidTest: Boolean
     }
     return testsFound
   }
+
+fun overrideRootLevelConfigs(flankGradleExtension: FlankGradleExtension, fulladleModuleExtension: FulladleModuleExtension) {
+  // if the root module overrode any value in its fulladleModuleConfig block
+  // then use those values instead
+  if (fulladleModuleExtension.debugApk.orNull != null) {
+    flankGradleExtension.debugApk.set(fulladleModuleExtension.debugApk.get())
+  }
+  if (fulladleModuleExtension.maxTestShards.orNull != null) {
+    flankGradleExtension.maxTestShards.set(fulladleModuleExtension.maxTestShards.get())
+  }
+  if (fulladleModuleExtension.maxTestShards.orNull != null) {
+    flankGradleExtension.maxTestShards.set(fulladleModuleExtension.maxTestShards.get())
+  }
+  if (fulladleModuleExtension.clientDetails.orNull != null) {
+    flankGradleExtension.clientDetails.set(fulladleModuleExtension.clientDetails.get())
+  }
+  if (fulladleModuleExtension.environmentVariables.orNull != null) {
+    flankGradleExtension.environmentVariables.set(fulladleModuleExtension.environmentVariables.get())
+  }
+}
+
+fun setUpRootDebugApk() {}

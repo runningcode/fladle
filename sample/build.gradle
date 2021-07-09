@@ -76,7 +76,10 @@ fladle {
 }
 
 fulladleModuleConfig {
-    debugApk.set("${rootProject.file("dummy_app.apk")}")
+    clientDetails = [
+            "test-type": "PR",
+            "build-number": "132"
+    ]
 }
 
 dependencies {
