@@ -183,7 +183,6 @@ val Project.isAndroidAppModule
 val Project.isAndroidLibraryModule
   get() = plugins.hasPlugin("com.android.library")
 
-
 // returns false if the module explicitly disabled testing or if it simply had no tests
 val Project.hasAndroidTest: Boolean
   get() {
