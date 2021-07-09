@@ -24,18 +24,37 @@ class FulladlePlugin : Plugin<Project> {
 
     val fulladleConfigureTask = root.tasks.register("configureFulladle") {
       var allModulesDisabled = true
-      doFirst {
+      /**
+       * we will first configure all app modules
+       * then configure all library modules
+       * we force this order of configuration because
+       * app modules are better candidates to become
+       * root level test/app APKs, since they produce
+       * app APKs
+       * if no app module had tests or was enabled
+       * we will choose a library module to become
+       * a root level module, in which case we will
+       * have to check if it has its debugApk set
+       */
+      doLast {
+        // first configure all app modules
         root.subprojects {
           if (!hasAndroidTest)
             return@subprojects
           allModulesDisabled = false
+          if (isAndroidAppModule)
+            configureModule(this, flankGradleExtension)
         }
-      }
-
-      doLast {
-        check(!allModulesDisabled) { "All modules were disabled for testing in fulladleModuleConfig or the enabled modules had no tests" }
+        // then configure all library modules
         root.subprojects {
-          configureModule(this, flankGradleExtension)
+          if (!hasAndroidTest)
+            return@subprojects
+          allModulesDisabled = false
+          if (isAndroidLibraryModule)
+            configureModule(this, flankGradleExtension)
+        }
+        check(!allModulesDisabled) {
+          "All modules were disabled for testing in fulladleModuleConfig or the enabled modules had no tests"
         }
       }
     }
@@ -55,14 +74,8 @@ class FulladlePlugin : Plugin<Project> {
 
 fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension) = project.run {
   val fulladleModuleExtension = extensions.findByType(FulladleModuleExtension::class.java) ?: return
-  if (!fulladleModuleExtension.enabled.get()) {
+  if (!hasAndroidTest) {
     return
-  }
-  if (project.isAndroidLibraryModule) {
-    // we need library modules to specify the app apk to test against, even if it's a dummy one
-    check(fulladleModuleExtension.debugApk.isPresent && fulladleModuleExtension.debugApk.orNull != null) {
-      "Library module ${project.path} did not specify a debug apk. Library modules do not generate a debug apk and one needs to be specified in the fulladleModuleConfig block"
-    }
   }
 
   val testedExtension = extensions.getByType<TestedExtension>()
@@ -87,14 +100,21 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
             flankGradleExtension.debugApk.set(rootProject.provider { this@app.outputFile.absolutePath })
           } else if (project.isAndroidLibraryModule) {
             // library modules do not produce an app apk and we'll use the one specified in fulladleModuleConfig block
+            // we need library modules to specify the app apk to test against, even if it's a dummy one
+            check(fulladleModuleExtension.debugApk.isPresent && fulladleModuleExtension.debugApk.orNull != null) {
+              "Library module ${project.path} did not specify a debug apk. Library modules do not generate a debug apk and one needs to be specified in the fulladleModuleConfig block\nThis is a required parameter in FTL which remains unused for library modules under test, and you can use a dummy apk here"
+            }
             flankGradleExtension.debugApk.set(rootProject.provider { fulladleModuleExtension.debugApk.get() })
           }
         } else {
           // Otherwise, let's just add it to the list.
           if (project.isAndroidAppModule) {
-            strs.add("- app: ${this@app.outputFile}")
+            strs.add(" app: ${this@app.outputFile}")
           } else if (project.isAndroidLibraryModule) {
-            strs.add("- app: ${fulladleModuleExtension.debugApk.get()}")
+            // app apk is not required for library modules so only use if it's explicitly specified
+            if (fulladleModuleExtension.debugApk.orNull != null) {
+              strs.add(" app: ${fulladleModuleExtension.debugApk.get()}")
+            }
           }
         }
 
@@ -117,6 +137,7 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
         val environmentVariables = mapPropertyToYaml(fulladleModuleExtension.environmentVariables, "environment-variables")
 
         strs.addAll(listOf(maxTestShards, clientDetails, environmentVariables))
+        strs[0] = "- ${strs[0].trim()}"
 
         writeAdditionalTestApps(strs, flankGradleExtension, rootProject)
 
