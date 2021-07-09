@@ -468,7 +468,7 @@ class FulladlePluginIntegrationTest {
      gcloud:
        app: dummy_app.apk
        test: [0-9a-zA-Z\/_]*/$libraryFixture/build/outputs/apk/androidTest/debug/android-library-project-debug-androidTest.apk
-       """.trimIndent()
+      """.trimIndent()
     )
     assertThat(result.output).contains("SUCCESS")
   }
