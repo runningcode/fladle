@@ -241,4 +241,311 @@ class FulladlePluginIntegrationTest {
       """.trimIndent()
     )
   }
+
+  @Test
+  fun testAllModulesDisabled() {
+    val appFixture = "android-project"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+        include '$appFixture'
+
+        dependencyResolutionManagement {
+          repositories {
+            mavenCentral()
+            google()
+          }
+        }
+      """.trimIndent()
+    )
+    testProjectRoot.setupFixture(appFixture)
+
+    writeBuildGradle(
+      """
+        buildscript {
+            repositories {
+                google()
+                jcenter()
+            }
+
+            dependencies {
+                classpath 'com.android.tools.build:gradle:4.2.1'
+            }
+        }
+
+        plugins {
+          id "com.osacky.fulladle"
+        }
+
+        fladle {
+          serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+        }
+      """.trimIndent()
+    )
+
+    File(testProjectRoot.root, "$appFixture/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+        enabled = false
+      }
+      """.trimIndent()
+    )
+
+    val result = testProjectRoot.gradleRunner()
+      .withArguments(":printYml")
+      .withGradleVersion("6.9")
+      .buildAndFail()
+
+    assertThat(result.output).contains("Task :configureFulladle FAILED")
+    assertThat(result.output).contains("All modules were disabled for testing in fulladleModuleConfig or the enabled modules had no tests")
+  }
+
+  /**
+   * this test has all app modules disabled
+   * and specifies no debugApk for library module.
+   * No module is appropriate for root level flank
+   * config, thus we have an illegal state
+   */
+  @Test
+  fun `test fulladle with app modules disabled and library module without debug apk`() {
+    val appFixture = "android-project"
+    val appFixture2 = "android-project2"
+    val libraryFixture = "android-library-project"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+        include '$appFixture'
+        include '$appFixture2'
+        include '$libraryFixture'
+
+        dependencyResolutionManagement {
+          repositories {
+            mavenCentral()
+            google()
+          }
+        }
+      """.trimIndent()
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(appFixture2)
+    testProjectRoot.setupFixture(libraryFixture)
+
+    writeBuildGradle(
+      """
+        buildscript {
+            repositories {
+                google()
+                jcenter()
+            }
+
+            dependencies {
+                classpath 'com.android.tools.build:gradle:4.2.1'
+            }
+        }
+
+        plugins {
+          id "com.osacky.fulladle"
+        }
+
+        fladle {
+          serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+        }
+      """.trimIndent()
+    )
+
+    File(testProjectRoot.root, "$appFixture/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+        enabled = false
+      }
+      """.trimIndent()
+    )
+
+    File(testProjectRoot.root, "$appFixture2/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+        enabled = false
+      }
+      """.trimIndent()
+    )
+
+    val result = testProjectRoot.gradleRunner()
+      .withArguments(":printYml")
+      .withGradleVersion("6.9")
+      .buildAndFail()
+
+    assertThat(result.output).contains("Task :configureFulladle FAILED")
+    assertThat(result.output).contains(
+      "Library module :android-library-project did not specify a debug apk. Library modules do not generate a debug apk and one needs to be specified in the fulladleModuleConfig block"
+    )
+    assertThat(result.output).contains(
+      "This is a required parameter in FTL which remains unused for library modules under test, and you can use a dummy apk here"
+    )
+  }
+
+  /**
+   * this test has all app modules disabled
+   * and specifies debugApk for library module.
+   * the library module is appropriate for
+   * root level flank config, thus we have SUCCESS
+   */
+  @Test
+  fun `test fulladle with app modules disabled and library module with debug apk`() {
+    val appFixture = "android-project"
+    val appFixture2 = "android-project2"
+    val libraryFixture = "android-library-project"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+        include '$appFixture'
+        include '$appFixture2'
+        include '$libraryFixture'
+
+        dependencyResolutionManagement {
+          repositories {
+            mavenCentral()
+            google()
+          }
+        }
+      """.trimIndent()
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(appFixture2)
+    testProjectRoot.setupFixture(libraryFixture)
+
+    writeBuildGradle(
+      """
+        buildscript {
+            repositories {
+                google()
+                jcenter()
+            }
+
+            dependencies {
+                classpath 'com.android.tools.build:gradle:4.2.1'
+            }
+        }
+
+        plugins {
+          id "com.osacky.fulladle"
+        }
+
+        fladle {
+          serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+        }
+      """.trimIndent()
+    )
+
+    File(testProjectRoot.root, "$appFixture/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+        enabled = false
+      }
+      """.trimIndent()
+    )
+
+    File(testProjectRoot.root, "$appFixture2/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+        enabled = false
+      }
+      """.trimIndent()
+    )
+    File(testProjectRoot.root, "$libraryFixture/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+         debugApk = "dummy_app.apk"
+      }
+      """.trimIndent()
+    )
+
+    val result = testProjectRoot.gradleRunner()
+      .withArguments(":printYml")
+      .withGradleVersion("6.9")
+      .build()
+
+    assertThat(result.output).doesNotContain("additional-app-test-apks")
+    assertThat(result.output).containsMatch(
+      """
+     > Task :printYml
+     gcloud:
+       app: dummy_app.apk
+       test: [0-9a-zA-Z\/_]*/$libraryFixture/build/outputs/apk/androidTest/debug/android-library-project-debug-androidTest.apk
+       """.trimIndent()
+    )
+    assertThat(result.output).contains("SUCCESS")
+  }
+
+  /**
+   * this test has only one of two app module enabled
+   * and specifies no debugApk for library module.
+   * the enabled app module is appropriate for
+   * root level flank config, thus we have SUCCESS
+   */
+  @Test
+  fun `test fulladle with app module enabled and library module without debug apk`() {
+    val appFixture = "android-project"
+    val appFixture2 = "android-project2"
+    val libraryFixture = "android-library-project"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+        include '$appFixture'
+        include '$appFixture2'
+        include '$libraryFixture'
+
+        dependencyResolutionManagement {
+          repositories {
+            mavenCentral()
+            google()
+          }
+        }
+      """.trimIndent()
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(appFixture2)
+    testProjectRoot.setupFixture(libraryFixture)
+
+    writeBuildGradle(
+      """
+        buildscript {
+            repositories {
+                google()
+                jcenter()
+            }
+
+            dependencies {
+                classpath 'com.android.tools.build:gradle:4.2.1'
+            }
+        }
+
+        plugins {
+          id "com.osacky.fulladle"
+        }
+
+        fladle {
+          serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+        }
+      """.trimIndent()
+    )
+
+    File(testProjectRoot.root, "$appFixture/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+        enabled = true
+      }
+      """.trimIndent()
+    )
+
+    File(testProjectRoot.root, "$appFixture2/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+        enabled = false
+      }
+      """.trimIndent()
+    )
+
+    val result = testProjectRoot.gradleRunner()
+      .withArguments(":printYml")
+      .withGradleVersion("6.9")
+      .build()
+
+    assertThat(result.output).contains("BUILD SUCCESSFUL")
+  }
 }
