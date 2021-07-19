@@ -10,7 +10,7 @@ class FulladlePluginIntegrationTest {
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
-    val agpDependency: String = "com.android.tools.build:gradle:4.2.1"
+  val agpDependency: String = "com.android.tools.build:gradle:4.2.1"
 
   fun writeBuildGradle(build: String) {
     val file = testProjectRoot.newFile("build.gradle")

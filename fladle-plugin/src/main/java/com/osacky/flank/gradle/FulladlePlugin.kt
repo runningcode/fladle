@@ -56,7 +56,7 @@ class FulladlePlugin : Plugin<Project> {
 
         check(modulesEnabled) {
           "All modules were disabled for testing in fulladleModuleConfig or the enabled modules had no tests.\n" +
-                  "Either re-enable modules for testing or add modules with tests."
+            "Either re-enable modules for testing or add modules with tests."
         }
       }
     }
