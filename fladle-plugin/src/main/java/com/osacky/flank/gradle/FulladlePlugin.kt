@@ -23,7 +23,7 @@ class FulladlePlugin : Plugin<Project> {
     }
 
     val fulladleConfigureTask = root.tasks.register("configureFulladle") {
-      var allModulesDisabled = true
+      var modulesEnabled = false
       /**
        * we will first configure all app modules
        * then configure all library modules
@@ -41,7 +41,7 @@ class FulladlePlugin : Plugin<Project> {
         root.subprojects {
           if (!hasAndroidTest)
             return@subprojects
-          allModulesDisabled = false
+          modulesEnabled = true
           if (isAndroidAppModule)
             configureModule(this, flankGradleExtension)
         }
@@ -49,12 +49,14 @@ class FulladlePlugin : Plugin<Project> {
         root.subprojects {
           if (!hasAndroidTest)
             return@subprojects
-          allModulesDisabled = false
+          modulesEnabled = true
           if (isAndroidLibraryModule)
             configureModule(this, flankGradleExtension)
         }
-        check(!allModulesDisabled) {
-          "All modules were disabled for testing in fulladleModuleConfig or the enabled modules had no tests"
+
+        check(modulesEnabled) {
+          "All modules were disabled for testing in fulladleModuleConfig or the enabled modules had no tests.\n" +
+                  "Either re-enable modules for testing or add modules with tests."
         }
       }
     }
@@ -222,5 +224,3 @@ fun overrideRootLevelConfigs(flankGradleExtension: FlankGradleExtension, fulladl
     flankGradleExtension.environmentVariables.set(fulladleModuleExtension.environmentVariables.get())
   }
 }
-
-fun setUpRootDebugApk() {}

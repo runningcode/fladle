@@ -10,6 +10,8 @@ class FulladlePluginIntegrationTest {
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
+    val agpDependency: String = "com.android.tools.build:gradle:4.2.1"
+
   fun writeBuildGradle(build: String) {
     val file = testProjectRoot.newFile("build.gradle")
     file.writeText(build)
@@ -61,7 +63,7 @@ class FulladlePluginIntegrationTest {
             }
 
             dependencies {
-                classpath 'com.android.tools.build:gradle:4.2.1'
+                classpath '$agpDependency'
             }
         }
         
@@ -158,7 +160,7 @@ class FulladlePluginIntegrationTest {
             }
 
             dependencies {
-                classpath 'com.android.tools.build:gradle:4.2.1'
+                classpath '$agpDependency'
             }
         }
 
@@ -268,7 +270,7 @@ class FulladlePluginIntegrationTest {
             }
 
             dependencies {
-                classpath 'com.android.tools.build:gradle:4.2.1'
+                classpath '$agpDependency'
             }
         }
 
@@ -327,7 +329,7 @@ class FulladlePluginIntegrationTest {
             }
 
             dependencies {
-                classpath 'com.android.tools.build:gradle:4.2.1'
+                classpath '$agpDependency'
             }
         }
 
@@ -396,7 +398,7 @@ class FulladlePluginIntegrationTest {
             }
 
             dependencies {
-                classpath 'com.android.tools.build:gradle:4.2.1'
+                classpath '$agpDependency'
             }
         }
 
@@ -478,7 +480,7 @@ class FulladlePluginIntegrationTest {
             }
 
             dependencies {
-                classpath 'com.android.tools.build:gradle:4.2.1'
+                classpath '$agpDependency'
             }
         }
 
@@ -570,7 +572,7 @@ class FulladlePluginIntegrationTest {
             }
 
             dependencies {
-                classpath 'com.android.tools.build:gradle:4.2.1'
+                classpath '$agpDependency'
             }
         }
 
