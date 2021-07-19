@@ -26,7 +26,6 @@ class FulladlePluginIntegrationTest {
     )
     val result = testProjectRoot.gradleRunner()
       .withArguments("help")
-      .withGradleVersion("6.0")
       .build()
     assertThat(result.output).contains("SUCCESS")
   }
@@ -89,7 +88,6 @@ class FulladlePluginIntegrationTest {
 
     val result = testProjectRoot.gradleRunner()
       .withArguments(":printYml")
-      .withGradleVersion("6.9")
       .build()
 
     assertThat(result.output).contains("SUCCESS")
@@ -195,7 +193,6 @@ class FulladlePluginIntegrationTest {
 
     val result = testProjectRoot.gradleRunner()
       .withArguments(":printYml")
-      .withGradleVersion("6.9")
       .build()
 
     assertThat(result.output).contains("SUCCESS")
@@ -296,7 +293,6 @@ class FulladlePluginIntegrationTest {
 
     val result = testProjectRoot.gradleRunner()
       .withArguments(":printYml")
-      .withGradleVersion("6.9")
       .build()
     assertThat(result.output).doesNotContain("max-test-shards: 4")
     assertThat(result.output).contains("max-test-shards: 7")
@@ -353,7 +349,6 @@ class FulladlePluginIntegrationTest {
 
     val result = testProjectRoot.gradleRunner()
       .withArguments(":printYml")
-      .withGradleVersion("6.9")
       .buildAndFail()
 
     assertThat(result.output).contains("Task :configureFulladle FAILED")
@@ -430,7 +425,6 @@ class FulladlePluginIntegrationTest {
 
     val result = testProjectRoot.gradleRunner()
       .withArguments(":printYml")
-      .withGradleVersion("6.9")
       .buildAndFail()
 
     assertThat(result.output).contains("Task :configureFulladle FAILED")
@@ -519,7 +513,6 @@ class FulladlePluginIntegrationTest {
 
     val result = testProjectRoot.gradleRunner()
       .withArguments(":printYml")
-      .withGradleVersion("6.9")
       .build()
 
     assertThat(result.output).doesNotContain("additional-app-test-apks")
@@ -604,7 +597,6 @@ class FulladlePluginIntegrationTest {
 
     val result = testProjectRoot.gradleRunner()
       .withArguments(":printYml")
-      .withGradleVersion("6.9")
       .build()
 
     assertThat(result.output).contains("BUILD SUCCESSFUL")
