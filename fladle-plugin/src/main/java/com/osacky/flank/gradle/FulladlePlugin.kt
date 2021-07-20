@@ -214,9 +214,6 @@ fun overrideRootLevelConfigs(flankGradleExtension: FlankGradleExtension, fulladl
   if (fulladleModuleExtension.maxTestShards.orNull != null) {
     flankGradleExtension.maxTestShards.set(fulladleModuleExtension.maxTestShards.get())
   }
-  if (fulladleModuleExtension.maxTestShards.orNull != null) {
-    flankGradleExtension.maxTestShards.set(fulladleModuleExtension.maxTestShards.get())
-  }
   if (fulladleModuleExtension.clientDetails.orNull != null) {
     flankGradleExtension.clientDetails.set(fulladleModuleExtension.clientDetails.get())
   }
