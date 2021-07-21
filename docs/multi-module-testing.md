@@ -103,6 +103,13 @@ You may want to exclude a library module from testing when using Fulladle. You c
       enabled.set(false)
     }
     ```
+
+
+### Overriding root-level config
+Fulladle does not provide the ability to control which module ends up as the root-level module or as an additional module. Either one of app modules or library modules can become a root-level module. If a library module ends up as a root-level module, it needs to specify a `debugApk` in its `fladle` or `fulladleModuleConfig` block.
+
+The root-level configuration (e.g. `maxTestShards`) can also be overridden in the `fulladleModuleConfig` block of whatever module gets picked as the root module.
+
 ## Troubleshooting
 Fulladle might still have some rough edges, but we'd love feedback. Please join us in the [Firebase Community Slack](https://firebase.community/) with any feedback you may have.
 You can also file [Fladle Github issues](https://github.com/runningcode/fladle/issues).

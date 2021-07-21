@@ -12,6 +12,10 @@ android {
   }
 }
 
+fulladleModuleConfig {
+  debugApk.set(rootProject.file("dummy_app.apk").path)
+}
+
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7")
   implementation("androidx.appcompat:appcompat:1.1.0")
