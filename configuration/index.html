@@ -1,0 +1,2551 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The Gradle Plugin for Firebase Test Lab and Flank">
+      
+      
+        <link rel="canonical" href="https://runningcode.github.io/fladle/configuration/">
+      
+      
+        <meta name="author" content="Nelson Osacky">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-5.1.0">
+    
+    
+      
+        <title>Configuration - Fladle</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.89dc9fe3.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#configuration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://runningcode.github.io/fladle/" title="Fladle" class="md-header-nav__button md-logo" aria-label="Fladle">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,8A3,3 0 0,0 15,5A3,3 0 0,0 12,2A3,3 0 0,0 9,5A3,3 0 0,0 12,8M12,11.54C9.64,9.35 6.5,8 3,8V19C6.5,19 9.64,20.35 12,22.54C14.36,20.35 17.5,19 21,19V8C17.5,8 14.36,9.35 12,11.54Z" /></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" /></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Fladle
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Configuration
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" /></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/runningcode/fladle/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Fladle
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://runningcode.github.io/fladle/" title="Fladle" class="md-nav__button md-logo" aria-label="Fladle">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,8A3,3 0 0,0 15,5A3,3 0 0,0 12,2A3,3 0 0,0 9,5A3,3 0 0,0 12,8M12,11.54C9.64,9.35 6.5,8 3,8V19C6.5,19 9.64,20.35 12,22.54C14.36,20.35 17.5,19 21,19V8C17.5,8 14.36,9.35 12,11.54Z" /></svg>
+
+    </a>
+    Fladle
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/runningcode/fladle/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Fladle
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../quick-start/" title="Quick Start" class="md-nav__link">
+      Quick Start
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../authentication/" title="Authentication" class="md-nav__link">
+      Authentication
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Configuration
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,9H17V7H3V9M3,13H17V11H3V13M3,17H17V15H3V17M19,17H21V15H19V17M19,7V9H21V7H19M19,13H21V11H19V13Z" /></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Configuration" class="md-nav__link md-nav__link--active">
+      Configuration
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#serviceaccountcredentials" class="md-nav__link">
+    serviceAccountCredentials
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variant" class="md-nav__link">
+    variant
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample-configuration" class="md-nav__link">
+    Sample Configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Sample Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#useorchestrator" class="md-nav__link">
+    useOrchestrator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testtargets" class="md-nav__link">
+    testTargets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#devices" class="md-nav__link">
+    devices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#projectid" class="md-nav__link">
+    projectId
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flankversion" class="md-nav__link">
+    flankVersion
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flankcoordinates" class="md-nav__link">
+    flankCoordinates
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugapk" class="md-nav__link">
+    debugApk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instrumentationapk" class="md-nav__link">
+    instrumentationApk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additionaltestapks" class="md-nav__link">
+    additionalTestApks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autogooglelogin" class="md-nav__link">
+    autoGoogleLogin
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environmentvariables" class="md-nav__link">
+    environmentVariables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testshards" class="md-nav__link">
+    testShards
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maxtestshards" class="md-nav__link">
+    maxTestShards
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shardtime" class="md-nav__link">
+    shardTime
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repeattests" class="md-nav__link">
+    repeatTests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configs" class="md-nav__link">
+    configs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smartflankgcspath" class="md-nav__link">
+    smartFlankGcsPath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resultshistoryname" class="md-nav__link">
+    resultsHistoryName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flakytestattempts" class="md-nav__link">
+    flakyTestAttempts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#directoriestopull" class="md-nav__link">
+    directoriesToPull
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filestodownload" class="md-nav__link">
+    filesToDownload
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testtimeout" class="md-nav__link">
+    testTimeout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recordvideo" class="md-nav__link">
+    recordVideo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performancemetrics" class="md-nav__link">
+    performanceMetrics
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resultsbucket" class="md-nav__link">
+    resultsBucket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keepfilepath" class="md-nav__link">
+    keepFilePath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resultsdir" class="md-nav__link">
+    resultsDir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disablesharding" class="md-nav__link">
+    disableSharding
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smartflankdisableupload" class="md-nav__link">
+    smartFlankDisableUpload
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testrunnerclass" class="md-nav__link">
+    testRunnerClass
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localresultsdir" class="md-nav__link">
+    localResultsDir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testtargetsalwaysrun" class="md-nav__link">
+    testTargetsAlwaysRun
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtimeout" class="md-nav__link">
+    runTimeout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignorefailedtests" class="md-nav__link">
+    ignoreFailedTests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numuniformshards" class="md-nav__link">
+    numUniformShards
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clientdetails" class="md-nav__link">
+    clientDetails
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#otherfiles" class="md-nav__link">
+    otherFiles
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#networkprofile" class="md-nav__link">
+    networkProfile
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roboscript" class="md-nav__link">
+    roboScript
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#robodirectives" class="md-nav__link">
+    roboDirectives
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputstyle" class="md-nav__link">
+    outputStyle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#legacyjunitresult" class="md-nav__link">
+    legacyJunitResult
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fulljunitresult" class="md-nav__link">
+    fullJunitResult
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sanityrobo" class="md-nav__link">
+    sanityRobo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defaulttesttime" class="md-nav__link">
+    defaultTestTime
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defaultclasstesttime" class="md-nav__link">
+    defaultClassTestTime
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additionalapks" class="md-nav__link">
+    additionalApks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useaveragetesttimefornewtests" class="md-nav__link">
+    useAverageTestTimeForNewTests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disableresultsupload" class="md-nav__link">
+    disableResultsUpload
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testtargetsforshard" class="md-nav__link">
+    testTargetsForShard
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grantpermissions" class="md-nav__link">
+    grantPermissions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type" class="md-nav__link">
+    type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenariolabels" class="md-nav__link">
+    scenarioLabels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenarionumbers" class="md-nav__link">
+    scenarioNumbers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obbfiles" class="md-nav__link">
+    obbFiles
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obbnames" class="md-nav__link">
+    obbNames
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failfast" class="md-nav__link">
+    failFast
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additionalflankoptions" class="md-nav__link">
+    additionalFlankOptions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additionalgcloudoptions" class="md-nav__link">
+    additionalGcloudOptions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependonassemble" class="md-nav__link">
+    dependOnAssemble
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#async" class="md-nav__link">
+    async
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../recipes/" title="Recipes" class="md-nav__link">
+      Recipes
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../changelog/" title="Changelog" class="md-nav__link">
+      Changelog
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../results/" title="Results" class="md-nav__link">
+      Results
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../multi-module-testing/" title="Multi Module Testing" class="md-nav__link">
+      Multi Module Testing
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../faq/" title="FAQ" class="md-nav__link">
+      FAQ
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../snapshots/" title="Testing Snapshots" class="md-nav__link">
+      Testing Snapshots
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../releasing/" title="Releasing" class="md-nav__link">
+      Releasing
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#serviceaccountcredentials" class="md-nav__link">
+    serviceAccountCredentials
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variant" class="md-nav__link">
+    variant
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample-configuration" class="md-nav__link">
+    Sample Configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Sample Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#useorchestrator" class="md-nav__link">
+    useOrchestrator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testtargets" class="md-nav__link">
+    testTargets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#devices" class="md-nav__link">
+    devices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#projectid" class="md-nav__link">
+    projectId
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flankversion" class="md-nav__link">
+    flankVersion
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flankcoordinates" class="md-nav__link">
+    flankCoordinates
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugapk" class="md-nav__link">
+    debugApk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instrumentationapk" class="md-nav__link">
+    instrumentationApk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additionaltestapks" class="md-nav__link">
+    additionalTestApks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autogooglelogin" class="md-nav__link">
+    autoGoogleLogin
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environmentvariables" class="md-nav__link">
+    environmentVariables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testshards" class="md-nav__link">
+    testShards
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maxtestshards" class="md-nav__link">
+    maxTestShards
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shardtime" class="md-nav__link">
+    shardTime
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repeattests" class="md-nav__link">
+    repeatTests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configs" class="md-nav__link">
+    configs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smartflankgcspath" class="md-nav__link">
+    smartFlankGcsPath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resultshistoryname" class="md-nav__link">
+    resultsHistoryName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flakytestattempts" class="md-nav__link">
+    flakyTestAttempts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#directoriestopull" class="md-nav__link">
+    directoriesToPull
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filestodownload" class="md-nav__link">
+    filesToDownload
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testtimeout" class="md-nav__link">
+    testTimeout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recordvideo" class="md-nav__link">
+    recordVideo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performancemetrics" class="md-nav__link">
+    performanceMetrics
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resultsbucket" class="md-nav__link">
+    resultsBucket
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keepfilepath" class="md-nav__link">
+    keepFilePath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resultsdir" class="md-nav__link">
+    resultsDir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disablesharding" class="md-nav__link">
+    disableSharding
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smartflankdisableupload" class="md-nav__link">
+    smartFlankDisableUpload
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testrunnerclass" class="md-nav__link">
+    testRunnerClass
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localresultsdir" class="md-nav__link">
+    localResultsDir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testtargetsalwaysrun" class="md-nav__link">
+    testTargetsAlwaysRun
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtimeout" class="md-nav__link">
+    runTimeout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignorefailedtests" class="md-nav__link">
+    ignoreFailedTests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numuniformshards" class="md-nav__link">
+    numUniformShards
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clientdetails" class="md-nav__link">
+    clientDetails
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#otherfiles" class="md-nav__link">
+    otherFiles
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#networkprofile" class="md-nav__link">
+    networkProfile
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roboscript" class="md-nav__link">
+    roboScript
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#robodirectives" class="md-nav__link">
+    roboDirectives
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputstyle" class="md-nav__link">
+    outputStyle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#legacyjunitresult" class="md-nav__link">
+    legacyJunitResult
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fulljunitresult" class="md-nav__link">
+    fullJunitResult
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sanityrobo" class="md-nav__link">
+    sanityRobo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defaulttesttime" class="md-nav__link">
+    defaultTestTime
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defaultclasstesttime" class="md-nav__link">
+    defaultClassTestTime
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additionalapks" class="md-nav__link">
+    additionalApks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useaveragetesttimefornewtests" class="md-nav__link">
+    useAverageTestTimeForNewTests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disableresultsupload" class="md-nav__link">
+    disableResultsUpload
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testtargetsforshard" class="md-nav__link">
+    testTargetsForShard
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grantpermissions" class="md-nav__link">
+    grantPermissions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type" class="md-nav__link">
+    type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenariolabels" class="md-nav__link">
+    scenarioLabels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenarionumbers" class="md-nav__link">
+    scenarioNumbers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obbfiles" class="md-nav__link">
+    obbFiles
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obbnames" class="md-nav__link">
+    obbNames
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failfast" class="md-nav__link">
+    failFast
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additionalflankoptions" class="md-nav__link">
+    additionalFlankOptions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additionalgcloudoptions" class="md-nav__link">
+    additionalGcloudOptions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependonassemble" class="md-nav__link">
+    dependOnAssemble
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#async" class="md-nav__link">
+    async
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/runningcode/fladle/edit/master/docs/configuration.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>
+                  </a>
+                
+                
+                  
+                
+                
+                <h1 id="configuration">Configuration</h1>
+<p>The following configuration options must be set inside the fladle block. See the <a href="../configuration/#sample-configuration">sample configuration</a> below. There is also a <a href="https://github.com/runningcode/fladle/blob/master/sample/build.gradle">groovy sample</a> and a <a href="https://github.com/runningcode/fladle/blob/master/sample-kotlin/build.gradle.kts">kotlin sample</a>.</p>
+<h3 id="serviceaccountcredentials">serviceAccountCredentials</h3>
+<div class="admonition note">
+<p>User Authentication is also possible. See <a href="../authentication">Authentication</a>.</p>
+</div>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">serviceAccountCredentials</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">projectDirectory</span><span class="o">.</span><span class="na">file</span><span class="o">(</span><span class="s2">&quot;flank-gradle-5cf02dc90531.json&quot;</span><span class="o">)</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">serviceAccountCredentials</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;project.layout.projectDirectory.file(&quot;</span><span class="n">flank</span><span class="p">-</span><span class="n">gradle</span><span class="p">-</span><span class="m">5</span><span class="n">cf02dc90531</span><span class="p">.</span><span class="n">json</span><span class="s">&quot;)</span>
+</code></pre></div>
+
+</div>
+</div>
+<p>Optionally, the serviceAccountCredentials can be set with <a href="https://flank.github.io/flank/#authenticate-with-a-service-account">environment variables</a> but then the projectId parameter must be set.</p>
+<p>See <a href="../authentication">Authentication</a> for more info.</p>
+<h3 id="variant">variant</h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>variant</code> must be set if using buildFlavors in order to automatically configure the debugApk and testApk.</p>
+</div>
+<p>Set the variant to automatically configure for testing. A build variant is a combination of buildFlavor and buildType.
+This must also be set when testing against a non-default variant.
+For example: 'debug' or 'freeDebug'.
+Put this inside your Fladle block.</p>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">variant</span> <span class="o">=</span> <span class="s2">&quot;freeDebug&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">variant</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;freeDebug&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h2 id="sample-configuration">Sample Configuration</h2>
+<div class="highlight"><pre><span></span><code><span class="n">fladle</span> <span class="o">{</span>
+    <span class="c1">// Required parameters</span>
+    <span class="n">serviceAccountCredentials</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">projectDirectory</span><span class="o">.</span><span class="na">file</span><span class="o">(</span><span class="s2">&quot;flank-gradle-5cf02dc90531.json&quot;</span><span class="o">)</span>
+    <span class="n">variant</span> <span class="o">=</span> <span class="s2">&quot;freeDebug&quot;</span>
+
+    <span class="c1">// Optional parameters</span>
+    <span class="n">useOrchestrator</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="n">environmentVariables</span> <span class="o">=</span> <span class="o">[</span>
+        <span class="s2">&quot;clearPackageData&quot;</span><span class="o">:</span> <span class="s2">&quot;true&quot;</span>
+    <span class="o">]</span>
+    <span class="n">directoriesToPull</span> <span class="o">=</span> <span class="o">[</span>
+        <span class="s2">&quot;/sdcard/screenshots&quot;</span>
+    <span class="o">]</span>
+    <span class="n">filesToDownload</span> <span class="o">=</span> <span class="o">[</span>
+        <span class="s2">&quot;.*/screenshots/.*&quot;</span>
+    <span class="o">]</span>
+    <span class="n">testTargets</span> <span class="o">=</span> <span class="o">[</span>
+        <span class="s2">&quot;class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView&quot;</span>
+    <span class="o">]</span>
+    <span class="n">testTimeout</span> <span class="o">=</span> <span class="s2">&quot;15m&quot;</span>
+    <span class="n">recordVideo</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="n">performanceMetrics</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="n">devices</span> <span class="o">=</span> <span class="o">[</span>
+        <span class="o">[</span> <span class="s2">&quot;model&quot;</span><span class="o">:</span> <span class="s2">&quot;NexusLowRes&quot;</span><span class="o">,</span> <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;28&quot;</span> <span class="o">],</span>
+        <span class="o">[</span> <span class="s2">&quot;model&quot;</span><span class="o">:</span> <span class="s2">&quot;Nexus5&quot;</span><span class="o">,</span> <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;23&quot;</span> <span class="o">]</span>
+    <span class="o">]</span>
+    <span class="n">projectId</span><span class="o">(</span><span class="s2">&quot;flank-gradle&quot;</span><span class="o">)</span>
+    <span class="n">flankVersion</span> <span class="o">=</span> <span class="s2">&quot;21.06.0&quot;</span>
+    <span class="n">debugApk</span> <span class="o">=</span> <span class="s2">&quot;$buildDir/outputs/apk/debug/sample-debug.apk&quot;</span>
+    <span class="n">instrumentationApk</span> <span class="o">=</span> <span class="s2">&quot;$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk&quot;</span>
+    <span class="n">additionalTestApks</span> <span class="o">=</span> <span class="o">[</span>
+        <span class="s2">&quot;- app: &quot;</span><span class="n">$buildDir</span><span class="s">/outputs/</span><span class="n">apk</span><span class="s">/debug/</span><span class="n">sample</span><span class="o">-</span><span class="n">debug</span><span class="o">.</span><span class="na">apk</span><span class="s2">&quot;,</span>
+<span class="s2">        &quot;</span>  <span class="nl">test:</span> <span class="n">$buildDir</span><span class="s">/outputs/</span><span class="n">apk</span><span class="s">/androidTest/</span><span class="n">debug</span><span class="s">/sample2-debug-androidTest.apk&quot;,</span>
+<span class="s">        &quot;- test: ${rootProject.buildDir}/</span><span class="n">database</span><span class="s">/module/</span><span class="n">outputs</span><span class="s">/apk/</span><span class="n">database</span><span class="o">-</span><span class="n">module</span><span class="o">-</span><span class="n">androidTest</span><span class="o">.</span><span class="na">apk</span><span class="s2">&quot;</span>
+<span class="s2">    ]</span>
+<span class="s2">    autoGoogleLogin = true</span>
+<span class="s2">    maxTestShards = 8 //or numUniformShards=5 cannot use both.</span>
+<span class="s2">    shardTime = 120</span>
+<span class="s2">    smartFlankGcsPath = &quot;</span><span class="nl">gs:</span><span class="c1">//tmp_flank/flank/test_app_android.xml&quot;</span>
+    <span class="n">configs</span> <span class="o">{</span>
+        <span class="n">oranges</span> <span class="o">{</span>
+            <span class="n">useOrchestrator</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+            <span class="n">testTargets</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">project</span><span class="o">.</span><span class="na">provider</span> <span class="o">{</span> <span class="o">[</span>
+                <span class="s2">&quot;class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail&quot;</span>
+            <span class="o">]</span> <span class="o">})</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">resultsBucket</span><span class="o">(</span><span class="s2">&quot;my-results-bucket-name&quot;</span><span class="o">)</span>
+    <span class="n">keepFilePath</span> <span class="o">=</span> <span class="kc">true</span>
+    <span class="n">runTimout</span> <span class="o">=</span> <span class="s2">&quot;45m&quot;</span>
+    <span class="n">ignoreFailedTests</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="n">disableSharding</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="n">smartFlankDisableUpload</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="n">testRunnerClass</span> <span class="o">=</span> <span class="s2">&quot;com.foo.TestRunner&quot;</span>
+    <span class="n">localResultsDir</span> <span class="o">=</span> <span class="s2">&quot;flank&quot;</span>
+    <span class="n">clientDetails</span> <span class="o">=</span> <span class="o">[</span>
+      <span class="s2">&quot;key1&quot;</span><span class="o">:</span> <span class="s2">&quot;value1&quot;</span><span class="o">,</span>
+      <span class="s2">&quot;key2&quot;</span><span class="o">:</span> <span class="s2">&quot;value2&quot;</span>
+    <span class="o">]</span>
+    <span class="n">testTargetsAlwaysRun</span> <span class="o">=</span> <span class="o">[</span>
+      <span class="s2">&quot;com.example.TestSuite#test1&quot;</span><span class="o">,</span>
+      <span class="s2">&quot;com.example.TestSuite#test2&quot;</span>
+    <span class="o">]</span>
+    <span class="n">otherFiles</span> <span class="o">=</span> <span class="o">[</span>
+      <span class="s2">&quot;/sdcard/dir1/file1.txt&quot;</span><span class="o">:</span> <span class="s2">&quot;/my/example/path/file1.txt&quot;</span><span class="o">,</span>
+      <span class="s2">&quot;/sdcard/dir2/file2.txt&quot;</span><span class="o">:</span> <span class="s2">&quot;/my/example/path/file2.txt&quot;</span>
+    <span class="o">]</span>
+    <span class="n">networkProfile</span> <span class="o">=</span> <span class="s2">&quot;LTE&quot;</span>
+    <span class="n">roboDirectives</span> <span class="o">=</span> <span class="o">[</span>
+      <span class="o">[</span><span class="s2">&quot;click&quot;</span><span class="o">,</span> <span class="s2">&quot;button1&quot;</span><span class="o">,</span> <span class="s2">&quot;&quot;</span><span class="o">],</span>
+      <span class="o">[</span><span class="s2">&quot;ignore&quot;</span><span class="o">,</span> <span class="s2">&quot;button2&quot;</span><span class="o">],</span>
+      <span class="o">[</span><span class="s2">&quot;text&quot;</span><span class="o">,</span> <span class="s2">&quot;field1&quot;</span><span class="o">,</span> <span class="s2">&quot;my text&quot;</span><span class="o">],</span>
+    <span class="o">]</span>
+    <span class="n">outputStyle</span> <span class="o">=</span> <span class="s1">&#39;multi&#39;</span>
+    <span class="n">legacyJunitResult</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="n">fullJunitResult</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="n">additionalApks</span> <span class="o">=</span> <span class="o">[</span>
+      <span class="s2">&quot;gs://path/to/app1.apk&quot;</span><span class="o">,</span>
+      <span class="s2">&quot;localPath/to/app2.apk&quot;</span>
+    <span class="o">]</span>
+    <span class="n">defaultTestTime</span> <span class="o">=</span> <span class="mf">5.3</span>
+    <span class="n">defaultClassTestTime</span> <span class="o">=</span> <span class="mf">180.5</span>
+    <span class="n">useAverageTestTimeForNewTests</span> <span class="o">=</span> <span class="kc">true</span>
+    <span class="n">disableResultsUpload</span> <span class="o">=</span> <span class="kc">true</span>
+    <span class="n">grantPermissions</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+    <span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;game-loop&quot;</span>
+    <span class="n">scenarioLabels</span> <span class="o">=</span> <span class="o">[</span>
+      <span class="s2">&quot;label1&quot;</span><span class="o">,</span>
+      <span class="s2">&quot;label2&quot;</span> 
+    <span class="o">]</span>
+    <span class="n">scenarioNumbers</span> <span class="o">=</span> <span class="o">[</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">23</span><span class="o">,</span> <span class="mi">52</span> <span class="o">]</span>
+    <span class="n">obbFiles</span> <span class="o">=</span> <span class="o">[</span>
+      <span class="s2">&quot;local/file/path/test1.obb&quot;</span><span class="o">,</span>
+      <span class="s2">&quot;local/file/path/test2.obb&quot;</span>
+    <span class="o">]</span>
+    <span class="n">obbNames</span> <span class="o">=</span> <span class="o">[</span>
+      <span class="s2">&quot;patch.0300110.com.example.android.obb&quot;</span><span class="o">,</span>
+      <span class="s2">&quot;patch.0300111.com.example.android.obb&quot;</span>
+    <span class="o">]</span>
+    <span class="n">testTargetsForShard</span> <span class="o">=</span> <span class="o">[</span>
+      <span class="s2">&quot;package com.package1.for.shard1, com.package2.for.shard1&quot;</span><span class="o">,</span>
+      <span class="s2">&quot;class com.foo.ClassForShard2#testMethod1, com.foo.ClassForShard2#testMethod2&quot;</span><span class="o">,</span>
+      <span class="s2">&quot;class com.foo.ClassForShard3; package com.package.for.shard3&quot;</span>
+    <span class="o">]</span>
+    <span class="n">failFast</span> <span class="o">=</span> <span class="kc">true</span>
+    <span class="n">dependOnAssemble</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="o">}</span>
+</code></pre></div>
+
+<h3 id="useorchestrator">useOrchestrator</h3>
+<p>Whether or not we should use the android test orchestrator to run this tests.
+Set this to true when the build.gradle file includes <code>testOptions.execution 'ANDROID_TEST_ORCHESTRATOR'</code></p>
+<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">useOrchestrator</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">useOrchestrator</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="testtargets">testTargets</h3>
+<p>Set multiple testTargets to be run by Flank. These are used to whitelist or blacklist test classes, test cases and test annotations.
+See <a href="https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run">Google Cloud Firebase docs</a> for more information.</p>
+<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">testTargets</span> <span class="o">=</span> <span class="o">[</span>
+        <span class="s2">&quot;class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView&quot;</span>
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">testTargets</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span>
+        <span class="s">&quot;class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView&quot;</span>
+<span class="p">))</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="devices">devices</h3>
+<p>A list of devices to run the tests against. When list is empty, a default device will be used. Each device entry is a map.  The valid keys in the map are <code>model</code>, <code>version</code>, <code>orientation</code>, and <code>locale</code>.  When a key is not set or is null, a default value will be used.</p>
+<div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">devices</span> <span class="o">=</span> <span class="o">[</span>
+        <span class="o">[</span> <span class="s2">&quot;model&quot;</span><span class="o">:</span> <span class="s2">&quot;Pixel2&quot;</span><span class="o">,</span> <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;26&quot;</span> <span class="o">],</span>
+        <span class="o">[</span> <span class="s2">&quot;model&quot;</span><span class="o">:</span> <span class="s2">&quot;Nexus5&quot;</span><span class="o">,</span> <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;23&quot;</span> <span class="o">]</span>
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">devices</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span>
+    <span class="n">mapOf</span><span class="p">(</span><span class="s">&quot;model&quot;</span> <span class="n">to</span> <span class="s">&quot;Pixel2&quot;</span><span class="p">,</span> <span class="s">&quot;version&quot;</span> <span class="n">to</span> <span class="s">&quot;26&quot;</span> <span class="p">),</span>
+    <span class="n">mapOf</span><span class="p">(</span><span class="s">&quot;model&quot;</span> <span class="n">to</span> <span class="s">&quot;Nexus5&quot;</span><span class="p">,</span> <span class="s">&quot;version&quot;</span> <span class="n">to</span> <span class="s">&quot;23&quot;</span> <span class="p">)</span>
+<span class="p">))</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="projectid">projectId</h3>
+<p>The projectId is a unique identifier which can be found in the project's URL: <code>https://console.firebase.google.com/project/&lt;projectId&gt;</code>
+This is automatically discovered based on the service credential by default.</p>
+<div class="tabbed-set" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">projectId</span> <span class="o">=</span> <span class="s2">&quot;flank-gradle&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">projectId</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;flank-gradle&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="flankversion">flankVersion</h3>
+<p>Need a different Flank version? Specify it with <code>flankVersion</code>.</p>
+<div class="tabbed-set" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">flankVersion</span> <span class="o">=</span> <span class="s2">&quot;flank_snapshot&quot;</span><span class="err">`</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><label for="__tabbed_7_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">flankVersion</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;flank_snapshot&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<p>Need more than 50 shards? Use Flank <code>8.1.0</code>.</p>
+<p>To use a different version:</p>
+<div class="tabbed-set" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><label for="__tabbed_8_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">flankVersion</span> <span class="o">=</span> <span class="s2">&quot;21.06.0&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><label for="__tabbed_8_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">flankVersion</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;21.06.0&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="flankcoordinates">flankCoordinates</h3>
+<p>Specify custom flank maven coordinates.</p>
+<div class="tabbed-set" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><label for="__tabbed_9_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">flankCoordinates</span> <span class="o">=</span> <span class="s2">&quot;com.github.flank:flank&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><label for="__tabbed_9_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">flankCoordinates</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;com.github.flank:flank&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="debugapk">debugApk</h3>
+<p>This is a string representing the path to the app's debug apk.
+Supports wildcard characters.
+Optional, prefer to set <a href="../configuration/#variant">variant</a>.</p>
+<div class="tabbed-set" data-tabs="10:2"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio" /><label for="__tabbed_10_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">debugApk</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="na">provider</span> <span class="o">{</span> <span class="s2">&quot;${buildDir.toString()}/outputs/apk/debug/*.apk&quot;</span> <span class="o">}</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_10_2" name="__tabbed_10" type="radio" /><label for="__tabbed_10_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">debugApk</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="n">project</span><span class="p">.</span><span class="n">provider</span> <span class="p">{</span> <span class="s">&quot;${buildDir.toString()}/outputs/apk/debug/*.apk&quot;</span> <span class="p">})</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="instrumentationapk">instrumentationApk</h3>
+<p>This is a string representing the path to the app's instrumentaiton apk.
+Supports wildcard characters.
+Optional, prefer to set <a href="../configuration/#variant">variant</a>.
+InstrumenationApk should not be set when using <a href="../configuration/#roboscript">roboScript</a>.</p>
+<div class="tabbed-set" data-tabs="11:2"><input checked="checked" id="__tabbed_11_1" name="__tabbed_11" type="radio" /><label for="__tabbed_11_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">instrumentationApk</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="na">provider</span> <span class="o">{</span> <span class="s2">&quot;${buildDir.toString()}/outputs/apk/androidTest/debug/*.apk&quot;</span> <span class="o">}</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_11_2" name="__tabbed_11" type="radio" /><label for="__tabbed_11_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">instrumentationApk</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="n">project</span><span class="p">.</span><span class="n">provider</span> <span class="p">{</span> <span class="s">&quot;${buildDir.toString()}/outputs/apk/androidTest/debug/*.apk&quot;</span> <span class="p">})</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="additionaltestapks">additionalTestApks</h3>
+<p>Paths to additional test configurations.
+Order matters. A test apk is run with the nearest previous listed app apk.
+For library modules, add them to the list with a <code>- test:</code> in front. For test apks which belong to an application module, add them with <code>test:</code>.
+It is not required to list an app apk here. If there is no app apk listed in additionalTestApks, the test apks are run against the <a href="../configuration/#debugapk">debugApk</a>.</p>
+<div class="tabbed-set" data-tabs="12:2"><input checked="checked" id="__tabbed_12_1" name="__tabbed_12" type="radio" /><label for="__tabbed_12_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">additionalTestApks</span><span class="o">.</span><span class="na">value</span><span class="o">(</span><span class="n">project</span><span class="o">.</span><span class="na">provider</span> <span class="o">{</span> <span class="o">[</span>
+<span class="s2">&quot;- app: ../main/app/build/output/apk/debug/app.apk&quot;</span><span class="o">,</span>
+<span class="s2">&quot;  test: ../main/app/build/output/apk/androidTest/debug/app-test.apk&quot;</span><span class="o">,</span>
+<span class="s2">&quot;- app: ../sample/app/build/output/apk/debug/sample-app.apk&quot;</span><span class="o">,</span>
+<span class="s2">&quot;  test: ../sample/app/build/output/apk/androidTest/debug/sample-app-test.apk&quot;</span><span class="o">,</span>
+<span class="s2">&quot;- test: ../feature/room/build/output/apk/androidTest/debug/feature-room-test.apk&quot;</span><span class="o">,</span>
+<span class="s2">&quot;- test: ../library/databases/build/output/apk/androidTest/debug/sample-databases-test.apk&quot;</span>
+<span class="o">]})</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_12_2" name="__tabbed_12" type="radio" /><label for="__tabbed_12_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">additionalTestApks</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="n">project</span><span class="p">.</span><span class="n">provider</span> <span class="p">{</span> <span class="n">listOf</span><span class="p">(</span>
+<span class="s">&quot;- app: ../main/app/build/output/apk/debug/app.apk&quot;</span><span class="p">,</span>
+<span class="s">&quot;  test: ../main/app/build/output/apk/androidTest/debug/app-test.apk&quot;</span><span class="p">,</span>
+<span class="s">&quot;- app: ../sample/app/build/output/apk/debug/sample-app.apk&quot;</span><span class="p">,</span>
+<span class="s">&quot;  test: ../sample/app/build/output/apk/androidTest/debug/sample-app-test.apk&quot;</span><span class="p">,</span>
+<span class="s">&quot;- test: ../feature/room/build/output/apk/androidTest/debug/feature-room-test.apk&quot;</span><span class="p">,</span>
+<span class="s">&quot;- test: ../library/databases/build/output/apk/androidTest/debug/sample-databases-test.apk&quot;</span>
+<span class="p">)})</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="autogooglelogin">autoGoogleLogin</h3>
+<p>Whether to automatically log in using a preconfigured google account. <a href="https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run#--auto-google-login">More Info</a></p>
+<div class="tabbed-set" data-tabs="13:2"><input checked="checked" id="__tabbed_13_1" name="__tabbed_13" type="radio" /><label for="__tabbed_13_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">autoGoogleLogin</span> <span class="o">=</span> <span class="kc">false</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_13_2" name="__tabbed_13" type="radio" /><label for="__tabbed_13_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">autoGoogleLogin</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="environmentvariables">environmentVariables</h3>
+<p>Environment variables are mirrored as extra options to the <code>am instrument -e KEY1 VALUE1 …</code> command and passed to your test runner (typically AndroidJUnitRunner). Examples</p>
+<div class="tabbed-set" data-tabs="14:2"><input checked="checked" id="__tabbed_14_1" name="__tabbed_14" type="radio" /><label for="__tabbed_14_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">environmentVariables</span> <span class="o">=</span> <span class="o">[</span>
+    <span class="c1">// Whether or not to remove all shared state from your device&#39;s CPU and memory after each test. [More info](https://developer.android.com/training/testing/junit-runner)</span>
+    <span class="s2">&quot;clearPackageData&quot;</span><span class="o">:</span> <span class="s2">&quot;true&quot;</span>
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_14_2" name="__tabbed_14" type="radio" /><label for="__tabbed_14_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">environmentVariables</span> <span class="p">=</span> <span class="n">mapOf</span><span class="p">(</span>
+    <span class="c1">// Whether or not to remove all shared state from your device&#39;s CPU and memory after each test. [More info](https://developer.android.com/training/testing/junit-runner)</span>
+    <span class="s">&quot;clearPackageData&quot;</span> <span class="n">to</span> <span class="s">&quot;true&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="testshards">testShards</h3>
+<div class="admonition warning">
+<p class="admonition-title">Deprecated</p>
+<p>Use <a href="../configuration/#maxtestshards"><code>maxTestShards</code></a> instead.</p>
+</div>
+<p>The maximum number of shards. Fladle will throw an error when used together with <a href="../configuration/#maxtestshards">maxTestShards</a> or <a href="../configuration/#numuniformshards">numUniformShards</a>. </p>
+<div class="tabbed-set" data-tabs="15:2"><input checked="checked" id="__tabbed_15_1" name="__tabbed_15" type="radio" /><label for="__tabbed_15_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">testShards</span> <span class="o">=</span> <span class="mi">5</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_15_2" name="__tabbed_15" type="radio" /><label for="__tabbed_15_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">testShards</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="m">5</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="maxtestshards">maxTestShards</h3>
+<p>The maximum number of shards. Fladle will throw an error when used together with <a href="../configuration/#testshards">testShards</a> or <a href="../configuration/#numuniformshards">numUniformShards</a>.</p>
+<div class="tabbed-set" data-tabs="16:2"><input checked="checked" id="__tabbed_16_1" name="__tabbed_16" type="radio" /><label for="__tabbed_16_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">maxTestShards</span> <span class="o">=</span> <span class="mi">8</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_16_2" name="__tabbed_16" type="radio" /><label for="__tabbed_16_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">maxTestShards</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="m">8</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="shardtime">shardTime</h3>
+<p>The amount of time tests within a shard should take.
+When set to &gt; 0, the shard count is dynamically set based on time up to the maximum limit defined by maxTestShards
+2 minutes (120) is recommended.
+default: -1 (unlimited)</p>
+<div class="tabbed-set" data-tabs="17:2"><input checked="checked" id="__tabbed_17_1" name="__tabbed_17" type="radio" /><label for="__tabbed_17_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">shardTime</span> <span class="o">=</span> <span class="mi">120</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_17_2" name="__tabbed_17" type="radio" /><label for="__tabbed_17_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">shardTime</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="m">120</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="repeattests">repeatTests</h3>
+<p>The number of times to repeat each test. Uses Flank's default value when not specified.</p>
+<div class="tabbed-set" data-tabs="18:2"><input checked="checked" id="__tabbed_18_1" name="__tabbed_18" type="radio" /><label for="__tabbed_18_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">repeatTests</span> <span class="o">=</span> <span class="mi">1</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_18_2" name="__tabbed_18" type="radio" /><label for="__tabbed_18_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">repeatTests</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="configs">configs</h3>
+<p>Give a name to a custom flank task and configure its options. The name is appended to the end of the flank task. For example <code>runFlank</code> becomes <code>runFlank&lt;name&gt;</code>.</p>
+<div class="tabbed-set" data-tabs="19:2"><input checked="checked" id="__tabbed_19_1" name="__tabbed_19" type="radio" /><label for="__tabbed_19_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">configs</span> <span class="o">{</span>
+  <span class="n">repeatOneHundred</span> <span class="o">{</span>
+    <span class="c1">// DSL sugar for container elements is missing (= syntax): https://github.com/gradle/gradle/issues/9987</span>
+    <span class="n">repeatTests</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_19_2" name="__tabbed_19" type="radio" /><label for="__tabbed_19_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">configs</span> <span class="p">{</span>
+  <span class="n">create</span><span class="p">(</span><span class="s">&quot;repeatOneHundred&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">repeatTests</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="m">100</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+</div>
+</div>
+<p>In the above example, the configuration is inherited from the outer fladle config but with the repeatTests property set to 100. Running <code>runFlankRepeateOneHundred</code> will execute this custom configuration.</p>
+<h3 id="smartflankgcspath">smartFlankGcsPath</h3>
+<p>The cloud storage location for historical test runs. This must be set in order to use smart sharding. The amount of shards used is set by <code>maxTestShards</code>. The bucket (such as <code>flank_data</code> in the example) must already exist in order for it to be used.</p>
+<div class="tabbed-set" data-tabs="20:2"><input checked="checked" id="__tabbed_20_1" name="__tabbed_20" type="radio" /><label for="__tabbed_20_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">smartFlankGcsPath</span> <span class="o">=</span> <span class="s1">&#39;gs://flank_data/results/JUnitReport.xml&#39;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_20_2" name="__tabbed_20" type="radio" /><label for="__tabbed_20_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">smartFlankGcsPath</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;gs://flank_data/results/JUnitReport.xml&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="resultshistoryname">resultsHistoryName</h3>
+<p>The history name for your test results (an arbitrary string label; default: the application's label from the APK manifest). All tests which use the same history name will have their results grouped together in the Firebase console in a time-ordered test history list.</p>
+<div class="tabbed-set" data-tabs="21:2"><input checked="checked" id="__tabbed_21_1" name="__tabbed_21" type="radio" /><label for="__tabbed_21_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">resultsHistoryName</span> <span class="o">=</span> <span class="s1">&#39;android-history&#39;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_21_2" name="__tabbed_21" type="radio" /><label for="__tabbed_21_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">resultsHistoryName</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;android-history&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="flakytestattempts">flakyTestAttempts</h3>
+<p>The number of times to retry failed tests. Default is 0. Max is 10.
+Setting the value to 1 will mean that test are retried once. If the test fails then succeeds after the retry the run
+will be marked as "successful". The matrix with a flaky test will be marked as flaky.</p>
+<div class="tabbed-set" data-tabs="22:2"><input checked="checked" id="__tabbed_22_1" name="__tabbed_22" type="radio" /><label for="__tabbed_22_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">flakyTestAttempts</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_22_2" name="__tabbed_22" type="radio" /><label for="__tabbed_22_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">flakyTestAttempts</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="directoriestopull">directoriesToPull</h3>
+<p>A list of paths that will be copied from the device's storage to the designated results bucket after the test is complete. These must be absolute paths under <code>/sdcard</code> or <code>/data/local/tmp</code>.  Path names are restricted to the characters <code>a-zA-Z0-9_-./+</code>. The paths <code>/sdcard</code> and <code>/data</code> will be made available and treated as implicit path substitutions. E.g. if <code>/sdcard</code> on a particular device does not map to external storage, the system will replace it with the external storage path prefix for that device.</p>
+<div class="tabbed-set" data-tabs="23:2"><input checked="checked" id="__tabbed_23_1" name="__tabbed_23" type="radio" /><label for="__tabbed_23_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">directoriesToPull</span> <span class="o">=</span> <span class="o">[</span>
+  <span class="s1">&#39;/sdcard/tempDir1&#39;</span><span class="o">,</span> <span class="s1">&#39;/data/local/tmp/tempDir2&#39;</span>
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_23_2" name="__tabbed_23" type="radio" /><label for="__tabbed_23_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">directoriesToPull</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span>
+  <span class="s">&quot;/sdcard/tempDir1&quot;</span><span class="p">,</span> <span class="s">&quot;/data/local/tmp/tempDir2&quot;</span>
+<span class="p">))</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="filestodownload">filesToDownload</h3>
+<p>List of regex that is matched against bucket paths (for example: <code>2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt</code>) for files to be downloaded after a flank run. The results are downloaded to the <code>APP_MODULE/build/fladle/RESULTS</code> directory where RESULTS can be set by <a href="../configuration/#localresultsdir"><code>localResultsDir</code></a> var otherwise defaulting to <code>results/</code>.</p>
+<div class="tabbed-set" data-tabs="24:2"><input checked="checked" id="__tabbed_24_1" name="__tabbed_24" type="radio" /><label for="__tabbed_24_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">filesToDownload</span> <span class="o">=</span> <span class="o">[</span>
+  <span class="s1">&#39;.*/sdcard/tempDir1/.*&#39;</span><span class="o">,</span> <span class="s1">&#39;.*/data/local/tmp/tempDir2/.*&#39;</span>
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_24_2" name="__tabbed_24" type="radio" /><label for="__tabbed_24_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">filesToDownload</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span>
+  <span class="s">&quot;.*/sdcard/tempDir1/.*&quot;</span><span class="p">,</span> <span class="s">&quot;.*/data/local/tmp/tempDir2/.*&quot;</span>
+<span class="p">))</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="testtimeout">testTimeout</h3>
+<p>The max time test execution can run before it is cancelled (default: 15m). It does not include any time necessary to prepare and clean up the target device. The maximum possible testing time is 45m on physical devices and 60m on virtual devices. The TIMEOUT units can be h, m, or s. If no unit is given, seconds are assumed.
+Examples:
+* 1h   -&gt; 1 hour
+* 5m   -&gt; 5 minutes
+* 200s -&gt; 200 seconds
+* 100  -&gt; 100 seconds</p>
+<div class="tabbed-set" data-tabs="25:2"><input checked="checked" id="__tabbed_25_1" name="__tabbed_25" type="radio" /><label for="__tabbed_25_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">testTimeout</span> <span class="o">=</span> <span class="s2">&quot;1h&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_25_2" name="__tabbed_25" type="radio" /><label for="__tabbed_25_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">testTimeout</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;1h&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="recordvideo">recordVideo</h3>
+<p>Enable video recording during the test. Enabled by default.</p>
+<div class="tabbed-set" data-tabs="26:2"><input checked="checked" id="__tabbed_26_1" name="__tabbed_26" type="radio" /><label for="__tabbed_26_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">recordVideo</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_26_2" name="__tabbed_26" type="radio" /><label for="__tabbed_26_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">recordVideo</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="performancemetrics">performanceMetrics</h3>
+<p>Monitor and record performance metrics: CPU, memory, network usage, and FPS (game-loop only). Enabled by default.</p>
+<div class="tabbed-set" data-tabs="27:2"><input checked="checked" id="__tabbed_27_1" name="__tabbed_27" type="radio" /><label for="__tabbed_27_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">performanceMetrics</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_27_2" name="__tabbed_27" type="radio" /><label for="__tabbed_27_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">performanceMetrics</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="resultsbucket">resultsBucket</h3>
+<p>The name of a Google Cloud Storage bucket where raw test results will be stored.</p>
+<div class="tabbed-set" data-tabs="28:2"><input checked="checked" id="__tabbed_28_1" name="__tabbed_28" type="radio" /><label for="__tabbed_28_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">resultsBucket</span> <span class="o">=</span> <span class="s2">&quot;my-gcs-bucket-name&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_28_2" name="__tabbed_28" type="radio" /><label for="__tabbed_28_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">resultsBucket</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;my-gcs-bucket-name&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="keepfilepath">keepFilePath</h3>
+<p>Keeps the full path of downloaded files from a Google Cloud Storage bucket. Required when file names are not unique. Disabled by default.</p>
+<div class="tabbed-set" data-tabs="29:2"><input checked="checked" id="__tabbed_29_1" name="__tabbed_29" type="radio" /><label for="__tabbed_29_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">keepFilePath</span> <span class="o">=</span> <span class="kc">false</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_29_2" name="__tabbed_29" type="radio" /><label for="__tabbed_29_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">keepFilePath</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="resultsdir">resultsDir</h3>
+<p>The name of a unique Google Cloud Storage object within the results bucket where raw test results will be stored. The default is a timestamp with a random suffix.</p>
+<div class="tabbed-set" data-tabs="30:2"><input checked="checked" id="__tabbed_30_1" name="__tabbed_30" type="radio" /><label for="__tabbed_30_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">resultsDir</span> <span class="o">=</span> <span class="s2">&quot;result-dir-${getTimeStamp()}&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_30_2" name="__tabbed_30" type="radio" /><label for="__tabbed_30_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">resultsDir</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;result-dir-${getTimeStamp()}&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="disablesharding">disableSharding</h3>
+<p>Disables sharding. All tests will run on the same device. Useful for parameterized tests which do not support sharding. (default: false)</p>
+<div class="tabbed-set" data-tabs="31:2"><input checked="checked" id="__tabbed_31_1" name="__tabbed_31" type="radio" /><label for="__tabbed_31_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">disableSharding</span> <span class="o">=</span> <span class="kc">false</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_31_2" name="__tabbed_31" type="radio" /><label for="__tabbed_31_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">disableSharding</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="smartflankdisableupload">smartFlankDisableUpload</h3>
+<p>Disables smart flank JUnit XML uploading. Useful for preventing timing data from being updated. (default: false)
+<a href="https://flank.github.io/flank/smart_flank/">What is Smart Flank?</a></p>
+<div class="tabbed-set" data-tabs="32:2"><input checked="checked" id="__tabbed_32_1" name="__tabbed_32" type="radio" /><label for="__tabbed_32_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">smartFlankDisableUpload</span> <span class="o">=</span> <span class="kc">false</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_32_2" name="__tabbed_32" type="radio" /><label for="__tabbed_32_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">smartFlankDisableUpload</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="testrunnerclass">testRunnerClass</h3>
+<p>The fully-qualified Java class name of the instrumentation test runner (default: the test manifest is parsed to determine the class name).</p>
+<div class="tabbed-set" data-tabs="33:2"><input checked="checked" id="__tabbed_33_1" name="__tabbed_33" type="radio" /><label for="__tabbed_33_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">testRunnerClass</span> <span class="o">=</span> <span class="s2">&quot;com.example.MyCustomTestRunner&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_33_2" name="__tabbed_33" type="radio" /><label for="__tabbed_33_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">testRunnerClass</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;com.example.MyCustomTestRunner&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="localresultsdir">localResultsDir</h3>
+<p>The local directory to store the test results. Folder is DELETED before each run to ensure only artifacts from the new run are saved.</p>
+<div class="tabbed-set" data-tabs="34:2"><input checked="checked" id="__tabbed_34_1" name="__tabbed_34" type="radio" /><label for="__tabbed_34_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">localResultsDir</span> <span class="o">=</span> <span class="s2">&quot;my-results-dir&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_34_2" name="__tabbed_34" type="radio" /><label for="__tabbed_34_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">localResultsDir</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;my-results-dir&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="testtargetsalwaysrun">testTargetsAlwaysRun</h3>
+<p>Always run - these tests are inserted at the beginning of every shard. Useful if you need to grant permissions or login before other tests run</p>
+<div class="tabbed-set" data-tabs="35:2"><input checked="checked" id="__tabbed_35_1" name="__tabbed_35" type="radio" /><label for="__tabbed_35_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">testTargetsAlwaysRun</span> <span class="o">=</span> <span class="o">[</span>
+  <span class="s1">&#39;class com.example.MyTestClass&#39;</span>
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_35_2" name="__tabbed_35" type="radio" /><label for="__tabbed_35_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">testTargetsAlwaysRun</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span>
+  <span class="s">&quot;class com.example.MyTestClass&quot;</span>
+<span class="p">))</span>
+</code></pre></div>
+
+</div>
+</div>
+<div class="admonition note">
+<p>The flags below are only available with Flank 20.05.0 or higher.</p>
+</div>
+<h3 id="runtimeout">runTimeout</h3>
+<p>The max time this test run can execute before it is cancelled. s (seconds), m (minutes), h (hours) suffixes are acceptable, mixes like 1h45m are currently not supported (default: unlimited).
+Examples:</p>
+<ul>
+<li>20, 20s -&gt; 20 seconds</li>
+<li>30m -&gt; 30 minutes</li>
+<li>2h -&gt; 2 hours</li>
+</ul>
+<div class="tabbed-set" data-tabs="36:2"><input checked="checked" id="__tabbed_36_1" name="__tabbed_36" type="radio" /><label for="__tabbed_36_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">runTimeout</span> <span class="o">=</span> <span class="s2">&quot;15m&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_36_2" name="__tabbed_36" type="radio" /><label for="__tabbed_36_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">runTimeout</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;15m&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="ignorefailedtests">ignoreFailedTests</h3>
+<p>Always return successful task completion even when there are failed tests. Useful when parsing JUnit XML to determine failure. (default: false)</p>
+<div class="tabbed-set" data-tabs="37:2"><input checked="checked" id="__tabbed_37_1" name="__tabbed_37" type="radio" /><label for="__tabbed_37_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">ignoreFailedTests</span> <span class="o">=</span> <span class="kc">false</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_37_2" name="__tabbed_37" type="radio" /><label for="__tabbed_37_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">ignoreFailedTests</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="numuniformshards">numUniformShards</h3>
+<p>Specifies the number of shards into which you want to evenly distribute test cases. The shards are run in parallel on separate devices. For example, if your test execution contains 20 test cases and you specify four shards, each shard executes five test cases. The number of shards should be less than the total number of test cases. The number of shards specified must be &gt;= 1 and &lt;= 50. This option cannot be used along maxTestShards and is not compatible with smart sharding (<a href="https://flank.github.io/flank/smart_flank/">Smart Flank</a>). If you want to take benefits of smart sharding use maxTestShards instead. (default: null)</p>
+<div class="tabbed-set" data-tabs="38:2"><input checked="checked" id="__tabbed_38_1" name="__tabbed_38" type="radio" /><label for="__tabbed_38_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">numUniformShards</span> <span class="o">=</span> <span class="mi">50</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_38_2" name="__tabbed_38" type="radio" /><label for="__tabbed_38_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">numUniformShards</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="m">50</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="clientdetails">clientDetails</h3>
+<p>A key-value map of additional details to attach to the test matrix.(<a href="https://cloud.google.com/sdk/gcloud/reference/beta/firebase/test/android/run#--client-details">clientDetails in Google Cloud Docs</a>) Arbitrary key-value pairs may be attached to a test matrix to provide additional context about the tests being run. When consuming the test results, such as in Cloud Functions or a CI system, these details can add additional context such as a link to the corresponding pull request. (<a href="https://firebase.google.com/docs/test-lab/extend-with-functions#access_client_details">Access Client Details</a>).
+These can be used to provide additional context about the environment where the tests are being run.</p>
+<div class="tabbed-set" data-tabs="39:2"><input checked="checked" id="__tabbed_39_1" name="__tabbed_39" type="radio" /><label for="__tabbed_39_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">clientDetails</span> <span class="o">=</span> <span class="o">[</span>
+    <span class="s2">&quot;test-type&quot;</span><span class="o">:</span> <span class="s2">&quot;PR&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;build-number&quot;</span><span class="o">:</span> <span class="s2">&quot;132&quot;</span>
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_39_2" name="__tabbed_39" type="radio" /><label for="__tabbed_39_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">clientDetails</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="n">mapOf</span><span class="p">(</span>
+    <span class="s">&quot;test-type&quot;</span> <span class="n">to</span> <span class="s">&quot;PR&quot;</span><span class="p">,</span>
+    <span class="s">&quot;build-number&quot;</span> <span class="n">to</span> <span class="s">&quot;132&quot;</span>
+<span class="p">))</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="otherfiles">otherFiles</h3>
+<p>A list of device-path: file-path pairs that indicate the device paths to push files to the device before starting tests, and the paths of files to push. Device paths must be under absolute, whitelisted paths (${EXTERNAL_STORAGE}, or ${ANDROID_DATA}/local/tmp). Source file paths may be in the local filesystem or in Google Cloud Storage (gs://…).</p>
+<div class="tabbed-set" data-tabs="40:2"><input checked="checked" id="__tabbed_40_1" name="__tabbed_40" type="radio" /><label for="__tabbed_40_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">otherFiles</span> <span class="o">=</span> <span class="o">[</span>
+    <span class="s2">&quot;/sdcard/dir1/file1.txt&quot;</span><span class="o">:</span> <span class="s2">&quot;local/file.txt&quot;</span><span class="o">,</span>
+    <span class="s2">&quot;/sdcard/dir2/file2.jpg&quot;</span><span class="o">:</span> <span class="s2">&quot;gs://bucket/file.jpg&quot;</span><span class="o">,</span>
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_40_2" name="__tabbed_40" type="radio" /><label for="__tabbed_40_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">otherFiles</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="n">mapOf</span><span class="p">(</span>
+    <span class="s">&quot;/sdcard/dir1/file1.txt&quot;</span> <span class="n">to</span> <span class="s">&quot;local/file.txt&quot;</span><span class="p">,</span>
+    <span class="s">&quot;/sdcard/dir2/file2.jpg&quot;</span> <span class="n">to</span> <span class="s">&quot;gs://bucket/file.jpg&quot;</span><span class="p">,</span>
+<span class="p">))</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="networkprofile">networkProfile</h3>
+<p>The name of the network traffic profile, for example LTE, HSPA, etc, which consists of a set of parameters to emulate network conditions when running the test (default: no network shaping; see available profiles listed by the <code>flank test network-profiles list</code> command). This feature only works on physical devices.</p>
+<div class="tabbed-set" data-tabs="41:2"><input checked="checked" id="__tabbed_41_1" name="__tabbed_41" type="radio" /><label for="__tabbed_41_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">networkProfile</span> <span class="o">=</span> <span class="s2">&quot;LTE&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_41_2" name="__tabbed_41" type="radio" /><label for="__tabbed_41_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">networkProfile</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;LTE&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="roboscript">roboScript</h3>
+<p>The path to a Robo Script JSON file. The path may be in the local filesystem or in Google Cloud Storage using gs:// notation. You can guide the Robo test to perform specific actions by recording a Robo Script in Android Studio and then specifying this argument. Learn more at <a href="https://firebase.google.com/docs/test-lab/robo-ux-test#scripting">DOCS</a>.</p>
+<div class="tabbed-set" data-tabs="42:2"><input checked="checked" id="__tabbed_42_1" name="__tabbed_42" type="radio" /><label for="__tabbed_42_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">roboScript</span> <span class="o">=</span> <span class="s2">&quot;my-robo-script.json&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_42_2" name="__tabbed_42" type="radio" /><label for="__tabbed_42_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">roboScript</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;my-robo-script.json&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="robodirectives">roboDirectives</h3>
+<p>List of robo_directives that you can use to customize the behavior of Robo test. The type specifies the action type of the directive, which may take on values click, text or ignore. Each directive is list of String = [type, key, value]. Each key should be the Android resource name of a target UI element and each value should be the text input for that element. Values are only permitted for text type elements, so no value should be specified for click and ignore type elements.</p>
+<div class="tabbed-set" data-tabs="43:2"><input checked="checked" id="__tabbed_43_1" name="__tabbed_43" type="radio" /><label for="__tabbed_43_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">roboDirectives</span> <span class="o">=</span> <span class="o">[</span>
+    <span class="o">[</span><span class="s2">&quot;test:input_resource_name&quot;</span><span class="o">,</span> <span class="s2">&quot;message&quot;</span><span class="o">],</span>
+    <span class="o">[</span><span class="s2">&quot;click:button_resource_name&quot;</span><span class="o">,</span> <span class="s2">&quot;&quot;</span><span class="o">],</span>
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_43_2" name="__tabbed_43" type="radio" /><label for="__tabbed_43_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">roboDirectives</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span>
+    <span class="n">listOf</span><span class="p">(</span><span class="s">&quot;test:input_resource_name&quot;</span><span class="p">,</span> <span class="s">&quot;message&quot;</span><span class="p">),</span>
+    <span class="n">listOf</span><span class="p">(</span><span class="s">&quot;click:button_resource_name&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">),</span>
+<span class="p">))</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="outputstyle">outputStyle</h3>
+<p>Output style of execution status. May be one of [<code>verbose</code>, <code>multi</code>, <code>single</code>].
+For runs with only one test execution the default value is 'verbose', in other cases 'multi' is used as the default. The output style 'multi' is not displayed correctly on consoles which don't support ansi codes, to avoid corrupted output use single or verbose.</p>
+<p><code>multi</code> displays separated status for each shard execution in separated line, lines are updated over time. Similar to gradle output when running multiple tasks in parallel. Requires ANSI codes support.</p>
+<p><code>single</code> displays shortened status of all executions in single line. Similar to gcloud output when running with sharding. Should work on any console.</p>
+<p>Default value is single.</p>
+<div class="tabbed-set" data-tabs="44:2"><input checked="checked" id="__tabbed_44_1" name="__tabbed_44" type="radio" /><label for="__tabbed_44_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">outputSyle</span> <span class="o">=</span> <span class="s2">&quot;single&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_44_2" name="__tabbed_44" type="radio" /><label for="__tabbed_44_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">outputStyle</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;single&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="legacyjunitresult">legacyJunitResult</h3>
+<p>Flank provides two ways for parsing junit xml results.
+New way uses google api instead of merging xml files, but can generate slightly different output format.
+This flag allows fallback for legacy xml junit results parsing</p>
+<div class="tabbed-set" data-tabs="45:2"><input checked="checked" id="__tabbed_45_1" name="__tabbed_45" type="radio" /><label for="__tabbed_45_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">legacyJunitResult</span> <span class="o">=</span> <span class="kc">false</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_45_2" name="__tabbed_45" type="radio" /><label for="__tabbed_45_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">legacyJunitResult</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="fulljunitresult">fullJunitResult</h3>
+<p>Enables creating an additional local junit result on local storage with failure nodes on passed flaky tests.</p>
+<div class="tabbed-set" data-tabs="46:2"><input checked="checked" id="__tabbed_46_1" name="__tabbed_46" type="radio" /><label for="__tabbed_46_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">fullJunitResult</span> <span class="o">=</span> <span class="kc">false</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_46_2" name="__tabbed_46" type="radio" /><label for="__tabbed_46_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">fullJunitResult</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="sanityrobo">sanityRobo</h3>
+<p>Runs a sanityRobo test.
+<code>instrumentationApk</code>, <code>roboDirectives</code>, <code>roboScript</code> and <code>additionalTestApks</code> must be blank or empty.</p>
+<div class="tabbed-set" data-tabs="47:2"><input checked="checked" id="__tabbed_47_1" name="__tabbed_47" type="radio" /><label for="__tabbed_47_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">sanityRobo</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_47_2" name="__tabbed_47" type="radio" /><label for="__tabbed_47_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">sanityRobo</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="defaulttesttime">defaultTestTime</h3>
+<p>Set default test time expressed in seconds, used for calculating shards. (default: 120.0s)</p>
+<div class="tabbed-set" data-tabs="48:2"><input checked="checked" id="__tabbed_48_1" name="__tabbed_48" type="radio" /><label for="__tabbed_48_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">defaultTestTime</span> <span class="o">=</span> <span class="mf">1.2</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_48_2" name="__tabbed_48" type="radio" /><label for="__tabbed_48_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">defaultTestTime</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="m">1.2</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="defaultclasstesttime">defaultClassTestTime</h3>
+<p>Set default parameterized class test time expressed in seconds, used for calculating shards. (default: 2x <a href="../configuration/#defaulttesttime">defaultTestTime</a> =&gt; 240s)</p>
+<div class="tabbed-set" data-tabs="49:2"><input checked="checked" id="__tabbed_49_1" name="__tabbed_49" type="radio" /><label for="__tabbed_49_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">defaultClassTestTime</span> <span class="o">=</span> <span class="mf">245.5</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_49_2" name="__tabbed_49" type="radio" /><label for="__tabbed_49_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">defaultClassTestTime</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="m">245</span><span class="p">,</span><span class="m">5</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="additionalapks">additionalApks</h3>
+<p>A list of up to 100 additional APKs to install, in addition to those being directly tested. The path may be in the local filesystem or in Google Cloud Storage using gs:// notation.</p>
+<div class="tabbed-set" data-tabs="50:2"><input checked="checked" id="__tabbed_50_1" name="__tabbed_50" type="radio" /><label for="__tabbed_50_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">additionalApks</span> <span class="o">=</span> <span class="o">[</span>
+  <span class="s2">&quot;gs://path/to/app1.apk&quot;</span><span class="o">,</span>
+  <span class="s2">&quot;localPath/to/app2.apk&quot;</span>
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_50_2" name="__tabbed_50" type="radio" /><label for="__tabbed_50_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">additionalApks</span><span class="p">.</span><span class="k">set</span><span class="p">(</span>
+  <span class="n">project</span><span class="p">.</span><span class="n">provider</span> <span class="p">{</span>
+    <span class="n">listOf</span><span class="p">(</span><span class="s">&quot;gs://path/to/app1.apk&quot;</span><span class="p">,</span> <span class="s">&quot;localPath/to/app2.apk&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="useaveragetesttimefornewtests">useAverageTestTimeForNewTests</h3>
+<p>Enable using average time from previous tests duration when using SmartShard and tests did not run before. (default: false)</p>
+<div class="tabbed-set" data-tabs="51:2"><input checked="checked" id="__tabbed_51_1" name="__tabbed_51" type="radio" /><label for="__tabbed_51_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">useAverageTestTimeForNewTests</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_51_2" name="__tabbed_51" type="radio" /><label for="__tabbed_51_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">useAverageTestTimeForNewTests</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="disableresultsupload">disableResultsUpload</h3>
+<p>Disable flank results upload on gcloud storage. (default: false)</p>
+<div class="tabbed-set" data-tabs="52:2"><input checked="checked" id="__tabbed_52_1" name="__tabbed_52" type="radio" /><label for="__tabbed_52_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">disableResultsUpload</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_52_2" name="__tabbed_52" type="radio" /><label for="__tabbed_52_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">disableResultsUpload</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="testtargetsforshard">testTargetsForShard</h3>
+<p>Specifies a group of packages, classes, and/or test cases to run in each shard (a group of test cases).
+The shards are run in parallel on separate devices. You can use this option up to 50 times to specify multiple shards when one or more physical devices are selected,
+or up to 500 times when no physical devices are selected.
+Note: If you include the flags <code>environmentVariables</code> or <code>testTargets</code> when running <code>testTargetsForShard</code>, the flags are applied to all the shards you create.
+You can also specify multiple packages, classes, or test cases in the same shard by separating each item with a comma.
+To specify both package and class in the same shard, separate package and class with semi-colons.</p>
+<div class="tabbed-set" data-tabs="53:2"><input checked="checked" id="__tabbed_53_1" name="__tabbed_53" type="radio" /><label for="__tabbed_53_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>testTargetsForShard = [
+  &quot;package com.package1.for.shard1, com.package2.for.shard1&quot;,
+  &quot;class com.foo.ClassForShard2#testMethod1, com.foo.ClassForShard2#testMethod2&quot;,
+  &quot;class com.foo.ClassForShard3; package com.package.for.shard3&quot;
+  ]
+</code></pre></div>
+
+</div>
+<input id="__tabbed_53_2" name="__tabbed_53" type="radio" /><label for="__tabbed_53_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>testTargetsForShard.set(
+  project.provider {
+    listOf(
+      &quot;package com.package1.for.shard1, com.package2.for.shard1&quot;,
+      &quot;class com.foo.ClassForShard2#testMethod1, com.foo.ClassForShard2#testMethod2&quot;,
+      &quot;class com.foo.ClassForShard3; package com.package.for.shard3&quot;
+    )
+  }
+)
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="grantpermissions">grantPermissions</h3>
+<p>Whether to grant runtime permissions on the device before the test begins. By default, all permissions are granted. PERMISSIONS must be one of: all, none</p>
+<div class="tabbed-set" data-tabs="54:2"><input checked="checked" id="__tabbed_54_1" name="__tabbed_54" type="radio" /><label for="__tabbed_54_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">grantPermissions</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_54_2" name="__tabbed_54" type="radio" /><label for="__tabbed_54_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">grantPermissions</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;none&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="type">type</h3>
+<p>The type of test to run. TYPE must be one of: instrumentation, robo, game-loop. Use if you want to be sure there is only one type of tests being run (flank enables to run mixed types of test in one run).</p>
+<div class="tabbed-set" data-tabs="55:2"><input checked="checked" id="__tabbed_55_1" name="__tabbed_55" type="radio" /><label for="__tabbed_55_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;game-loop&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_55_2" name="__tabbed_55" type="radio" /><label for="__tabbed_55_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">type</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;game-loop&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="scenariolabels">scenarioLabels</h3>
+<p>A list of game-loop scenario labels (default: None). Each game-loop scenario may be labeled in the APK manifest file with one or more arbitrary strings, creating logical groupings (e.g. GPU_COMPATIBILITY_TESTS).
+If <code>--scenario-numbers</code> and <code>--scenario-labels</code> are specified together, Firebase Test Lab will first execute each scenario from <code>--scenario-numbers</code>.
+It will then expand each given scenario label into a list of scenario numbers marked with that label, and execute those scenarios.</p>
+<div class="tabbed-set" data-tabs="56:2"><input checked="checked" id="__tabbed_56_1" name="__tabbed_56" type="radio" /><label for="__tabbed_56_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">scenarioLabels</span> <span class="o">=</span> <span class="o">[</span>
+  <span class="s2">&quot;label1&quot;</span><span class="o">,</span>
+  <span class="s2">&quot;label2&quot;</span> 
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_56_2" name="__tabbed_56" type="radio" /><label for="__tabbed_56_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">scenarioLabels</span><span class="p">.</span><span class="k">set</span><span class="p">(</span>
+  <span class="n">project</span><span class="p">.</span><span class="n">provider</span> <span class="p">{</span>
+    <span class="n">listOf</span><span class="p">(</span><span class="s">&quot;label1&quot;</span><span class="p">,</span> <span class="s">&quot;label2&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="scenarionumbers">scenarioNumbers</h3>
+<p>A list of game-loop scenario numbers which will be run as part of the test (default: all scenarios).
+A maximum of 1024 scenarios may be specified in one test matrix, but the maximum number may also be limited by the overall test <code>--timeout</code> setting.</p>
+<div class="tabbed-set" data-tabs="57:2"><input checked="checked" id="__tabbed_57_1" name="__tabbed_57" type="radio" /><label for="__tabbed_57_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">scenarioNumbers</span> <span class="o">=</span> <span class="o">[</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">23</span><span class="o">,</span> <span class="mi">52</span> <span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_57_2" name="__tabbed_57" type="radio" /><label for="__tabbed_57_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">scenarioNumbers</span><span class="p">.</span><span class="k">set</span><span class="p">(</span>
+  <span class="n">project</span><span class="p">.</span><span class="n">provider</span> <span class="p">{</span>
+    <span class="n">listOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">23</span><span class="p">,</span> <span class="m">52</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="obbfiles">obbFiles</h3>
+<p>A list of one or two Android OBB file names which will be copied to each test device before the tests will run (default: None).
+Each OBB file name must conform to the format as specified by Android (e.g. <code>[main|patch].0300110.com.example.android.obb</code>) and will be installed into <code>&lt;shared-storage&gt;/Android/obb/&lt;package-name&gt;/</code> on the test device.</p>
+<div class="tabbed-set" data-tabs="58:2"><input checked="checked" id="__tabbed_58_1" name="__tabbed_58" type="radio" /><label for="__tabbed_58_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">obbFiles</span> <span class="o">=</span> <span class="o">[</span>
+  <span class="s2">&quot;local/file/path/test1.obb&quot;</span><span class="o">,</span>
+  <span class="s2">&quot;local/file/path/test2.obb&quot;</span>
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_58_2" name="__tabbed_58" type="radio" /><label for="__tabbed_58_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">obbFiles</span><span class="p">.</span><span class="k">set</span><span class="p">(</span>
+  <span class="n">project</span><span class="p">.</span><span class="n">provider</span> <span class="p">{</span>
+    <span class="n">listOf</span><span class="p">(</span>
+      <span class="s">&quot;local/file/path/test1.obb&quot;</span><span class="p">,</span>
+      <span class="s">&quot;local/file/path/test2.obb&quot;</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="obbnames">obbNames</h3>
+<p>A list of OBB required filenames. OBB file name must conform to the format as specified by Android e.g.
+<code>[main|patch].0300110.com.example.android.obb</code> which will be installed into <code>&lt;shared-storage&gt;/Android/obb/&lt;package-name&gt;/</code> on the device.</p>
+<div class="tabbed-set" data-tabs="59:2"><input checked="checked" id="__tabbed_59_1" name="__tabbed_59" type="radio" /><label for="__tabbed_59_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">obbNames</span> <span class="o">=</span> <span class="o">[</span>
+  <span class="s2">&quot;patch.0300110.com.example.android.obb&quot;</span><span class="o">,</span>
+  <span class="s2">&quot;patch.0300111.com.example.android.obb&quot;</span>
+<span class="o">]</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_59_2" name="__tabbed_59" type="radio" /><label for="__tabbed_59_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">obbNames</span><span class="p">.</span><span class="k">set</span><span class="p">(</span>
+  <span class="n">project</span><span class="p">.</span><span class="n">provider</span> <span class="p">{</span>
+    <span class="n">listOf</span><span class="p">(</span>
+      <span class="s">&quot;patch.0300110.com.example.android.obb&quot;</span><span class="p">,</span>
+      <span class="s">&quot;patch.0300111.com.example.android.obb&quot;</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="failfast">failFast</h3>
+<p>If true, only a single attempt at most will be made to run each execution/shard in the matrix. Flaky test attempts are not affected.
+Normally, 2 or more attempts are made if a potential infrastructure issue is detected.
+This feature is for latency sensitive workloads. The incidence of execution failures may be significantly greater for
+fail-fast matrices and support is more limited because of that expectation.</p>
+<div class="tabbed-set" data-tabs="60:2"><input checked="checked" id="__tabbed_60_1" name="__tabbed_60" type="radio" /><label for="__tabbed_60_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">failFast</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_60_2" name="__tabbed_60" type="radio" /><label for="__tabbed_60_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">failFast</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="additionalflankoptions">additionalFlankOptions</h3>
+<p>Appending additional option to flank root yaml. This option is useful when you would like to test options before official fladle support is added.
+Multiple options are supported.</p>
+<p>Single option</p>
+<div class="tabbed-set" data-tabs="61:2"><input checked="checked" id="__tabbed_61_1" name="__tabbed_61" type="radio" /><label for="__tabbed_61_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">additionalFlankOptions</span> <span class="o">=</span> <span class="s2">&quot;new-property: true&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_61_2" name="__tabbed_61" type="radio" /><label for="__tabbed_61_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">additionalFlankOptions</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;new-property: true&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<p>Multiple options</p>
+<div class="tabbed-set" data-tabs="62:2"><input checked="checked" id="__tabbed_62_1" name="__tabbed_62" type="radio" /><label for="__tabbed_62_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">additionalFlankOptions</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">  new-property: true</span>
+<span class="s2">  other-new-property: force</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="na">stripIndent</span><span class="o">()</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_62_2" name="__tabbed_62" type="radio" /><label for="__tabbed_62_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">additionalFlankOptions</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    new-property: true</span>
+<span class="s">    other-new-property: force</span>
+<span class="s">&quot;&quot;&quot;</span><span class="p">.</span><span class="n">trimIndent</span><span class="p">())</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="additionalgcloudoptions">additionalGcloudOptions</h3>
+<p>Allow appending additional config to gcloud root yaml. This option is useful when you would like to test option
+before it is available on Fladle. Supports both single and multiple properties.</p>
+<p>Single option</p>
+<div class="tabbed-set" data-tabs="63:2"><input checked="checked" id="__tabbed_63_1" name="__tabbed_63" type="radio" /><label for="__tabbed_63_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">additionalGcloudOptions</span> <span class="o">=</span> <span class="s2">&quot;new-property: true&quot;</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_63_2" name="__tabbed_63" type="radio" /><label for="__tabbed_63_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">additionalGcloudOptions</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;new-property: true&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<p>Multiple options</p>
+<div class="tabbed-set" data-tabs="64:2"><input checked="checked" id="__tabbed_64_1" name="__tabbed_64" type="radio" /><label for="__tabbed_64_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">additionalGcloudOptions</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    new-property: true</span>
+<span class="s2">    other-new-property: force</span>
+<span class="s2">  &quot;&quot;&quot;</span><span class="o">.</span><span class="na">stripIndent</span><span class="o">()</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_64_2" name="__tabbed_64" type="radio" /><label for="__tabbed_64_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">additionalGcloudOptions</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    new-property: true</span>
+<span class="s">    other-new-property: force</span>
+<span class="s">&quot;&quot;&quot;</span><span class="p">.</span><span class="n">trimIndent</span><span class="p">())</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="dependonassemble">dependOnAssemble</h3>
+<p>Enable to automatically build the app and test APKs before <code>runFlank</code> executes. (default: <code>false</code>)</p>
+<div class="tabbed-set" data-tabs="65:2"><input checked="checked" id="__tabbed_65_1" name="__tabbed_65" type="radio" /><label for="__tabbed_65_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">dependOnAssemble</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_65_2" name="__tabbed_65" type="radio" /><label for="__tabbed_65_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">dependOnAssemble</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+<h3 id="async">async</h3>
+<p>Enable to return immediately after invoking tests, without waiting for results. (default: <code>false</code>)</p>
+<div class="tabbed-set" data-tabs="66:2"><input checked="checked" id="__tabbed_66_1" name="__tabbed_66" type="radio" /><label for="__tabbed_66_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">async</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre></div>
+
+</div>
+<input id="__tabbed_66_2" name="__tabbed_66" type="radio" /><label for="__tabbed_66_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">async</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+</code></pre></div>
+
+</div>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../authentication/" title="Authentication" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Authentication
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../recipes/" title="Recipes" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Recipes
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" /></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.36cbf620.min.js"></script>
+      <script src="../assets/javascripts/bundle.00c583dd.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.7f7c8775.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
