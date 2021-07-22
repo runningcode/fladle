@@ -188,6 +188,9 @@ val Project.isAndroidLibraryModule
 // returns false if the module explicitly disabled testing or if it simply had no tests
 val Project.hasAndroidTest: Boolean
   get() {
+    if (!(isAndroidLibraryModule || isAndroidAppModule)) {
+      return false
+    }
     val fulladleModuleExtension = extensions.findByType(FulladleModuleExtension::class.java) ?: return false
     if ((isAndroidLibraryModule || isAndroidAppModule) && !fulladleModuleExtension.enabled.get()) {
       return false
