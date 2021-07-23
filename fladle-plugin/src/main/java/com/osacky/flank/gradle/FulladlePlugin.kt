@@ -80,7 +80,7 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
     return
   }
 
-  val testedExtension = extensions.getByType<TestedExtension>()
+  val testedExtension = extensions.findByType(TestedExtension::class.java) ?: return
   // Only configure the first test variant per module.
   // Does anyone test more than one variant per module?
   var addedTestsForModule = false
@@ -188,12 +188,14 @@ val Project.isAndroidLibraryModule
 // returns false if the module explicitly disabled testing or if it simply had no tests
 val Project.hasAndroidTest: Boolean
   get() {
-    val fulladleModuleExtension = extensions.findByType(FulladleModuleExtension::class.java) ?: return false
-    if ((isAndroidLibraryModule || isAndroidAppModule) && !fulladleModuleExtension.enabled.get()) {
+    if (!(isAndroidLibraryModule || isAndroidAppModule)) {
       return false
     }
-
-    val testedExtension = extensions.getByType<TestedExtension>()
+    val fulladleModuleExtension = extensions.findByType(FulladleModuleExtension::class.java) ?: return false
+    if (!fulladleModuleExtension.enabled.get()) {
+      return false
+    }
+    val testedExtension = extensions.findByType(TestedExtension::class.java) ?: return false
     var testsFound = true
     testedExtension.testVariants.configureEach testVariant@{
       if (!file("$projectDir/src/androidTest").exists()) {

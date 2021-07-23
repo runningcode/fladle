@@ -124,6 +124,76 @@ class FulladlePluginIntegrationTest {
   }
 
   @Test
+  fun fulladleWithNonAndroidModule() {
+    val appFixture = "android-project"
+    val libraryFixture = "android-library-project"
+    val nonAndroidFixture = "lib1"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+        include '$appFixture'
+        include '$libraryFixture'
+        include '$nonAndroidFixture'
+
+        dependencyResolutionManagement {
+          repositories {
+            mavenCentral()
+            google()
+          }
+        }
+      """.trimIndent()
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(libraryFixture)
+    File(testProjectRoot.root, libraryFixture).copyRecursively(testProjectRoot.newFile(nonAndroidFixture), overwrite = true)
+
+    writeBuildGradle(
+      """
+        buildscript {
+            repositories {
+                google()
+                jcenter()
+            }
+
+            dependencies {
+                classpath '$agpDependency'
+            }
+        }
+        
+        plugins {
+          id "com.osacky.fulladle"
+        }
+        
+        
+        fladle {
+          serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+        }
+      """.trimIndent()
+    )
+
+    // Configure second included project to ignore fulladle module
+    File(testProjectRoot.root, "$nonAndroidFixture/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+        enabled = false
+      }
+      """.trimIndent()
+    )
+
+    File(testProjectRoot.root, "$nonAndroidFixture/build.gradle").writeText(
+      """
+        apply plugin: 'java-library'
+
+      """.trimIndent()
+    )
+
+    val result = testProjectRoot.gradleRunner()
+      .withArguments(":printYml")
+      .build()
+
+    assertThat(result.output).contains("SUCCESS")
+  }
+
+  @Test
   fun fulladleWithSubmoduleOverrides() {
     val appFixture = "android-project"
     val appFixture2 = "android-project2"
