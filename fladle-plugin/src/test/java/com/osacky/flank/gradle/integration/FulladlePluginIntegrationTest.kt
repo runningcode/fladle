@@ -30,13 +30,13 @@ class FulladlePluginIntegrationTest {
     assertThat(result.output).contains("SUCCESS")
   }
 
-    @Test
-    fun fulladleWithSubmodules() {
-        val appFixture = "android-project"
-        val libraryFixture = "android-library-project"
-        val ignoredLibraryProject = "android-lib-ignored"
-        testProjectRoot.newFile("settings.gradle").writeText(
-            """
+  @Test
+  fun fulladleWithSubmodules() {
+    val appFixture = "android-project"
+    val libraryFixture = "android-library-project"
+    val ignoredLibraryProject = "android-lib-ignored"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
         include '$appFixture'
         include '$libraryFixture'
         include '$ignoredLibraryProject'
@@ -48,13 +48,13 @@ class FulladlePluginIntegrationTest {
           }
         }
       """.trimIndent()
-        )
-        testProjectRoot.setupFixture(appFixture)
-        testProjectRoot.setupFixture(libraryFixture)
-        File(testProjectRoot.root, libraryFixture).copyRecursively(testProjectRoot.newFile(ignoredLibraryProject), overwrite = true)
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(libraryFixture)
+    File(testProjectRoot.root, libraryFixture).copyRecursively(testProjectRoot.newFile(ignoredLibraryProject), overwrite = true)
 
-        writeBuildGradle(
-            """
+    writeBuildGradle(
+      """
         buildscript {
             repositories {
                 google()
@@ -75,25 +75,25 @@ class FulladlePluginIntegrationTest {
           serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
         }
       """.trimIndent()
-        )
+    )
 
-        // Configure second included project to ignore fulladle module
-        File(testProjectRoot.root, "$ignoredLibraryProject/build.gradle").appendText(
-            """
+    // Configure second included project to ignore fulladle module
+    File(testProjectRoot.root, "$ignoredLibraryProject/build.gradle").appendText(
+      """
       fulladleModuleConfig {
         enabled = false
       }
       """.trimIndent()
-        )
+    )
 
-        val result = testProjectRoot.gradleRunner()
-            .withArguments(":printYml")
-            .build()
+    val result = testProjectRoot.gradleRunner()
+      .withArguments(":printYml")
+      .build()
 
-        assertThat(result.output).contains("SUCCESS")
-        // Ensure that there is only one additional test APK even though there are two library modules.
-        assertThat(result.output).containsMatch(
-            """
+    assertThat(result.output).contains("SUCCESS")
+    // Ensure that there is only one additional test APK even though there are two library modules.
+    assertThat(result.output).containsMatch(
+      """
      > Task :printYml
      gcloud:
        app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
@@ -120,16 +120,16 @@ class FulladlePluginIntegrationTest {
        full-junit-result: false
        output-style: single
       """.trimIndent()
-        )
-    }
+    )
+  }
 
-    @Test
-    fun fulladleWithNonAndroidModule() {
-        val appFixture = "android-project"
-        val libraryFixture = "android-library-project"
-        val nonAndroidFixture = "lib1"
-        testProjectRoot.newFile("settings.gradle").writeText(
-            """
+  @Test
+  fun fulladleWithNonAndroidModule() {
+    val appFixture = "android-project"
+    val libraryFixture = "android-library-project"
+    val nonAndroidFixture = "lib1"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
         include '$appFixture'
         include '$libraryFixture'
         include '$nonAndroidFixture'
@@ -141,13 +141,13 @@ class FulladlePluginIntegrationTest {
           }
         }
       """.trimIndent()
-        )
-        testProjectRoot.setupFixture(appFixture)
-        testProjectRoot.setupFixture(libraryFixture)
-        File(testProjectRoot.root, libraryFixture).copyRecursively(testProjectRoot.newFile(nonAndroidFixture), overwrite = true)
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(libraryFixture)
+    File(testProjectRoot.root, libraryFixture).copyRecursively(testProjectRoot.newFile(nonAndroidFixture), overwrite = true)
 
-        writeBuildGradle(
-            """
+    writeBuildGradle(
+      """
         buildscript {
             repositories {
                 google()
@@ -168,30 +168,30 @@ class FulladlePluginIntegrationTest {
           serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
         }
       """.trimIndent()
-        )
+    )
 
-        // Configure second included project to ignore fulladle module
-        File(testProjectRoot.root, "$nonAndroidFixture/build.gradle").appendText(
-            """
+    // Configure second included project to ignore fulladle module
+    File(testProjectRoot.root, "$nonAndroidFixture/build.gradle").appendText(
+      """
       fulladleModuleConfig {
         enabled = false
       }
       """.trimIndent()
-        )
+    )
 
-        File(testProjectRoot.root, "$nonAndroidFixture/build.gradle").writeText(
-            """
+    File(testProjectRoot.root, "$nonAndroidFixture/build.gradle").writeText(
+      """
         apply plugin: 'java-library'
 
       """.trimIndent()
-        )
+    )
 
-        val result = testProjectRoot.gradleRunner()
-            .withArguments(":printYml")
-            .build()
+    val result = testProjectRoot.gradleRunner()
+      .withArguments(":printYml")
+      .build()
 
-        assertThat(result.output).contains("SUCCESS")
-    }
+    assertThat(result.output).contains("SUCCESS")
+  }
 
   @Test
   fun fulladleWithSubmoduleOverrides() {
