@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.16.2
+* Fix crash accessing TestedExtension in non-android modules [PR](https://github.com/runningcode/fladle/pull/265/files) Thanks [asadsalman](https://github.com/asadsalman)
+
 ## 0.16.1
-* Treat app and library modules the same in Fulladle [PR](https://github.com/runningcode/fladle/pull/262)
+* Treat app and library modules the same in Fulladle [PR](https://github.com/runningcode/fladle/pull/262) Thanks [asadsalman](https://github.com/asadsalman)
 * Added fulladleModuleConfig to app modules [PR](https://github.com/runningcode/fladle/pull/260)
 
 !!! Warning "Breaking API Change"
