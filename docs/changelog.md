@@ -5,6 +5,7 @@
 ## 0.16.1
 * Treat app and library modules the same in Fulladle [PR](https://github.com/runningcode/fladle/pull/262)
 * Added fulladleModuleConfig to app modules [PR](https://github.com/runningcode/fladle/pull/260)
+
 !!! Warning "Breaking API Change"
     Previously, only app modules could be picked up as root-level modules in Fulladle. This has changed, now either app or library modules can be picked up (though we try app modules first). If a library module is picked up as a the root-level module, it _must_ specifiy a `debugApk` through either the root `fladle` block or the module's own `fulladleModuleConfig` block.
 
