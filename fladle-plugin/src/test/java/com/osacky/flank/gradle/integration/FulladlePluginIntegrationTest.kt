@@ -73,6 +73,12 @@ class FulladlePluginIntegrationTest {
         
         fladle {
           serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+          environmentVariables = [
+            "clearPackageData": "true"
+          ]
+          clientDetails = [
+            "key1" : "val1"
+          ]
         }
       """.trimIndent()
     )
@@ -107,7 +113,11 @@ class FulladlePluginIntegrationTest {
        record-video: true
        performance-metrics: true
        timeout: 15m
+       environment-variables:
+         clearPackageData: true
        num-flaky-test-attempts: 0
+       client-details:
+         key1: val1
      
      flank:
        keep-file-path: false
