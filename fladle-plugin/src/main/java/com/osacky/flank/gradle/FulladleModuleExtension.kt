@@ -27,13 +27,13 @@ open class FulladleModuleExtension @Inject constructor(objects: ObjectFactory) {
    * When consuming the test results, such as in Cloud Functions or a CI system,
    * these details can add additional context such as a link to the corresponding pull request.
    */
-  val clientDetails: MapProperty<String, String> = objects.mapProperty()
+  val clientDetails: MapProperty<String, String> = objects.mapProperty(String::class.java, String::class.java).convention(null)
 
   /**
    * The environment variables are mirrored as extra options to the am instrument -e KEY1 VALUE1 … command and
    * passed to your test runner (typically AndroidJUnitRunner)
    */
-  val environmentVariables: MapProperty<String, String> = objects.mapProperty()
+  val environmentVariables: MapProperty<String, String> = objects.mapProperty(String::class.java, String::class.java).convention(null)
 
   /**
    * the app under test

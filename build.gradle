@@ -34,6 +34,9 @@ allprojects {
 
 fladle {
     serviceAccountCredentials = project.layout.projectDirectory.file("sample/flank-gradle-5cf02dc90531.json")
+    environmentVariables = [
+        "var1-key" : "var1-value"
+    ]
 }
 
 buildScan {
