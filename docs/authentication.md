@@ -23,7 +23,7 @@ Credentials are stored in `~/.flank`.
    page, enable the **Google Cloud Testing API** and **Cloud Tool Results API**. To enable these APIs, type these API names into
    the search box at the top of the console, and then click **Enable API** on the overview page for that API.
 
-3. Download the `json` service account credentials and place them on the file system.
+3. After creating the account go to `Keys`, click `Add Key` -> `Create a new Key`. Select `JSON` for the key type. This will download the json credentials.
 
 4. Configure the [Fladle extension serviceAccountCredentials] to point to the credentials.
 
