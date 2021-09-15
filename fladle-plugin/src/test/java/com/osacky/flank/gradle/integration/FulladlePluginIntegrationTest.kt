@@ -238,6 +238,10 @@ class FulladlePluginIntegrationTest {
 
         fladle {
           serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+          environmentVariables = [
+            "clearPackageData": "true", 
+            "listener": "com.osacky.flank.sample.Listener"
+          ]
         }
       """.trimIndent()
     )
@@ -255,7 +259,10 @@ class FulladlePluginIntegrationTest {
       """
       fulladleModuleConfig {
         maxTestShards = 7
-        environmentVariables = ["clearPackageData": "true"]
+        environmentVariables = [
+            "clearPackageData": "false",
+            "listener": "com.osacky.flank.sample.Listener.Different"
+        ]
         debugApk = "dummy_app.apk"
       }
       """.trimIndent()
@@ -281,6 +288,9 @@ class FulladlePluginIntegrationTest {
        record-video: true
        performance-metrics: true
        timeout: 15m
+       environment-variables:
+         clearPackageData: true
+         listener: com.osacky.flank.sample.Listener
        num-flaky-test-attempts: 0
 
      flank:
@@ -290,7 +300,7 @@ class FulladlePluginIntegrationTest {
            test: [0-9a-zA-Z\/_]*/android-project2/build/outputs/apk/androidTest/debug/android-project2-debug-androidTest.apk
            max-test-shards: 5
            environment-variables:
-               "clearPackageData": "true"
+               "clearPackageData": "false"
          - test: [0-9a-zA-Z\/_]*/$libraryFixture2/build/outputs/apk/androidTest/debug/android-lib2-debug-androidTest.apk
            max-test-shards: 4
            client-details:
@@ -300,7 +310,8 @@ class FulladlePluginIntegrationTest {
            test: [0-9a-zA-Z\/_]*/$libraryFixture/build/outputs/apk/androidTest/debug/android-library-project-debug-androidTest.apk
            max-test-shards: 7
            environment-variables:
-               "clearPackageData": "true"
+               "clearPackageData": "false"
+               "listener": "com.osacky.flank.sample.Listener.Different"
        ignore-failed-tests: false
        disable-sharding: false
        smart-flank-disable-upload: false
