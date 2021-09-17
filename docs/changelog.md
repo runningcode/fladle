@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+* Fix [environmentVariables not passed](https://github.com/runningcode/fladle/issues/270) to flank.yml [PR](https://github.com/runningcode/fladle/pull/271) Thanks [Sinan](https://github.com/kozaxinan)
 
 ## 0.16.2
 * Fix crash accessing TestedExtension in non-android modules [PR](https://github.com/runningcode/fladle/pull/265/files) Thanks [asadsalman](https://github.com/asadsalman)
