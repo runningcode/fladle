@@ -10,8 +10,8 @@ internal class YamlWriter {
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
     if (!config.sanityRobo.get()) {
-      check(config.instrumentationApk.isPresent xor config.roboScript.isNotPresentOrBlank) {
-        val prefix = if (base.instrumentationApk.isPresent && config.roboScript.isNotPresentOrBlank) {
+      check(config.instrumentationApk.isPresent xor config.roboScript.hasValue) {
+        val prefix = if (base.instrumentationApk.isPresent && config.roboScript.hasValue) {
           "Both instrumentationApk file and roboScript file were specified, but only one is expected."
         } else {
           "Must specify either a instrumentationApk file or a roboScript file."
@@ -30,7 +30,7 @@ internal class YamlWriter {
     return buildString {
       appendln("gcloud:")
       appendln("  app: ${config.debugApk.get()}")
-      if (config.instrumentationApk.isNotPresentOrBlank) {
+      if (config.instrumentationApk.hasValue) {
         appendln("  test: ${config.instrumentationApk.get()}")
       }
       if (config.devices.isPresentAndNotEmpty) appendln(createDeviceString(config.devices.get()))

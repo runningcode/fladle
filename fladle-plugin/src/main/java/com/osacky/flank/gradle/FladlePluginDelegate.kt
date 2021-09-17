@@ -135,6 +135,11 @@ class FladlePluginDelegate {
           }
         }
       }
+      if (config.localResultsDir.hasValue) {
+        this.outputs.dir("$workingDir/localResultsDir")
+        // This task is never upToDate since it relies on network connections and firebase test lab.
+        this.outputs.upToDateWhen { false }
+      }
     }
 
     register("runFlank$name", RunFlankTask::class.java).configure {

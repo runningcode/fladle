@@ -17,15 +17,15 @@ fun checkIfSanityAndValidateConfigs(config: FladleConfig) = when (config) {
 
 private fun FladleConfig.checkAndValidateConfig(name: String = "base", message: (String, String) -> String) {
   if (sanityRobo.get()) when {
-    roboDirectives.isNotPresentOrEmpty -> throw IllegalStateException(message("roboDirectives", name))
-    roboScript.isNotPresentOrBlank -> throw IllegalStateException(message("roboScript", name))
-    instrumentationApk.isNotPresentOrBlank -> throw IllegalStateException(message("instrumentationApk", name))
-    additionalTestApks.isNotPresentOrEmpty -> throw IllegalStateException(message("additionalTestApks", name))
+    roboDirectives.hasValue -> throw IllegalStateException(message("roboDirectives", name))
+    roboScript.hasValue -> throw IllegalStateException(message("roboScript", name))
+    instrumentationApk.hasValue -> throw IllegalStateException(message("instrumentationApk", name))
+    additionalTestApks.hasValue -> throw IllegalStateException(message("additionalTestApks", name))
   }
 }
 
-val Property<String>.isNotPresentOrBlank
+val Property<String>.hasValue
   get() = orNull.isNullOrBlank().not()
 
-private val <T> ListProperty<T>.isNotPresentOrEmpty
+private val <T> ListProperty<T>.hasValue
   get() = getOrElse(emptyList()).isNotEmpty()
