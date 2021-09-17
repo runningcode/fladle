@@ -101,18 +101,19 @@ class FulladlePluginIntegrationTest {
        device:
        - model: NexusLowRes
          version: 28
-     
+
        use-orchestrator: false
        auto-google-login: false
        record-video: true
        performance-metrics: true
        timeout: 15m
        num-flaky-test-attempts: 0
-     
+
      flank:
        keep-file-path: false
        additional-app-test-apks:
          - test: [0-9a-zA-Z\/_]*/android-library-project/build/outputs/apk/androidTest/debug/android-library-project-debug-androidTest.apk
+
        ignore-failed-tests: false
        disable-sharding: false
        smart-flank-disable-upload: false
@@ -300,18 +301,21 @@ class FulladlePluginIntegrationTest {
            test: [0-9a-zA-Z\/_]*/android-project2/build/outputs/apk/androidTest/debug/android-project2-debug-androidTest.apk
            max-test-shards: 5
            environment-variables:
-               "clearPackageData": "false"
+             clearPackageData: false
+
          - test: [0-9a-zA-Z\/_]*/$libraryFixture2/build/outputs/apk/androidTest/debug/android-lib2-debug-androidTest.apk
            max-test-shards: 4
            client-details:
-               "test-type": "PR"
-               "build-number": "132"
+             test-type: PR
+             build-number: 132
+
          - app: dummy_app.apk
            test: [0-9a-zA-Z\/_]*/$libraryFixture/build/outputs/apk/androidTest/debug/android-library-project-debug-androidTest.apk
            max-test-shards: 7
            environment-variables:
-               "clearPackageData": "false"
-               "listener": "com.osacky.flank.sample.Listener.Different"
+             clearPackageData: false
+             listener: com.osacky.flank.sample.Listener.Different
+
        ignore-failed-tests: false
        disable-sharding: false
        smart-flank-disable-upload: false
