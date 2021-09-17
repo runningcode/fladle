@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+* Conditionally declare outputs on FlankExecutionTask and mark as not up-to-date. [PR](https://github.com/runningcode/fladle/pull/273)
 * Fix [environmentVariables not passed](https://github.com/runningcode/fladle/issues/270) to flank.yml [PR](https://github.com/runningcode/fladle/pull/271) Thanks [Sinan](https://github.com/kozaxinan)
 
 ## 0.16.2
