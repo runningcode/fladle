@@ -137,7 +137,6 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
           return@test
         }
 
-
         yml.appendProperty(fulladleModuleExtension.maxTestShards, "    max-test-shards")
         yml.appendMapProperty(fulladleModuleExtension.clientDetails, "    client-details") { appendln("        ${it.key}: ${it.value}") }
         yml.appendMapProperty(fulladleModuleExtension.environmentVariables, "    environment-variables") { appendln("        ${it.key}: ${it.value}") }
