@@ -9,9 +9,11 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 import java.util.Locale
 import javax.inject.Inject
 
+@DisableCachingByDefault(because = "The task writes a small file from in memory properties and does not benefit from caching.")
 open class YamlConfigWriterTask @Inject constructor(
   @get:Nested val base: FlankGradleExtension,
   @get:Nested val config: FladleConfig,
