@@ -7,7 +7,6 @@ description = "Easily Scale your Android Instrumentation Tests with Firebase Tes
 repositories {
   google()
   mavenCentral()
-  jcenter()
 }
 
 plugins {
