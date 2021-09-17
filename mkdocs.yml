@@ -6,7 +6,7 @@ extra:
   fladle:
     current_release: '0.16.2'
     next_release: '0.16.3'
-    flank_version: '21.06.0'
+    flank_version: '21.09.0'
 
 site_name: Fladle
 site_url: https://runningcode.github.io/fladle/
