@@ -9,7 +9,7 @@ import javax.inject.Inject
 open class FlankJavaExec @Inject constructor(projectLayout: ProjectLayout) : JavaExec() {
   init {
     group = FladlePluginDelegate.TASK_GROUP
-    main = "ftl.Main"
+    mainClass.set("ftl.Main")
     workingDir(projectLayout.fladleDir)
   }
 
