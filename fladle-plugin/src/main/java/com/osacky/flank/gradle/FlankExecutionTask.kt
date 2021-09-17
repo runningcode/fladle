@@ -1,11 +1,12 @@
 package com.osacky.flank.gradle
 
 import org.gradle.api.file.ProjectLayout
+import org.gradle.api.tasks.Nested
 import org.gradle.work.DisableCachingByDefault
 import javax.inject.Inject
 
 @DisableCachingByDefault(because = "Flank executions are dependent on resources such as network connection and server and therefore cannot be cached.")
-open class FlankExecutionTask @Inject constructor(projectLayout: ProjectLayout, private val config: FladleConfig) : FlankJavaExec(projectLayout) {
+open class FlankExecutionTask @Inject constructor(projectLayout: ProjectLayout, @get:Nested val config: FladleConfig) : FlankJavaExec(projectLayout) {
 
   init {
     doFirst {

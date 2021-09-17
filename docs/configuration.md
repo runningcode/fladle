@@ -605,7 +605,7 @@ The fully-qualified Java class name of the instrumentation test runner (default:
     ```
 
 ### localResultsDir
-The local directory to store the test results. Folder is DELETED before each run to ensure only artifacts from the new run are saved.
+The local directory to store the test results. Folder is DELETED before each run to ensure only artifacts from the new run are saved. This directory is relative to the working directory of Flank which is by default `build/fladle` or `build/fladle/<flavorname>`.
 
 === "Groovy"
     ``` groovy
