@@ -210,16 +210,20 @@ val Project.hasAndroidTest: Boolean
 fun overrideRootLevelConfigs(flankGradleExtension: FlankGradleExtension, fulladleModuleExtension: FulladleModuleExtension) {
   // if the root module overrode any value in its fulladleModuleConfig block
   // then use those values instead
-  if (fulladleModuleExtension.debugApk.orNull != null) {
+  val debugApk = fulladleModuleExtension.debugApk.orNull
+  if (debugApk != null && debugApk.isNotEmpty()) {
     flankGradleExtension.debugApk.set(fulladleModuleExtension.debugApk.get())
   }
-  if (fulladleModuleExtension.maxTestShards.orNull != null) {
+  val maxTestShards = fulladleModuleExtension.maxTestShards.orNull
+  if (maxTestShards != null && maxTestShards > 0) {
     flankGradleExtension.maxTestShards.set(fulladleModuleExtension.maxTestShards.get())
   }
-  if (fulladleModuleExtension.clientDetails.orNull != null) {
+  val clientDetails = fulladleModuleExtension.clientDetails.orNull
+  if (clientDetails != null && clientDetails.size != 0) {
     flankGradleExtension.clientDetails.set(fulladleModuleExtension.clientDetails.get())
   }
-  if (fulladleModuleExtension.environmentVariables.orNull != null) {
+  val env = fulladleModuleExtension.environmentVariables.orNull
+  if (env != null && env.size != 0) {
     flankGradleExtension.environmentVariables.set(fulladleModuleExtension.environmentVariables.get())
   }
 }

@@ -22,7 +22,8 @@ fladle {
     serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json")
     useOrchestrator = true
     environmentVariables = [
-            "clearPackageData": "true"
+            "clearPackageData": "true",
+            "listener": "com.osacky.flank.sample.Listener"
     ]
     testTargets = [
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"

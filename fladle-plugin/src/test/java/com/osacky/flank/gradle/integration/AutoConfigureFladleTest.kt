@@ -64,6 +64,7 @@ class AutoConfigureFladleTest {
           timeout: 15m
           environment-variables:
             clearPackageData: true
+            listener: com.osacky.flank.sample.Listener
           test-targets:
           - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView
           num-flaky-test-attempts: 0

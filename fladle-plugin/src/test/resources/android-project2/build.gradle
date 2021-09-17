@@ -45,7 +45,7 @@ fladle {
 
 fulladleModuleConfig {
     maxTestShards = 5
-    environmentVariables = ["clearPackageData": "true"]
+    environmentVariables = ["clearPackageData": "false"]
 }
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
