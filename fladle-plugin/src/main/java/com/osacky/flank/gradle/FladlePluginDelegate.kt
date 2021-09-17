@@ -136,7 +136,7 @@ class FladlePluginDelegate {
         }
       }
       if (config.localResultsDir.hasValue) {
-        this.outputs.dir("${workingDir.path}/localResultsDir")
+        this.outputs.dir("${workingDir.path}/${config.localResultsDir.get()}")
         // This task is never upToDate since it relies on network connections and firebase test lab.
         this.outputs.upToDateWhen { false }
       }
