@@ -13,8 +13,8 @@ repositories {
 plugins {
   `kotlin-dsl`
   `java-gradle-plugin`
-  id("com.gradle.plugin-publish") version "0.14.0"
-  id("org.jmailen.kotlinter") version "3.4.0"
+  id("com.gradle.plugin-publish") version "0.16.0"
+  id("org.jmailen.kotlinter") version "3.6.0"
   `maven-publish`
   signing
 }
@@ -34,7 +34,7 @@ dependencies {
 
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.13.2")
-  testImplementation("com.google.truth:truth:1.1.2")
+  testImplementation("com.google.truth:truth:1.1.3")
 }
 
 kotlinter {
@@ -67,10 +67,6 @@ gradlePlugin {
       implementationClass = "com.osacky.flank.gradle.FulladlePlugin"
     }
   }
-}
-
-kotlinDslPluginOptions {
-  experimentalWarning.set(false)
 }
 
 tasks.register<Jar>("sourcesJar") {
