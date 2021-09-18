@@ -3,8 +3,6 @@ package com.osacky.flank.gradle
 import com.android.build.gradle.TestedExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.provider.MapProperty
-import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.getByType
 
 /**
@@ -93,7 +91,7 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
 
     testedVariant.outputs.configureEach app@{
       this@testVariant.outputs.configureEach test@{
-        val strs = mutableListOf<String>()
+        val yml = StringBuilder()
         // If the debugApk isn't yet set, let's use this one.
         if (!flankGradleExtension.debugApk.isPresent) {
           if (project.isAndroidAppModule) {
@@ -110,11 +108,11 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
         } else {
           // Otherwise, let's just add it to the list.
           if (project.isAndroidAppModule) {
-            strs.add(" app: ${this@app.outputFile}")
+            yml.appendln("- app: ${this@app.outputFile}")
           } else if (project.isAndroidLibraryModule) {
             // app apk is not required for library modules so only use if it's explicitly specified
             if (fulladleModuleExtension.debugApk.orNull != null) {
-              strs.add(" app: ${fulladleModuleExtension.debugApk.get()}")
+              yml.appendln("- app: ${fulladleModuleExtension.debugApk.get()}")
             }
           }
         }
@@ -124,60 +122,31 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
           flankGradleExtension.instrumentationApk.set(rootProject.provider { this@test.outputFile.absolutePath })
         } else {
           // Otherwise, let's just add it to the list.
-          strs.add("      test: ${this@test.outputFile}")
+          if (yml.isBlank()) {
+            // The first item in the list needs to start with a ` - `.
+            yml.appendln("- test: ${this@test.outputFile}")
+          } else {
+            yml.appendln("      test: ${this@test.outputFile}")
+          }
         }
 
-        if (strs.isEmpty()) {
+        if (yml.isEmpty()) {
           // this is the root module
           // should not be added as additional test apk
           overrideRootLevelConfigs(flankGradleExtension, fulladleModuleExtension)
           return@test
         }
-        // the first element can be "app" or "test", whatever it is prepend - to it
-        strs[0] = "- ${strs[0].trim()}"
 
-        val maxTestShards = propertyToYaml(fulladleModuleExtension.maxTestShards, "max-test-shards")
-        val clientDetails = mapPropertyToYaml(fulladleModuleExtension.clientDetails, "client-details")
-        val environmentVariables = mapPropertyToYaml(fulladleModuleExtension.environmentVariables, "environment-variables")
-
-        strs.addAll(listOf(maxTestShards, clientDetails, environmentVariables))
-
-        writeAdditionalTestApps(strs, flankGradleExtension, rootProject)
+        yml.appendProperty(fulladleModuleExtension.maxTestShards, "    max-test-shards")
+        yml.appendMapProperty(fulladleModuleExtension.clientDetails, "    client-details") { appendln("        ${it.key}: ${it.value}") }
+        yml.appendMapProperty(fulladleModuleExtension.environmentVariables, "    environment-variables") { appendln("        ${it.key}: ${it.value}") }
+        flankGradleExtension.additionalTestApks.add(yml.toString())
 
         addedTestsForModule = true
         return@test
       }
     }
   }
-}
-
-fun mapPropertyToYaml(map: MapProperty<String, String>, propName: String) =
-  map.let {
-    buildString {
-      if (it.isPresentAndNotEmpty) { append("    ") }
-      appendMapProperty(it, name = propName) {
-        appendLine("          \"${it.key}\": \"${it.value}\"")
-      }
-    }
-  }.trimEnd()
-
-fun propertyToYaml(prop: Property<*>, propName: String) =
-  prop.let {
-    buildString {
-      if (it.isPresent) { append("    ") }
-      appendProperty(it, name = propName)
-    }
-  }.trimEnd()
-
-fun writeAdditionalTestApps(strs: List<String>, flankGradleExtension: FlankGradleExtension, rootProject: Project) {
-  flankGradleExtension.additionalTestApks.add(
-    rootProject.provider {
-      strs
-        .filter { it.trim().isNotEmpty() }
-        .joinToString("\n")
-        .trimEnd()
-    }
-  )
 }
 
 val Project.isAndroidAppModule
