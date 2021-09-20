@@ -7,6 +7,7 @@ description = "Easily Scale your Android Instrumentation Tests with Firebase Tes
 repositories {
   google()
   mavenCentral()
+  gradlePluginPortal()
 }
 
 plugins {
@@ -30,6 +31,7 @@ dependencies {
   } else {
     implementation("com.android.tools.build:gradle:4.1.3")
   }
+  compileOnly("com.gradle:gradle-enterprise-gradle-plugin:3.7")
 
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.13.2")

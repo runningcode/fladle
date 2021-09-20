@@ -141,6 +141,14 @@ class FladlePluginDelegate {
         this.outputs.upToDateWhen { false }
       }
     }
+    if (config.localResultsDir.hasValue && canImportReport()) {
+      try {
+        importReport(this@createTasksForConfig, execFlank)
+      } catch (e: Exception) {
+        project.logger.warn(e.message)
+        e.printStackTrace()
+      }
+    }
 
     register("runFlank$name", RunFlankTask::class.java).configure {
       dependsOn(execFlank)
