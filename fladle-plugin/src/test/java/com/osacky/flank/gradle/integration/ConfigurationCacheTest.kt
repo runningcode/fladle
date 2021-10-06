@@ -43,6 +43,7 @@ class ConfigurationCacheTest {
            |  serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service-account.json")
            |  debugApk = "debug.apk"
            |  instrumentationApk = "test.apk"
+           |  localResultsDir = "foo"
            |}
            |""".trimMargin()
     )
@@ -102,8 +103,18 @@ class ConfigurationCacheTest {
            |  serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service-account.json")
            |  debugApk = "debug.apk"
            |  instrumentationApk = "test.apk"
+           |  localResultsDir = "foo"
            |}
            |""".trimMargin()
+    )
+
+    val settings = testProjectRoot.newFile("settings.gradle")
+    settings.writeText(
+      """
+      plugins {
+        id 'com.gradle.enterprise' version '3.7'
+      }
+      """.trimIndent()
     )
     testProjectRoot.newFile("flank-gradle-service-account.json").writeText("{ \"project_id\": \"foo\" }")
     val result = configCachingRunner("runFlank").buildAndFail()

@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+* Fix configuration cache support.
 
 ## 0.17.0
 * Fix quotes around environment variables and formatting issues.
