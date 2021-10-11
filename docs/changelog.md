@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## 0.17.1
+## 0.17.2
 * Fix configuration cache support.
 
 ## 0.17.0
