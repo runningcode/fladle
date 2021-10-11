@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## 0.17.1
 * Fix configuration cache support.
 
 ## 0.17.0
