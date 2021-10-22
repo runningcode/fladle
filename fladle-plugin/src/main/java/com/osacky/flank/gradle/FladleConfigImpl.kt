@@ -69,7 +69,7 @@ data class FladleConfigImpl(
   override val dependOnAssemble: Property<Boolean>,
   override val async: Property<Boolean>,
   override val abiType: Property<String>
-  ) : FladleConfig {
+) : FladleConfig {
   /**
    * Prepare config to run sanity robo.
    *
