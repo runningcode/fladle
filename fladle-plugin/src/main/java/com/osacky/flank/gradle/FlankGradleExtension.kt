@@ -145,6 +145,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val async: Property<Boolean> = objects.property<Boolean>().convention(false)
 
+  override val abiType: Property<String> = objects.property()
+
   @Internal
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
