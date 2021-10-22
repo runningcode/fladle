@@ -458,6 +458,13 @@ interface FladleConfig {
   @get:Optional
   val additionalGcloudOptions: Property<String>
 
+  /**
+    * Specify the ABI split values you want to filter
+   */
+  @get:Input
+  @get:Optional
+  val abiType: Property<String>
+
   @Internal
   fun getPresentProperties() = this::class.memberProperties
     .filter {

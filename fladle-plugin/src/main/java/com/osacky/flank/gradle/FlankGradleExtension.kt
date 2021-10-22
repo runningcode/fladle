@@ -17,7 +17,7 @@ import javax.inject.Inject
 open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : FladleConfig {
 
   companion object {
-    const val FLANK_VERSION = "21.09.0"
+    const val FLANK_VERSION = "21.07.2"
   }
 
   @get:Input
@@ -145,6 +145,9 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val async: Property<Boolean> = objects.property<Boolean>().convention(false)
 
+  override val abiType: Property<String> = objects.property()
+
+
   @Internal
   val configs: NamedDomainObjectContainer<FladleConfigImpl> = objects.domainObjectContainer(FladleConfigImpl::class.java) {
     FladleConfigImpl(
@@ -208,7 +211,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       additionalFlankOptions = objects.property<String>().convention(additionalFlankOptions),
       additionalGcloudOptions = objects.property<String>().convention(additionalGcloudOptions),
       dependOnAssemble = objects.property<Boolean>().convention(dependOnAssemble),
-      async = objects.property<Boolean>().convention(async)
+      async = objects.property<Boolean>().convention(async),
+      abiType = objects.property<String>().convention(abiType)
     )
   }
 
