@@ -1,21 +1,15 @@
 package com.osacky.flank.gradle
 
-import com.android.build.FilterData
-import com.android.build.VariantOutput
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.TestedExtension
-import com.android.build.gradle.api.BaseVariant
-import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.builder.model.TestOptions
-import com.google.errorprone.annotations.Var
 import com.osacky.flank.gradle.validation.checkForExclusionUsage
 import com.osacky.flank.gradle.validation.validateOptionsUsed
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.TaskContainer
-import org.gradle.kotlin.dsl.concurrent.future
 import org.gradle.kotlin.dsl.create
 import org.gradle.util.GradleVersion
 
@@ -130,7 +124,7 @@ class FladlePluginDelegate {
       if (config.dependOnAssemble.isPresent && config.dependOnAssemble.get()) {
         val testedExtension = requireNotNull(project.extensions.findByType(TestedExtension::class.java)) { "Could not find TestedExtension in ${project.name}" }
         testedExtension.testVariants.configureEach {
-          if (config.isExpectedVariant(testedVariant)) {
+          if (testedVariant.isExpectedVariant(config)) {
             if (testedVariant.assembleProvider.isPresent) {
               dependsOn(testedVariant.assembleProvider)
             }
@@ -178,9 +172,9 @@ class FladlePluginDelegate {
       val appVariant = testedVariant
       outputs.configureEach test@{
         appVariant.outputs
-          .matching { config.isExpectedAbiOutput(it) }
+          .matching { it.isExpectedAbiOutput(config) }
           .configureEach app@{
-            if (config.isExpectedVariant(appVariant)) {
+            if (appVariant.isExpectedVariant(config)) {
               if (!config.debugApk.isPresent) {
                 // Don't set debug apk if not already set. #172
                 project.log("Configuring fladle.debugApk from variant ${this@app.name}")
@@ -195,19 +189,6 @@ class FladlePluginDelegate {
           }
       }
     }
-  }
-
-  private fun FladleConfig.isExpectedVariant(
-    appVariant: BaseVariant
-  ) = !variant.isPresent || (variant.isPresent && variant.get() == appVariant.name)
-
-  private fun FladleConfig.isExpectedAbiOutput(appVariantOutput: BaseVariantOutput): Boolean {
-    if (!abi.isPresent) {
-      return true
-    }
-    val abiFilterTypeName = VariantOutput.FilterType.ABI.name
-    return appVariantOutput.filterTypes.contains(abiFilterTypeName) &&
-        (appVariantOutput.filters.single { it.filterType == abiFilterTypeName }.identifier == abi.get())
   }
 
   private val Project.fladleConfig: Configuration
