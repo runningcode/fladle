@@ -77,8 +77,33 @@ class VariantTests {
      **/
   }
 
-  private fun setUpDependOnAssemble(dependsOnAssemble: Boolean, withFlavors: Boolean = false, withFladleConfig: String = "", withTask: String = "runFlank"): BuildResult {
+  @Test
+  fun testAbiSplits() {
+    val result = setUpDependOnAssemble(true, withAbiSplit = true, withTask = "printYml", dryRun = false)
+    // app: /private/var/folders/m2/7q9pbw453p19bpl150ntdfr40000gp/T/junit653698850800487872/build/outputs/apk/debug/junit653698850800487872-x86-debug.apk
+    assertThat(result.output).containsMatch("""\s+app: \S*-x86-debug\.apk""")
+    // Test APKs do not use ABI splits.
+    assertThat(result.output).doesNotContainMatch("""\s+test: \S*-x86-\S*androidTest\.apk""")
+  }
+
+  @Test
+  fun testAbiSplitsWithVariants() {
+    val result = setUpDependOnAssemble(true, withFlavors = true, withAbiSplit = true, withTask = "printYml", dryRun = false)
+    // app: /private/var/folders/m2/7q9pbw453p19bpl150ntdfr40000gp/T/junit6930313466230424292/build/outputs/apk/chocolate/debug/junit6930313466230424292-chocolate-x86-debug.apk
+    assertThat(result.output).containsMatch("""\s+app: \S*-chocolate-x86-debug\.apk""")
+    assertThat(result.output).doesNotContainMatch("""\s+test: \S*-x86-\S*androidTest\.apk""")
+  }
+
+  private fun setUpDependOnAssemble(
+    dependsOnAssemble: Boolean,
+    withFlavors: Boolean = false,
+    withAbiSplit: Boolean = false,
+    withFladleConfig: String = "",
+    withTask: String = "runFlank",
+    dryRun: Boolean = true,
+  ): BuildResult {
     testProjectRoot.setupFixture("android-project")
+    testProjectRoot.writeEmptyServiceCredential()
     val flavors = if (withFlavors) {
       """
              flavorDimensions "flavor"
@@ -92,7 +117,20 @@ class VariantTests {
              }
       """.trimIndent()
     } else { "" }
+    val abiSplits = if (withAbiSplit) {
+      """
+      splits {
+          abi {
+            enable true
+            reset()
+            include "x86", "x86_64"
+            universalApk false
+          }
+      }
+      """.trimIndent()
+    } else ""
     val variant = if (withFlavors) { """variant = "chocolateDebug"""" } else { "" }
+    val abi = if (withAbiSplit) { "abi = \"x86\"" } else ""
     writeBuildGradle(
       """plugins {
           id "com.osacky.fladle"
@@ -116,21 +154,28 @@ class VariantTests {
                  execution 'ANDROIDX_TEST_ORCHESTRATOR'
              }
              $flavors
+             $abiSplits
          }
          fladle {
-           serviceAccountCredentials = project.layout.projectDirectory.file("foo")
+           serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
            dependOnAssemble = $dependsOnAssemble
            $variant
+           $abi
            $withFladleConfig
          }
       """.trimIndent()
     )
+
+    val arguments = mutableListOf(withTask)
+    if (dryRun) {
+      arguments.add("--dry-run")
+    }
     return testProjectRoot.gradleRunner()
-      .withArguments(withTask, "--dry-run")
+      .withArguments(arguments)
       .build()
   }
 
-  fun writeBuildGradle(build: String) {
+  private fun writeBuildGradle(build: String) {
     val file = testProjectRoot.newFile("build.gradle")
     file.writeText(build)
   }
