@@ -58,7 +58,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -152,7 +151,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -225,7 +223,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -348,7 +345,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -406,7 +402,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -474,7 +469,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -555,7 +549,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -646,7 +639,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -718,7 +710,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
             dependencies {
                 classpath '$agpDependency'
