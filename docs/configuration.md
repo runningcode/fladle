@@ -458,6 +458,21 @@ will be marked as "successful". The matrix with a flaky test will be marked as f
     ``` kotlin
     flakyTestAttempts.set(0)
     ```
+
+### abi
+The [ABI](https://developer.android.com/ndk/guides/abis.html#sa) split of the application that should be tested (e.g. "x86"). Only required if the application under test uses [ABI splits](https://developer.android.com/studio/build/configure-apk-splits#configure-abi-split) and the debug APK is selected automatically (via [variant](../configuration/#variant)) instead of manually (via [debugApk](../configuration/#debugapk)).
+
+If the application uses ABI splits, and this property isn't specified, an arbitrary ABI split will be selected.
+
+=== "Groovy"
+    ``` groovy
+    abi = "arm64-v8a"
+    ```
+=== "Kotlin"
+    ``` kotlin
+    abi.set("arm64-v8a")
+    ```
+
 ### directoriesToPull
 A list of paths that will be copied from the device's storage to the designated results bucket after the test is complete. These must be absolute paths under `/sdcard` or `/data/local/tmp`.  Path names are restricted to the characters `a-zA-Z0-9_-./+`. The paths `/sdcard` and `/data` will be made available and treated as implicit path substitutions. E.g. if `/sdcard` on a particular device does not map to external storage, the system will replace it with the external storage path prefix for that device.
 

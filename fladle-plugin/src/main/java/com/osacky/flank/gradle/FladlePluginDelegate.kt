@@ -2,7 +2,6 @@ package com.osacky.flank.gradle
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.TestedExtension
-import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.builder.model.TestOptions
 import com.osacky.flank.gradle.validation.checkForExclusionUsage
@@ -125,7 +124,7 @@ class FladlePluginDelegate {
       if (config.dependOnAssemble.isPresent && config.dependOnAssemble.get()) {
         val testedExtension = requireNotNull(project.extensions.findByType(TestedExtension::class.java)) { "Could not find TestedExtension in ${project.name}" }
         testedExtension.testVariants.configureEach {
-          if (config.isExpectedVariant(testedVariant)) {
+          if (testedVariant.isExpectedVariant(config)) {
             if (testedVariant.assembleProvider.isPresent) {
               dependsOn(testedVariant.assembleProvider)
             }
@@ -172,28 +171,25 @@ class FladlePluginDelegate {
     baseExtension.testVariants.configureEach {
       val appVariant = testedVariant
       outputs.configureEach test@{
-        appVariant.outputs.configureEach app@{
-          if (config.isExpectedVariant(appVariant)) {
-
-            if (!config.debugApk.isPresent) {
-              // Don't set debug apk if not already set. #172
-              project.log("Configuring fladle.debugApk from variant ${this@app.name}")
-              config.debugApk.set(this@app.outputFile.absolutePath)
-            }
-            if (!config.roboScript.isPresent && !config.instrumentationApk.isPresent && !config.sanityRobo.get()) {
-              // Don't set instrumentation apk if not already set. #172
-              project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
-              config.instrumentationApk.set(this@test.outputFile.absolutePath)
+        appVariant.outputs
+          .matching { it.isExpectedAbiOutput(config) }
+          .configureEach app@{
+            if (appVariant.isExpectedVariant(config)) {
+              if (!config.debugApk.isPresent) {
+                // Don't set debug apk if not already set. #172
+                project.log("Configuring fladle.debugApk from variant ${this@app.name}")
+                config.debugApk.set(this@app.outputFile.absolutePath)
+              }
+              if (!config.roboScript.isPresent && !config.instrumentationApk.isPresent && !config.sanityRobo.get()) {
+                // Don't set instrumentation apk if not already set. #172
+                project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
+                config.instrumentationApk.set(this@test.outputFile.absolutePath)
+              }
             }
           }
-        }
       }
     }
   }
-
-  private fun FladleConfig.isExpectedVariant(
-    appVariant: BaseVariant
-  ) = !variant.isPresent || (variant.isPresent && variant.get() == appVariant.name)
 
   private val Project.fladleConfig: Configuration
     get() = configurations.getByName(FLADLE_CONFIG)

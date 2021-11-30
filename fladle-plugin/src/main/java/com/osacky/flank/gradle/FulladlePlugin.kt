@@ -85,67 +85,65 @@ fun configureModule(project: Project, flankGradleExtension: FlankGradleExtension
 
   // TODO deal with ignored/filtered variants
   testedExtension.testVariants.configureEach testVariant@{
-    if (addedTestsForModule) {
-      return@testVariant
-    }
-
-    testedVariant.outputs.configureEach app@{
-      this@testVariant.outputs.configureEach test@{
-        val yml = StringBuilder()
-        // If the debugApk isn't yet set, let's use this one.
-        if (!flankGradleExtension.debugApk.isPresent) {
-          if (project.isAndroidAppModule) {
-            // app modules produce app apks that we can consume
-            flankGradleExtension.debugApk.set(rootProject.provider { this@app.outputFile.absolutePath })
-          } else if (project.isAndroidLibraryModule) {
-            // library modules do not produce an app apk and we'll use the one specified in fulladleModuleConfig block
-            // we need library modules to specify the app apk to test against, even if it's a dummy one
-            check(fulladleModuleExtension.debugApk.isPresent && fulladleModuleExtension.debugApk.orNull != null) {
-              "Library module ${project.path} did not specify a debug apk. Library modules do not generate a debug apk and one needs to be specified in the fulladleModuleConfig block\nThis is a required parameter in FTL which remains unused for library modules under test, and you can use a dummy apk here"
-            }
-            flankGradleExtension.debugApk.set(rootProject.provider { fulladleModuleExtension.debugApk.get() })
-          }
-        } else {
-          // Otherwise, let's just add it to the list.
-          if (project.isAndroidAppModule) {
-            yml.appendln("- app: ${this@app.outputFile}")
-          } else if (project.isAndroidLibraryModule) {
-            // app apk is not required for library modules so only use if it's explicitly specified
-            if (fulladleModuleExtension.debugApk.orNull != null) {
-              yml.appendln("- app: ${fulladleModuleExtension.debugApk.get()}")
-            }
-          }
+    testedVariant.outputs
+      .matching { it.isExpectedAbiOutput(flankGradleExtension) }
+      .configureEach app@{
+        if (addedTestsForModule) {
+          return@app
         }
-
-        // If the instrumentation apk isn't yet set, let's use this one.
-        if (!flankGradleExtension.instrumentationApk.isPresent) {
-          flankGradleExtension.instrumentationApk.set(rootProject.provider { this@test.outputFile.absolutePath })
-        } else {
-          // Otherwise, let's just add it to the list.
-          if (yml.isBlank()) {
-            // The first item in the list needs to start with a ` - `.
-            yml.appendln("- test: ${this@test.outputFile}")
+        this@testVariant.outputs.configureEach test@{
+          val yml = StringBuilder()
+          // If the debugApk isn't yet set, let's use this one.
+          if (!flankGradleExtension.debugApk.isPresent) {
+            if (project.isAndroidAppModule) {
+              // app modules produce app apks that we can consume
+              flankGradleExtension.debugApk.set(rootProject.provider { this@app.outputFile.absolutePath })
+            } else if (project.isAndroidLibraryModule) {
+              // library modules do not produce an app apk and we'll use the one specified in fulladleModuleConfig block
+              // we need library modules to specify the app apk to test against, even if it's a dummy one
+              check(fulladleModuleExtension.debugApk.isPresent && fulladleModuleExtension.debugApk.orNull != null) {
+                "Library module ${project.path} did not specify a debug apk. Library modules do not generate a debug apk and one needs to be specified in the fulladleModuleConfig block\nThis is a required parameter in FTL which remains unused for library modules under test, and you can use a dummy apk here"
+              }
+              flankGradleExtension.debugApk.set(rootProject.provider { fulladleModuleExtension.debugApk.get() })
+            }
           } else {
-            yml.appendln("      test: ${this@test.outputFile}")
+            // Otherwise, let's just add it to the list.
+            if (project.isAndroidAppModule) {
+              yml.appendLine("- app: ${this@app.outputFile}")
+            } else if (project.isAndroidLibraryModule) {
+              // app apk is not required for library modules so only use if it's explicitly specified
+              if (fulladleModuleExtension.debugApk.orNull != null) {
+                yml.appendLine("- app: ${fulladleModuleExtension.debugApk.get()}")
+              }
+            }
           }
+
+          // If the instrumentation apk isn't yet set, let's use this one.
+          if (!flankGradleExtension.instrumentationApk.isPresent) {
+            flankGradleExtension.instrumentationApk.set(rootProject.provider { this@test.outputFile.absolutePath })
+          } else {
+            // Otherwise, let's just add it to the list.
+            if (yml.isBlank()) {
+              // The first item in the list needs to start with a ` - `.
+              yml.appendLine("- test: ${this@test.outputFile}")
+            } else {
+              yml.appendLine("      test: ${this@test.outputFile}")
+            }
+          }
+
+          if (yml.isEmpty()) {
+            // this is the root module
+            // should not be added as additional test apk
+            overrideRootLevelConfigs(flankGradleExtension, fulladleModuleExtension)
+          } else {
+            yml.appendProperty(fulladleModuleExtension.maxTestShards, "    max-test-shards")
+            yml.appendMapProperty(fulladleModuleExtension.clientDetails, "    client-details") { appendLine("        ${it.key}: ${it.value}") }
+            yml.appendMapProperty(fulladleModuleExtension.environmentVariables, "    environment-variables") { appendLine("        ${it.key}: ${it.value}") }
+            flankGradleExtension.additionalTestApks.add(yml.toString())
+          }
+          addedTestsForModule = true
         }
-
-        if (yml.isEmpty()) {
-          // this is the root module
-          // should not be added as additional test apk
-          overrideRootLevelConfigs(flankGradleExtension, fulladleModuleExtension)
-          return@test
-        }
-
-        yml.appendProperty(fulladleModuleExtension.maxTestShards, "    max-test-shards")
-        yml.appendMapProperty(fulladleModuleExtension.clientDetails, "    client-details") { appendln("        ${it.key}: ${it.value}") }
-        yml.appendMapProperty(fulladleModuleExtension.environmentVariables, "    environment-variables") { appendln("        ${it.key}: ${it.value}") }
-        flankGradleExtension.additionalTestApks.add(yml.toString())
-
-        addedTestsForModule = true
-        return@test
       }
-    }
   }
 }
 

@@ -50,6 +50,8 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
 
   override val variant: Property<String> = objects.property()
 
+  override val abi: Property<String> = objects.property()
+
   /**
    * debugApk and instrumentationApk are [Property<String>] and not [RegularFileProperty] because we support wildcard characters.
    */
@@ -165,6 +167,7 @@ open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : Fl
       resultsHistoryName = objects.property<String>().convention(resultsHistoryName),
       flakyTestAttempts = objects.property<Int>().convention(flakyTestAttempts),
       variant = objects.property<String>().convention(variant),
+      abi = objects.property<String>().convention(abi),
       directoriesToPull = objects.listProperty<String>().convention(directoriesToPull),
       filesToDownload = objects.listProperty<String>().convention(filesToDownload),
       environmentVariables = objects.mapProperty<String, String>().convention(environmentVariables),

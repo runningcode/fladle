@@ -117,6 +117,19 @@ interface FladleConfig {
   @get:Optional
   val variant: Property<String>
 
+  /**
+   * ABI split to use for configuring output APK.
+   *
+   * If the application under test uses ABI splits, setting this property to a particular ABI value
+   * (e.g. "x86") will select the version of the APK to use. If the application uses ABI splits and
+   * no value is provided, an arbitrary APK will be selected.
+   *
+   * See [the Android docs for ABI splits](https://developer.android.com/studio/build/configure-apk-splits#configure-abi-split).
+   */
+  @get:Input
+  @get:Optional
+  val abi: Property<String>
+
   @get:Input
   @get:Optional
   val resultsBucket: Property<String>

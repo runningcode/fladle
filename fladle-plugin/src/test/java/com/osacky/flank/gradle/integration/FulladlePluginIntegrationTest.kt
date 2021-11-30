@@ -58,7 +58,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -152,7 +151,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -225,7 +223,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -348,7 +345,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -406,7 +402,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -474,7 +469,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -555,7 +549,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -646,7 +639,6 @@ class FulladlePluginIntegrationTest {
         buildscript {
             repositories {
                 google()
-                jcenter()
             }
 
             dependencies {
@@ -685,5 +677,131 @@ class FulladlePluginIntegrationTest {
       .build()
 
     assertThat(result.output).contains("BUILD SUCCESSFUL")
+  }
+
+  @Test
+  fun fulladleWithAbiSplits() {
+    val appFixtureWithAbiSplits = "android-project-with-abi-splits"
+    val appFixture = "android-project"
+    val appFixtureTwo = "android-project2"
+    val libraryFixture = "android-library-project"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+        include '$appFixtureWithAbiSplits'
+        include '$appFixture'
+        include '$appFixtureTwo'
+        include '$libraryFixture'
+
+        dependencyResolutionManagement {
+          repositories {
+            mavenCentral()
+            google()
+          }
+        }
+      """.trimIndent()
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(appFixtureTwo)
+    testProjectRoot.setupFixture(libraryFixture)
+    File(testProjectRoot.root, appFixture).copyRecursively(testProjectRoot.newFile(appFixtureWithAbiSplits), overwrite = true)
+
+    writeBuildGradle(
+      """
+        buildscript {
+            repositories {
+                google()
+            }
+            dependencies {
+                classpath '$agpDependency'
+            }
+        }
+        plugins {
+          id "com.osacky.fulladle"
+        }
+        fladle {
+          serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+          abi = "armeabi-v7a"
+        }
+      """.trimIndent()
+    )
+
+    // Overwrite android-project fixture to include ABI splits.
+    File(testProjectRoot.root, "$appFixtureWithAbiSplits/build.gradle").writeText(
+      """
+      plugins {
+          id "com.android.application"
+      }
+      android {
+         compileSdkVersion 29
+         defaultConfig {
+             applicationId "com.osacky.flank.gradle.sample"
+             minSdkVersion 23
+             targetSdkVersion 29
+             versionCode 1
+             versionName "1.0"
+             testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+         }
+         testOptions {
+             execution 'ANDROIDX_TEST_ORCHESTRATOR'
+         }
+         splits {
+             abi {
+                enable true
+                reset()
+                include "x86", "armeabi-v7a", "arm64-v8a", "x86_64"
+                universalApk false
+             }
+         }
+      }
+      """.trimIndent()
+    )
+
+    val result = testProjectRoot.gradleRunner()
+      .withArguments(":printYml")
+      .build()
+
+    assertThat(result.output).contains("SUCCESS")
+    // Ensure that:
+    // - Any application modules that use ABI splits use APKs for the specified split (armeabi-v7a).
+    // - Any application modules that don't use ABI splits are still present in additional-app-test-apks.
+    assertThat(result.output).containsMatch(
+      """
+     > Task :printYml
+     gcloud:
+       app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
+       test: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
+       device:
+       - model: NexusLowRes
+         version: 28
+
+       use-orchestrator: false
+       auto-google-login: false
+       record-video: true
+       performance-metrics: true
+       timeout: 15m
+       num-flaky-test-attempts: 0
+
+     flank:
+       keep-file-path: false
+       additional-app-test-apks:
+         - app: [0-9a-zA-Z\/_]*/android-project-with-abi-splits/build/outputs/apk/debug/android-project-with-abi-splits-armeabi-v7a-debug.apk
+           test: [0-9a-zA-Z\/_]*/android-project-with-abi-splits/build/outputs/apk/androidTest/debug/android-project-with-abi-splits-debug-androidTest.apk
+
+         - app: [0-9a-zA-Z\/_]*/android-project2/build/outputs/apk/debug/android-project2-debug.apk
+           test: [0-9a-zA-Z\/_]*/android-project2/build/outputs/apk/androidTest/debug/android-project2-debug-androidTest.apk
+           max-test-shards: 5
+           environment-variables:
+             clearPackageData: false
+
+         - test: [0-9a-zA-Z\/_]*/android-library-project/build/outputs/apk/androidTest/debug/android-library-project-debug-androidTest.apk
+
+       ignore-failed-tests: false
+       disable-sharding: false
+       smart-flank-disable-upload: false
+       legacy-junit-result: false
+       full-junit-result: false
+       output-style: single
+      """.trimIndent()
+    )
   }
 }
