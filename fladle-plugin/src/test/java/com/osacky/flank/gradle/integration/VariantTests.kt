@@ -80,7 +80,6 @@ class VariantTests {
   @Test
   fun testAbiSplits() {
     val result = setUpDependOnAssemble(true, withAbiSplit = true, withTask = "printYml", dryRun = false)
-    // app: /private/var/folders/m2/7q9pbw453p19bpl150ntdfr40000gp/T/junit653698850800487872/build/outputs/apk/debug/junit653698850800487872-x86-debug.apk
     assertThat(result.output).containsMatch("""\s+app: \S*-x86-debug\.apk""")
     // Test APKs do not use ABI splits.
     assertThat(result.output).doesNotContainMatch("""\s+test: \S*-x86-\S*androidTest\.apk""")
@@ -89,7 +88,6 @@ class VariantTests {
   @Test
   fun testAbiSplitsWithVariants() {
     val result = setUpDependOnAssemble(true, withFlavors = true, withAbiSplit = true, withTask = "printYml", dryRun = false)
-    // app: /private/var/folders/m2/7q9pbw453p19bpl150ntdfr40000gp/T/junit6930313466230424292/build/outputs/apk/chocolate/debug/junit6930313466230424292-chocolate-x86-debug.apk
     assertThat(result.output).containsMatch("""\s+app: \S*-chocolate-x86-debug\.apk""")
     assertThat(result.output).doesNotContainMatch("""\s+test: \S*-x86-\S*androidTest\.apk""")
   }
