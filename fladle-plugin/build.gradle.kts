@@ -13,8 +13,8 @@ repositories {
 plugins {
   `kotlin-dsl`
   `java-gradle-plugin`
-  id("com.gradle.plugin-publish") version "0.16.0"
-  id("org.jmailen.kotlinter") version "3.6.0"
+  id("com.gradle.plugin-publish") version "0.18.0"
+  id("org.jmailen.kotlinter") version "3.7.0"
   `maven-publish`
   signing
 }
@@ -31,7 +31,7 @@ dependencies {
   } else {
     implementation("com.android.tools.build:gradle:4.1.3")
   }
-  compileOnly("com.gradle:gradle-enterprise-gradle-plugin:3.7")
+  compileOnly("com.gradle:gradle-enterprise-gradle-plugin:3.7.2")
 
   testImplementation(gradleTestKit())
   testImplementation("junit:junit:4.13.2")
