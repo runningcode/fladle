@@ -13,6 +13,12 @@ jobs:
         job-id: jdk8
         arguments: assembleDebug assembleDebugAndroidTest printYml check :fladle-plugin:check
         gradle-version: wrapper
+    - uses: actions/upload-artifact@v2
+      with:
+        name: JUnit Results
+        path: |
+          ./fladle-plugin/build/reports/tests/*
+          ./fladle-plugin/build/test-results/**/*.xml
     - uses: burrunan/gradle-cache-action@v1
       name: Publish Snapshot
       if: ${{ github.ref == 'refs/heads/master' && github.event_name != 'pull_request' }}
