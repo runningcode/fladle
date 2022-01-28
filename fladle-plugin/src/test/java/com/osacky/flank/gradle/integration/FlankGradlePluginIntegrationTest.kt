@@ -146,7 +146,7 @@ class FlankGradlePluginIntegrationTest {
       .withArguments("runFlank")
       .buildAndFail()
 
-    assertThat(result.output).contains("Must specify either a instrumentationApk file or a roboScript file.")
+    assertThat(result.output).contains("Must specify either a instrumentationApk file or a roboScript file or a robo directive.")
   }
 
   @Test
@@ -169,7 +169,83 @@ class FlankGradlePluginIntegrationTest {
       .withArguments("printYml")
       .buildAndFail()
 
-    assertThat(result.output).contains("Both instrumentationApk file and roboScript file were specified, but only one is expected.")
+    assertThat(result.output).contains("Only one of instrumentationApk file, roboScript file, and robo directives must be specified.")
+  }
+
+  @Test
+  fun testSpecifyingBothInstrumentationAndRobodirectiveFailsBuild() {
+    writeBuildGradle(
+      """plugins {
+            id "com.osacky.fladle"
+           }
+           fladle {
+             serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
+             debugApk = "test-debug.apk"
+             instrumentationApk = "instrumentation-debug.apk"
+             roboDirectives = [
+                ["click", "resource_id"],
+             ]
+           }
+      """.trimIndent()
+    )
+    testProjectRoot.writeEmptyServiceCredential()
+    val result = testProjectRoot.gradleRunner()
+      .withGradleVersion(minSupportGradleVersion)
+      .withArguments("printYml")
+      .buildAndFail()
+
+    assertThat(result.output).contains("Only one of instrumentationApk file, roboScript file, and robo directives must be specified.")
+  }
+
+  @Test
+  fun testSpecifyingBothRoboscriptAndRobodirectiveFailsBuild() {
+    writeBuildGradle(
+      """plugins {
+            id "com.osacky.fladle"
+           }
+           fladle {
+             serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
+             debugApk = "test-debug.apk"
+             roboScript = "foo.script"
+             roboDirectives = [
+                ["click", "resource_id"],
+             ]
+           }
+      """.trimIndent()
+    )
+    testProjectRoot.writeEmptyServiceCredential()
+    val result = testProjectRoot.gradleRunner()
+      .withGradleVersion(minSupportGradleVersion)
+      .withArguments("printYml")
+      .buildAndFail()
+
+    assertThat(result.output).contains("Only one of instrumentationApk file, roboScript file, and robo directives must be specified.")
+  }
+
+  @Test
+  fun testSpecifyingInstrumentationAndRoboscriptAndRobodirectiveFailsBuild() {
+    writeBuildGradle(
+      """plugins {
+            id "com.osacky.fladle"
+           }
+           fladle {
+             serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
+             debugApk = "test-debug.apk"
+             instrumentationApk = "instrumentation-debug.apk"
+             roboScript = "foo.script"
+             roboDirectives = [
+                ["click", "resource_id"],
+             ]
+           }
+      """.trimIndent()
+    )
+    testProjectRoot.writeEmptyServiceCredential()
+    val result = testProjectRoot.gradleRunner()
+      .withGradleVersion(minSupportGradleVersion)
+      .withArguments("printYml")
+      .buildAndFail()
+
+    assertThat(result.output).contains("Only one of instrumentationApk file, roboScript file, and robo directives must be specified.")
   }
 
   @Test

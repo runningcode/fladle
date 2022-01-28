@@ -5,25 +5,29 @@ import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesti
 internal class YamlWriter {
 
   internal fun createConfigProps(config: FladleConfig, base: FlankGradleExtension): String {
+    fun Boolean.toInt() = if (this) 1 else 0
+
     if (base.projectId.orNull == null) {
       check(base.serviceAccountCredentials.isPresent) { "ServiceAccountCredentials in fladle extension not set. https://runningcode.github.io/fladle/configuration/#serviceaccountcredentials" }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
     if (!config.sanityRobo.get()) {
-      check(config.instrumentationApk.isPresent xor config.roboScript.hasValue) {
-        val prefix = if (base.instrumentationApk.isPresent && config.roboScript.hasValue) {
-          "Both instrumentationApk file and roboScript file were specified, but only one is expected."
+      val result = config.instrumentationApk.isPresent.toInt() + config.roboScript.hasValue.toInt() + config.roboDirectives.isPresentAndNotEmpty.toInt()
+
+      check(result == 1) {
+        val prefix = if (result > 1) {
+          "Only one of instrumentationApk file, roboScript file, and robo directives must be specified."
         } else {
-          "Must specify either a instrumentationApk file or a roboScript file."
+          "Must specify either a instrumentationApk file or a roboScript file or a robo directive."
         }
         """
         $prefix
         instrumentationApk=${config.instrumentationApk.orNull}
         roboScript=${config.roboScript.orNull}
+        roboDirective=${config.roboDirectives.orNull}
         """.trimIndent()
       }
     }
-
     val additionalProperties = writeAdditionalProperties(config)
     val flankProperties = writeFlankProperties(config)
 
@@ -98,10 +102,14 @@ internal class YamlWriter {
     appendMapProperty(config.otherFiles, name = "other-files") { appendln("    ${it.key}: ${it.value}") }
     appendProperty(config.networkProfile, name = "network-profile")
     if (!config.sanityRobo.get()) {
-      appendProperty(config.roboScript, name = "robo-script")
-      appendListProperty(config.roboDirectives, name = "robo-directives") {
-        val value = it.getOrElse(2) { "" }.let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
-        appendln("    ${it[0]}:${it[1]}: $value")
+      if (config.roboScript.hasValue) {
+        appendProperty(config.roboScript, name = "robo-script")
+      } else {
+        appendListProperty(config.roboDirectives, name = "robo-directives") {
+          val value = it.getOrElse(2) { "" }
+            .let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
+          appendln("    ${it[0]}:${it[1]}: $value")
+        }
       }
     }
     appendListProperty(config.additionalApks, name = "additional-apks") { appendln("    - $it") }
