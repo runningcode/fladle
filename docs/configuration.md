@@ -759,15 +759,15 @@ List of robo_directives that you can use to customize the behavior of Robo test.
 === "Groovy"
     ``` groovy
     roboDirectives = [
-        ["test:input_resource_name", "message"],
-        ["click:button_resource_name", ""],
+        ["test, "input_resource_name", "message"],
+        ["click, "button_resource_name", ""],
     ]
     ```
 === "Kotlin"
     ``` kotlin
     roboDirectives.set(listOf(
-        listOf("test:input_resource_name", "message"),
-        listOf("click:button_resource_name", ""),
+        listOf("test", "input_resource_name", "message"),
+        listOf("click", "button_resource_name", ""),
     ))
     ```
 
