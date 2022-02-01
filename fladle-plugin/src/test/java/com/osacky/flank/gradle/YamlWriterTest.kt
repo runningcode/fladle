@@ -201,9 +201,10 @@ class YamlWriterTest {
     } catch (expected: IllegalStateException) {
       assertThat(expected).hasMessageThat().isEqualTo(
         """
-        Must specify either a instrumentationApk file or a roboScript file.
+        Must specify either a instrumentationApk file or a roboScript file or a robo directive.
         instrumentationApk=null
         roboScript=null
+        roboDirective=[]
         """.trimIndent()
       )
     }
@@ -223,9 +224,80 @@ class YamlWriterTest {
     } catch (expected: IllegalStateException) {
       assertThat(expected).hasMessageThat().isEqualTo(
         """
-        Both instrumentationApk file and roboScript file were specified, but only one is expected.
+        Only one of instrumentationApk file, roboScript file, and robo directives must be specified.
         instrumentationApk=build/test/*.apk
         roboScript=foo
+        roboDirective=[]
+        """.trimIndent()
+      )
+    }
+  }
+
+  @Test
+  fun verifyInstrumentationApkAndRobodirectivesThrowsError() {
+    val extension = emptyExtension {
+      serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
+      debugApk.set("path")
+      instrumentationApk.set("build/test/*.apk")
+      roboDirectives.add(listOf("click", "resource_id"))
+    }
+    try {
+      yamlWriter.createConfigProps(extension, extension)
+      fail()
+    } catch (expected: IllegalStateException) {
+      assertThat(expected).hasMessageThat().isEqualTo(
+        """
+        Only one of instrumentationApk file, roboScript file, and robo directives must be specified.
+        instrumentationApk=build/test/*.apk
+        roboScript=null
+        roboDirective=[[click, resource_id]]
+        """.trimIndent()
+      )
+    }
+  }
+
+  @Test
+  fun verifyRoboscriptAndRobodirectivesThrowsError() {
+    val extension = emptyExtension {
+      serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
+      debugApk.set("path")
+      roboScript.set("foo")
+      roboDirectives.add(listOf("click", "resource_id"))
+    }
+    try {
+      yamlWriter.createConfigProps(extension, extension)
+      fail()
+    } catch (expected: IllegalStateException) {
+      assertThat(expected).hasMessageThat().isEqualTo(
+        """
+        Only one of instrumentationApk file, roboScript file, and robo directives must be specified.
+        instrumentationApk=null
+        roboScript=foo
+        roboDirective=[[click, resource_id]]
+        """.trimIndent()
+      )
+    }
+  }
+
+  @Test
+  fun verifyInstrumentationApkAndRoboscriptAndRobodirectivesThrowsError() {
+    val extension = emptyExtension {
+      serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
+      debugApk.set("path")
+      instrumentationApk.set("build/test/*.apk")
+      roboScript.set("foo")
+      roboDirectives.add(listOf("click", "resource_id"))
+    }
+    try {
+      yamlWriter.createConfigProps(extension, extension)
+      fail()
+    } catch (expected: IllegalStateException) {
+      assertThat(expected).hasMessageThat().isEqualTo(
+        """
+        Only one of instrumentationApk file, roboScript file, and robo directives must be specified.
+        instrumentationApk=build/test/*.apk
+        roboScript=foo
+        roboDirective=[[click, resource_id]]
         """.trimIndent()
       )
     }
@@ -254,6 +326,43 @@ class YamlWriterTest {
       timeout: 15m
       num-flaky-test-attempts: 0
       robo-script: foo
+
+    flank:
+      keep-file-path: false
+      ignore-failed-tests: false
+      disable-sharding: false
+      smart-flank-disable-upload: false
+      legacy-junit-result: false
+      full-junit-result: false
+      output-style: single
+      """.trimIndent() + '\n'
+    )
+  }
+
+  @Test
+  fun verifyOnlyWithRobodirectivesWorks() {
+    val extension = emptyExtension {
+      serviceAccountCredentials.set(project.layout.projectDirectory.file("fake.json"))
+      debugApk.set("path")
+      roboDirectives.add(listOf("click", "resource_id"))
+    }
+    val configProps = yamlWriter.createConfigProps(extension, extension)
+    assertThat(configProps).isEqualTo(
+      """
+    gcloud:
+      app: path
+      device:
+      - model: NexusLowRes
+        version: 28
+
+      use-orchestrator: false
+      auto-google-login: false
+      record-video: true
+      performance-metrics: true
+      timeout: 15m
+      num-flaky-test-attempts: 0
+      robo-directives:
+        click:resource_id: ""
 
     flank:
       keep-file-path: false
