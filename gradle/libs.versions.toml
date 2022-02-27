@@ -27,8 +27,9 @@ androidx-test-rules = "1.2.0"
 
 junit-version = "4.13.1"
 
-kotlin = "1.6.0"
+kotlin = "1.6.10"
 agp-version = "4.2.2"
+flank-version = "21.11.0"
 
 [libraries]
 
@@ -46,11 +47,9 @@ androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "
 
 agp = { module = "com.android.tools.build:gradle", version.ref = "agp-version" }
 
-flank = "com.github.flank:flank:21.11.0"
+flank = { module = "com.github.flank:flank", version.ref = "21.11.0" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit-version" }
-
-kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 kotlin-stdlib-jdk7 = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version.ref = "kotlin" }
 
