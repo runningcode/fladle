@@ -5,7 +5,7 @@ import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 
 fun <T> StringBuilder.appendProperty(prop: Property<T>, name: String) {
-  if (prop.isPresent) appendln("  $name: ${prop.get()}")
+  if (prop.isPresent) appendLine("  $name: ${prop.get()}")
 }
 
 fun <T, K> StringBuilder.appendMapProperty(
@@ -14,7 +14,7 @@ fun <T, K> StringBuilder.appendMapProperty(
   custom: StringBuilder.(Map.Entry<T, K>) -> Unit
 ) {
   if (prop.isPresentAndNotEmpty) {
-    appendln("  $name:")
+    appendLine("  $name:")
     prop.get().forEach { custom(it) }
   }
 }
@@ -25,7 +25,7 @@ fun <T> StringBuilder.appendListProperty(
   custom: StringBuilder.(T) -> Unit
 ) {
   if (prop.isPresentAndNotEmpty) {
-    appendln("  $name:")
+    appendLine("  $name:")
     prop.get().forEach { custom(it) }
   }
 }
@@ -35,7 +35,7 @@ fun StringBuilder.appendAdditionalProperty(property: Property<String>) {
     property.get()
       .split("\n")
       .map { "  $it" }
-      .forEach { appendln(it) }
+      .forEach { appendLine(it) }
   }
 }
 

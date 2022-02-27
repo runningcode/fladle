@@ -19,8 +19,6 @@ plugins {
   signing
 }
 
-apply(from = "../gradle/scans-quality-check.gradle")
-
 // See https://github.com/slackhq/keeper/pull/11#issuecomment-579544375 for context
 val isReleaseMode : Boolean = hasProperty("fladle.releaseMode")
 
