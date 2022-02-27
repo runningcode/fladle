@@ -20,7 +20,7 @@ android {
   compileSdkVersion(29)
   defaultConfig {
     minSdkVersion(23)
-    targetSdkVersion(28)
+    targetSdkVersion(29)
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
   testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"
