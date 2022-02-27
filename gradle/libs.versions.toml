@@ -2,9 +2,9 @@
 
 [plugins]
 
-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.39.0" }
+ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.42.0" }
 
-kotlinter = { id = "org.jmailen.kotlinter", version = "3.7.0" }
+kotlinter = { id = "org.jmailen.kotlinter", version = "3.9.0" }
 
 gradle-plugin-publish = {id = "com.gradle.plugin-publish", version = "0.20.0" }
 
@@ -19,13 +19,13 @@ androidx-constraintlayout = "1.1.3"
 
 androidx-navigation = "2.3.0"
 
-androidx-test-espresso = "3.2.0"
+androidx-test-espresso = "3.4.0"
 
 androidx-test-ext-junit = "1.1.1"
 
 androidx-test-rules = "1.2.0"
 
-junit-version = "4.13.1"
+junit-version = "4.13.2"
 
 kotlin = "1.6.10"
 agp-version = "4.2.2"
@@ -47,7 +47,7 @@ androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "
 
 agp = { module = "com.android.tools.build:gradle", version.ref = "agp-version" }
 
-flank = { module = "com.github.flank:flank", version.ref = "21.11.0" }
+flank = { module = "com.github.flank:flank", version.ref = "flank-version" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit-version" }
 
