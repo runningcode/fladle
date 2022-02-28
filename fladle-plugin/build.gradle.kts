@@ -160,7 +160,11 @@ tasks.withType(ValidatePlugins::class.java).configureEach {
 
 // Ensure Java 8 Compatibility. See https://github.com/runningcode/fladle/issues/246
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).configureEach {
-  kotlinOptions.jvmTarget = "1.8"
+  kotlinOptions {
+    jvmTarget = "1.8"
+    languageVersion = "1.4"
+    apiVersion = "1.4"
+  }
 }
 
 java {

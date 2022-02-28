@@ -28,7 +28,7 @@ class ValidateExclusionsTest {
       |  maxTestShards.set(2)
       |  flankVersion.set("21.01.0")
       |}
-    """.trimMargin()
+      """.trimMargin()
     )
 
     val result = testProjectRoot.gradleRunner()
@@ -59,7 +59,7 @@ class ValidateExclusionsTest {
       |    }
       |  }
       |}
-    """.trimMargin()
+      """.trimMargin()
     )
 
     testProjectRoot.writeEmptyServiceCredential()

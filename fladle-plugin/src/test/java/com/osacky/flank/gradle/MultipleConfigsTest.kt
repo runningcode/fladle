@@ -33,7 +33,7 @@ class MultipleConfigsTest {
       |    }
       |  }
       |}
-    """.trimMargin()
+      """.trimMargin()
     )
     testProjectRoot.newFile("flank-gradle-service.json").writeText("{}")
 
@@ -71,7 +71,7 @@ class MultipleConfigsTest {
       |  disable-sharding: false
       |  smart-flank-disable-upload: false
       |  local-result-dir: overrideDir
-    """.trimMargin()
+      """.trimMargin()
     )
 
     val regularConfig = GradleRunner.create()

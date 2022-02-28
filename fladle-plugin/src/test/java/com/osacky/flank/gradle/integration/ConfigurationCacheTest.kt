@@ -21,7 +21,8 @@ class ConfigurationCacheTest {
     writeBuildGradle(
       """plugins {
              |  id "com.osacky.fladle"
-             |}""".trimMargin()
+             |}
+      """.trimMargin()
     )
     val result = configCachingRunner("help").build()
 
@@ -45,7 +46,8 @@ class ConfigurationCacheTest {
            |  instrumentationApk = "test.apk"
            |  localResultsDir = "foo"
            |}
-           |""".trimMargin()
+           |
+      """.trimMargin()
     )
     testProjectRoot.newFile("flank-gradle-service-account.json").writeText("{}")
     val result = configCachingRunner("writeConfigProps").build()
@@ -76,7 +78,8 @@ class ConfigurationCacheTest {
            |  debugApk = "debug.apk"
            |  instrumentationApk = "test.apk"
            |}
-           |""".trimMargin()
+           |
+      """.trimMargin()
     )
     testProjectRoot.newFile("flank-gradle-service-account.json").writeText("{}")
     val result = configCachingRunner("flankDoctor").build()
@@ -105,7 +108,8 @@ class ConfigurationCacheTest {
            |  instrumentationApk = "test.apk"
            |  localResultsDir = "foo"
            |}
-           |""".trimMargin()
+           |
+      """.trimMargin()
     )
 
     val settings = testProjectRoot.newFile("settings.gradle")
