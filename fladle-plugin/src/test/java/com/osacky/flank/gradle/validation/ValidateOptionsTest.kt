@@ -79,7 +79,7 @@ class ValidateOptionsTest {
       |    }
       |  }
       |}
-    """.trimMargin()
+      """.trimMargin()
     )
 
     val runner = testProjectRoot.gradleRunner()
@@ -117,7 +117,7 @@ class ValidateOptionsTest {
       |    }
       |  }
       |}
-    """.trimMargin()
+      """.trimMargin()
     )
 
     val runner = testProjectRoot.gradleRunner()
@@ -148,7 +148,7 @@ class ValidateOptionsTest {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-    """.trimMargin()
+      """.trimMargin()
     )
 
     val resultOrange = runner.withArguments("printYmlNoRecord").build()
@@ -178,7 +178,7 @@ class ValidateOptionsTest {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-    """.trimMargin()
+      """.trimMargin()
     )
   }
 }

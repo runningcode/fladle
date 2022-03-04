@@ -24,7 +24,8 @@ class FlankGradlePluginIntegrationTest {
     writeBuildGradle(
       """plugins {
              |  id "com.osacky.fladle"
-             |}""".trimMargin()
+             |}
+      """.trimMargin()
     )
     val result = GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
@@ -39,7 +40,8 @@ class FlankGradlePluginIntegrationTest {
     writeBuildGradle(
       """plugins {
              |  id "com.osacky.fladle"
-             |}""".trimMargin()
+             |}
+      """.trimMargin()
     )
     val result = GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
@@ -55,7 +57,8 @@ class FlankGradlePluginIntegrationTest {
     writeBuildGradle(
       """plugins {
              |  id "com.osacky.fladle"
-             |}""".trimMargin()
+             |}
+      """.trimMargin()
     )
     GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
@@ -75,7 +78,8 @@ class FlankGradlePluginIntegrationTest {
              |  projectId = "foo-project"
              |  debugApk = "foo"
              |  instrumentationApk = "fakeInstrument.apk"
-             |}""".trimMargin()
+             |}
+      """.trimMargin()
     )
     GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
@@ -94,7 +98,8 @@ class FlankGradlePluginIntegrationTest {
              |
              |fladle {
              |  debugApk = "foo"
-             |}""".trimMargin()
+             |}
+      """.trimMargin()
     )
     val result = GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
@@ -114,7 +119,8 @@ class FlankGradlePluginIntegrationTest {
              |fladle {
              |  serviceAccountCredentials = project.layout.projectDirectory.file("foo")
              |}
-             |""".trimMargin()
+             |
+      """.trimMargin()
     )
     testProjectRoot.newFile("foo").writeText("{}")
     val result = GradleRunner.create()
@@ -263,7 +269,7 @@ class FlankGradlePluginIntegrationTest {
              }
            }
          }
-         """.trimMargin()
+      """.trimMargin()
     )
     testProjectRoot.writeEmptyServiceCredential()
     val result = testProjectRoot.gradleRunner()

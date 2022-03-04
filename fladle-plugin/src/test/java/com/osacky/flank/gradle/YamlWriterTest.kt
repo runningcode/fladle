@@ -32,7 +32,7 @@ class YamlWriterTest {
       |  - model: NexusLowRes
       |    version: 28
       |
-    """.trimMargin()
+      """.trimMargin()
     assertThat(deviceString).isEqualTo(expected)
   }
 
@@ -51,7 +51,7 @@ class YamlWriterTest {
       |  - model: Nexus5
       |    version: 23
       |
-    """.trimMargin()
+      """.trimMargin()
     assertThat(deviceString).isEqualTo(expected)
   }
 
@@ -72,7 +72,7 @@ class YamlWriterTest {
       |    version: 28
       |    orientation: landscape
       |
-    """.trimMargin()
+      """.trimMargin()
     assertThat(deviceString).isEqualTo(expected)
   }
 
@@ -95,7 +95,7 @@ class YamlWriterTest {
       |    orientation: landscape
       |    locale: es_ES
       |
-    """.trimMargin()
+      """.trimMargin()
     assertThat(deviceString).isEqualTo(expected)
   }
 
@@ -1135,7 +1135,7 @@ class YamlWriterTest {
       |  client-details:
       |    anyDetail1: anyValue1
       |    anyDetail2: anyValue2
-    """.trimMargin()
+        """.trimMargin()
       )
     )
   }
@@ -1161,7 +1161,7 @@ class YamlWriterTest {
       |  - class com.example.FirstTests#test1
       |  - class com.example.FirstTests#test2
       |  - class com.example.FirstTests#test3
-    """.trimMargin()
+        """.trimMargin()
       )
     )
   }
@@ -1185,7 +1185,7 @@ class YamlWriterTest {
         |  other-files:
         |    /example/path/test1: anyfile.txt
         |    /example/path/test2: anyfile2.txt
-    """.trimMargin()
+        """.trimMargin()
       )
     )
   }
@@ -1229,7 +1229,7 @@ class YamlWriterTest {
         |    click:button3: ""
         |    ignore:button1: ""
         |    text:field1: my common text
-    """.trimMargin()
+        """.trimMargin()
       )
     )
   }

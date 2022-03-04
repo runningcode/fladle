@@ -22,7 +22,8 @@ class FulladlePluginIntegrationTest {
     writeBuildGradle(
       """plugins {
              |  id "com.osacky.fulladle"
-             |}""".trimMargin()
+             |}
+      """.trimMargin()
     )
     val result = testProjectRoot.gradleRunner()
       .withArguments("help")

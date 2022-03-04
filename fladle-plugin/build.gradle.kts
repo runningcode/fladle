@@ -13,13 +13,11 @@ repositories {
 plugins {
   `kotlin-dsl`
   `java-gradle-plugin`
-  id("com.gradle.plugin-publish") version "0.18.0"
-  id("org.jmailen.kotlinter") version "3.7.0"
+  alias(libs.plugins.gradle.plugin.publish)
+  alias(libs.plugins.kotlinter)
   `maven-publish`
   signing
 }
-
-apply(from = "../gradle/scans-quality-check.gradle")
 
 // See https://github.com/slackhq/keeper/pull/11#issuecomment-579544375 for context
 val isReleaseMode : Boolean = hasProperty("fladle.releaseMode")
@@ -27,15 +25,15 @@ val isReleaseMode : Boolean = hasProperty("fladle.releaseMode")
 dependencies {
   compileOnly(gradleApi())
   if (isReleaseMode) {
-    compileOnly("com.android.tools.build:gradle:4.1.3")
+    compileOnly(libs.agp)
   } else {
-    implementation("com.android.tools.build:gradle:4.1.3")
+    implementation(libs.agp)
   }
-  compileOnly("com.gradle:gradle-enterprise-gradle-plugin:3.7.2")
+  compileOnly(libs.gradle.enterprise)
 
   testImplementation(gradleTestKit())
-  testImplementation("junit:junit:4.13.2")
-  testImplementation("com.google.truth:truth:1.1.3")
+  testImplementation(libs.junit)
+  testImplementation(libs.truth)
 }
 
 kotlinter {
@@ -162,7 +160,11 @@ tasks.withType(ValidatePlugins::class.java).configureEach {
 
 // Ensure Java 8 Compatibility. See https://github.com/runningcode/fladle/issues/246
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).configureEach {
-  kotlinOptions.jvmTarget = "1.8"
+  kotlinOptions {
+    jvmTarget = "1.8"
+    languageVersion = "1.4"
+    apiVersion = "1.4"
+  }
 }
 
 java {

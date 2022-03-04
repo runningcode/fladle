@@ -71,7 +71,6 @@ class VariantTests {
      val resultPrint = testProjectRoot.gradleRunner()
      .withArguments("printYmlVanilla")
      .build()
-
      assertThat(resultPrint.output).contains("build/outputs/apk/vanilla/debug/chocovanilla-vanilla-debug.apk")
      assertThat(resultPrint.output).contains("build/outputs/apk/androidTest/vanilla/debug/chocovanilla-vanilla-debug-androidTest.apk")
      **/
