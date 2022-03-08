@@ -1,6 +1,6 @@
 # Multi-module testing
 
-Multi module testing can be done by manually specifying [additionalTestApks](/fladle/configuration/#additionaltestapks) or applying the Fulladle plugin to automacally gather all the additional test apks.
+Multi module testing can be done by manually specifying [additionalTestApks](/fladle/configuration/#additionaltestapks) or applying the Fulladle plugin to automacally gather all the additional test apks. See also [this article](https://proandroiddev.com/android-code-coverage-on-firebase-test-lab-part-3-ci-cd-integration-10f729996c29) for a full setup and instructions including integration with CI.
 
 ## Fulladle Plugin
 
