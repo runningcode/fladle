@@ -36,7 +36,7 @@ open class YamlConfigWriterTask @Inject constructor(
 
   @get:Input
   override val additionalTestApks: ListProperty<String> = objects.listProperty(String::class.java)
-    .convention(config.additionalTestApks.orElse(base.additionalTestApks))
+    .convention(config.additionalTestApks)
 
   @OutputFile
   val fladleConfigFile: Provider<RegularFile> = fladleDir.map { it.file("flank.yml") }
