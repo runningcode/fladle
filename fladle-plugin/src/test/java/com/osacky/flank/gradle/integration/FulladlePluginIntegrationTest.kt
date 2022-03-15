@@ -329,11 +329,13 @@ class FulladlePluginIntegrationTest {
     val appFixture = "android-project"
     val libraryFixture = "android-library-project"
     val flavourProject = "android-project-flavors"
+    val flavourLibrary = "android-library-project-flavors"
     testProjectRoot.newFile("settings.gradle").writeText(
       """
       include '$appFixture'
       include '$libraryFixture'       
       include '$flavourProject'
+      include '$flavourLibrary'     
       
       dependencyResolutionManagement {
         repositories {
@@ -346,6 +348,7 @@ class FulladlePluginIntegrationTest {
     testProjectRoot.setupFixture(appFixture)
     testProjectRoot.setupFixture(libraryFixture)
     testProjectRoot.setupFixture(flavourProject)
+    testProjectRoot.setupFixture(flavourLibrary)
 
     writeBuildGradle(
       """
@@ -370,11 +373,19 @@ class FulladlePluginIntegrationTest {
       """.trimIndent()
     )
 
-    // Configure second included project to ignore fulladle module
+    // Configure flavors in project and library
     File(testProjectRoot.root, "$flavourProject/build.gradle").appendText(
       """
       fulladleModuleConfig {
         variant = "vanillaDebug"
+      }
+      """.trimIndent()
+    )
+
+    File(testProjectRoot.root, "$flavourLibrary/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+        variant = "strawberryDebug"
       }
       """.trimIndent()
     )
@@ -384,7 +395,6 @@ class FulladlePluginIntegrationTest {
       .build()
 
     assertThat(result.output).contains("SUCCESS")
-    // Ensure that there is only one additional test APK even though there are two library modules.
     assertThat(result.output).containsMatch(
       """
      > Task :printYml
@@ -410,6 +420,8 @@ class FulladlePluginIntegrationTest {
 
          - test: [0-9a-zA-Z\/_]*/android-library-project/build/outputs/apk/androidTest/debug/android-library-project-debug-androidTest.apk
 
+         - test: [0-9a-zA-Z\/_]*/android-library-project-flavors/build/outputs/apk/androidTest/strawberry/debug/android-library-project-flavors-strawberry-debug-androidTest.apk
+
        ignore-failed-tests: false
        disable-sharding: false
        smart-flank-disable-upload: false
@@ -425,11 +437,13 @@ class FulladlePluginIntegrationTest {
     val appFixture = "android-project"
     val libraryFixture = "android-library-project"
     val flavourProject = "android-project-flavors"
+    val flavourLibrary = "android-library-project-flavors"
     testProjectRoot.newFile("settings.gradle").writeText(
       """
       include '$appFixture'
       include '$libraryFixture'
       include '$flavourProject'
+      include '$flavourLibrary'
       
       dependencyResolutionManagement {
         repositories {
@@ -440,8 +454,8 @@ class FulladlePluginIntegrationTest {
       """.trimIndent()
     )
     testProjectRoot.setupFixture(appFixture)
-    testProjectRoot.setupFixture(libraryFixture)
     testProjectRoot.setupFixture(flavourProject)
+    testProjectRoot.setupFixture(flavourLibrary)
 
     writeBuildGradle(
       """
@@ -471,7 +485,6 @@ class FulladlePluginIntegrationTest {
       .build()
 
     assertThat(result.output).contains("SUCCESS")
-    // Ensure that there is only one additional test APK even though there are two library modules.
     assertThat(result.output).containsMatch(
       """
      > Task :printYml
@@ -495,7 +508,7 @@ class FulladlePluginIntegrationTest {
          - app: [0-9a-zA-Z\/_]*/android-project-flavors/build/outputs/apk/chocolate/debug/android-project-flavors-chocolate-debug.apk
            test: [0-9a-zA-Z\/_]*/android-project-flavors/build/outputs/apk/androidTest/chocolate/debug/android-project-flavors-chocolate-debug-androidTest.apk
 
-         - test: [0-9a-zA-Z\/_]*/android-library-project/build/outputs/apk/androidTest/debug/android-library-project-debug-androidTest.apk
+         - test: [0-9a-zA-Z\/_]*/android-library-project-flavors/build/outputs/apk/androidTest/lemon/debug/android-library-project-flavors-lemon-debug-androidTest.apk
 
        ignore-failed-tests: false
        disable-sharding: false
