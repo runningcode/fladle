@@ -35,7 +35,7 @@ class FladlePluginDelegate {
   }
 
   private fun checkMinimumGradleVersion() {
-    // Gradle 4.9 is required because we use the lazy task configuration API.
+    // Gradle 6.0 is required because we use ExecOperations.
     if (GRADLE_MIN_VERSION > GradleVersion.current()) {
       throw GradleException("Fladle requires at minimum version $GRADLE_MIN_VERSION. Detected version ${GradleVersion.current()}.")
     }
@@ -195,7 +195,7 @@ class FladlePluginDelegate {
     get() = configurations.getByName(FLADLE_CONFIG)
 
   companion object {
-    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("5.5")
+    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("6.0")
     const val TASK_GROUP = "fladle"
     const val FLADLE_CONFIG = "fladle"
     fun Project.log(message: String) {
