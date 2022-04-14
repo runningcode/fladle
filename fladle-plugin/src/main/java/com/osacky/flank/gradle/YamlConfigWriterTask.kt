@@ -18,11 +18,11 @@ import javax.inject.Inject
 @DisableCachingByDefault(because = "The task writes a small file from in memory properties and does not benefit from caching.")
 open class YamlConfigWriterTask @Inject constructor(
   @get:Nested val base: FlankGradleExtension,
-  config: FladleConfig,
+  @get:Nested val config: FladleConfig,
   @get:Input val configName: String,
   projectLayout: ProjectLayout,
   objects: ObjectFactory
-) : DefaultTask(), FladleConfig by config {
+) : DefaultTask() {
 
   private val yamlWriter = YamlWriter()
 
@@ -35,7 +35,7 @@ open class YamlConfigWriterTask @Inject constructor(
   }
 
   @get:Input
-  override val additionalTestApks: ListProperty<String> = objects.listProperty(String::class.java)
+  val additionalTestApks: ListProperty<String> = objects.listProperty(String::class.java)
     .convention(config.additionalTestApks)
 
   @OutputFile
@@ -54,6 +54,10 @@ open class YamlConfigWriterTask @Inject constructor(
   @TaskAction
   fun writeFile() {
     fladleDir.get().asFile.mkdirs()
-    fladleConfigFile.get().asFile.writeText(yamlWriter.createConfigProps(this, base))
+    val mergedConfig = object : FladleConfig by config {
+      override val additionalTestApks: ListProperty<String>
+        get() = this@YamlConfigWriterTask.additionalTestApks
+    }
+    fladleConfigFile.get().asFile.writeText(yamlWriter.createConfigProps(mergedConfig, base))
   }
 }
