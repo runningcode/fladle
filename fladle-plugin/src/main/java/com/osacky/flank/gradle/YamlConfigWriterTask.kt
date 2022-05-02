@@ -3,6 +3,8 @@ package com.osacky.flank.gradle
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
@@ -18,7 +20,8 @@ open class YamlConfigWriterTask @Inject constructor(
   @get:Nested val base: FlankGradleExtension,
   @get:Nested val config: FladleConfig,
   @get:Input val configName: String,
-  projectLayout: ProjectLayout
+  projectLayout: ProjectLayout,
+  objects: ObjectFactory
 ) : DefaultTask() {
 
   private val yamlWriter = YamlWriter()
@@ -30,6 +33,10 @@ open class YamlConfigWriterTask @Inject constructor(
       it.dir(configName.toLowerCase(Locale.ROOT))
     }
   }
+
+  @get:Input
+  val additionalTestApks: ListProperty<String> = objects.listProperty(String::class.java)
+    .convention(config.additionalTestApks)
 
   @OutputFile
   val fladleConfigFile: Provider<RegularFile> = fladleDir.map { it.file("flank.yml") }
@@ -47,6 +54,10 @@ open class YamlConfigWriterTask @Inject constructor(
   @TaskAction
   fun writeFile() {
     fladleDir.get().asFile.mkdirs()
-    fladleConfigFile.get().asFile.writeText(yamlWriter.createConfigProps(config, base))
+    val mergedConfig = object : FladleConfig by config {
+      override val additionalTestApks: ListProperty<String>
+        get() = this@YamlConfigWriterTask.additionalTestApks
+    }
+    fladleConfigFile.get().asFile.writeText(yamlWriter.createConfigProps(mergedConfig, base))
   }
 }
