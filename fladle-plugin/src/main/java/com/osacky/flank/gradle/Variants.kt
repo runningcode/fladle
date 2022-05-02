@@ -23,3 +23,11 @@ fun BaseVariantOutput.isExpectedAbiOutput(config: FladleConfig): Boolean {
     !filterTypes.contains(VariantOutput.FilterType.ABI.name) ||
     filters.single { it.filterType == VariantOutput.FilterType.ABI.name }.identifier == config.abi.get()
 }
+
+/**
+ * Returns true if this [BaseVariant] matches the variant specified in the [config].
+ *
+ * If no variant is specified, all variants are considered a match.
+ */
+fun BaseVariant.isExpectedVariantInModule(config: FulladleModuleExtension) =
+  !config.variant.isPresent || (config.variant.isPresent && this.name.contains(config.variant.get()))

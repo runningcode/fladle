@@ -325,6 +325,202 @@ class FulladlePluginIntegrationTest {
   }
 
   @Test
+  fun fulladleWithSpecificFlavor() {
+    val appFixture = "android-project"
+    val libraryFixture = "android-library-project"
+    val flavourProject = "android-project-flavors"
+    val flavourLibrary = "android-library-project-flavors"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+      include '$appFixture'
+      include '$libraryFixture'       
+      include '$flavourProject'
+      include '$flavourLibrary'     
+      
+      dependencyResolutionManagement {
+        repositories {
+          mavenCentral()
+          google()
+        }
+      }
+      """.trimIndent()
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(libraryFixture)
+    testProjectRoot.setupFixture(flavourProject)
+    testProjectRoot.setupFixture(flavourLibrary)
+
+    writeBuildGradle(
+      """
+      buildscript {
+          repositories {
+              google()
+          }
+  
+          dependencies {
+              classpath '$agpDependency'
+          }
+      }
+      
+      plugins {
+        id "com.osacky.fulladle"
+      }
+      
+      
+      fladle {
+        serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+      }
+      """.trimIndent()
+    )
+
+    // Configure flavors in project and library
+    File(testProjectRoot.root, "$flavourProject/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+        variant = "vanillaDebug"
+      }
+      """.trimIndent()
+    )
+
+    File(testProjectRoot.root, "$flavourLibrary/build.gradle").appendText(
+      """
+      fulladleModuleConfig {
+        variant = "strawberryDebug"
+      }
+      """.trimIndent()
+    )
+
+    val result = testProjectRoot.gradleRunner()
+      .withArguments(":printYml")
+      .build()
+
+    assertThat(result.output).contains("SUCCESS")
+    assertThat(result.output).containsMatch(
+      """
+     > Task :printYml
+     gcloud:
+       app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
+       test: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
+       device:
+       - model: NexusLowRes
+         version: 28
+
+       use-orchestrator: false
+       auto-google-login: false
+       record-video: true
+       performance-metrics: true
+       timeout: 15m
+       num-flaky-test-attempts: 0
+
+     flank:
+       keep-file-path: false
+       additional-app-test-apks:
+         - app: [0-9a-zA-Z\/_]*/android-project-flavors/build/outputs/apk/vanilla/debug/android-project-flavors-vanilla-debug.apk
+           test: [0-9a-zA-Z\/_]*/android-project-flavors/build/outputs/apk/androidTest/vanilla/debug/android-project-flavors-vanilla-debug-androidTest.apk
+
+         - test: [0-9a-zA-Z\/_]*/android-library-project/build/outputs/apk/androidTest/debug/android-library-project-debug-androidTest.apk
+
+         - test: [0-9a-zA-Z\/_]*/android-library-project-flavors/build/outputs/apk/androidTest/strawberry/debug/android-library-project-flavors-strawberry-debug-androidTest.apk
+
+       ignore-failed-tests: false
+       disable-sharding: false
+       smart-flank-disable-upload: false
+       legacy-junit-result: false
+       full-junit-result: false
+       output-style: single
+      """.trimIndent()
+    )
+  }
+
+  @Test
+  fun fulladleWithDefaultFlavor() {
+    val appFixture = "android-project"
+    val libraryFixture = "android-library-project"
+    val flavourProject = "android-project-flavors"
+    val flavourLibrary = "android-library-project-flavors"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+      include '$appFixture'
+      include '$libraryFixture'
+      include '$flavourProject'
+      include '$flavourLibrary'
+      
+      dependencyResolutionManagement {
+        repositories {
+          mavenCentral()
+          google()
+        }
+      }
+      """.trimIndent()
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(flavourProject)
+    testProjectRoot.setupFixture(flavourLibrary)
+
+    writeBuildGradle(
+      """
+      buildscript {
+          repositories {
+              google()
+          }
+  
+          dependencies {
+              classpath '$agpDependency'
+          }
+      }
+      
+      plugins {
+        id "com.osacky.fulladle"
+      }
+      
+      
+      fladle {
+        serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+      }
+      """.trimIndent()
+    )
+
+    val result = testProjectRoot.gradleRunner()
+      .withArguments(":printYml")
+      .build()
+
+    assertThat(result.output).contains("SUCCESS")
+    assertThat(result.output).containsMatch(
+      """
+     > Task :printYml
+     gcloud:
+       app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
+       test: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
+       device:
+       - model: NexusLowRes
+         version: 28
+
+       use-orchestrator: false
+       auto-google-login: false
+       record-video: true
+       performance-metrics: true
+       timeout: 15m
+       num-flaky-test-attempts: 0
+
+     flank:
+       keep-file-path: false
+       additional-app-test-apks:
+         - app: [0-9a-zA-Z\/_]*/android-project-flavors/build/outputs/apk/chocolate/debug/android-project-flavors-chocolate-debug.apk
+           test: [0-9a-zA-Z\/_]*/android-project-flavors/build/outputs/apk/androidTest/chocolate/debug/android-project-flavors-chocolate-debug-androidTest.apk
+
+         - test: [0-9a-zA-Z\/_]*/android-library-project-flavors/build/outputs/apk/androidTest/lemon/debug/android-library-project-flavors-lemon-debug-androidTest.apk
+
+       ignore-failed-tests: false
+       disable-sharding: false
+       smart-flank-disable-upload: false
+       legacy-junit-result: false
+       full-junit-result: false
+       output-style: single
+      """.trimIndent()
+    )
+  }
+
+  @Test
   fun `test root level module overrides with fulladleModuleConfig`() {
     val appFixture = "android-project"
     testProjectRoot.newFile("settings.gradle").writeText(

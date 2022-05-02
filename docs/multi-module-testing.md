@@ -35,7 +35,7 @@ Multi module testing can be done by manually specifying [additionalTestApks](/fl
         ```
 
     !!! Warning
-        If using buildFlavors or testing against a non default variant, Fulladle might not test the variant you are expecting.
+        If using buildFlavors or testing against a non default variant, you will need to specify the variant you want to test in the fulladleModuleConfig block.
 
 3. Run the tests.
     First assemble all your debug apks and test apks.
@@ -69,6 +69,7 @@ Fulladle will pick Flank configurations from the `fladle` block in the root `bui
           "clearPackageData": "true"
       ]
       debugApk = "app.apk"
+      variant = "vanillaDebug"
     }
     ```
 === "Kotlin"
@@ -83,6 +84,7 @@ Fulladle will pick Flank configurations from the `fladle` block in the root `bui
         "clearPackageData" to "true"
       ))
       debugApk.set("app.apk")
+      variant.set("vanillaDebug")
     }
     ```
 All of the above configurations are optional, Flank will default to the top-level configurations if you don't override anything here. For details about these configurations, refer to [configuration docs](./configuration.md).

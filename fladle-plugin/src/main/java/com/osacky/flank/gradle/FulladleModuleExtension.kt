@@ -39,4 +39,10 @@ open class FulladleModuleExtension @Inject constructor(objects: ObjectFactory) {
    * the app under test
    */
   val debugApk: Property<String> = objects.property<String>().convention(null as String?)
+
+  /**
+   * The variant that should be used for the specific module. If nothing is specified any variant
+   * can be a match.
+   */
+  val variant: Property<String> = objects.property<String>().convention(null as String?)
 }
