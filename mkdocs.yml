@@ -4,9 +4,9 @@
 
 extra:
   fladle:
-    current_release: '0.17.3'
-    next_release: '0.17.4'
-    flank_version: '21.11.0'
+    current_release: '0.17.4'
+    next_release: '0.17.5'
+    flank_version: '22.05.0'
 
 site_name: Fladle
 site_url: https://runningcode.github.io/fladle/
