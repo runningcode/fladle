@@ -77,7 +77,7 @@ fladle {
     debugApk = "$buildDir/outputs/apk/debug/sample-debug.apk"
     instrumentationApk = "$buildDir/outputs/apk/androidTest/debug/sample-debug-androidTest.apk"
     additionalTestApks = [
-        "- app: "$buildDir/outputs/apk/debug/sample-debug.apk",
+        "- app:  $buildDir/outputs/apk/debug/sample-debug.apk",
         "  test: $buildDir/outputs/apk/androidTest/debug/sample2-debug-androidTest.apk",
         "- test: ${rootProject.buildDir}/database/module/outputs/apk/database-module-androidTest.apk"
     ]
