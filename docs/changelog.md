@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+* Add support for additionalTestApks in YamlConfigWriterTask. [PR](https://github.com/runningcode/fladle/pull/291). Thanks [ZacSweers](https://github.com/ZacSweers)
 * Add `abi` option to support selecting a particular debug APK in projects that use [ABI splits](https://developer.android.com/studio/build/configure-apk-splits#configure-abi-split) to produce multiple APKs. [PR](https://github.com/runningcode/fladle/pull/281)
 
 ## 0.17.2
