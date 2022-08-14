@@ -774,7 +774,7 @@ List of robo_directives that you can use to customize the behavior of Robo test.
 
 ### outputStyle
 Output style of execution status. May be one of [`verbose`, `multi`, `single`].
-For runs with only one test execution the default value is 'verbose', in other cases 'multi' is used as the default. The output style 'multi' is not displayed correctly on consoles which don't support ansi codes, to avoid corrupted output use single or verbose.
+For runs with only one test execution the default value is 'verbose', in other cases 'multi' is used as the default. The output style 'multi' is not displayed correctly on consoles which don't support ANSI codes, to avoid corrupted output use single or verbose.
 
 `multi` displays separated status for each shard execution in separated line, lines are updated over time. Similar to gradle output when running multiple tasks in parallel. Requires ANSI codes support.
 
