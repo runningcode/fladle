@@ -3,7 +3,7 @@
 ## Error APK file not found
 The app APK and the instrumentation APK are expected to have already been generated before calling runFlank. To generate APKs, run `assembleDebug` and `assembleDebugAndroidTest` before running `runFlank`. 
 
-You can also have Fladle build them for you by using the [`dependOnAssemble`](../configuration/#dependOnAssemble) property.
+You can also have Fladle build them for you by using the [`dependOnAssemble`](../configuration/#dependonassemble) property.
 
 
 
