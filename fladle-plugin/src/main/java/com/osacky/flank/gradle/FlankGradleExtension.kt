@@ -17,7 +17,7 @@ import javax.inject.Inject
 open class FlankGradleExtension @Inject constructor(objects: ObjectFactory) : FladleConfig {
 
   companion object {
-    const val FLANK_VERSION = "22.10.0"
+    const val FLANK_VERSION = "23.03.0"
   }
 
   @get:Input
