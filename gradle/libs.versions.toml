@@ -29,7 +29,7 @@ junit-version = "4.13.2"
 
 kotlin = "1.6.21"
 agp-version = "4.2.2"
-flank-version = "22.10.0"
+flank-version = "23.03.2"
 
 [libraries]
 
