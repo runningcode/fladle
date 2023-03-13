@@ -4,7 +4,7 @@
 
 ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.42.0" }
 
-kotlinter = { id = "org.jmailen.kotlinter", version = "3.9.0" }
+kotlinter = { id = "org.jmailen.kotlinter", version = "3.13.0" }
 
 gradle-plugin-publish = {id = "com.gradle.plugin-publish", version = "0.20.0" }
 
