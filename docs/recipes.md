@@ -91,11 +91,11 @@ Use Gradle's [dynamic version syntax] to declare a dynamic version.
 
 === "Groovy"
     ``` groovy
-    flankVersion = "22.+"
+    flankVersion = "23.+"
     ```
 === "Kotlin"
     ``` kotlin
-    flankVersion.set("22.+")
+    flankVersion.set("23.+")
     ```
 
 
