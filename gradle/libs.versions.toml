@@ -53,6 +53,6 @@ junit = { group = "junit", name = "junit", version.ref = "junit-version" }
 
 kotlin-stdlib-jdk7 = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version.ref = "kotlin" }
 
-gradle-enterprise = { module = "com.gradle:gradle-enterprise-gradle-plugin", version = "3.10.1" }
+gradle-enterprise = { module = "com.gradle:gradle-enterprise-gradle-plugin", version = "3.13.3" }
 
 truth = "com.google.truth:truth:1.1.3"
