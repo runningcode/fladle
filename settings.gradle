@@ -1,14 +1,15 @@
 pluginManagement {
   repositories {
+    //maven { setUrl("https://nexus.m3.ebay.com/nexus/content/groups/public/") }
     gradlePluginPortal()
     google()
     mavenCentral()
   }
 }
 
-plugins {
-  id "com.gradle.enterprise" version "3.12.4"
-}
+//plugins {
+//  id "com.gradle.enterprise" version "3.12.4"
+//}
 
 include ':android-library-no-tests'
 include ':sample'

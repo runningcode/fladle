@@ -5,6 +5,7 @@ version = "0.17.5-SNAPSHOT"
 description = "Easily Scale your Android Instrumentation Tests with Firebase Test Lab with Flank"
 
 repositories {
+  //maven { setUrl("https://nexus.m3.ebay.com/nexus/content/groups/public/") }
   google()
   mavenCentral()
   gradlePluginPortal()

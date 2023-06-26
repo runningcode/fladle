@@ -1,5 +1,7 @@
 buildscript {
     repositories {
+        //maven { setUrl("https://nexus.m3.ebay.com/nexus/content/groups/public/") }
+        //gradlePluginPortal()
         google()
         mavenCentral()
     }
@@ -29,11 +31,11 @@ fladle {
     serviceAccountCredentials = project.layout.projectDirectory.file("sample/flank-gradle-5cf02dc90531.json")
 }
 
-buildScan {
-    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-    termsOfServiceAgree = 'yes'
-    publishAlways()
-}
+//buildScan {
+//    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+//    termsOfServiceAgree = 'yes'
+//    publishAlways()
+//}
 
 tasks.wrapper.configure {
     gradleVersion = '7.4'
