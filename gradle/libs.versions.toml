@@ -55,4 +55,4 @@ kotlin-stdlib-jdk7 = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk
 
 gradle-enterprise = { module = "com.gradle:gradle-enterprise-gradle-plugin", version = "3.10.1" }
 
-truth = "com.google.truth:truth:1.1.3"
+truth = "com.google.truth:truth:1.1.5"
