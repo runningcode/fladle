@@ -17,7 +17,7 @@ class FulladlePlugin : Plugin<Project> {
     // required modules list
     //var requiredModules = listOf("appBasic", "appCrash")
     var requiredModules = root.properties["moduleList"]?.toString()?.split(",")?.map { it.trim() } ?: listOf()
-//    println("[CUSTOM] requiredModules: $requiredModules")
+    println("[CUSTOM] requiredModules: $requiredModules")
 
 //    println("[CUSTOM] FulladlePlugin.apply at root: $root")
 //    println("[CUSTOM] FulladlePlugin.apply at root: ${root.name}")
@@ -54,7 +54,7 @@ class FulladlePlugin : Plugin<Project> {
         // this will match all subprojects
         //root.subprojects.contains(requiredModules);
 
-        root.project("")
+        //root.project("")
 
         // TODO: Get project by name
 
@@ -63,8 +63,6 @@ class FulladlePlugin : Plugin<Project> {
         // first configure all app modules
         root.subprojects {
 
-//          println("[CUSTOM] not skipping module: ${this.name}")
-
           if (!hasAndroidTest)
             return@subprojects
           modulesEnabled = true
@@ -72,7 +70,7 @@ class FulladlePlugin : Plugin<Project> {
           if (isAndroidAppModule) {
 
             if(requiredModules.isNotEmpty() && !requiredModules.contains(this.name)) {
-//              println("[CUSTOM] skipping app module: ${this.name}")
+              println("[CUSTOM] skipping app module: ${this.name}")
               return@subprojects
             }
 
