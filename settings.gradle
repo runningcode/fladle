@@ -12,10 +12,10 @@ pluginManagement {
 //}
 
 include ':android-library-no-tests'
-include ':sample'
-include ':sample-kotlin'
-include ':sample-flavors-kotlin'
-include ':sample-android-library'
+//include ':sample'
+//include ':sample-kotlin'
+//include ':sample-flavors-kotlin'
+//include ':sample-android-library'
 includeBuild 'fladle-plugin'
 
 dependencyResolutionManagement {

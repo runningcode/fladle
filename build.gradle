@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        //maven { setUrl("https://nexus.m3.ebay.com/nexus/content/groups/public/") }
+        maven { setUrl("https://nexus.m3.ebay.com/nexus/content/groups/public/") }
         //gradlePluginPortal()
         google()
         mavenCentral()

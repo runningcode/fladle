@@ -7,6 +7,7 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputFile
@@ -20,6 +21,7 @@ open class YamlConfigWriterTask @Inject constructor(
   @get:Nested val base: FlankGradleExtension,
   @get:Nested val config: FladleConfig,
   @get:Input val configName: String,
+//  @get:Input val moduleName: String,
   projectLayout: ProjectLayout,
   objects: ObjectFactory
 ) : DefaultTask() {
@@ -40,6 +42,9 @@ open class YamlConfigWriterTask @Inject constructor(
 
   @OutputFile
   val fladleConfigFile: Provider<RegularFile> = fladleDir.map { it.file("flank.yml") }
+
+//  @InputFile
+//  val moduleInputFile = "moduleInput.yml"
 
   @Internal
   override fun getDescription(): String {
