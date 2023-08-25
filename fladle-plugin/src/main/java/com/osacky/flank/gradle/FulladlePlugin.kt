@@ -13,6 +13,8 @@ class FulladlePlugin : Plugin<Project> {
     check(root.parent == null) { "Fulladle must be applied in the root project in order to configure subprojects." }
     FladlePluginDelegate().apply(root)
 
+    var flankModule = root.properties["flankModule"]?.toString()?.split(",")?.map { it.trim() } ?: listOf()
+
     val flankGradleExtension = root.extensions.getByType(FlankGradleExtension::class)
 
     root.subprojects {
@@ -37,19 +39,35 @@ class FulladlePlugin : Plugin<Project> {
       doLast {
         // first configure all app modules
         root.subprojects {
+
           if (!hasAndroidTest)
             return@subprojects
           modulesEnabled = true
-          if (isAndroidAppModule)
+
+          if (isAndroidAppModule) {
+
+            if(flankModule.isNotEmpty() && !flankModule.contains(this.name)) {
+              println("[CUSTOM] skipping app module: ${this.name}")
+              return@subprojects
+            }
+
             configureModule(this, flankGradleExtension)
+          }
         }
         // then configure all library modules
         root.subprojects {
           if (!hasAndroidTest)
             return@subprojects
           modulesEnabled = true
-          if (isAndroidLibraryModule)
+
+          if (isAndroidLibraryModule) {
+
+            if(flankModule.isNotEmpty() && !flankModule.contains(this.name)) {
+              return@subprojects
+            }
+
             configureModule(this, flankGradleExtension)
+          }
         }
 
         check(modulesEnabled) {
