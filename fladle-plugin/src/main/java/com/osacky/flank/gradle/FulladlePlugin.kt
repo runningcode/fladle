@@ -13,7 +13,7 @@ class FulladlePlugin : Plugin<Project> {
     check(root.parent == null) { "Fulladle must be applied in the root project in order to configure subprojects." }
     FladlePluginDelegate().apply(root)
 
-    var flankModule = root.properties["flankModule"]?.toString()?.split(",")?.map { it.trim() } ?: listOf()
+    var flankModules = root.properties["flankModules"]?.toString()?.split(",")?.map { it.trim() } ?: listOf()
 
     val flankGradleExtension = root.extensions.getByType(FlankGradleExtension::class)
 
@@ -46,7 +46,7 @@ class FulladlePlugin : Plugin<Project> {
 
           if (isAndroidAppModule) {
 
-            if(flankModule.isNotEmpty() && !flankModule.contains(this.name)) {
+            if(flankModules.isNotEmpty() && !flankModules.contains(this.name)) {
               return@subprojects
             }
 
@@ -61,7 +61,7 @@ class FulladlePlugin : Plugin<Project> {
 
           if (isAndroidLibraryModule) {
 
-            if(flankModule.isNotEmpty() && !flankModule.contains(this.name)) {
+            if(flankModules.isNotEmpty() && !flankModules.contains(this.name)) {
               return@subprojects
             }
 
