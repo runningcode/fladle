@@ -47,7 +47,6 @@ class FulladlePlugin : Plugin<Project> {
           if (isAndroidAppModule) {
 
             if(flankModule.isNotEmpty() && !flankModule.contains(this.name)) {
-              println("[CUSTOM] skipping app module: ${this.name}")
               return@subprojects
             }
 
