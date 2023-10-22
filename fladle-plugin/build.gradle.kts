@@ -40,30 +40,23 @@ kotlinter {
   indentSize = 2
 }
 
-pluginBundle {
-  website = "https://github.com/runningcode/fladle"
-  vcsUrl = "https://github.com/runningcode/fladle"
-  tags = listOf("flank", "testing", "android", "fladle")
-
-  mavenCoordinates {
-    artifactId = "fladle"
-    groupId = project.group.toString()
-  }
-}
-
 gradlePlugin {
+  website.set("https://github.com/runningcode/fladle")
+  vcsUrl.set("https://github.com/runningcode/fladle")
   plugins {
     create("fladle") {
       id = "com.osacky.fladle"
       displayName = "Fladle"
       description = project.description
       implementationClass = "com.osacky.flank.gradle.FlankGradlePlugin"
+      tags.set(listOf("flank", "testing", "android", "fladle"))
     }
     create("fulladle") {
       id = "com.osacky.fulladle"
       displayName = "Fulladle"
       description = project.description
       implementationClass = "com.osacky.flank.gradle.FulladlePlugin"
+      tags.set(listOf("flank", "testing", "android", "fladle"))
     }
   }
 }
@@ -100,18 +93,15 @@ publishing {
   publications {
     afterEvaluate {
       named<MavenPublication>("fladlePluginMarkerMaven") {
-        signing.sign(this)
         pom.configureForFladle("Fladle")
       }
 
       named<MavenPublication>("pluginMaven") {
         artifact(tasks["sourcesJar"])
         artifact(tasks["javadocJar"])
-        signing.sign(this)
         pom.configureForFladle("Fladle")
       }
       named<MavenPublication>("fulladlePluginMarkerMaven") {
-        signing.sign(this)
         pom.configureForFladle("Fulladle")
       }
     }
