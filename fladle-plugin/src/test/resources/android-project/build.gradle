@@ -5,6 +5,7 @@ plugins {
 
 android {
     compileSdkVersion 29
+    namespace = "com.osacky.flank.gradle.sample"
     defaultConfig {
         applicationId "com.osacky.flank.gradle.sample"
         minSdkVersion 23

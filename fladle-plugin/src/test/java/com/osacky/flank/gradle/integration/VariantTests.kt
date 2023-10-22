@@ -140,11 +140,12 @@ class VariantTests {
               mavenCentral()
           }
          android {
-             compileSdkVersion 29
+             compileSdk 29
+             namespace = "com.osacky.flank.gradle.sample"
              defaultConfig {
                  applicationId "com.osacky.flank.gradle.sample"
-                 minSdkVersion 23
-                 targetSdkVersion 29
+                 minSdk 23
+                 targetSdk 29
                  versionCode 1
                  versionName "1.0"
                  testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
