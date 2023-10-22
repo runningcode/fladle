@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(29)
+    namespace = "com.osacky.flank.gradle.sample"
+    compileSdk = 29
     defaultConfig {
         applicationId = "com.osacky.flank.gradle.sample.kotlin"
-        minSdkVersion(23)
-        targetSdkVersion(29)
+        minSdk = 23
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

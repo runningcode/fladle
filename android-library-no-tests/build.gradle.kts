@@ -4,10 +4,10 @@ plugins {
 }
 
 android {
-  compileSdkVersion(29)
+  compileSdk = 29
+  namespace = "com.osacky.flank.gradle.sample.library"
   defaultConfig {
-    minSdkVersion(23)
-    targetSdkVersion(29)
+    minSdk = 23
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 }

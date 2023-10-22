@@ -5,17 +5,17 @@ plugins {
 }
 
 android {
-    compileSdkVersion(29)
+    namespace = "com.osacky.flank.gradle.sample"
+    compileSdk = 29
     defaultConfig {
         applicationId = "com.osacky.flank.gradle.sample.kotlin"
-        minSdkVersion(23)
-        targetSdkVersion(29)
+        minSdk = 23
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"
-    flavorDimensions("flavor")
+    flavorDimensions += "flavor"
 
     productFlavors {
         create("chocolate") {
@@ -30,14 +30,14 @@ android {
 
 androidComponents {
     beforeVariants(selector().withName("vanilla")) { variantBuilder ->
-        variantBuilder.enabled = false
+        variantBuilder.enable = false
     }
 }
 
 fladle {
     flankVersion.set("23.10.1")
     variant.set("chocolateDebug")
-    debugApk.set(project.provider { "${buildDir.toString()}/outputs/apk/chocolate/debug/*.apk" })
+    debugApk.set(provider {  layout.buildDirectory.file("/outputs/apk/chocolate/debug/*.apk").get().toString()})
     serviceAccountCredentials.set(project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json"))
     // Project Id is not needed if serviceAccountCredentials are set.
 //    projectId("flank-gradle")

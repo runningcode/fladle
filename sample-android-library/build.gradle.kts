@@ -17,6 +17,7 @@ fulladleModuleConfig {
 }
 
 android {
+  namespace = "com.osacky.flank.gradle.sample"
   compileSdk = 29
   defaultConfig {
     minSdk = 23
