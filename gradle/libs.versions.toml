@@ -2,7 +2,7 @@
 
 [plugins]
 
-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.47.0" }
+ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.49.0" }
 
 kotlinter = { id = "org.jmailen.kotlinter", version = "3.9.0" }
 
@@ -27,7 +27,7 @@ androidx-test-rules = "1.2.0"
 
 junit-version = "4.13.2"
 
-kotlin = "1.6.21"
+kotlin = "1.7.21"
 agp-version = "4.2.2"
 flank-version = "23.04.0"
 
