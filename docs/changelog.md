@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-* Drop support for Gradle 6.x
+* Min supported Gradle version is now 6.5
 * Updated Flank version to 23.10.0
 *
 ## 0.17.4

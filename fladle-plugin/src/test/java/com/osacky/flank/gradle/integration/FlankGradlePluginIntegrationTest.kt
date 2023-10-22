@@ -12,7 +12,7 @@ class FlankGradlePluginIntegrationTest {
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
-  val minSupportGradleVersion = "5.5"
+  val minSupportGradleVersion = "6.5"
   val oldVersion = "5.3.1"
 
   fun writeBuildGradle(build: String) {
