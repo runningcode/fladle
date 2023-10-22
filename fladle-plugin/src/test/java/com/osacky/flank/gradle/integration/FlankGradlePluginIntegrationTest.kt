@@ -13,7 +13,7 @@ class FlankGradlePluginIntegrationTest {
   var testProjectRoot = TemporaryFolder()
 
   val minSupportGradleVersion = "6.5"
-  val oldVersion = "5.3.1"
+  val oldVersion = "6.4"
 
   fun writeBuildGradle(build: String) {
     testProjectRoot.writeBuildDotGradle(build)
@@ -32,11 +32,11 @@ class FlankGradlePluginIntegrationTest {
       .withPluginClasspath()
       .withGradleVersion(oldVersion)
       .buildAndFail()
-    assertThat(result.output).contains("Fladle requires at minimum version Gradle 5.5. Detected version Gradle 5.3.1")
+    assertThat(result.output).contains("Fladle requires at minimum version Gradle 6.5. Detected version Gradle 6.4")
   }
 
   @Test
-  fun testGradleSixZero() {
+  fun testGradleSevenOh() {
     writeBuildGradle(
       """plugins {
              |  id "com.osacky.fladle"
@@ -46,7 +46,7 @@ class FlankGradlePluginIntegrationTest {
     val result = GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
       .withPluginClasspath()
-      .withGradleVersion("6.0")
+      .withGradleVersion("7.0")
       .build()
 
     assertThat(result.output).contains("SUCCESS")
