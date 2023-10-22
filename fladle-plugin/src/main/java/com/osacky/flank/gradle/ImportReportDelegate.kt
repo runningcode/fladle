@@ -17,7 +17,6 @@ fun canImportReport(): Boolean {
 fun importReport(tasks: TaskContainer, flankTask: TaskProvider<FlankExecutionTask>) {
   val enableTestUploads = flankTask.get().project.providers
     .gradleProperty("com.osacky.fladle.enableTestUploads")
-    .forUseAtConfigurationTime()
     .getOrElse("true")
     .toBoolean()
   if (enableTestUploads) {

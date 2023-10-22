@@ -14,7 +14,6 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
-
   @Rule
   @JvmField val testRule = ActivityTestRule(MainActivity::class.java)
 

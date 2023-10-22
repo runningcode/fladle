@@ -195,7 +195,7 @@ class FladlePluginDelegate {
     get() = configurations.getByName(FLADLE_CONFIG)
 
   companion object {
-    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("5.5")
+    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("6.5")
     const val TASK_GROUP = "fladle"
     const val FLADLE_CONFIG = "fladle"
     fun Project.log(message: String) {

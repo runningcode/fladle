@@ -5,6 +5,7 @@ import org.gradle.testkit.runner.BuildResult
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import java.io.File
 
 class VariantTests {
 
@@ -48,7 +49,6 @@ class VariantTests {
 
   @Test
   fun testAdditionalFladleConfigForVariant() {
-    testProjectRoot.newFile("settings.gradle").writeText("rootProject.name = 'chocovanilla'")
     val result = setUpDependOnAssemble(
       dependsOnAssemble = true, withFlavors = true,
       withFladleConfig = """
@@ -99,8 +99,10 @@ class VariantTests {
     withTask: String = "runFlank",
     dryRun: Boolean = true,
   ): BuildResult {
+    testProjectRoot.newFile("settings.gradle").writeText("""rootProject.name = 'chocovanilla'
+      |include ':android-project'
+    """.trimMargin())
     testProjectRoot.setupFixture("android-project")
-    testProjectRoot.writeEmptyServiceCredential()
     val flavors = if (withFlavors) {
       """
              flavorDimensions "flavor"
@@ -154,7 +156,7 @@ class VariantTests {
              $abiSplits
          }
          fladle {
-           serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
+           serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json")
            dependOnAssemble = $dependsOnAssemble
            $variant
            $abi
@@ -167,13 +169,16 @@ class VariantTests {
     if (dryRun) {
       arguments.add("--dry-run")
     }
+    // print directory structure for debugging
+    testProjectRoot.root.walkTopDown().forEach { println(it) }
     return testProjectRoot.gradleRunner()
       .withArguments(arguments)
       .build()
   }
 
   private fun writeBuildGradle(build: String) {
-    val file = testProjectRoot.newFile("build.gradle")
+    // Overwrite existing build.gradle file in "android-project" directory with new text
+    val file = File(testProjectRoot.root, "android-project/build.gradle")
     file.writeText(build)
   }
 }

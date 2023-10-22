@@ -13,16 +13,8 @@ plugins {
     alias(libs.plugins.kotlinter)
 }
 
-kotlinter {
-  indentSize = 2
-}
-
 allprojects {
     apply plugin: "org.jmailen.kotlinter"
-
-    kotlinter {
-        indentSize = 2
-    }
 }
 
 fladle {
@@ -36,7 +28,7 @@ buildScan {
 }
 
 tasks.wrapper.configure {
-    gradleVersion = '7.4'
+    gradleVersion = '8.4'
 }
 
 def isNonStable = { String version ->
