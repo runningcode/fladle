@@ -11,7 +11,7 @@ private fun baseConfigMessage(option: String) = "Incorrect [base] configuration.
 private fun additionalConfigMessage(
   option: String,
   name: String,
-) = "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo." +
+) = "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo. " +
   "To configure sanityRobo, add clearPropertiesForSanityRobo() to the [$name] configuration"
 
 class SanityRoboTest {

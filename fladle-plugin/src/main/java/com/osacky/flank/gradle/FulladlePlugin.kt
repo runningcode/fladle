@@ -110,9 +110,9 @@ fun configureModule(
                 // library modules do not produce an app apk and we'll use the one specified in fulladleModuleConfig block
                 // we need library modules to specify the app apk to test against, even if it's a dummy one
                 check(fulladleModuleExtension.debugApk.isPresent && fulladleModuleExtension.debugApk.orNull != null) {
-                  "Library module ${project.path} did not specify a debug apk. Library modules do not" +
+                  "Library module ${project.path} did not specify a debug apk. Library modules do not " +
                     "generate a debug apk and one needs to be specified in the fulladleModuleConfig block\n" +
-                    "This is a required parameter in FTL which remains unused for library modules under test," +
+                    "This is a required parameter in FTL which remains unused for library modules under test, " +
                     "and you can use a dummy apk here"
                 }
                 flankGradleExtension.debugApk.set(rootProject.provider { fulladleModuleExtension.debugApk.get() })
