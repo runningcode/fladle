@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-  compileSdk = 29
+  compileSdk = 33
   namespace = "com.osacky.flank.gradle.sample.library"
   defaultConfig {
     minSdk = 23

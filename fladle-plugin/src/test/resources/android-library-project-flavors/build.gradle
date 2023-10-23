@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    compileSdk 29
+    compileSdk 33
     namespace = "com.osacky.flank.gradle.sample"
     defaultConfig {
         targetSdk 29
