@@ -166,7 +166,7 @@ class VariantTests {
           defaultConfig {
               applicationId "com.osacky.flank.gradle.sample"
               minSdk 23
-              targetSdk 29
+              targetSdk 33
               versionCode 1
               versionName "1.0"
               testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -191,8 +191,6 @@ class VariantTests {
     if (dryRun) {
       arguments.add("--dry-run")
     }
-    // print directory structure for debugging
-    testProjectRoot.root.walkTopDown().forEach { println(it) }
     return testProjectRoot.gradleRunner()
       .withArguments(arguments)
       .build()
