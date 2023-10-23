@@ -8,7 +8,6 @@ import org.junit.rules.TemporaryFolder
 import java.io.File
 
 class VariantTests {
-
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
@@ -49,17 +48,20 @@ class VariantTests {
 
   @Test
   fun testAdditionalFladleConfigForVariant() {
-    val result = setUpDependOnAssemble(
-      dependsOnAssemble = true, withFlavors = true,
-      withFladleConfig = """
-      configs {
-          vanilla {
-              variant.set("vanillaDebug")
+    val result =
+      setUpDependOnAssemble(
+        dependsOnAssemble = true,
+        withFlavors = true,
+        withFladleConfig =
+          """
+          configs {
+              vanilla {
+                  variant.set("vanillaDebug")
+              }
           }
-      }
-      """.trimIndent(),
-      withTask = "runFlankVanilla"
-    )
+          """.trimIndent(),
+        withTask = "runFlankVanilla",
+      )
     assertThat(result.output).contains(":assembleVanillaDebug")
     assertThat(result.output).contains(":assembleVanillaDebugAndroidTest")
     assertThat(result.output).doesNotContain(":assembleVanillaRelease")
@@ -99,71 +101,90 @@ class VariantTests {
     withTask: String = "runFlank",
     dryRun: Boolean = true,
   ): BuildResult {
-    testProjectRoot.newFile("settings.gradle").writeText("""rootProject.name = 'chocovanilla'
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """rootProject.name = 'chocovanilla'
       |include ':android-project'
-    """.trimMargin())
+      """.trimMargin(),
+    )
     testProjectRoot.setupFixture("android-project")
-    val flavors = if (withFlavors) {
-      """
-             flavorDimensions "flavor"
-             productFlavors {
-                 chocolate {
-                     dimension "flavor"
-                 }
-                 vanilla {
-                     dimension "flavor"
-                 }
-             }
-      """.trimIndent()
-    } else { "" }
-    val abiSplits = if (withAbiSplit) {
-      """
-      splits {
-          abi {
-            enable true
-            reset()
-            include "x86", "x86_64"
-            universalApk false
-          }
+    val flavors =
+      if (withFlavors) {
+        """
+        flavorDimensions "flavor"
+        productFlavors {
+            chocolate {
+                dimension "flavor"
+            }
+            vanilla {
+                dimension "flavor"
+            }
+        }
+        """.trimIndent()
+      } else {
+        ""
       }
-      """.trimIndent()
-    } else ""
-    val variant = if (withFlavors) { """variant = "chocolateDebug"""" } else { "" }
-    val abi = if (withAbiSplit) { "abi = \"x86\"" } else ""
+    val abiSplits =
+      if (withAbiSplit) {
+        """
+        splits {
+            abi {
+              enable true
+              reset()
+              include "x86", "x86_64"
+              universalApk false
+            }
+        }
+        """.trimIndent()
+      } else {
+        ""
+      }
+    val variant =
+      if (withFlavors) {
+        """variant = "chocolateDebug""""
+      } else {
+        ""
+      }
+    val abi =
+      if (withAbiSplit) {
+        "abi = \"x86\""
+      } else {
+        ""
+      }
     writeBuildGradle(
-      """plugins {
-          id "com.osacky.fladle"
-          id "com.android.application"
-         }
-         repositories {
-              google()
-              mavenCentral()
+      """
+      plugins {
+       id "com.osacky.fladle"
+       id "com.android.application"
+      }
+      repositories {
+           google()
+           mavenCentral()
+       }
+      android {
+          compileSdk 29
+          namespace = "com.osacky.flank.gradle.sample"
+          defaultConfig {
+              applicationId "com.osacky.flank.gradle.sample"
+              minSdk 23
+              targetSdk 29
+              versionCode 1
+              versionName "1.0"
+              testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
           }
-         android {
-             compileSdk 29
-             namespace = "com.osacky.flank.gradle.sample"
-             defaultConfig {
-                 applicationId "com.osacky.flank.gradle.sample"
-                 minSdk 23
-                 targetSdk 29
-                 versionCode 1
-                 versionName "1.0"
-                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-             }
-             testOptions {
-                 execution 'ANDROIDX_TEST_ORCHESTRATOR'
-             }
-             $flavors
-             $abiSplits
-         }
-         fladle {
-           serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json")
-           dependOnAssemble = $dependsOnAssemble
-           $variant
-           $abi
-           $withFladleConfig
-         }
-      """.trimIndent()
+          testOptions {
+              execution 'ANDROIDX_TEST_ORCHESTRATOR'
+          }
+          $flavors
+          $abiSplits
+      }
+      fladle {
+        serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json")
+        dependOnAssemble = $dependsOnAssemble
+        $variant
+        $abi
+        $withFladleConfig
+      }
+      """.trimIndent(),
     )
 
     val arguments = mutableListOf(withTask)

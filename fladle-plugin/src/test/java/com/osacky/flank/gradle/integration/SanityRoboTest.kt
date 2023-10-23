@@ -7,7 +7,12 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
 private fun baseConfigMessage(option: String) = "Incorrect [base] configuration. [$option] can't be used together with sanityRobo."
-private fun additionalConfigMessage(option: String, name: String) = "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo. To configure sanityRobo, add clearPropertiesForSanityRobo() to the [$name] configuration"
+
+private fun additionalConfigMessage(
+  option: String,
+  name: String,
+) =
+  "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo. To configure sanityRobo, add clearPropertiesForSanityRobo() to the [$name] configuration"
 
 class SanityRoboTest {
   @get:Rule
@@ -35,7 +40,7 @@ class SanityRoboTest {
       |    }
       |  }
       |}
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val runner = testProjectRoot.gradleRunner()
@@ -63,7 +68,7 @@ class SanityRoboTest {
       |  serviceAccountCredentials = layout.projectDirectory.file("flank-gradle-service.json")
       |  roboScript = "some/path/script.json"
       |}
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val result = testProjectRoot.gradleRunner().withArguments("printYml").buildAndFail()
@@ -76,7 +81,7 @@ class SanityRoboTest {
   fun `sanityRobo - should throw an error if roboDirectives set`() {
     testProjectRoot.writeBuildDotGradle(
       buildScript =
-      """
+        """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -91,7 +96,7 @@ class SanityRoboTest {
       |    ["text", "field1", "my text"],
       |  ]
       |}
-      """.trimMargin()
+        """.trimMargin(),
     )
 
     val result = testProjectRoot.gradleRunner().withArguments("printYml").buildAndFail()
@@ -104,7 +109,7 @@ class SanityRoboTest {
   fun `sanityRobo - should throw an error if additionalTestApks set`() {
     testProjectRoot.writeBuildDotGradle(
       buildScript =
-      """
+        """
       |plugins {
       |  id "com.osacky.fladle"
       |}
@@ -119,7 +124,7 @@ class SanityRoboTest {
       |    "- test: test3.apk"
       |  ]
       |}
-      """.trimMargin()
+        """.trimMargin(),
     )
 
     val result = testProjectRoot.gradleRunner().withArguments("printYml").buildAndFail()
@@ -152,7 +157,7 @@ class SanityRoboTest {
       |    }
       |  }
       |}
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val expectedMessage = additionalConfigMessage("roboScript", "sanity")
@@ -191,7 +196,7 @@ class SanityRoboTest {
       |    }
       |  }
       |}
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val runner = testProjectRoot.gradleRunner()
@@ -226,7 +231,7 @@ class SanityRoboTest {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val resultOrange = runner.withArguments("printYmlOrange").build()
@@ -255,7 +260,7 @@ class SanityRoboTest {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-      """.trimMargin()
+      """.trimMargin(),
     )
   }
 
@@ -283,7 +288,7 @@ class SanityRoboTest {
       |    }
       |  }
       |}
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val runner = testProjectRoot.gradleRunner()
@@ -313,7 +318,7 @@ class SanityRoboTest {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val resultOrange = runner.withArguments("printYmlOrange").build()
@@ -347,7 +352,7 @@ class SanityRoboTest {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-      """.trimMargin()
+      """.trimMargin(),
     )
   }
 }

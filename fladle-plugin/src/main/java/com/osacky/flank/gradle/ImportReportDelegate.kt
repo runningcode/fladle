@@ -14,11 +14,15 @@ fun canImportReport(): Boolean {
   }
 }
 
-fun importReport(tasks: TaskContainer, flankTask: TaskProvider<FlankExecutionTask>) {
-  val enableTestUploads = flankTask.get().project.providers
-    .gradleProperty("com.osacky.fladle.enableTestUploads")
-    .getOrElse("true")
-    .toBoolean()
+fun importReport(
+  tasks: TaskContainer,
+  flankTask: TaskProvider<FlankExecutionTask>,
+) {
+  val enableTestUploads =
+    flankTask.get().project.providers
+      .gradleProperty("com.osacky.fladle.enableTestUploads")
+      .getOrElse("true")
+      .toBoolean()
   if (enableTestUploads) {
     ImportJUnitXmlReports.register(tasks, flankTask, JUnitXmlDialect.ANDROID_FIREBASE).configure {
       reports.setFrom("${project.buildDir}/fladle/${flankTask.get().config.localResultsDir.get()}/JUnitReport.xml")

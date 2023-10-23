@@ -7,7 +7,6 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
 class ConfigurationCacheTest {
-
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
@@ -22,7 +21,7 @@ class ConfigurationCacheTest {
       """plugins {
              |  id "com.osacky.fladle"
              |}
-      """.trimMargin()
+      """.trimMargin(),
     )
     val result = configCachingRunner("help").build()
 
@@ -47,7 +46,7 @@ class ConfigurationCacheTest {
            |  localResultsDir = "foo"
            |}
            |
-      """.trimMargin()
+      """.trimMargin(),
     )
     testProjectRoot.newFile("flank-gradle-service-account.json").writeText("{}")
     val result = configCachingRunner("writeConfigProps").build()
@@ -79,7 +78,7 @@ class ConfigurationCacheTest {
            |  instrumentationApk = "test.apk"
            |}
            |
-      """.trimMargin()
+      """.trimMargin(),
     )
     testProjectRoot.newFile("flank-gradle-service-account.json").writeText("{}")
     val result = configCachingRunner("flankDoctor").build()
@@ -109,7 +108,7 @@ class ConfigurationCacheTest {
            |  localResultsDir = "foo"
            |}
            |
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val settings = testProjectRoot.newFile("settings.gradle")
@@ -118,7 +117,7 @@ class ConfigurationCacheTest {
       plugins {
         id 'com.gradle.enterprise' version '3.7'
       }
-      """.trimIndent()
+      """.trimIndent(),
     )
     testProjectRoot.newFile("flank-gradle-service-account.json").writeText("{ \"project_id\": \"foo\" }")
     val result = configCachingRunner("runFlank").buildAndFail()

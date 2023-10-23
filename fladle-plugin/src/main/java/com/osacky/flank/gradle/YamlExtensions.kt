@@ -4,14 +4,17 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 
-fun <T> StringBuilder.appendProperty(prop: Property<T>, name: String) {
+fun <T> StringBuilder.appendProperty(
+  prop: Property<T>,
+  name: String,
+) {
   if (prop.isPresent) appendLine("  $name: ${prop.get()}")
 }
 
 fun <T, K> StringBuilder.appendMapProperty(
   prop: MapProperty<T, K>,
   name: String,
-  custom: StringBuilder.(Map.Entry<T, K>) -> Unit
+  custom: StringBuilder.(Map.Entry<T, K>) -> Unit,
 ) {
   if (prop.isPresentAndNotEmpty) {
     appendLine("  $name:")
@@ -22,7 +25,7 @@ fun <T, K> StringBuilder.appendMapProperty(
 fun <T> StringBuilder.appendListProperty(
   prop: ListProperty<T>,
   name: String,
-  custom: StringBuilder.(T) -> Unit
+  custom: StringBuilder.(T) -> Unit,
 ) {
   if (prop.isPresentAndNotEmpty) {
     appendLine("  $name:")
