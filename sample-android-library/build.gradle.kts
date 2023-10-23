@@ -24,6 +24,10 @@ android {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
   testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+  }
 }
 
 dependencies {
