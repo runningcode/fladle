@@ -16,6 +16,12 @@ android {
   }
 }
 
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(11)
+  }
+}
+
 fulladleModuleConfig {
   debugApk.set(rootProject.file("dummy_app.apk").path)
 }

@@ -138,7 +138,8 @@ class YamlWriterTest {
       fail()
     } catch (expected: IllegalStateException) {
       assertEquals(
-        "ServiceAccountCredentials in fladle extension not set. https://runningcode.github.io/fladle/configuration/#serviceaccountcredentials",
+        "ServiceAccountCredentials in fladle extension not set." +
+          "https://runningcode.github.io/fladle/configuration/#serviceaccountcredentials",
         expected.message,
       )
     }
@@ -178,7 +179,7 @@ class YamlWriterTest {
         legacy-junit-result: false
         full-junit-result: false
         output-style: single
-      """.trimIndent() + '\n', // Dunno why this needs to be here to make the tests pass.
+      """.trimIndent() + '\n',
     )
   }
 

@@ -22,6 +22,12 @@ android {
     }
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
 fladle {
     async = true
     flankVersion = "23.+"

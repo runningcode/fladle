@@ -11,12 +11,15 @@ internal class YamlWriter {
 
     if (base.projectId.orNull == null) {
       check(base.serviceAccountCredentials.isPresent) {
-        "ServiceAccountCredentials in fladle extension not set. https://runningcode.github.io/fladle/configuration/#serviceaccountcredentials"
+        "ServiceAccountCredentials in fladle extension not set." +
+          "https://runningcode.github.io/fladle/configuration/#serviceaccountcredentials"
       }
     }
     check(base.debugApk.isPresent) { "debugApk must be specified" }
     if (!config.sanityRobo.get()) {
-      val result = config.instrumentationApk.isPresent.toInt() + config.roboScript.hasValue.toInt() + config.roboDirectives.isPresentAndNotEmpty.toInt()
+      val result =
+        config.instrumentationApk.isPresent.toInt() + config.roboScript.hasValue.toInt() +
+          config.roboDirectives.isPresentAndNotEmpty.toInt()
 
       check(result == 1) {
         val prefix =

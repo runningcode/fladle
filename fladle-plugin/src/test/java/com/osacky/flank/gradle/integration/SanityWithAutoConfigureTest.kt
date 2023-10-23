@@ -6,7 +6,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
-private const val commonScriptPart = """
+private const val COMMON_SCRIPT_PART = """
   plugins {
     id 'com.android.application'
     id 'com.osacky.fladle'
@@ -44,7 +44,7 @@ class SanityWithAutoConfigureTest {
   fun `test auto configuration with sanityRobo set (inner config)`() {
     testProjectRoot.writeBuildDotGradle(
       """
-            $commonScriptPart
+            $COMMON_SCRIPT_PART
 
             fladle {
               serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
@@ -197,7 +197,7 @@ class SanityWithAutoConfigureTest {
   fun `test auto configuration with sanityRobo set (base config)`() {
     testProjectRoot.writeBuildDotGradle(
       """
-            $commonScriptPart
+            $COMMON_SCRIPT_PART
 
             fladle {
               sanityRobo = true

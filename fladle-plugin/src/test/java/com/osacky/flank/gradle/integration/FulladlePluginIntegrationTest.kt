@@ -714,7 +714,8 @@ class FulladlePluginIntegrationTest {
 
     assertThat(result.output).contains("Task :configureFulladle FAILED")
     assertThat(result.output).contains(
-      "Library module :android-library-project did not specify a debug apk. Library modules do not generate a debug apk and one needs to be specified in the fulladleModuleConfig block",
+      "Library module :android-library-project did not specify a debug apk. Library modules do not " +
+        "generate a debug apk and one needs to be specified in the fulladleModuleConfig block",
     )
     assertThat(result.output).contains(
       "This is a required parameter in FTL which remains unused for library modules under test, and you can use a dummy apk here",
