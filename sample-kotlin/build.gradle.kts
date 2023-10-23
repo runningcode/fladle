@@ -5,16 +5,20 @@ plugins {
 }
 
 android {
-    namespace = "com.osacky.flank.gradle.sample"
-    compileSdk = 29
-    defaultConfig {
-        applicationId = "com.osacky.flank.gradle.sample.kotlin"
-        minSdk = 23
-        versionCode = 1
-        versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"
+  namespace = "com.osacky.flank.gradle.sample"
+  compileSdk = 29
+  defaultConfig {
+      applicationId = "com.osacky.flank.gradle.sample.kotlin"
+      minSdk = 23
+      versionCode = 1
+      versionName = "1.0"
+      testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+  }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+  }
+  testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"
 }
 
 fladle {
