@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-  namespace = "com.osacky.flank.gradle.sample"
+  namespace = "com.osacky.flank.gradle.sample.kotlin"
   compileSdk = 33
   defaultConfig {
       applicationId = "com.osacky.flank.gradle.sample.kotlin"
@@ -29,6 +29,12 @@ android {
       create("vanilla") {
           dimension = "flavor"
       }
+  }
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(11)
   }
 }
 
