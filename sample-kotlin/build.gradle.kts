@@ -6,7 +6,7 @@ plugins {
 
 android {
   namespace = "com.osacky.flank.gradle.sample"
-  compileSdk = 29
+  compileSdk = 33
   defaultConfig {
       applicationId = "com.osacky.flank.gradle.sample.kotlin"
       minSdk = 23

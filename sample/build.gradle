@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.osacky.fladle'
 
 android {
-    compileSdk = 29
+    compileSdk = 33
     namespace = "com.osacky.flank.gradle.sample"
     defaultConfig {
         applicationId "com.osacky.flank.gradle.sample"
