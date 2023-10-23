@@ -15,11 +15,14 @@ import com.gradle.enterprise.gradleplugin.test.JUnitXmlDialect as GEJUnitXmlDial
 
 fun canImportReport(): Boolean = JUnitXmlHandler.canImport()
 
-fun importReport(project: Project, flankTaskProvider: TaskProvider<FlankExecutionTask>) {
-  val enableTestUploads = project.providers
-    .gradleProperty("com.osacky.fladle.enableTestUploads")
-    .getOrElse("true")
-    .toBoolean()
+fun importReport(
+  project: Project, flankTaskProvider: TaskProvider<FlankExecutionTask>,
+) {
+  val enableTestUploads =
+    project.providers
+      .gradleProperty("com.osacky.fladle.enableTestUploads")
+      .getOrElse("true")
+      .toBoolean()
   if (enableTestUploads) {
     val resultsProvider: Provider<RegularFile> = project.layout.buildDirectory
       .dir("fladle")

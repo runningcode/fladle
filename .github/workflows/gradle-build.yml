@@ -10,7 +10,7 @@ jobs:
     - uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: '8'
+        java-version: '11'
     - uses: gradle/actions/setup-gradle@v3
       name: Setup Gradle
     - name: Check Fladle

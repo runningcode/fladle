@@ -28,12 +28,13 @@ class ValidateExclusionsTest {
       |  maxTestShards.set(2)
       |  flankVersion.set("21.01.0")
       |}
-      """.trimMargin()
+      """.trimMargin(),
     )
 
-    val result = testProjectRoot.gradleRunner()
-      .withArguments("printYml")
-      .buildAndFail()
+    val result =
+      testProjectRoot.gradleRunner()
+        .withArguments("printYml")
+        .buildAndFail()
 
     assertThat(result.output).contains("FAILED")
     assertThat(result.output).contains("Options testShards and maxTestShards cannot be used together. Choose one of them.")
@@ -59,7 +60,7 @@ class ValidateExclusionsTest {
       |    }
       |  }
       |}
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     testProjectRoot.writeEmptyServiceCredential()
