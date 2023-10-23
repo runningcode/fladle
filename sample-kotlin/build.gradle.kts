@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-  namespace = "com.osacky.flank.gradle.sample"
+  namespace = "com.osacky.flank.gradle.sample.kotlin"
   compileSdk = 33
   defaultConfig {
       applicationId = "com.osacky.flank.gradle.sample.kotlin"
@@ -19,6 +19,12 @@ android {
     targetCompatibility = JavaVersion.VERSION_11
   }
   testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(11)
+  }
 }
 
 fladle {

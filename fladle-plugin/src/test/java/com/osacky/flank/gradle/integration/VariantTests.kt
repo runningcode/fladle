@@ -67,8 +67,8 @@ class VariantTests {
     assertThat(result.output).doesNotContain(":assembleVanillaRelease")
     assertThat(result.output).doesNotContain(":assembleChocolate")
 
-    // See #60 https://github.com/runningcode/fladle/issues/60
     /**
+     * See #60 https://github.com/runningcode/fladle/issues/60
      testProjectRoot.writeEmptyServiceCredential()
      val resultPrint = testProjectRoot.gradleRunner()
      .withArguments("printYmlVanilla")

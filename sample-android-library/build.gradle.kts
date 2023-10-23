@@ -30,6 +30,12 @@ android {
   }
 }
 
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(11)
+  }
+}
+
 dependencies {
   implementation(libs.appcompat)
   implementation(libs.navigation.fragment.ktx)

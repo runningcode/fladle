@@ -121,9 +121,15 @@ class FladlePluginDelegate {
       classpath = project.fladleConfig
       args =
         if (project.hasProperty("dumpShards")) {
-          listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath, "--dump-shards")
+          listOf(
+            "firebase", "test", "android", "run", "-c",
+            writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath, "--dump-shards",
+          )
         } else {
-          listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath)
+          listOf(
+            "firebase", "test", "android", "run", "-c",
+            writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath,
+          )
         }
       if (config.serviceAccountCredentials.isPresent) {
         environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to config.serviceAccountCredentials.get()))
