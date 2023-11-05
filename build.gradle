@@ -35,7 +35,7 @@ buildScan {
     publishAlways()
 }
 
-tasks.wrapper.configure {
+tasks.named('wrapper').configure {
     gradleVersion = '7.4'
 }
 
@@ -45,7 +45,7 @@ def isNonStable = { String version ->
     return !stableKeyword && !(version ==~ regex)
 }
 
-dependencyUpdates {
+tasks.named('dependencyUpdates').configure {
     // Example 1: reject all non stable versions
     rejectVersionIf {
         isNonStable(it.candidate.version)
