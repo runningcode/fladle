@@ -2,7 +2,7 @@
 
 ## Unreleased
 * Min supported Gradle version is now 6.5
-* Updated Flank version to 23.10.0
+* Updated Flank version to 23.10.1
 *
 ## 0.17.4
 * Add support for additionalTestApks in YamlConfigWriterTask. [PR](https://github.com/runningcode/fladle/pull/291). Thanks [ZacSweers](https://github.com/ZacSweers)
