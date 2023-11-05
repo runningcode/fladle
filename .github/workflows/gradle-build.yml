@@ -17,4 +17,4 @@ jobs:
       if: ${{ github.ref == 'refs/heads/master' && github.event_name != 'pull_request' }}
       with:
         job-id: jdk8
-        arguments: :fladle-plugin:publishAllPublicationsToMavenRepository -Pfladle.releaseMode -PsonatypeUsername=${{ secrets.SONATYPE_USERNAME }} -PsonatypePassword=${{ secrets.SONATYPE_PASSWORD }}
+        arguments: :fladle-plugin:publishAllPublicationsToMavenCentralRepository -Pfladle.releaseMode -PsonatypeUsername=${{ secrets.SONATYPE_USERNAME }} -PsonatypePassword=${{ secrets.SONATYPE_PASSWORD }}
