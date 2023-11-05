@@ -7,14 +7,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: gradle/wrapper-validation-action@v1
+    - name: "Set up JDK 11"
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: 11
     - uses: gradle/gradle-build-action@v2
       name: Check Fladle
-      with:
-        job-id: jdk8
-        arguments: assembleDebug assembleDebugAndroidTest printYml check :fladle-plugin:check
-    - uses: gradle/gradle-build-action@v2
-      name: Publish Snapshot
+    - name: Build and check
+      run: ./gradlew assembleDebug assembleDebugAndroidTest printYml check :fladle-plugin:check
+    - name: Publish Snapshot
       if: ${{ github.ref == 'refs/heads/master' && github.event_name != 'pull_request' }}
-      with:
-        job-id: jdk8
-        arguments: :fladle-plugin:publishAllPublicationsToMavenCentralRepository -Pfladle.releaseMode -PmavenCentralUsername=${{ secrets.SONATYPE_USERNAME }} -PmavenCentralPassword=${{ secrets.SONATYPE_PASSWORD }}
+      run: ./gradlew :fladle-plugin:publishAllPublicationsToMavenCentralRepository -Pfladle.releaseMode -PmavenCentralUsername=${{ secrets.SONATYPE_USERNAME }} -PmavenCentralPassword=${{ secrets.SONATYPE_PASSWORD }}

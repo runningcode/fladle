@@ -30,7 +30,9 @@ class ValidateOptionsTest {
     config.useAverageTestTimeForNewTests.set(true)
 
     assertThrows(IllegalStateException::class.java) { validateOptionsUsed(config, "20.05.0") }.run {
-      assertThat(message).containsMatch("Option useAverageTestTimeForNewTests is available since flank 20.8.4, which is higher than used 20.5.0")
+      assertThat(
+        message,
+      ).containsMatch("Option useAverageTestTimeForNewTests is available since flank 20.8.4, which is higher than used 20.5.0")
     }
   }
 
@@ -53,7 +55,9 @@ class ValidateOptionsTest {
     try {
       validateOptionsUsed(config, "20.09.10")
     } catch (e: IllegalStateException) {
-      assertThat(e).hasMessageThat().contains("Option testTargetsForShard is available since flank 20.12.0, which is higher than used 20.9.10")
+      assertThat(
+        e,
+      ).hasMessageThat().contains("Option testTargetsForShard is available since flank 20.12.0, which is higher than used 20.9.10")
     }
   }
 
@@ -79,7 +83,7 @@ class ValidateOptionsTest {
       |    }
       |  }
       |}
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val runner = testProjectRoot.gradleRunner()
@@ -117,7 +121,7 @@ class ValidateOptionsTest {
       |    }
       |  }
       |}
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val runner = testProjectRoot.gradleRunner()
@@ -148,7 +152,7 @@ class ValidateOptionsTest {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val resultOrange = runner.withArguments("printYmlNoRecord").build()
@@ -178,7 +182,7 @@ class ValidateOptionsTest {
       |  legacy-junit-result: false
       |  full-junit-result: false
       |  output-style: single
-      """.trimMargin()
+      """.trimMargin(),
     )
   }
 }

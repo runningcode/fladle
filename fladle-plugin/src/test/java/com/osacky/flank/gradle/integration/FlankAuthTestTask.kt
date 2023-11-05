@@ -27,7 +27,7 @@ class FlankAuthTestTask {
          |  timeout.set(Duration.ofSeconds(5))
          |}
          |
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val result = testProjectRoot.gradleRunner().withArguments("flankAuth").buildAndFail()

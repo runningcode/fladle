@@ -33,16 +33,17 @@ class MultipleConfigsTest {
       |    }
       |  }
       |}
-      """.trimMargin()
+      """.trimMargin(),
     )
     testProjectRoot.newFile("flank-gradle-service.json").writeText("{}")
 
-    val result = GradleRunner.create()
-      .withPluginClasspath()
-      .withArguments("writeConfigPropsOrange", "--stacktrace")
-      .forwardOutput()
-      .withProjectDir(testProjectRoot.root)
-      .build()
+    val result =
+      GradleRunner.create()
+        .withPluginClasspath()
+        .withArguments("writeConfigPropsOrange", "--stacktrace")
+        .forwardOutput()
+        .withProjectDir(testProjectRoot.root)
+        .build()
 
     assertThat(result.output).contains("SUCCESS")
 
@@ -71,15 +72,16 @@ class MultipleConfigsTest {
       |  disable-sharding: false
       |  smart-flank-disable-upload: false
       |  local-result-dir: overrideDir
-      """.trimMargin()
+      """.trimMargin(),
     )
 
-    val regularConfig = GradleRunner.create()
-      .withPluginClasspath()
-      .withArguments("writeConfigProps")
-      .forwardOutput()
-      .withProjectDir(testProjectRoot.root)
-      .build()
+    val regularConfig =
+      GradleRunner.create()
+        .withPluginClasspath()
+        .withArguments("writeConfigProps")
+        .forwardOutput()
+        .withProjectDir(testProjectRoot.root)
+        .build()
 
     assertThat(regularConfig.output).contains("SUCCESS")
 
@@ -108,7 +110,7 @@ class MultipleConfigsTest {
       |  disable-sharding: false
       |  smart-flank-disable-upload: false
       |  local-result-dir: defaultDir
-      """.trimMargin()
+      """.trimMargin(),
     )
   }
 }

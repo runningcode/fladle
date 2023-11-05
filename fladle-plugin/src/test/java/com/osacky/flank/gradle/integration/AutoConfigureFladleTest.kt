@@ -7,9 +7,9 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
 class AutoConfigureFladleTest {
-
   @get:Rule
   var testProjectRoot = TemporaryFolder()
+
   fun writeBuildGradle(build: String) {
     val file = testProjectRoot.newFile("build.gradle")
     file.writeText(build)
@@ -22,63 +22,64 @@ class AutoConfigureFladleTest {
     testProjectRoot.newFile("gradle.properties").writeText("android.useAndroidX=true")
     writeBuildGradle(
       """
-            allprojects {
-              repositories {
-                google()
-                mavenCentral()
-              }
-            }
-      """.trimIndent()
+      allprojects {
+        repositories {
+          google()
+          mavenCentral()
+        }
+      }
+      """.trimIndent(),
     )
     testProjectRoot.newFile("settings.gradle").writeText(
       """
-        include '$fixtureName'
-      """.trimIndent()
+      include '$fixtureName'
+      """.trimIndent(),
     )
 
     testProjectRoot.setupFixture(fixtureName)
 
-    val result = GradleRunner.create()
-      .withProjectDir(testProjectRoot.root)
-      .withPluginClasspath()
-      .withArguments("assembleDebug", "assembleDebugAndroidTest", "printYml", "--stacktrace")
-      .build()
+    val result =
+      GradleRunner.create()
+        .withProjectDir(testProjectRoot.root)
+        .withPluginClasspath()
+        .withArguments("assembleDebug", "assembleDebugAndroidTest", "printYml", "--stacktrace")
+        .build()
 
     assertThat(result.output).contains("BUILD SUCCESSFUL")
     assertThat(result.output).containsMatch(
       """
-        > Task :android-project:printYml
-        gcloud:
-          app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
-          test: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
-          device:
-          - model: Pixel2
-            version: 26
-          - model: Nexus5
-            version: 23
+      > Task :android-project:printYml
+      gcloud:
+        app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
+        test: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
+        device:
+        - model: Pixel2
+          version: 26
+        - model: Nexus5
+          version: 23
 
-          use-orchestrator: true
-          auto-google-login: false
-          record-video: true
-          performance-metrics: true
-          timeout: 15m
-          environment-variables:
-            clearPackageData: true
-            listener: com.osacky.flank.sample.Listener
-          test-targets:
-          - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView
-          num-flaky-test-attempts: 0
+        use-orchestrator: true
+        auto-google-login: false
+        record-video: true
+        performance-metrics: true
+        timeout: 15m
+        environment-variables:
+          clearPackageData: true
+          listener: com.osacky.flank.sample.Listener
+        test-targets:
+        - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView
+        num-flaky-test-attempts: 0
 
-        flank:
-          smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
-          keep-file-path: false
-          ignore-failed-tests: false
-          disable-sharding: false
-          smart-flank-disable-upload: false
-          legacy-junit-result: false
-          full-junit-result: false
-          output-style: single
-      """.trimIndent()
+      flank:
+        smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
+        keep-file-path: false
+        ignore-failed-tests: false
+        disable-sharding: false
+        smart-flank-disable-upload: false
+        legacy-junit-result: false
+        full-junit-result: false
+        output-style: single
+      """.trimIndent(),
     )
   }
 }

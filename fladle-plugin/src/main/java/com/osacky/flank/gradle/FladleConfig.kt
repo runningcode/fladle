@@ -53,7 +53,7 @@ interface FladleConfig {
 
   @Deprecated(
     message = "testShards is deprecated. Use maxTestShards instead",
-    replaceWith = ReplaceWith("maxTestShards")
+    replaceWith = ReplaceWith("maxTestShards"),
   )
   /**
    * The maximum number of shards. Value will be overwritten by [maxTestShards] if both used in configuration
@@ -472,13 +472,14 @@ interface FladleConfig {
   val additionalGcloudOptions: Property<String>
 
   @Internal
-  fun getPresentProperties() = this::class.memberProperties
-    .filter {
-      when (val prop = it.call(this)) {
-        is Property<*> -> prop.isPresent
-        is MapProperty<*, *> -> prop.isPresent && prop.get().isNotEmpty()
-        is ListProperty<*> -> prop.isPresent && prop.get().isNotEmpty()
-        else -> false
+  fun getPresentProperties() =
+    this::class.memberProperties
+      .filter {
+        when (val prop = it.call(this)) {
+          is Property<*> -> prop.isPresent
+          is MapProperty<*, *> -> prop.isPresent && prop.get().isNotEmpty()
+          is ListProperty<*> -> prop.isPresent && prop.get().isNotEmpty()
+          else -> false
+        }
       }
-    }
 }

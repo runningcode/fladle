@@ -14,7 +14,6 @@ import org.gradle.kotlin.dsl.create
 import org.gradle.util.GradleVersion
 
 class FladlePluginDelegate {
-
   fun apply(target: Project) {
     checkMinimumGradleVersion()
 
@@ -41,7 +40,10 @@ class FladlePluginDelegate {
     }
   }
 
-  private fun configureTasks(project: Project, base: FlankGradleExtension) {
+  private fun configureTasks(
+    project: Project,
+    base: FlankGradleExtension,
+  ) {
     if (GradleVersion.current() > GradleVersion.version("6.1")) {
       base.flankVersion.finalizeValueOnRead()
       base.flankCoordinates.finalizeValueOnRead()
@@ -70,21 +72,26 @@ class FladlePluginDelegate {
     }
   }
 
-  private fun TaskContainer.createTasksForConfig(base: FlankGradleExtension, config: FladleConfig, project: Project, name: String) {
-
+  private fun TaskContainer.createTasksForConfig(
+    base: FlankGradleExtension,
+    config: FladleConfig,
+    project: Project,
+    name: String,
+  ) {
     val configName = name.toLowerCase()
     // we want to use default dir only if user did not set own `localResultsDir`
     val useDefaultDir = config.localResultsDir.isPresent.not()
 
-    val validateFladle = register("validateFladleConfig$name") {
-      description = "Perform validation actions"
-      group = TASK_GROUP
-      doLast {
-        checkIfSanityAndValidateConfigs(config)
-        validateOptionsUsed(config = config, flank = base.flankVersion.get())
-        checkForExclusionUsage(config)
+    val validateFladle =
+      register("validateFladleConfig$name") {
+        description = "Perform validation actions"
+        group = TASK_GROUP
+        doLast {
+          checkIfSanityAndValidateConfigs(config)
+          validateOptionsUsed(config = config, flank = base.flankVersion.get())
+          checkForExclusionUsage(config)
+        }
       }
-    }
 
     val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, base, config, name)
 
@@ -112,17 +119,25 @@ class FladlePluginDelegate {
       if (useDefaultDir) setUpWorkingDir(configName)
       description = "Runs instrumentation tests using flank on firebase test lab."
       classpath = project.fladleConfig
-      args = if (project.hasProperty("dumpShards")) {
-        listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath, "--dump-shards")
-      } else {
-        listOf("firebase", "test", "android", "run", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath)
-      }
+      args =
+        if (project.hasProperty("dumpShards")) {
+          listOf(
+            "firebase", "test", "android", "run", "-c",
+            writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath, "--dump-shards",
+          )
+        } else {
+          listOf(
+            "firebase", "test", "android", "run", "-c",
+            writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath,
+          )
+        }
       if (config.serviceAccountCredentials.isPresent) {
         environment(mapOf("GOOGLE_APPLICATION_CREDENTIALS" to config.serviceAccountCredentials.get()))
       }
       dependsOn(writeConfigProps)
       if (config.dependOnAssemble.isPresent && config.dependOnAssemble.get()) {
-        val testedExtension = requireNotNull(project.extensions.findByType(TestedExtension::class.java)) { "Could not find TestedExtension in ${project.name}" }
+        val testedExtension =
+          requireNotNull(project.extensions.findByType(TestedExtension::class.java)) { "Could not find TestedExtension in ${project.name}" }
         testedExtension.testVariants.configureEach {
           if (testedVariant.isExpectedVariant(config)) {
             if (testedVariant.assembleProvider.isPresent) {
@@ -154,10 +169,15 @@ class FladlePluginDelegate {
     }
   }
 
-  private fun automaticallyConfigureTestOrchestrator(project: Project, config: FladleConfig, androidExtension: AppExtension) {
+  private fun automaticallyConfigureTestOrchestrator(
+    project: Project,
+    config: FladleConfig,
+    androidExtension: AppExtension,
+  ) {
     project.afterEvaluate {
-      val useOrchestrator = androidExtension.testOptions.getExecutionEnum() == TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR ||
-        androidExtension.testOptions.getExecutionEnum() == TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR
+      val useOrchestrator =
+        androidExtension.testOptions.getExecutionEnum() == TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR ||
+          androidExtension.testOptions.getExecutionEnum() == TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR
       if (useOrchestrator) {
         log("Automatically detected the use of Android Test Orchestrator")
       }
@@ -165,8 +185,12 @@ class FladlePluginDelegate {
     }
   }
 
-  private fun findDebugAndInstrumentationApk(project: Project, config: FladleConfig) {
-    val baseExtension = requireNotNull(project.extensions.findByType(AppExtension::class.java)) { "Could not find AppExtension in ${project.name}" }
+  private fun findDebugAndInstrumentationApk(
+    project: Project,
+    config: FladleConfig,
+  ) {
+    val baseExtension =
+      requireNotNull(project.extensions.findByType(AppExtension::class.java)) { "Could not find AppExtension in ${project.name}" }
     automaticallyConfigureTestOrchestrator(project, config, baseExtension)
     baseExtension.testVariants.configureEach {
       val appVariant = testedVariant
@@ -195,9 +219,10 @@ class FladlePluginDelegate {
     get() = configurations.getByName(FLADLE_CONFIG)
 
   companion object {
-    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("5.5")
+    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("6.5")
     const val TASK_GROUP = "fladle"
     const val FLADLE_CONFIG = "fladle"
+
     fun Project.log(message: String) {
       logger.info("Fladle: $message")
     }
