@@ -1,3 +1,4 @@
+import com.vanniktech.maven.publish.SonatypeHost
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 group = "com.osacky.flank.gradle"
@@ -14,6 +15,7 @@ plugins {
   `kotlin-dsl`
   `java-gradle-plugin`
   alias(libs.plugins.gradle.plugin.publish)
+  alias(libs.plugins.vanniktech.maven.publish)
   alias(libs.plugins.kotlinter)
   `maven-publish`
   signing
@@ -71,68 +73,29 @@ tasks.register<Jar>("javadocJar") {
   archiveClassifier.set("javadoc")
 }
 
-val isReleaseBuild : Boolean = !version.toString().endsWith("SNAPSHOT")
-
-val sonatypeUsername : String? by project
-val sonatypePassword : String? by project
-
-publishing {
-  repositories {
-    repositories {
-      maven {
-        val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-        val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-        url = if (isReleaseBuild) releasesRepoUrl else snapshotsRepoUrl
-        credentials {
-          username = sonatypeUsername
-          password = sonatypePassword
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.DEFAULT)
+    signAllPublications()
+    pom {
+        url.set("https://github.com/runningcode/fladle")
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
         }
-      }
+        developers {
+            developer {
+                id.set("runningcode")
+                name.set("Nelson Osacky")
+            }
+        }
+        scm {
+            connection.set("scm:git:git://github.com/runningcode/fladle.git")
+            developerConnection.set("scm:git:ssh://github.com/runningcode/fladle.git")
+            url.set("https://github.com/runningcode/fladle")
+        }
     }
-  }
-  publications {
-    afterEvaluate {
-      named<MavenPublication>("fladlePluginMarkerMaven") {
-        pom.configureForFladle("Fladle")
-      }
-
-      named<MavenPublication>("pluginMaven") {
-        artifact(tasks["sourcesJar"])
-        artifact(tasks["javadocJar"])
-        pom.configureForFladle("Fladle")
-      }
-      named<MavenPublication>("fulladlePluginMarkerMaven") {
-        pom.configureForFladle("Fulladle")
-      }
-    }
-  }
-}
-
-signing {
-  isRequired = isReleaseBuild
-}
-
-fun org.gradle.api.publish.maven.MavenPom.configureForFladle(pluginName: String) {
-  name.set(pluginName)
-  description.set(project.description)
-  url.set("https://github.com/runningcode/fladle")
-  licenses {
-    license {
-      name.set("The Apache License, Version 2.0")
-      url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-    }
-  }
-  developers {
-    developer {
-      id.set("runningcode")
-      name.set("Nelson Osacky")
-    }
-  }
-  scm {
-    connection.set("scm:git:git://github.com/runningcode/fladle.git")
-    developerConnection.set("scm:git:ssh://github.com/runningcode/fladle.git")
-    url.set("https://github.com/runningcode/fladle")
-  }
 }
 
 tasks.withType(Test::class.java).configureEach {
