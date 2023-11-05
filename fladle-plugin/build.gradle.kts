@@ -73,11 +73,6 @@ tasks.register<Jar>("javadocJar") {
   archiveClassifier.set("javadoc")
 }
 
-val isReleaseBuild : Boolean = !version.toString().endsWith("SNAPSHOT")
-
-val sonatypeUsername : String? by project
-val sonatypePassword : String? by project
-
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.DEFAULT)
     signAllPublications()
