@@ -8,7 +8,7 @@ kotlinter = { id = "org.jmailen.kotlinter", version = "3.9.0" }
 
 gradle-plugin-publish = {id = "com.gradle.plugin-publish", version = "1.2.1" }
 
-vanniktech-maven-publish = {id = "com.vanniktech.maven.publish", version = "0.25.3" }
+vanniktech-maven-publish = {id = "com.vanniktech.maven.publish", version = "0.27.0" }
 
 kgp = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin"}
 agp = { id = "com.android.application", version.ref = "agp-version"}
