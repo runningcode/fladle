@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: gradle/actions/wrapper-validationn@v3
+    - uses: gradle/actions/wrapper-validation@v3
     - uses: gradle/gradle-build-action@v3
       name: Check Fladle
       with:
