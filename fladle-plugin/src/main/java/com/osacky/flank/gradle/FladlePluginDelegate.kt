@@ -142,7 +142,7 @@ class FladlePluginDelegate {
     }
     if (config.localResultsDir.hasValue && canImportReport()) {
       try {
-        importReport(this@createTasksForConfig, execFlank)
+        importReport(project, execFlank)
       } catch (e: Exception) {
         project.logger.warn(e.message)
         e.printStackTrace()
