@@ -3,6 +3,9 @@
 package com.osacky.flank.gradle
 
 import org.gradle.api.Project
+import org.gradle.api.file.Directory
+import org.gradle.api.file.RegularFile
+import org.gradle.api.provider.Provider
 import com.gradle.enterprise.gradleplugin.test.ImportJUnitXmlReports as GEImportJUnitXmlReports
 import com.gradle.enterprise.gradleplugin.test.JUnitXmlDialect as GEJUnitXmlDialect
 import com.gradle.develocity.agent.gradle.test.ImportJUnitXmlReports as DevelocityImportJUnitXmlReports
@@ -12,20 +15,36 @@ import org.gradle.api.tasks.TaskProvider
 
 fun canImportReport(): Boolean = JUnitXmlHandler.canImport()
 
-fun importReport(project: Project, flankTask: TaskProvider<FlankExecutionTask>) {
-  val enableTestUploads = flankTask.get().project.providers
+fun importReport(project: Project, flankTaskProvider: TaskProvider<FlankExecutionTask>) {
+  val enableTestUploads = project.providers
     .gradleProperty("com.osacky.fladle.enableTestUploads")
     .getOrElse("true")
     .toBoolean()
   if (enableTestUploads) {
-    JUnitXmlHandler.get()?.register(project.tasks, flankTask, "${project.buildDir}/fladle/${flankTask.get().config.localResultsDir.get()}/JUnitReport.xml")
+    val resultsProvider: Provider<RegularFile> = project.layout.buildDirectory
+      .dir("fladle")
+      .flatMap { fladleDir ->
+        val localResultsDirProvider: Provider<Directory> = fladleDir
+          .dir(flankTaskProvider.flatMap { task -> task.config.localResultsDir })
+
+        localResultsDirProvider.map { localResultsDir -> localResultsDir.file("JUnitReport.xml") }
+      }
+    JUnitXmlHandler.get()?.register(
+      project.tasks,
+      flankTaskProvider,
+      resultsProvider
+    )
   }
 }
 
 /** Abstraction over Develocity and GE impls of JUnitXml reporting. */
 sealed class JUnitXmlHandler {
 
-  abstract fun register(tasks: TaskContainer, flankTask: TaskProvider<FlankExecutionTask>, reportsPath: String)
+  abstract fun register(
+    tasks: TaskContainer,
+    flankTask: TaskProvider<FlankExecutionTask>,
+    reportsFile: Provider<RegularFile>,
+  )
 
   companion object {
     private fun canImport(name: String) = try {
@@ -51,17 +70,25 @@ sealed class JUnitXmlHandler {
   }
 
   object DevelocityJunitXmlHandler : JUnitXmlHandler() {
-    override fun register(tasks: TaskContainer, flankTask: TaskProvider<FlankExecutionTask>, reportsPath: String) {
+    override fun register(
+      tasks: TaskContainer,
+      flankTask: TaskProvider<FlankExecutionTask>,
+      reportsFile: Provider<RegularFile>,
+    ) {
       DevelocityImportJUnitXmlReports.register(tasks, flankTask, DevelocityJUnitXmlDialect.ANDROID_FIREBASE).configure {
-        this.reports.setFrom(reportsPath)
+        reports.setFrom(reportsFile)
       }
     }
   }
 
   object GEJunitXmlHandler : JUnitXmlHandler() {
-    override fun register(tasks: TaskContainer, flankTask: TaskProvider<FlankExecutionTask>, reportsPath: String) {
+    override fun register(
+      tasks: TaskContainer,
+      flankTask: TaskProvider<FlankExecutionTask>,
+      reportsFile: Provider<RegularFile>,
+    ) {
       GEImportJUnitXmlReports.register(tasks, flankTask, GEJUnitXmlDialect.ANDROID_FIREBASE).configure {
-        this.reports.setFrom(reportsPath)
+        reports.setFrom(reportsFile)
       }
     }
   }
