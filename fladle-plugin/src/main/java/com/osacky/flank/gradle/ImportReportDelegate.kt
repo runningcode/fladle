@@ -6,12 +6,12 @@ import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
-import com.gradle.enterprise.gradleplugin.test.ImportJUnitXmlReports as GEImportJUnitXmlReports
-import com.gradle.enterprise.gradleplugin.test.JUnitXmlDialect as GEJUnitXmlDialect
-import com.gradle.develocity.agent.gradle.test.ImportJUnitXmlReports as DevelocityImportJUnitXmlReports
-import com.gradle.develocity.agent.gradle.test.JUnitXmlDialect as DevelocityJUnitXmlDialect
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
+import com.gradle.develocity.agent.gradle.test.ImportJUnitXmlReports as DevelocityImportJUnitXmlReports
+import com.gradle.develocity.agent.gradle.test.JUnitXmlDialect as DevelocityJUnitXmlDialect
+import com.gradle.enterprise.gradleplugin.test.ImportJUnitXmlReports as GEImportJUnitXmlReports
+import com.gradle.enterprise.gradleplugin.test.JUnitXmlDialect as GEJUnitXmlDialect
 
 fun canImportReport(): Boolean = JUnitXmlHandler.canImport()
 
