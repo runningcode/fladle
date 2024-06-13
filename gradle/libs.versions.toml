@@ -28,7 +28,7 @@ androidx-test-rules = "1.5.0"
 junit-version = "4.13.2"
 
 kotlin = "2.0.0"
-agp-version = "7.4.0"
+agp-version = "8.4.2"
 flank-version = "23.10.1"
 
 [libraries]
