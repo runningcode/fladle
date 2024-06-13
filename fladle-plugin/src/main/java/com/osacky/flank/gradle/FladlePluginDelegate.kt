@@ -122,12 +122,21 @@ class FladlePluginDelegate {
       args =
         if (project.hasProperty("dumpShards")) {
           listOf(
-            "firebase", "test", "android", "run", "-c",
-            writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath, "--dump-shards",
+            "firebase",
+            "test",
+            "android",
+            "run",
+            "-c",
+            writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath,
+            "--dump-shards",
           )
         } else {
           listOf(
-            "firebase", "test", "android", "run", "-c",
+            "firebase",
+            "test",
+            "android",
+            "run",
+            "-c",
             writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath,
           )
         }

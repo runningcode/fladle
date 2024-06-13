@@ -179,7 +179,9 @@ class YamlWriterTest {
         legacy-junit-result: false
         full-junit-result: false
         output-style: single
-      """.trimIndent() + '\n',
+      """.trimIndent()
+        +
+        '\n',
     )
   }
 
@@ -349,7 +351,9 @@ class YamlWriterTest {
         legacy-junit-result: false
         full-junit-result: false
         output-style: single
-      """.trimIndent() + '\n',
+      """.trimIndent()
+        +
+        '\n',
     )
   }
 
@@ -387,7 +391,9 @@ class YamlWriterTest {
         legacy-junit-result: false
         full-junit-result: false
         output-style: single
-      """.trimIndent() + '\n',
+      """.trimIndent()
+        +
+        '\n',
     )
   }
 
@@ -1002,7 +1008,9 @@ class YamlWriterTest {
         legacy-junit-result: false
         full-junit-result: false
         output-style: single
-      """.trimIndent() + '\n',
+      """.trimIndent()
+        +
+        '\n',
     )
   }
 

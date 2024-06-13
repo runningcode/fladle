@@ -26,7 +26,7 @@ class ValidateExclusionsTest {
       |  instrumentationApk = "test.apk"
       |  testShards.set(1)
       |  maxTestShards.set(2)
-      |  flankVersion.set("21.01.0")
+      |  flankVersion.set("23.01.0")
       |}
       """.trimMargin(),
     )
