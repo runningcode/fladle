@@ -1,7 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 group = "com.osacky.flank.gradle"
-version = "0.17.5-SNAPSHOT"
+version = "0.17.5"
 description = "Easily Scale your Android Instrumentation Tests with Firebase Test Lab with Flank"
 
 repositories {
@@ -61,16 +61,6 @@ gradlePlugin {
   }
 }
 
-tasks.register<Jar>("sourcesJar") {
-  from(sourceSets.main.get().allSource)
-  archiveClassifier.set("sources")
-}
-
-tasks.register<Jar>("javadocJar") {
-  from(tasks.javadoc)
-  archiveClassifier.set("javadoc")
-}
-
 val isReleaseBuild : Boolean = !version.toString().endsWith("SNAPSHOT")
 
 val sonatypeUsername : String? by project
@@ -97,8 +87,6 @@ publishing {
       }
 
       named<MavenPublication>("pluginMaven") {
-        artifact(tasks["sourcesJar"])
-        artifact(tasks["javadocJar"])
         pom.configureForFladle("Fladle")
       }
       named<MavenPublication>("fulladlePluginMarkerMaven") {
