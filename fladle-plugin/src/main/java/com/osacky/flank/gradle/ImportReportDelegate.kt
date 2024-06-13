@@ -15,31 +15,36 @@ import com.gradle.enterprise.gradleplugin.test.JUnitXmlDialect as GEJUnitXmlDial
 
 fun canImportReport(): Boolean = JUnitXmlHandler.canImport()
 
-fun importReport(project: Project, flankTaskProvider: TaskProvider<FlankExecutionTask>) {
-  val enableTestUploads = project.providers
-    .gradleProperty("com.osacky.fladle.enableTestUploads")
-    .getOrElse("true")
-    .toBoolean()
+fun importReport(
+  project: Project,
+  flankTaskProvider: TaskProvider<FlankExecutionTask>,
+) {
+  val enableTestUploads =
+    project.providers
+      .gradleProperty("com.osacky.fladle.enableTestUploads")
+      .getOrElse("true")
+      .toBoolean()
   if (enableTestUploads) {
-    val resultsProvider: Provider<RegularFile> = project.layout.buildDirectory
-      .dir("fladle")
-      .flatMap { fladleDir ->
-        val localResultsDirProvider: Provider<Directory> = fladleDir
-          .dir(flankTaskProvider.flatMap { task -> task.config.localResultsDir })
+    val resultsProvider: Provider<RegularFile> =
+      project.layout.buildDirectory
+        .dir("fladle")
+        .flatMap { fladleDir ->
+          val localResultsDirProvider: Provider<Directory> =
+            fladleDir
+              .dir(flankTaskProvider.flatMap { task -> task.config.localResultsDir })
 
-        localResultsDirProvider.map { localResultsDir -> localResultsDir.file("JUnitReport.xml") }
-      }
+          localResultsDirProvider.map { localResultsDir -> localResultsDir.file("JUnitReport.xml") }
+        }
     JUnitXmlHandler.get()?.register(
       project.tasks,
       flankTaskProvider,
-      resultsProvider
+      resultsProvider,
     )
   }
 }
 
 /** Abstraction over Develocity and GE impls of JUnitXml reporting. */
 sealed class JUnitXmlHandler {
-
   abstract fun register(
     tasks: TaskContainer,
     flankTask: TaskProvider<FlankExecutionTask>,
@@ -47,12 +52,13 @@ sealed class JUnitXmlHandler {
   )
 
   companion object {
-    private fun canImport(name: String) = try {
-      Class.forName(name)
-      true
-    } catch (e: ClassNotFoundException) {
-      false
-    }
+    private fun canImport(name: String) =
+      try {
+        Class.forName(name)
+        true
+      } catch (e: ClassNotFoundException) {
+        false
+      }
 
     private val canImportDevelocity get() = canImport("com.gradle.develocity.agent.gradle.test.ImportJUnitXmlReports")
 
@@ -60,13 +66,14 @@ sealed class JUnitXmlHandler {
 
     fun canImport() = canImportDevelocity || canImportGE
 
-    fun get() = if (canImportDevelocity) {
-      DevelocityJunitXmlHandler
-    } else if (canImportGE) {
-      GEJunitXmlHandler
-    } else {
-      null
-    }
+    fun get() =
+      if (canImportDevelocity) {
+        DevelocityJunitXmlHandler
+      } else if (canImportGE) {
+        GEJunitXmlHandler
+      } else {
+        null
+      }
   }
 
   object DevelocityJunitXmlHandler : JUnitXmlHandler() {

@@ -6,18 +6,19 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
-private const val commonScriptPart = """
+private const val COMMON_SCRIPT_PART = """
   plugins {
     id 'com.android.application'
     id 'com.osacky.fladle'
   }
 
   android {
-    compileSdkVersion 29
+    compileSdk 33
+     namespace "com.osacky.flank.gradle.sample"
     defaultConfig {
       applicationId "com.osacky.flank.gradle.sample"
-      minSdkVersion 23
-      targetSdkVersion 29
+      minSdk 23
+      targetSdk 29
       versionCode 1
       versionName "1.0"
       testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -29,7 +30,6 @@ private const val commonScriptPart = """
 """
 
 class SanityWithAutoConfigureTest {
-
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
@@ -44,7 +44,7 @@ class SanityWithAutoConfigureTest {
   fun `test auto configuration with sanityRobo set (inner config)`() {
     testProjectRoot.writeBuildDotGradle(
       """
-            $commonScriptPart
+            $COMMON_SCRIPT_PART
 
             fladle {
               serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
@@ -78,7 +78,7 @@ class SanityWithAutoConfigureTest {
                 }
               }
             }
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val runner = testProjectRoot.gradleRunner()
@@ -87,36 +87,36 @@ class SanityWithAutoConfigureTest {
     assertThat(baseResult.output).contains("BUILD SUCCESSFUL")
     assertThat(baseResult.output).containsMatch(
       """
-        gcloud:
-          app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
-          test: [0-9a-zA-Z\/_]*/build/outputs/apk/androidTest/debug/[0-9a-zA-Z\/_]*-debug-androidTest.apk
-          device:
-          - model: Pixel2
-            version: 26
-          - model: Nexus5
-            version: 23
+      gcloud:
+        app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
+        test: [0-9a-zA-Z\/_]*/build/outputs/apk/androidTest/debug/[0-9a-zA-Z\/_]*-debug-androidTest.apk
+        device:
+        - model: Pixel2
+          version: 26
+        - model: Nexus5
+          version: 23
 
-          use-orchestrator: true
-          auto-google-login: false
-          record-video: true
-          performance-metrics: true
-          timeout: 15m
-          environment-variables:
-            clearPackageData: true
-          test-targets:
-          - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView
-          num-flaky-test-attempts: 0
+        use-orchestrator: true
+        auto-google-login: false
+        record-video: true
+        performance-metrics: true
+        timeout: 15m
+        environment-variables:
+          clearPackageData: true
+        test-targets:
+        - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView
+        num-flaky-test-attempts: 0
 
-        flank:
-          smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
-          keep-file-path: false
-          ignore-failed-tests: false
-          disable-sharding: false
-          smart-flank-disable-upload: false
-          legacy-junit-result: false
-          full-junit-result: false
-          output-style: single
-      """.trimIndent()
+      flank:
+        smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
+        keep-file-path: false
+        ignore-failed-tests: false
+        disable-sharding: false
+        smart-flank-disable-upload: false
+        legacy-junit-result: false
+        full-junit-result: false
+        output-style: single
+      """.trimIndent(),
     )
 
     val sanityResult = runner.withArguments("printYmlSanity").build()
@@ -124,35 +124,35 @@ class SanityWithAutoConfigureTest {
     assertThat(sanityResult.output).contains("BUILD SUCCESSFUL")
     assertThat(sanityResult.output).containsMatch(
       """
-        gcloud:
-          app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
-          device:
-          - model: Pixel2
-            version: 26
-          - model: Nexus5
-            version: 23
+      gcloud:
+        app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
+        device:
+        - model: Pixel2
+          version: 26
+        - model: Nexus5
+          version: 23
 
-          use-orchestrator: false
-          auto-google-login: false
-          record-video: true
-          performance-metrics: true
-          timeout: 15m
-          environment-variables:
-            clearPackageData: true
-          test-targets:
-          - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail
-          num-flaky-test-attempts: 3
+        use-orchestrator: false
+        auto-google-login: false
+        record-video: true
+        performance-metrics: true
+        timeout: 15m
+        environment-variables:
+          clearPackageData: true
+        test-targets:
+        - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail
+        num-flaky-test-attempts: 3
 
-        flank:
-          smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
-          keep-file-path: false
-          ignore-failed-tests: false
-          disable-sharding: false
-          smart-flank-disable-upload: false
-          legacy-junit-result: false
-          full-junit-result: false
-          output-style: single
-      """.trimIndent()
+      flank:
+        smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
+        keep-file-path: false
+        ignore-failed-tests: false
+        disable-sharding: false
+        smart-flank-disable-upload: false
+        legacy-junit-result: false
+        full-junit-result: false
+        output-style: single
+      """.trimIndent(),
     )
 
     val orangesResult = runner.withArguments("printYmlOranges").build()
@@ -160,36 +160,36 @@ class SanityWithAutoConfigureTest {
     assertThat(orangesResult.output).contains("BUILD SUCCESSFUL")
     assertThat(orangesResult.output).containsMatch(
       """
-        gcloud:
-          app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
-          test: [0-9a-zA-Z\/_]*/build/outputs/apk/androidTest/debug/[0-9a-zA-Z\/_]*-debug-androidTest.apk
-          device:
-          - model: Pixel2
-            version: 26
-          - model: Nexus5
-            version: 23
+      gcloud:
+        app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
+        test: [0-9a-zA-Z\/_]*/build/outputs/apk/androidTest/debug/[0-9a-zA-Z\/_]*-debug-androidTest.apk
+        device:
+        - model: Pixel2
+          version: 26
+        - model: Nexus5
+          version: 23
 
-          use-orchestrator: false
-          auto-google-login: false
-          record-video: true
-          performance-metrics: true
-          timeout: 15m
-          environment-variables:
-            clearPackageData: true
-          test-targets:
-          - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail
-          num-flaky-test-attempts: 6
+        use-orchestrator: false
+        auto-google-login: false
+        record-video: true
+        performance-metrics: true
+        timeout: 15m
+        environment-variables:
+          clearPackageData: true
+        test-targets:
+        - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail
+        num-flaky-test-attempts: 6
 
-        flank:
-          smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
-          keep-file-path: false
-          ignore-failed-tests: false
-          disable-sharding: false
-          smart-flank-disable-upload: false
-          legacy-junit-result: false
-          full-junit-result: false
-          output-style: single
-      """.trimIndent()
+      flank:
+        smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
+        keep-file-path: false
+        ignore-failed-tests: false
+        disable-sharding: false
+        smart-flank-disable-upload: false
+        legacy-junit-result: false
+        full-junit-result: false
+        output-style: single
+      """.trimIndent(),
     )
   }
 
@@ -197,7 +197,7 @@ class SanityWithAutoConfigureTest {
   fun `test auto configuration with sanityRobo set (base config)`() {
     testProjectRoot.writeBuildDotGradle(
       """
-            $commonScriptPart
+            $COMMON_SCRIPT_PART
 
             fladle {
               sanityRobo = true
@@ -226,7 +226,7 @@ class SanityWithAutoConfigureTest {
                 }
               }
             }
-      """.trimMargin()
+      """.trimMargin(),
     )
 
     val runner = testProjectRoot.gradleRunner()
@@ -235,35 +235,35 @@ class SanityWithAutoConfigureTest {
     assertThat(baseResult.output).contains("BUILD SUCCESSFUL")
     assertThat(baseResult.output).containsMatch(
       """
-        gcloud:
-          app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
-          device:
-          - model: Pixel2
-            version: 26
-          - model: Nexus5
-            version: 23
+      gcloud:
+        app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
+        device:
+        - model: Pixel2
+          version: 26
+        - model: Nexus5
+          version: 23
 
-          use-orchestrator: true
-          auto-google-login: false
-          record-video: true
-          performance-metrics: true
-          timeout: 15m
-          environment-variables:
-            clearPackageData: true
-          test-targets:
-          - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView
-          num-flaky-test-attempts: 0
+        use-orchestrator: true
+        auto-google-login: false
+        record-video: true
+        performance-metrics: true
+        timeout: 15m
+        environment-variables:
+          clearPackageData: true
+        test-targets:
+        - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView
+        num-flaky-test-attempts: 0
 
-        flank:
-          smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
-          keep-file-path: false
-          ignore-failed-tests: false
-          disable-sharding: false
-          smart-flank-disable-upload: false
-          legacy-junit-result: false
-          full-junit-result: false
-          output-style: single
-      """.trimIndent()
+      flank:
+        smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
+        keep-file-path: false
+        ignore-failed-tests: false
+        disable-sharding: false
+        smart-flank-disable-upload: false
+        legacy-junit-result: false
+        full-junit-result: false
+        output-style: single
+      """.trimIndent(),
     )
 
     val orangesResult = runner.withArguments("printYmlOranges").build()
@@ -271,36 +271,36 @@ class SanityWithAutoConfigureTest {
     assertThat(orangesResult.output).contains("BUILD SUCCESSFUL")
     assertThat(orangesResult.output).containsMatch(
       """
-        gcloud:
-          app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
-          test: instrumentation-apk-not-detected-from-root.apk
-          device:
-          - model: Pixel2
-            version: 26
-          - model: Nexus5
-            version: 23
+      gcloud:
+        app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
+        test: instrumentation-apk-not-detected-from-root.apk
+        device:
+        - model: Pixel2
+          version: 26
+        - model: Nexus5
+          version: 23
 
-          use-orchestrator: false
-          auto-google-login: false
-          record-video: true
-          performance-metrics: true
-          timeout: 15m
-          environment-variables:
-            clearPackageData: true
-          test-targets:
-          - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail
-          num-flaky-test-attempts: 3
+        use-orchestrator: false
+        auto-google-login: false
+        record-video: true
+        performance-metrics: true
+        timeout: 15m
+        environment-variables:
+          clearPackageData: true
+        test-targets:
+        - class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#runAndFail
+        num-flaky-test-attempts: 3
 
-        flank:
-          smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
-          keep-file-path: false
-          ignore-failed-tests: false
-          disable-sharding: false
-          smart-flank-disable-upload: false
-          legacy-junit-result: false
-          full-junit-result: false
-          output-style: single
-      """.trimIndent()
+      flank:
+        smart-flank-gcs-path: gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml
+        keep-file-path: false
+        ignore-failed-tests: false
+        disable-sharding: false
+        smart-flank-disable-upload: false
+        legacy-junit-result: false
+        full-junit-result: false
+        output-style: single
+      """.trimIndent(),
     )
   }
 }

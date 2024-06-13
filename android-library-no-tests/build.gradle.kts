@@ -4,11 +4,21 @@ plugins {
 }
 
 android {
-  compileSdkVersion(29)
+  compileSdk = 33
+  namespace = "com.osacky.flank.gradle.sample.library"
   defaultConfig {
-    minSdkVersion(23)
-    targetSdkVersion(29)
+    minSdk = 23
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+  }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+  }
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(11)
   }
 }
 

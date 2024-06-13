@@ -13,24 +13,16 @@ plugins {
     alias(libs.plugins.kotlinter)
 }
 
-kotlinter {
-  indentSize = 2
-}
-
 allprojects {
     apply plugin: "org.jmailen.kotlinter"
-
-    kotlinter {
-        indentSize = 2
-    }
 }
 
 fladle {
     serviceAccountCredentials = project.layout.projectDirectory.file("sample/flank-gradle-5cf02dc90531.json")
 }
 
-tasks.named('wrapper').configure {
-    gradleVersion = '7.6.3'
+tasks.wrapper.configure {
+    gradleVersion = '8.4'
 }
 
 def isNonStable = { String version ->

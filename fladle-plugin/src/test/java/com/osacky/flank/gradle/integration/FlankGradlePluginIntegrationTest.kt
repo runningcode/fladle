@@ -8,12 +8,11 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
 class FlankGradlePluginIntegrationTest {
-
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
   val minSupportGradleVersion = "6.5"
-  val oldVersion = "5.3.1"
+  val oldVersion = "6.4"
 
   fun writeBuildGradle(build: String) {
     testProjectRoot.writeBuildDotGradle(build)
@@ -25,29 +24,31 @@ class FlankGradlePluginIntegrationTest {
       """plugins {
              |  id "com.osacky.fladle"
              |}
-      """.trimMargin()
+      """.trimMargin(),
     )
-    val result = GradleRunner.create()
-      .withProjectDir(testProjectRoot.root)
-      .withPluginClasspath()
-      .withGradleVersion(oldVersion)
-      .buildAndFail()
-    assertThat(result.output).contains("Fladle requires at minimum version Gradle 5.5. Detected version Gradle 5.3.1")
+    val result =
+      GradleRunner.create()
+        .withProjectDir(testProjectRoot.root)
+        .withPluginClasspath()
+        .withGradleVersion(oldVersion)
+        .buildAndFail()
+    assertThat(result.output).contains("Fladle requires at minimum version Gradle 6.5. Detected version Gradle 6.4")
   }
 
   @Test
-  fun testGradleSixZero() {
+  fun testGradleSevenOh() {
     writeBuildGradle(
       """plugins {
              |  id "com.osacky.fladle"
              |}
-      """.trimMargin()
+      """.trimMargin(),
     )
-    val result = GradleRunner.create()
-      .withProjectDir(testProjectRoot.root)
-      .withPluginClasspath()
-      .withGradleVersion("6.0")
-      .build()
+    val result =
+      GradleRunner.create()
+        .withProjectDir(testProjectRoot.root)
+        .withPluginClasspath()
+        .withGradleVersion("7.0")
+        .build()
 
     assertThat(result.output).contains("SUCCESS")
   }
@@ -58,7 +59,7 @@ class FlankGradlePluginIntegrationTest {
       """plugins {
              |  id "com.osacky.fladle"
              |}
-      """.trimMargin()
+      """.trimMargin(),
     )
     GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
@@ -79,7 +80,7 @@ class FlankGradlePluginIntegrationTest {
              |  debugApk = "foo"
              |  instrumentationApk = "fakeInstrument.apk"
              |}
-      """.trimMargin()
+      """.trimMargin(),
     )
     GradleRunner.create()
       .withProjectDir(testProjectRoot.root)
@@ -99,15 +100,21 @@ class FlankGradlePluginIntegrationTest {
              |fladle {
              |  debugApk = "foo"
              |}
-      """.trimMargin()
+      """.trimMargin(),
     )
-    val result = GradleRunner.create()
-      .withProjectDir(testProjectRoot.root)
-      .withPluginClasspath()
-      .withGradleVersion(minSupportGradleVersion)
-      .withArguments("printYml")
-      .buildAndFail()
-    assertThat(result.output).contains("ServiceAccountCredentials in fladle extension not set. https://runningcode.github.io/fladle/configuration/#serviceaccountcredentials")
+    val result =
+      GradleRunner.create()
+        .withProjectDir(testProjectRoot.root)
+        .withPluginClasspath()
+        .withGradleVersion(minSupportGradleVersion)
+        .withArguments("printYml")
+        .buildAndFail()
+    assertThat(
+      result.output,
+    ).contains(
+      "ServiceAccountCredentials in fladle extension not set." +
+        "https://runningcode.github.io/fladle/configuration/#serviceaccountcredentials",
+    )
   }
 
   @Test
@@ -120,37 +127,40 @@ class FlankGradlePluginIntegrationTest {
              |  serviceAccountCredentials = project.layout.projectDirectory.file("foo")
              |}
              |
-      """.trimMargin()
+      """.trimMargin(),
     )
     testProjectRoot.newFile("foo").writeText("{}")
-    val result = GradleRunner.create()
-      .withProjectDir(testProjectRoot.root)
-      .withPluginClasspath()
-      .withGradleVersion(minSupportGradleVersion)
-      .withArguments("runFlank")
-      .buildAndFail()
+    val result =
+      GradleRunner.create()
+        .withProjectDir(testProjectRoot.root)
+        .withPluginClasspath()
+        .withGradleVersion(minSupportGradleVersion)
+        .withArguments("runFlank")
+        .buildAndFail()
     assertThat(result.output).contains("debugApk must be specified")
   }
 
   @Test
   fun testMissingInstrumentationApkFailsBuild() {
     writeBuildGradle(
-      """plugins {
-            id "com.osacky.fladle"
-           }
-           fladle {
-             serviceAccountCredentials = project.layout.projectDirectory.file("foo")
-             debugApk = "test-debug.apk"
-           }
-      """.trimIndent()
+      """
+      plugins {
+       id "com.osacky.fladle"
+      }
+      fladle {
+        serviceAccountCredentials = project.layout.projectDirectory.file("foo")
+        debugApk = "test-debug.apk"
+      }
+      """.trimIndent(),
     )
     testProjectRoot.newFile("foo").writeText("{}")
-    val result = GradleRunner.create()
-      .withProjectDir(testProjectRoot.root)
-      .withPluginClasspath()
-      .withGradleVersion(minSupportGradleVersion)
-      .withArguments("runFlank")
-      .buildAndFail()
+    val result =
+      GradleRunner.create()
+        .withProjectDir(testProjectRoot.root)
+        .withPluginClasspath()
+        .withGradleVersion(minSupportGradleVersion)
+        .withArguments("runFlank")
+        .buildAndFail()
 
     assertThat(result.output).contains("Must specify either a instrumentationApk file or a roboScript file or a robo directive.")
   }
@@ -158,22 +168,24 @@ class FlankGradlePluginIntegrationTest {
   @Test
   fun testSpecifyingBothInstrumentationAndRoboscriptFailsBuild() {
     writeBuildGradle(
-      """plugins {
-            id "com.osacky.fladle"
-           }
-           fladle {
-             serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
-             debugApk = "test-debug.apk"
-             instrumentationApk = "instrumentation-debug.apk"
-             roboScript = "foo.script"
-           }
-      """.trimIndent()
+      """
+      plugins {
+       id "com.osacky.fladle"
+      }
+      fladle {
+        serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
+        debugApk = "test-debug.apk"
+        instrumentationApk = "instrumentation-debug.apk"
+        roboScript = "foo.script"
+      }
+      """.trimIndent(),
     )
     testProjectRoot.writeEmptyServiceCredential()
-    val result = testProjectRoot.gradleRunner()
-      .withGradleVersion(minSupportGradleVersion)
-      .withArguments("printYml")
-      .buildAndFail()
+    val result =
+      testProjectRoot.gradleRunner()
+        .withGradleVersion(minSupportGradleVersion)
+        .withArguments("printYml")
+        .buildAndFail()
 
     assertThat(result.output).contains("Only one of instrumentationApk file, roboScript file, and robo directives must be specified.")
   }
@@ -181,24 +193,26 @@ class FlankGradlePluginIntegrationTest {
   @Test
   fun testSpecifyingBothInstrumentationAndRobodirectiveFailsBuild() {
     writeBuildGradle(
-      """plugins {
-            id "com.osacky.fladle"
-           }
-           fladle {
-             serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
-             debugApk = "test-debug.apk"
-             instrumentationApk = "instrumentation-debug.apk"
-             roboDirectives = [
-                ["click", "resource_id"],
-             ]
-           }
-      """.trimIndent()
+      """
+      plugins {
+       id "com.osacky.fladle"
+      }
+      fladle {
+        serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
+        debugApk = "test-debug.apk"
+        instrumentationApk = "instrumentation-debug.apk"
+        roboDirectives = [
+           ["click", "resource_id"],
+        ]
+      }
+      """.trimIndent(),
     )
     testProjectRoot.writeEmptyServiceCredential()
-    val result = testProjectRoot.gradleRunner()
-      .withGradleVersion(minSupportGradleVersion)
-      .withArguments("printYml")
-      .buildAndFail()
+    val result =
+      testProjectRoot.gradleRunner()
+        .withGradleVersion(minSupportGradleVersion)
+        .withArguments("printYml")
+        .buildAndFail()
 
     assertThat(result.output).contains("Only one of instrumentationApk file, roboScript file, and robo directives must be specified.")
   }
@@ -206,24 +220,26 @@ class FlankGradlePluginIntegrationTest {
   @Test
   fun testSpecifyingBothRoboscriptAndRobodirectiveFailsBuild() {
     writeBuildGradle(
-      """plugins {
-            id "com.osacky.fladle"
-           }
-           fladle {
-             serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
-             debugApk = "test-debug.apk"
-             roboScript = "foo.script"
-             roboDirectives = [
-                ["click", "resource_id"],
-             ]
-           }
-      """.trimIndent()
+      """
+      plugins {
+       id "com.osacky.fladle"
+      }
+      fladle {
+        serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
+        debugApk = "test-debug.apk"
+        roboScript = "foo.script"
+        roboDirectives = [
+           ["click", "resource_id"],
+        ]
+      }
+      """.trimIndent(),
     )
     testProjectRoot.writeEmptyServiceCredential()
-    val result = testProjectRoot.gradleRunner()
-      .withGradleVersion(minSupportGradleVersion)
-      .withArguments("printYml")
-      .buildAndFail()
+    val result =
+      testProjectRoot.gradleRunner()
+        .withGradleVersion(minSupportGradleVersion)
+        .withArguments("printYml")
+        .buildAndFail()
 
     assertThat(result.output).contains("Only one of instrumentationApk file, roboScript file, and robo directives must be specified.")
   }
@@ -231,25 +247,27 @@ class FlankGradlePluginIntegrationTest {
   @Test
   fun testSpecifyingInstrumentationAndRoboscriptAndRobodirectiveFailsBuild() {
     writeBuildGradle(
-      """plugins {
-            id "com.osacky.fladle"
-           }
-           fladle {
-             serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
-             debugApk = "test-debug.apk"
-             instrumentationApk = "instrumentation-debug.apk"
-             roboScript = "foo.script"
-             roboDirectives = [
-                ["click", "resource_id"],
-             ]
-           }
-      """.trimIndent()
+      """
+      plugins {
+       id "com.osacky.fladle"
+      }
+      fladle {
+        serviceAccountCredentials = project.layout.projectDirectory.file("flank-gradle-service.json")
+        debugApk = "test-debug.apk"
+        instrumentationApk = "instrumentation-debug.apk"
+        roboScript = "foo.script"
+        roboDirectives = [
+           ["click", "resource_id"],
+        ]
+      }
+      """.trimIndent(),
     )
     testProjectRoot.writeEmptyServiceCredential()
-    val result = testProjectRoot.gradleRunner()
-      .withGradleVersion(minSupportGradleVersion)
-      .withArguments("printYml")
-      .buildAndFail()
+    val result =
+      testProjectRoot.gradleRunner()
+        .withGradleVersion(minSupportGradleVersion)
+        .withArguments("printYml")
+        .buildAndFail()
 
     assertThat(result.output).contains("Only one of instrumentationApk file, roboScript file, and robo directives must be specified.")
   }
@@ -269,13 +287,14 @@ class FlankGradlePluginIntegrationTest {
              }
            }
          }
-      """.trimMargin()
+      """.trimMargin(),
     )
     testProjectRoot.writeEmptyServiceCredential()
-    val result = testProjectRoot.gradleRunner()
-      .withGradleVersion("7.0-rc-1")
-      .withArguments("printYmlFooConfig")
-      .build()
+    val result =
+      testProjectRoot.gradleRunner()
+        .withGradleVersion("7.0-rc-1")
+        .withArguments("printYmlFooConfig")
+        .build()
     assertThat(result.task(":printYmlFooConfig")!!.outcome).isEqualTo(TaskOutcome.SUCCESS)
   }
 }

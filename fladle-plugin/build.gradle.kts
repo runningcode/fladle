@@ -36,10 +36,6 @@ dependencies {
   testImplementation(libs.truth)
 }
 
-kotlinter {
-  indentSize = 2
-}
-
 gradlePlugin {
   website.set("https://github.com/runningcode/fladle")
   vcsUrl.set("https://github.com/runningcode/fladle")
@@ -136,17 +132,17 @@ tasks.withType(ValidatePlugins::class.java).configureEach {
   enableStricterValidation.set(true)
 }
 
-// Ensure Java 8 Compatibility. See https://github.com/runningcode/fladle/issues/246
+// Ensure Java 11 Compatibility. See https://github.com/runningcode/fladle/issues/246
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).configureEach {
   kotlinOptions {
-    jvmTarget = "1.8"
-    languageVersion = "1.4"
-    apiVersion = "1.4"
+    jvmTarget = "11"
+    languageVersion = "1.7"
+    apiVersion = "1.7"
   }
 }
 
 java {
   toolchain {
-    languageVersion.set(JavaLanguageVersion.of(8))
+    languageVersion.set(JavaLanguageVersion.of(11))
   }
 }

@@ -1,0 +1,4 @@
+root = true
+
+[*.{kt,kts}]
+indent_size = 2

@@ -5,39 +5,49 @@ plugins {
 }
 
 android {
-    compileSdkVersion(29)
-    defaultConfig {
-        applicationId = "com.osacky.flank.gradle.sample.kotlin"
-        minSdkVersion(23)
-        targetSdkVersion(29)
-        versionCode = 1
-        versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"
-    flavorDimensions("flavor")
+  namespace = "com.osacky.flank.gradle.sample.kotlin"
+  compileSdk = 33
+  defaultConfig {
+      applicationId = "com.osacky.flank.gradle.sample.kotlin"
+      minSdk = 23
+      versionCode = 1
+      versionName = "1.0"
+      testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+  }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+  }
 
-    productFlavors {
-        create("chocolate") {
-            dimension = "flavor"
-        }
-        create("vanilla") {
-            dimension = "flavor"
-        }
-    }
+  testOptions.execution = "ANDROIDX_TEST_ORCHESTRATOR"
+  flavorDimensions += "flavor"
 
+  productFlavors {
+      create("chocolate") {
+          dimension = "flavor"
+      }
+      create("vanilla") {
+          dimension = "flavor"
+      }
+  }
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(11)
+  }
 }
 
 androidComponents {
-    beforeVariants(selector().withName("vanilla")) { variantBuilder ->
-        variantBuilder.enabled = false
-    }
+  beforeVariants(selector().withName("vanilla")) { variantBuilder ->
+      variantBuilder.enable = false
+  }
 }
 
 fladle {
     flankVersion.set("23.10.1")
     variant.set("chocolateDebug")
-    debugApk.set(project.provider { "${buildDir.toString()}/outputs/apk/chocolate/debug/*.apk" })
+    debugApk.set(provider {  layout.buildDirectory.file("/outputs/apk/chocolate/debug/*.apk").get().toString()})
     serviceAccountCredentials.set(project.layout.projectDirectory.file("flank-gradle-5cf02dc90531.json"))
     // Project Id is not needed if serviceAccountCredentials are set.
 //    projectId("flank-gradle")
