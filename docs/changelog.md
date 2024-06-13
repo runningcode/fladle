@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+* Minimum supported Gradle version is now 8.0
 
 ## 0.17.5
 * Support Develocity JUnit XML Reporting [PR](https://github.com/runningcode/fladle/pull/386) Thanks [ZacSweers](https://github.com/ZacSweers) 

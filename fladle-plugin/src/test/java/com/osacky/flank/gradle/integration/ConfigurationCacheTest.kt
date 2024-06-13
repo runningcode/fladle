@@ -115,19 +115,19 @@ class ConfigurationCacheTest {
     settings.writeText(
       """
       plugins {
-        id 'com.gradle.enterprise' version '3.7'
+        id 'com.gradle.develocity' version '3.17.5'
       }
       """.trimIndent(),
     )
     testProjectRoot.newFile("flank-gradle-service-account.json").writeText("{ \"project_id\": \"foo\" }")
     val result = configCachingRunner("runFlank").buildAndFail()
 
-    assertThat(result.output).contains("Error: Failed to read service account credential.")
+    assertThat(result.output).contains("Caused by: com.google.api.client.http.HttpResponseException: 400 Bad Request")
     assertThat(result.output).contains("Configuration cache entry stored.")
 
     val secondResult = configCachingRunner("runFlank").buildAndFail()
 
-    assertThat(secondResult.output).contains("Error: Failed to read service account credential.")
+    assertThat(secondResult.output).contains("Caused by: com.google.api.client.http.HttpResponseException: 400 Bad Request")
     assertThat(secondResult.output).contains("Reusing configuration cache.")
   }
 
