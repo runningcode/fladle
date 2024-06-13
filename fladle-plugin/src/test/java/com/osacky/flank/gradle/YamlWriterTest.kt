@@ -178,8 +178,8 @@ class YamlWriterTest {
         smart-flank-disable-upload: false
         legacy-junit-result: false
         full-junit-result: false
-        output-style: single
-      """.trimIndent() + '\n',
+        output-style: single\n
+      """.trimIndent(),
     )
   }
 
@@ -348,8 +348,8 @@ class YamlWriterTest {
         smart-flank-disable-upload: false
         legacy-junit-result: false
         full-junit-result: false
-        output-style: single
-      """.trimIndent() + '\n',
+        output-style: single\n
+      """.trimIndent(),
     )
   }
 
@@ -386,8 +386,8 @@ class YamlWriterTest {
         smart-flank-disable-upload: false
         legacy-junit-result: false
         full-junit-result: false
-        output-style: single
-      """.trimIndent() + '\n',
+        output-style: single\n
+      """.trimIndent(),
     )
   }
 
@@ -1001,8 +1001,8 @@ class YamlWriterTest {
         smart-flank-disable-upload: false
         legacy-junit-result: false
         full-junit-result: false
-        output-style: single
-      """.trimIndent() + '\n',
+        output-style: single\n
+      """.trimIndent(),
     )
   }
 
