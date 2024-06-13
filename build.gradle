@@ -29,14 +29,8 @@ fladle {
     serviceAccountCredentials = project.layout.projectDirectory.file("sample/flank-gradle-5cf02dc90531.json")
 }
 
-buildScan {
-    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-    termsOfServiceAgree = 'yes'
-    publishAlways()
-}
-
 tasks.named('wrapper').configure {
-    gradleVersion = '7.4'
+    gradleVersion = '7.6.3'
 }
 
 def isNonStable = { String version ->

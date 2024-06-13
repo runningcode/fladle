@@ -7,14 +7,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: gradle/actions/wrapper-validation@v3
-    - uses: gradle/gradle-build-action@v3
-      name: Check Fladle
+    - uses: actions/setup-java@v4
       with:
-        job-id: jdk8
-        arguments: assembleDebug assembleDebugAndroidTest printYml check :fladle-plugin:check
-    - uses: gradle/gradle-build-action@v3
-      name: Publish Snapshot
+        distribution: 'temurin'
+        java-version: '8'
+    - uses: gradle/actions/setup-gradle@v3
+      name: Setup Gradle
+    - name: Check Fladle
+      run: ./gradlew assembleDebug assembleDebugAndroidTest printYml check :fladle-plugin:check
+    - name: Publish Snapshot
       if: ${{ github.ref == 'refs/heads/master' && github.event_name != 'pull_request' }}
-      with:
-        job-id: jdk8
-        arguments: :fladle-plugin:publishAllPublicationsToMavenCentralRepository -Pfladle.releaseMode -PmavenCentralUsername=${{ secrets.SONATYPE_USERNAME }} -PmavenCentralPassword=${{ secrets.SONATYPE_PASSWORD }}
+      run: ./gradlew :fladle-plugin:publishAllPublicationsToMavenCentralRepository -Pfladle.releaseMode -PmavenCentralUsername=${{ secrets.SONATYPE_USERNAME }} -PmavenCentralPassword=${{ secrets.SONATYPE_PASSWORD }}
