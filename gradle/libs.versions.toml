@@ -17,7 +17,7 @@ androidx-appcompat = "1.6.1"
 
 androidx-constraintlayout = "2.1.4"
 
-androidx-navigation = "2.3.0"
+androidx-navigation = "2.7.7"
 
 androidx-test-espresso = "3.5.1"
 
