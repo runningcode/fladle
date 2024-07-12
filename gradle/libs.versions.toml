@@ -21,7 +21,7 @@ androidx-navigation = "2.3.0"
 
 androidx-test-espresso = "3.6.1"
 
-androidx-test-ext-junit = "1.1.5"
+androidx-test-ext-junit = "1.2.1"
 
 androidx-test-rules = "1.6.1"
 
