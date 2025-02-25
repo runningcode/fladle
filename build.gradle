@@ -22,7 +22,7 @@ fladle {
 }
 
 tasks.wrapper.configure {
-    gradleVersion = '8.12'
+    gradleVersion = '8.13'
 }
 
 def isNonStable = { String version ->
