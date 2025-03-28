@@ -69,8 +69,8 @@ fladle {
     recordVideo = false
     performanceMetrics = false
     devices = [
-        [ "model": "NexusLowRes", "version": "28" ],
-        [ "model": "Nexus5", "version": "23" ]
+        [ "model": "SmallPhone.arm", "version": "28" ],
+        [ "model": "MediumPhone.arm", "version": "33" ]
     ]
     projectId("flank-gradle")
     flankVersion = "{{ fladle.flank_version }}"
@@ -193,15 +193,15 @@ A list of devices to run the tests against. When list is empty, a default device
 === "Groovy"
     ``` groovy
     devices = [
-            [ "model": "Pixel2", "version": "26" ],
-            [ "model": "Nexus5", "version": "23" ]
+            [ "model": "MediumPhone.arm", "version": "26" ],
+            [ "model": "MediumPhone.arm", "version": "33" ]
     ]
     ```
 === "Kotlin"
     ``` kotlin
     devices.set(listOf(
-        mapOf("model" to "Pixel2", "version" to "26" ),
-        mapOf("model" to "Nexus5", "version" to "23" )
+        mapOf("model" to "MediumPhone.arm", "version" to "26" ),
+        mapOf("model" to "MediumPhone.arm", "version" to "33" )
     ))
     ```
 
@@ -490,7 +490,7 @@ A list of paths that will be copied from the device's storage to the designated 
     ```
 
 ### filesToDownload
-List of regex that is matched against bucket paths (for example: `2019-01-09_00:13:06.106000_YCKl/shard_0/NexusLowRes-28-en-portrait/bugreport.txt`) for files to be downloaded after a flank run. The results are downloaded to the `APP_MODULE/build/fladle/RESULTS` directory where RESULTS can be set by [`localResultsDir`](../configuration/#localresultsdir) var otherwise defaulting to `results/`.
+List of regex that is matched against bucket paths (for example: `2019-01-09_00:13:06.106000_YCKl/shard_0/SmallPhone.arm-28-en-portrait/bugreport.txt`) for files to be downloaded after a flank run. The results are downloaded to the `APP_MODULE/build/fladle/RESULTS` directory where RESULTS can be set by [`localResultsDir`](../configuration/#localresultsdir) var otherwise defaulting to `results/`.
 
 === "Groovy"
     ``` groovy

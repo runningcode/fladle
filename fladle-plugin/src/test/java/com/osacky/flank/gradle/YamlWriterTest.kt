@@ -23,13 +23,13 @@ class YamlWriterTest {
   fun testWriteSingleDevice() {
     val devices =
       listOf(
-        mapOf("model" to "NexusLowRes", "version" to "28"),
+        mapOf("model" to "SmallPhone.arm", "version" to "28"),
       )
     val deviceString = yamlWriter.createDeviceString(devices)
     val expected =
       """
       |  device:
-      |  - model: NexusLowRes
+      |  - model: SmallPhone.arm
       |    version: 28
       |
       """.trimMargin()
@@ -40,17 +40,17 @@ class YamlWriterTest {
   fun testWriteTwoDevices() {
     val devices =
       listOf(
-        mapOf("model" to "NexusLowRes", "version" to "28"),
-        mapOf("model" to "Nexus5", "version" to "23"),
+        mapOf("model" to "SmallPhone.arm", "version" to "28"),
+        mapOf("model" to "MediumPhone.arm", "version" to "33"),
       )
     val deviceString = yamlWriter.createDeviceString(devices)
     val expected =
       """
       |  device:
-      |  - model: NexusLowRes
+      |  - model: SmallPhone.arm
       |    version: 28
-      |  - model: Nexus5
-      |    version: 23
+      |  - model: MediumPhone.arm
+      |    version: 33
       |
       """.trimMargin()
     assertThat(deviceString).isEqualTo(expected)
@@ -60,17 +60,17 @@ class YamlWriterTest {
   fun testWriteTwoCustomDevices() {
     val devices =
       listOf(
-        mapOf("model" to "NexusLowRes", "version" to "23", "orientation" to "portrait"),
-        mapOf("model" to "Nexus5", "orientation" to "landscape", "version" to "28"),
+        mapOf("model" to "SmallPhone.arm", "version" to "33", "orientation" to "portrait"),
+        mapOf("model" to "MediumPhone.arm", "orientation" to "landscape", "version" to "28"),
       )
     val deviceString = yamlWriter.createDeviceString(devices)
     val expected =
       """
       |  device:
-      |  - model: NexusLowRes
-      |    version: 23
+      |  - model: SmallPhone.arm
+      |    version: 33
       |    orientation: portrait
-      |  - model: Nexus5
+      |  - model: MediumPhone.arm
       |    version: 28
       |    orientation: landscape
       |
@@ -82,18 +82,18 @@ class YamlWriterTest {
   fun testWriteTwoCustomDevicesWithLocale() {
     val devices =
       listOf(
-        mapOf("model" to "NexusLowRes", "version" to "23", "orientation" to "portrait", "locale" to "en"),
-        mapOf("model" to "Nexus5", "orientation" to "landscape", "locale" to "es_ES", "version" to "28"),
+        mapOf("model" to "SmallPhone.arm", "version" to "33", "orientation" to "portrait", "locale" to "en"),
+        mapOf("model" to "MediumPhone.arm", "orientation" to "landscape", "locale" to "es_ES", "version" to "28"),
       )
     val deviceString = yamlWriter.createDeviceString(devices)
     val expected =
       """
       |  device:
-      |  - model: NexusLowRes
-      |    version: 23
+      |  - model: SmallPhone.arm
+      |    version: 33
       |    orientation: portrait
       |    locale: en
-      |  - model: Nexus5
+      |  - model: MediumPhone.arm
       |    version: 28
       |    orientation: landscape
       |    locale: es_ES
@@ -120,7 +120,7 @@ class YamlWriterTest {
   fun testThrowsExceptionWhenMissingVersionKeyInDevice() {
     val devices =
       listOf(
-        mapOf("model" to "NexusLowRes", "orientation" to "portrait", "locale" to "en"),
+        mapOf("model" to "SmallPhone.arm", "orientation" to "portrait", "locale" to "en"),
       )
     try {
       yamlWriter.createDeviceString(devices)
@@ -160,7 +160,7 @@ class YamlWriterTest {
         app: path
         test: instrument
         device:
-        - model: NexusLowRes
+        - model: SmallPhone.arm
           version: 28
 
         use-orchestrator: false
@@ -330,7 +330,7 @@ class YamlWriterTest {
       gcloud:
         app: path
         device:
-        - model: NexusLowRes
+        - model: SmallPhone.arm
           version: 28
 
         use-orchestrator: false
@@ -367,7 +367,7 @@ class YamlWriterTest {
       gcloud:
         app: path
         device:
-        - model: NexusLowRes
+        - model: SmallPhone.arm
           version: 28
 
         use-orchestrator: false

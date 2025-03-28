@@ -27,8 +27,8 @@ This recipe will keep track of test durations automatically on firebase test lab
 
 ## Run different tests on different devices with different Gradle tasks.
 
-`./gradlew runFlankPerfTests` will execute the performance tests against a Nexus5
-`./gradlew runFlankRegresssionTests` will execute the regressions tests against a Nexus5LowRes
+`./gradlew runFlankPerfTests` will execute the performance tests against a MediumPhone.arm
+`./gradlew runFlankRegresssionTests` will execute the regressions tests against a SmallPhone.arm
 
 === "Groovy"
     ``` groovy
@@ -36,8 +36,8 @@ This recipe will keep track of test durations automatically on firebase test lab
         configs {
             perfTests {
                 devices.set([
-                    ["model" : "Nexus5", "version" : "28"], 
-                    ["model" : "Nexus6", "version" : "28"]
+                    ["model" : "MediumPhone.arm", "version" : "28"], 
+                    ["model" : "MediumPhone.arm", "version" : "28"]
                 ])
                 testTargets.set([
                         "class com.sample.MyPerformanceTest"
@@ -45,7 +45,7 @@ This recipe will keep track of test durations automatically on firebase test lab
             }
             regressionTests {
                 devices.set([
-                    [ "model" : "Nexus5LowRes", "version" : "28"]
+                    [ "model" : "SmallPhone.arm", "version" : "28"]
                 ])
                 testTargets.set([
                     "class com.sample.MyRegressionTest"
@@ -60,8 +60,8 @@ This recipe will keep track of test durations automatically on firebase test lab
         configs {
             create("perfTests") {
                 devices.set(listOf(
-                    mapOf("model" to "Nexus5", "version" to "28" ), 
-                    mapOf("model" to "Nexus5", "version" to "28")
+                    mapOf("model" to "MediumPhone.arm", "version" to "28" ), 
+                    mapOf("model" to "MediumPhone.arm", "version" to "28")
                 ))
                 testTargets.set(listOf(
                     "class com.sample.MyPerformanceTest"
@@ -69,7 +69,7 @@ This recipe will keep track of test durations automatically on firebase test lab
             }
             create("regressionTests") {
                 devices.set(listOf(
-                    mapOf("model" to "Nexus5LowRes", "version" to "28" )
+                    mapOf("model" to "SmallPhone.arm", "version" to "28" )
                 ))
                 testTargets.set(listOf(
                     "class com.sample.MyRegressionTest"

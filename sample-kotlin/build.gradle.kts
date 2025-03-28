@@ -38,8 +38,8 @@ fladle {
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
     ))
     devices.set(listOf(
-        mapOf("model" to "Pixel2", "version" to "26" ),
-        mapOf("model" to "Nexus5", "version" to "23" )
+        mapOf("model" to "SmallPhone.arm", "version" to "26" ),
+        mapOf("model" to "MediumPhone.arm", "version" to "33" )
     ))
     smartFlankGcsPath.set("gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml")
     configs {
@@ -61,13 +61,13 @@ fladle {
             )})
         }
         create("perfTests") {
-            devices.set(listOf(mapOf("model" to "Nexus5", "version" to "28" ), mapOf("model" to "Nexus5", "version" to "28")))
+            devices.set(listOf(mapOf("model" to "SmallPhone.arm", "version" to "28" ), mapOf("model" to "MediumPhone.arm", "version" to "33")))
             testTargets.set(listOf(
                 "class com.sample.MyPerformanceTest"
             ))
         }
         create("regressionTests") {
-            devices.set(listOf(mapOf("model" to "Nexus5LowRes", "version" to "28" )))
+            devices.set(listOf(mapOf("model" to "SmallPhone.arm", "version" to "28" )))
             testTargets.set(listOf(
                 "class com.sample.MyRegressionTest"
             ))

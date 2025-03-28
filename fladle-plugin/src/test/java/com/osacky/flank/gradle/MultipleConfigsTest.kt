@@ -54,7 +54,7 @@ class MultipleConfigsTest {
       |  app: foo.apk
       |  test: instrument.apk
       |  device:
-      |  - model: NexusLowRes
+      |  - model: SmallPhone.arm
       |    version: 28
       |
       |  use-orchestrator: false
@@ -92,7 +92,7 @@ class MultipleConfigsTest {
       |  app: foo.apk
       |  test: instrument.apk
       |  device:
-      |  - model: NexusLowRes
+      |  - model: SmallPhone.arm
       |    version: 28
       |
       |  use-orchestrator: false
