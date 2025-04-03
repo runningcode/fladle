@@ -53,10 +53,10 @@ class AutoConfigureFladleTest {
         app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
         test: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
         device:
-        - model: Pixel2
+        - model: SmallPhone.arm
           version: 26
-        - model: Nexus5
-          version: 23
+        - model: MediumPhone.arm
+          version: 33
 
         use-orchestrator: true
         auto-google-login: false

@@ -57,8 +57,8 @@ fladle {
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
     ) })
     devices.set(project.provider { listOf(
-        mapOf("model" to "Pixel2", "version" to "26" ),
-        mapOf("model" to "Nexus5", "version" to "23" )
+        mapOf("model" to "SmallPhone.arm", "version" to "26" ),
+        mapOf("model" to "MediumPhone.arm", "version" to "33" )
     ) })
     smartFlankGcsPath.set("gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml")
     configs {

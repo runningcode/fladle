@@ -101,7 +101,7 @@ class FulladlePluginIntegrationTest {
         app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
         test: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
         device:
-        - model: NexusLowRes
+        - model: SmallPhone.arm
           version: 28
 
         use-orchestrator: false
@@ -283,7 +283,7 @@ class FulladlePluginIntegrationTest {
         app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
         test: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
         device:
-        - model: NexusLowRes
+        - model: SmallPhone.arm
           version: 28
 
         use-orchestrator: false
@@ -407,7 +407,7 @@ class FulladlePluginIntegrationTest {
         app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
         test: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
         device:
-        - model: NexusLowRes
+        - model: SmallPhone.arm
           version: 28
 
         use-orchestrator: false
@@ -498,7 +498,7 @@ class FulladlePluginIntegrationTest {
         app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
         test: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
         device:
-        - model: NexusLowRes
+        - model: SmallPhone.arm
           version: 28
 
         use-orchestrator: false
@@ -982,7 +982,7 @@ class FulladlePluginIntegrationTest {
         app: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/debug/android-project-debug.apk
         test: [0-9a-zA-Z\/_]*/android-project/build/outputs/apk/androidTest/debug/android-project-debug-androidTest.apk
         device:
-        - model: NexusLowRes
+        - model: SmallPhone.arm
           version: 28
 
         use-orchestrator: false

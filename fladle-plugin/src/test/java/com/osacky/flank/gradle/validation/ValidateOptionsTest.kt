@@ -134,7 +134,7 @@ class ValidateOptionsTest {
       |  app: foo.apk
       |  test: test.apk
       |  device:
-      |  - model: NexusLowRes
+      |  - model: SmallPhone.arm
       |    version: 28
       |
       |  use-orchestrator: false
@@ -164,7 +164,7 @@ class ValidateOptionsTest {
       |  app: foo.apk
       |  test: test.apk
       |  device:
-      |  - model: NexusLowRes
+      |  - model: SmallPhone.arm
       |    version: 28
       |
       |  use-orchestrator: false

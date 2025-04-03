@@ -36,7 +36,7 @@ open class FlankGradleExtension
     override val autoGoogleLogin: Property<Boolean> = objects.property<Boolean>().convention(false)
     override val devices: ListProperty<Map<String, String>> =
       objects.listProperty<Map<String, String>>().convention(
-        listOf(mapOf("model" to "NexusLowRes", "version" to "28")),
+        listOf(mapOf("model" to "SmallPhone.arm", "version" to "28")),
       )
 
     // https://cloud.google.com/sdk/gcloud/reference/firebase/test/android/run

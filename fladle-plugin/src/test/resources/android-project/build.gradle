@@ -30,8 +30,8 @@ fladle {
             "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
     ]
     devices = [
-            [ "model": "Pixel2", "version": "26" ],
-            [ "model": "Nexus5", "version": "23" ]
+            [ "model": "SmallPhone.arm", "version": "26" ],
+            [ "model": "MediumPhone.arm", "version": "33" ]
     ]
     smartFlankGcsPath = "gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml"
     configs {

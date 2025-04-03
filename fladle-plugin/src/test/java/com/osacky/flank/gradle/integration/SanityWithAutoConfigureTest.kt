@@ -56,8 +56,8 @@ class SanityWithAutoConfigureTest {
                 "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
               ]
               devices = [
-                [ "model": "Pixel2", "version": "26" ],
-                [ "model": "Nexus5", "version": "23" ]
+                [ "model": "SmallPhone.arm", "version": "26" ],
+                [ "model": "MediumPhone.arm", "version": "33" ]
               ]
               smartFlankGcsPath = "gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml"
               configs {
@@ -91,10 +91,10 @@ class SanityWithAutoConfigureTest {
         app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
         test: [0-9a-zA-Z\/_]*/build/outputs/apk/androidTest/debug/[0-9a-zA-Z\/_]*-debug-androidTest.apk
         device:
-        - model: Pixel2
+        - model: SmallPhone.arm
           version: 26
-        - model: Nexus5
-          version: 23
+        - model: MediumPhone.arm
+          version: 33
 
         use-orchestrator: true
         auto-google-login: false
@@ -127,10 +127,10 @@ class SanityWithAutoConfigureTest {
       gcloud:
         app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
         device:
-        - model: Pixel2
+        - model: SmallPhone.arm
           version: 26
-        - model: Nexus5
-          version: 23
+        - model: MediumPhone.arm
+          version: 33
 
         use-orchestrator: false
         auto-google-login: false
@@ -164,10 +164,10 @@ class SanityWithAutoConfigureTest {
         app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
         test: [0-9a-zA-Z\/_]*/build/outputs/apk/androidTest/debug/[0-9a-zA-Z\/_]*-debug-androidTest.apk
         device:
-        - model: Pixel2
+        - model: SmallPhone.arm
           version: 26
-        - model: Nexus5
-          version: 23
+        - model: MediumPhone.arm
+          version: 33
 
         use-orchestrator: false
         auto-google-login: false
@@ -210,8 +210,8 @@ class SanityWithAutoConfigureTest {
                 "class com.osacky.flank.gradle.sample.ExampleInstrumentedTest#seeView"
               ]
               devices = [
-                [ "model": "Pixel2", "version": "26" ],
-                [ "model": "Nexus5", "version": "23" ]
+                [ "model": "SmallPhone.arm", "version": "26" ],
+                [ "model": "MediumPhone.arm", "version": "33" ]
               ]
               smartFlankGcsPath = "gs://test-lab-yr9w6qsdvy45q-iurp80dm95h8a/flank/test_app_android.xml"
               configs {
@@ -238,10 +238,10 @@ class SanityWithAutoConfigureTest {
       gcloud:
         app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
         device:
-        - model: Pixel2
+        - model: SmallPhone.arm
           version: 26
-        - model: Nexus5
-          version: 23
+        - model: MediumPhone.arm
+          version: 33
 
         use-orchestrator: true
         auto-google-login: false
@@ -275,10 +275,10 @@ class SanityWithAutoConfigureTest {
         app: [0-9a-zA-Z\/_]*/build/outputs/apk/debug/[0-9a-zA-Z\/_]*-debug.apk
         test: instrumentation-apk-not-detected-from-root.apk
         device:
-        - model: Pixel2
+        - model: SmallPhone.arm
           version: 26
-        - model: Nexus5
-          version: 23
+        - model: MediumPhone.arm
+          version: 33
 
         use-orchestrator: false
         auto-google-login: false
