@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.18.0
+* Use non-deprecated device models and versions in default config. [PR](https://github.com/runningcode/fladle/pull/446) Thanks [Kaibolay](https://github.com/kaibolay)
+
 ## 0.17.5
 * Support Develocity JUnit XML Reporting [PR](https://github.com/runningcode/fladle/pull/386) Thanks [ZacSweers](https://github.com/ZacSweers) 
 * Min supported Gradle version is now 6.5
