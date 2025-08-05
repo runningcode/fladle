@@ -2,7 +2,6 @@ package com.osacky.flank.gradle.validation
 
 import com.osacky.flank.gradle.FladleConfig
 import com.osacky.flank.gradle.FlankGradleExtension.Companion.FLANK_VERSION
-import org.gradle.util.VersionNumber
 import kotlin.reflect.full.memberProperties
 
 fun validateOptionsUsed(
