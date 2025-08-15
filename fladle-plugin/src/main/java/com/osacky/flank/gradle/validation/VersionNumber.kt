@@ -27,7 +27,6 @@ class VersionNumber private constructor(
   private val qualifier: String?,
   private val scheme: AbstractScheme,
 ) : Comparable<VersionNumber> {
-
   override fun compareTo(other: VersionNumber): Int {
     if (major != other.major) {
       return major - other.major
@@ -67,6 +66,7 @@ class VersionNumber private constructor(
    */
   interface Scheme {
     fun parse(versionString: String): VersionNumber
+
     fun format(versionNumber: VersionNumber): String
   }
 
@@ -76,7 +76,6 @@ class VersionNumber private constructor(
         return UNKNOWN
       }
       val scanner = Scanner(versionString)
-
 
       if (!scanner.hasDigit()) {
         return UNKNOWN
@@ -162,7 +161,7 @@ class VersionNumber private constructor(
         versionNumber.major,
         versionNumber.minor,
         versionNumber.micro,
-        if (versionNumber.qualifier == null) "" else "-" + versionNumber.qualifier
+        if (versionNumber.qualifier == null) "" else "-" + versionNumber.qualifier,
       )
     }
 
@@ -176,7 +175,10 @@ class VersionNumber private constructor(
     val UNKNOWN: VersionNumber = version(0)
 
     @JvmOverloads
-    fun version(major: Int, minor: Int = 0): VersionNumber {
+    fun version(
+      major: Int,
+      minor: Int = 0,
+    ): VersionNumber {
       return VersionNumber(
         major = major,
         minor = minor,
