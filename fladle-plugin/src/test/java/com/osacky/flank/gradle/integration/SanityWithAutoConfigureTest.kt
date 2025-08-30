@@ -13,7 +13,7 @@ private const val COMMON_SCRIPT_PART = """
   }
 
   android {
-    compileSdk 34
+    compileSdk 33
      namespace "com.osacky.flank.gradle.sample"
     defaultConfig {
       applicationId "com.osacky.flank.gradle.sample"
