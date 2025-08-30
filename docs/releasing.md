@@ -36,9 +36,10 @@ git tag v{{ fladle.next_release }}
 git push origin v{{ fladle.next_release }}
 ```
 
-* Upload to Maven Central
+* Upload to Maven Central (this must run in two separate commands since they are from two different namespaces)
 ``` bash
-./gradlew :fladle-plugin:publishAllPublicationsToMavenRepository -Pfladle.releaseMode -Dorg.gradle.internal.publish.checksums.insecure=true
+./gradlew :fladle-plugin:publishFladlePluginMarkerMavenPublicationToMavenCentralRepository publishFulladlePluginMarkerMavenPublicationToMavenCentralRepository -Pfladle.release 
+./gradlew :fladle-plugin:publishPluginMavenPublicationToMavenCentralRepository -Pfladle.release
 ```
 * Upload to Gradle Plugin Portal
 ```bash
@@ -46,8 +47,8 @@ git push origin v{{ fladle.next_release }}
 ```
 
 * Release to Maven Central
-    * Login to Sonatype OSS Nexus: [https://oss.sonatype.org/](https://oss.sonatype.org/)
-    * Click on **Staging Repositories**
+    * Login to Maven Central Repository: [https://central.sonatype.com/](https://oss.sonatype.com/)
+    * Click on **Publish**
 
 * Merge the release branch to master
 ```

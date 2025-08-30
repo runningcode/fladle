@@ -15,8 +15,7 @@ plugins {
   `java-gradle-plugin`
   alias(libs.plugins.gradle.plugin.publish)
   alias(libs.plugins.kotlinter)
-  `maven-publish`
-  signing
+  alias(libs.plugins.vanniktech.publish)
 }
 
 // See https://github.com/slackhq/keeper/pull/11#issuecomment-579544375 for context
@@ -57,65 +56,36 @@ gradlePlugin {
   }
 }
 
-val isReleaseBuild : Boolean = !version.toString().endsWith("SNAPSHOT")
-
-val sonatypeUsername : String? by project
-val sonatypePassword : String? by project
-
-publishing {
-  repositories {
-    repositories {
-      maven {
-        val releasesRepoUrl = uri("https://central.sonatype.com/api/v1/publisher/deployments/upload/")
-        val snapshotsRepoUrl = uri("https://central.sonatype.com/repository/maven-snapshots/")
-        url = if (isReleaseBuild) releasesRepoUrl else snapshotsRepoUrl
-        credentials {
-          username = sonatypeUsername
-          password = sonatypePassword
-        }
-      }
-    }
-  }
-  publications {
-    afterEvaluate {
-      named<MavenPublication>("fladlePluginMarkerMaven") {
-        pom.configureForFladle("Fladle")
-      }
-
-      named<MavenPublication>("pluginMaven") {
-        pom.configureForFladle("Fladle")
-      }
-      named<MavenPublication>("fulladlePluginMarkerMaven") {
-        pom.configureForFladle("Fulladle")
-      }
-    }
-  }
+java {
+  withJavadocJar()
+  withSourcesJar()
 }
 
-signing {
-  isRequired = isReleaseBuild
-}
+mavenPublishing {
+  publishToMavenCentral()
+  signAllPublications()
 
-fun org.gradle.api.publish.maven.MavenPom.configureForFladle(pluginName: String) {
-  name.set(pluginName)
-  description.set(project.description)
-  url.set("https://github.com/runningcode/fladle")
-  licenses {
-    license {
-      name.set("The Apache License, Version 2.0")
-      url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-    }
-  }
-  developers {
-    developer {
-      id.set("runningcode")
-      name.set("Nelson Osacky")
-    }
-  }
-  scm {
-    connection.set("scm:git:git://github.com/runningcode/fladle.git")
-    developerConnection.set("scm:git:ssh://github.com/runningcode/fladle.git")
+  pom {
+    name.set("Fladle")
+    description.set(project.description)
     url.set("https://github.com/runningcode/fladle")
+    licenses {
+      license {
+        name.set("The Apache License, Version 2.0")
+        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+      }
+    }
+    developers {
+      developer {
+        id.set("runningcode")
+        name.set("Nelson Osacky")
+      }
+    }
+    scm {
+      connection.set("scm:git:git://github.com/runningcode/fladle.git")
+      developerConnection.set("scm:git:ssh://github.com/runningcode/fladle.git")
+      url.set("https://github.com/runningcode/fladle")
+    }
   }
 }
 
@@ -134,10 +104,10 @@ tasks.withType(ValidatePlugins::class.java).configureEach {
 
 // Ensure Java 11 Compatibility. See https://github.com/runningcode/fladle/issues/246
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).configureEach {
-  kotlinOptions {
-    jvmTarget = "11"
-    languageVersion = "1.7"
-    apiVersion = "1.7"
+  compilerOptions {
+    jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+    languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_7)
+    apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_7)
   }
 }
 
