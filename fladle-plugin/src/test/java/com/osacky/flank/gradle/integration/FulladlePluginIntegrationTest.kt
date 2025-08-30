@@ -941,7 +941,7 @@ class FulladlePluginIntegrationTest {
           id "com.android.application"
       }
       android {
-         compileSdk 33
+         compileSdk 34
          namespace "com.osacky.flank.gradle.sample"
          defaultConfig {
              applicationId "com.osacky.flank.gradle.sample"
