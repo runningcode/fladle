@@ -10,12 +10,12 @@ import javax.inject.Inject
 )
 open class FlankJavaExec
   @Inject
-  constructor(projectLayout: ProjectLayout) : JavaExec() {
+  constructor(private val projectLayout: ProjectLayout) : JavaExec() {
     init {
       group = FladlePluginDelegate.TASK_GROUP
       mainClass.set("ftl.Main")
       workingDir(projectLayout.fladleDir)
     }
 
-    fun setUpWorkingDir(configName: String) = workingDir(project.layout.buildDirectory.dir("fladle/$configName"))
+    fun setUpWorkingDir(configName: String) = workingDir(projectLayout.buildDirectory.dir("fladle/$configName"))
   }
