@@ -889,6 +889,65 @@ class FulladlePluginIntegrationTest {
   }
 
   @Test
+  fun `configureFulladle task is compatible with configuration cache`() {
+    val appFixture = "android-project"
+    val libraryFixture = "android-library-project"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+      include '$appFixture'
+      include '$libraryFixture'
+      
+      dependencyResolutionManagement {
+        repositories {
+          mavenCentral()
+          google()
+        }
+      }
+      """.trimIndent(),
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(libraryFixture)
+
+    writeBuildGradle(
+      """
+      buildscript {
+          repositories {
+              google()
+          }
+
+          dependencies {
+              classpath '$agpDependency'
+          }
+      }
+      
+      plugins {
+        id "com.osacky.fulladle"
+      }
+      
+      fladle {
+        serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+      }
+      """.trimIndent(),
+    )
+
+    // First run with configuration cache - should store the cache
+    val firstResult = testProjectRoot.gradleRunner()
+      .withArguments("configureFulladle", "--configuration-cache")
+      .build()
+
+    assertThat(firstResult.output).contains("BUILD SUCCESSFUL")
+    assertThat(firstResult.output).contains("Configuration cache entry stored")
+
+    // Second run with configuration cache - should reuse the cache
+    val secondResult = testProjectRoot.gradleRunner()
+      .withArguments("configureFulladle", "--configuration-cache")
+      .build()
+
+    assertThat(secondResult.output).contains("BUILD SUCCESSFUL")
+    assertThat(secondResult.output).contains("Configuration cache entry reused")
+  }
+
+  @Test
   fun fulladleWithAbiSplits() {
     val appFixtureWithAbiSplits = "android-project-with-abi-splits"
     val appFixture = "android-project"
