@@ -91,6 +91,30 @@ class ConfigurationCacheTest {
   }
 
   @Test
+  fun flankAuth() {
+    writeBuildGradle(
+      """|plugins {
+           |  id "com.osacky.fladle"
+           |}
+           |
+           |repositories {
+           |  mavenCentral()
+           |}
+           |
+      """.trimMargin(),
+    )
+    val result = configCachingRunner("flankAuth").buildAndFail()
+
+    assertThat(result.output).contains("Address already in use")
+    assertThat(result.output).contains("Configuration cache entry stored.")
+
+    val secondResult = configCachingRunner("flankAuth").buildAndFail()
+
+    assertThat(secondResult.output).contains("Address already in use")
+    assertThat(secondResult.output).contains("Reusing configuration cache.")
+  }
+
+  @Test
   fun runFlank() {
     writeBuildGradle(
       """|plugins {
