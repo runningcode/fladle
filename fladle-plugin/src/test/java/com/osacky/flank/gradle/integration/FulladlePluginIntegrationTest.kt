@@ -931,17 +931,19 @@ class FulladlePluginIntegrationTest {
     )
 
     // First run with configuration cache - should store the cache
-    val firstResult = testProjectRoot.gradleRunner()
-      .withArguments("configureFulladle", "--configuration-cache")
-      .build()
+    val firstResult =
+      testProjectRoot.gradleRunner()
+        .withArguments("configureFulladle", "--configuration-cache")
+        .build()
 
     assertThat(firstResult.output).contains("BUILD SUCCESSFUL")
     assertThat(firstResult.output).contains("Configuration cache entry stored")
 
     // Second run with configuration cache - should reuse the cache
-    val secondResult = testProjectRoot.gradleRunner()
-      .withArguments("configureFulladle", "--configuration-cache")
-      .build()
+    val secondResult =
+      testProjectRoot.gradleRunner()
+        .withArguments("configureFulladle", "--configuration-cache")
+        .build()
 
     assertThat(secondResult.output).contains("BUILD SUCCESSFUL")
     assertThat(secondResult.output).contains("Configuration cache entry reused")

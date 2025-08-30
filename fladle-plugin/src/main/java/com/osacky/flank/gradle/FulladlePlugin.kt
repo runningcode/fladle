@@ -24,10 +24,11 @@ class FulladlePlugin : Plugin<Project> {
     val configService = FulladleConfigurationService()
 
     // Register the new configuration cache compatible task
-    val fulladleConfigureTask = root.tasks.register("configureFulladle", ConfigureFulladleTask::class.java) {
-      // Set the FlankGradleExtension directly (it's already Gradle managed)
-      flankExtension.set(flankGradleExtension)
-    }
+    val fulladleConfigureTask =
+      root.tasks.register("configureFulladle", ConfigureFulladleTask::class.java) {
+        // Set the FlankGradleExtension directly (it's already Gradle managed)
+        flankExtension.set(flankGradleExtension)
+      }
 
     root.tasks.withType(YamlConfigWriterTask::class.java).configureEach {
       dependsOn(fulladleConfigureTask)
@@ -36,11 +37,13 @@ class FulladlePlugin : Plugin<Project> {
     // Collect module information after project evaluation when all variants are available
     root.afterEvaluate {
       fulladleConfigureTask.configure {
-        moduleInformation.set(root.provider {
-          configService.collectModuleInformation(root)
-        })
+        moduleInformation.set(
+          root.provider {
+            configService.collectModuleInformation(root)
+          },
+        )
       }
-      
+
       // TODO add other printYml tasks from other configs
       root.tasks.named("printYml").configure {
         dependsOn(fulladleConfigureTask)
