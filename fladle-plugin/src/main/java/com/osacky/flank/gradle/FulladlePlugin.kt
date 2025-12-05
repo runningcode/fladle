@@ -20,55 +20,30 @@ class FulladlePlugin : Plugin<Project> {
       extensions.create("fulladleModuleConfig", FulladleModuleExtension::class.java)
     }
 
-    val fulladleConfigureTask =
-      root.tasks.register("configureFulladle") {
-        var modulesEnabled = false
-        /**
-         * we will first configure all app modules
-         * then configure all library modules
-         * we force this order of configuration because
-         * app modules are better candidates to become
-         * root level test/app APKs, since they produce
-         * app APKs
-         * if no app module had tests or was enabled
-         * we will choose a library module to become
-         * a root level module, in which case we will
-         * have to check if it has its debugApk set
-         */
-        doLast {
-          // first configure all app modules
-          root.subprojects {
-            if (!hasAndroidTest) {
-              return@subprojects
-            }
-            modulesEnabled = true
-            if (isAndroidAppModule) {
-              configureModule(this, flankGradleExtension)
-            }
-          }
-          // then configure all library modules
-          root.subprojects {
-            if (!hasAndroidTest) {
-              return@subprojects
-            }
-            modulesEnabled = true
-            if (isAndroidLibraryModule) {
-              configureModule(this, flankGradleExtension)
-            }
-          }
+    // Create configuration service for collecting module information
+    val configService = FulladleConfigurationService()
 
-          check(modulesEnabled) {
-            "All modules were disabled for testing in fulladleModuleConfig or the enabled modules had no tests.\n" +
-              "Either re-enable modules for testing or add modules with tests."
-          }
-        }
+    // Register the new configuration cache compatible task
+    val fulladleConfigureTask =
+      root.tasks.register("configureFulladle", ConfigureFulladleTask::class.java) {
+        // Set the FlankGradleExtension directly (it's already Gradle managed)
+        flankExtension.set(flankGradleExtension)
       }
 
     root.tasks.withType(YamlConfigWriterTask::class.java).configureEach {
       dependsOn(fulladleConfigureTask)
     }
 
+    // Collect module information after project evaluation when all variants are available
     root.afterEvaluate {
+      fulladleConfigureTask.configure {
+        moduleInformation.set(
+          root.provider {
+            configService.collectModuleInformation(root)
+          },
+        )
+      }
+
       // TODO add other printYml tasks from other configs
       root.tasks.named("printYml").configure {
         dependsOn(fulladleConfigureTask)
