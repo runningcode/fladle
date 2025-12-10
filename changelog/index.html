@@ -1,0 +1,1609 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The Gradle Plugin for Firebase Test Lab and Flank">
+      
+      
+        <meta name="author" content="Nelson Osacky">
+      
+      
+        <link rel="canonical" href="https://runningcode.github.io/fladle/changelog/">
+      
+      
+        <link rel="prev" href="../recipes/">
+      
+      
+        <link rel="next" href="../results/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
+    
+    
+      
+        <title>Changelog - Fladle</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#changelog" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Fladle" class="md-header__button md-logo" aria-label="Fladle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Fladle
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Changelog
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/runningcode/fladle/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Fladle
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Fladle" class="md-nav__button md-logo" aria-label="Fladle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Fladle
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/runningcode/fladle/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Fladle
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick-start/" class="md-nav__link">
+        Quick Start
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        Authentication
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        Configuration
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/" class="md-nav__link">
+        Recipes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Changelog
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Changelog
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#unreleased" class="md-nav__link">
+    Unreleased
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0180" class="md-nav__link">
+    0.18.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0175" class="md-nav__link">
+    0.17.5
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0174" class="md-nav__link">
+    0.17.4
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0172" class="md-nav__link">
+    0.17.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0170" class="md-nav__link">
+    0.17.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0163" class="md-nav__link">
+    0.16.3
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0162" class="md-nav__link">
+    0.16.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0161" class="md-nav__link">
+    0.16.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0160" class="md-nav__link">
+    0.16.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0151" class="md-nav__link">
+    0.15.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0150" class="md-nav__link">
+    0.15.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0141" class="md-nav__link">
+    0.14.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0140" class="md-nav__link">
+    0.14.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0131" class="md-nav__link">
+    0.13.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0130" class="md-nav__link">
+    0.13.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0121" class="md-nav__link">
+    0.12.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0120" class="md-nav__link">
+    0.12.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0110" class="md-nav__link">
+    0.11.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0102" class="md-nav__link">
+    0.10.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0101" class="md-nav__link">
+    0.10.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0100" class="md-nav__link">
+    0.10.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#094" class="md-nav__link">
+    0.9.4
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#092" class="md-nav__link">
+    0.9.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#091" class="md-nav__link">
+    0.9.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#090" class="md-nav__link">
+    0.9.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#081" class="md-nav__link">
+    0.8.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#080" class="md-nav__link">
+    0.8.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#070" class="md-nav__link">
+    0.7.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#067" class="md-nav__link">
+    0.6.7
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#066" class="md-nav__link">
+    0.6.6
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#065" class="md-nav__link">
+    0.6.5
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#064" class="md-nav__link">
+    0.6.4
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#063" class="md-nav__link">
+    0.6.3
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#062" class="md-nav__link">
+    0.6.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#061" class="md-nav__link">
+    0.6.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#060" class="md-nav__link">
+    0.6.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#052" class="md-nav__link">
+    0.5.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#051" class="md-nav__link">
+    0.5.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#050" class="md-nav__link">
+    0.5.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#041" class="md-nav__link">
+    0.4.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#040" class="md-nav__link">
+    0.4.0
+  </a>
+  
+    <nav class="md-nav" aria-label="0.4.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes" class="md-nav__link">
+    Breaking Changes:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#038" class="md-nav__link">
+    0.3.8
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#037" class="md-nav__link">
+    0.3.7
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#036" class="md-nav__link">
+    0.3.6
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#035" class="md-nav__link">
+    0.3.5
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#034" class="md-nav__link">
+    0.3.4
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#033" class="md-nav__link">
+    0.3.3
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#032" class="md-nav__link">
+    0.3.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#031" class="md-nav__link">
+    0.3.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#030" class="md-nav__link">
+    0.3.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0212" class="md-nav__link">
+    0.2.12
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0211" class="md-nav__link">
+    0.2.11
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0210" class="md-nav__link">
+    0.2.10
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#029" class="md-nav__link">
+    0.2.9
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../results/" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multi-module-testing/" class="md-nav__link">
+        Multi Module Testing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        FAQ
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../snapshots/" class="md-nav__link">
+        Testing Snapshots
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../releasing/" class="md-nav__link">
+        Releasing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#unreleased" class="md-nav__link">
+    Unreleased
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0180" class="md-nav__link">
+    0.18.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0175" class="md-nav__link">
+    0.17.5
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0174" class="md-nav__link">
+    0.17.4
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0172" class="md-nav__link">
+    0.17.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0170" class="md-nav__link">
+    0.17.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0163" class="md-nav__link">
+    0.16.3
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0162" class="md-nav__link">
+    0.16.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0161" class="md-nav__link">
+    0.16.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0160" class="md-nav__link">
+    0.16.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0151" class="md-nav__link">
+    0.15.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0150" class="md-nav__link">
+    0.15.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0141" class="md-nav__link">
+    0.14.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0140" class="md-nav__link">
+    0.14.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0131" class="md-nav__link">
+    0.13.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0130" class="md-nav__link">
+    0.13.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0121" class="md-nav__link">
+    0.12.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0120" class="md-nav__link">
+    0.12.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0110" class="md-nav__link">
+    0.11.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0102" class="md-nav__link">
+    0.10.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0101" class="md-nav__link">
+    0.10.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0100" class="md-nav__link">
+    0.10.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#094" class="md-nav__link">
+    0.9.4
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#092" class="md-nav__link">
+    0.9.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#091" class="md-nav__link">
+    0.9.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#090" class="md-nav__link">
+    0.9.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#081" class="md-nav__link">
+    0.8.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#080" class="md-nav__link">
+    0.8.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#070" class="md-nav__link">
+    0.7.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#067" class="md-nav__link">
+    0.6.7
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#066" class="md-nav__link">
+    0.6.6
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#065" class="md-nav__link">
+    0.6.5
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#064" class="md-nav__link">
+    0.6.4
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#063" class="md-nav__link">
+    0.6.3
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#062" class="md-nav__link">
+    0.6.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#061" class="md-nav__link">
+    0.6.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#060" class="md-nav__link">
+    0.6.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#052" class="md-nav__link">
+    0.5.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#051" class="md-nav__link">
+    0.5.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#050" class="md-nav__link">
+    0.5.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#041" class="md-nav__link">
+    0.4.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#040" class="md-nav__link">
+    0.4.0
+  </a>
+  
+    <nav class="md-nav" aria-label="0.4.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes" class="md-nav__link">
+    Breaking Changes:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#038" class="md-nav__link">
+    0.3.8
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#037" class="md-nav__link">
+    0.3.7
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#036" class="md-nav__link">
+    0.3.6
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#035" class="md-nav__link">
+    0.3.5
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#034" class="md-nav__link">
+    0.3.4
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#033" class="md-nav__link">
+    0.3.3
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#032" class="md-nav__link">
+    0.3.2
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#031" class="md-nav__link">
+    0.3.1
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#030" class="md-nav__link">
+    0.3.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0212" class="md-nav__link">
+    0.2.12
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0211" class="md-nav__link">
+    0.2.11
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0210" class="md-nav__link">
+    0.2.10
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#029" class="md-nav__link">
+    0.2.9
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="changelog">Changelog</h1>
+<h2 id="unreleased">Unreleased</h2>
+<h2 id="0180">0.18.0</h2>
+<ul>
+<li>Use non-deprecated device models and versions in default config. <a href="https://github.com/runningcode/fladle/pull/446">PR</a> Thanks <a href="https://github.com/kaibolay">Kaibolay</a></li>
+</ul>
+<h2 id="0175">0.17.5</h2>
+<ul>
+<li>Support Develocity JUnit XML Reporting <a href="https://github.com/runningcode/fladle/pull/386">PR</a> Thanks <a href="https://github.com/ZacSweers">ZacSweers</a> </li>
+<li>Min supported Gradle version is now 6.5</li>
+<li>Updated Flank version to 23.10.1
+*</li>
+</ul>
+<h2 id="0174">0.17.4</h2>
+<ul>
+<li>Add support for additionalTestApks in YamlConfigWriterTask. <a href="https://github.com/runningcode/fladle/pull/291">PR</a>. Thanks <a href="https://github.com/ZacSweers">ZacSweers</a></li>
+<li>Add <code>abi</code> option to support selecting a particular debug APK in projects that use <a href="https://developer.android.com/studio/build/configure-apk-splits#configure-abi-split">ABI splits</a> to produce multiple APKs. <a href="https://github.com/runningcode/fladle/pull/281">PR</a></li>
+</ul>
+<h2 id="0172">0.17.2</h2>
+<ul>
+<li>Fix configuration cache support.</li>
+</ul>
+<h2 id="0170">0.17.0</h2>
+<ul>
+<li>Fix quotes around environment variables and formatting issues.</li>
+</ul>
+<h2 id="0163">0.16.3</h2>
+<ul>
+<li>Remove deprecation warning using <code>main</code> in <code>JavaExec</code> task.</li>
+<li>Conditionally declare outputs on FlankExecutionTask and mark as not up-to-date. <a href="https://github.com/runningcode/fladle/pull/273">PR</a></li>
+<li>Fix <a href="https://github.com/runningcode/fladle/issues/270">environmentVariables not passed</a> to flank.yml <a href="https://github.com/runningcode/fladle/pull/271">PR</a> Thanks <a href="https://github.com/kozaxinan">Sinan</a></li>
+</ul>
+<h2 id="0162">0.16.2</h2>
+<ul>
+<li>Fix crash accessing TestedExtension in non-android modules <a href="https://github.com/runningcode/fladle/pull/265/files">PR</a> Thanks <a href="https://github.com/asadsalman">asadsalman</a></li>
+</ul>
+<h2 id="0161">0.16.1</h2>
+<ul>
+<li>Treat app and library modules the same in Fulladle <a href="https://github.com/runningcode/fladle/pull/262">PR</a> Thanks <a href="https://github.com/asadsalman">asadsalman</a></li>
+<li>Added fulladleModuleConfig to app modules <a href="https://github.com/runningcode/fladle/pull/260">PR</a></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Breaking API Change</p>
+<p>Previously, only app modules could be picked up as root-level modules in Fulladle. This has changed, now either app or library modules can be picked up (though we try app modules first). If a library module is picked up as a the root-level module, it <em>must</em> specifiy a <code>debugApk</code> through either the root <code>fladle</code> block or the module's own <code>fulladleModuleConfig</code> block.</p>
+</div>
+<h2 id="0160">0.16.0</h2>
+<ul>
+<li>Allow excluding modules from Fulladle <a href="https://github.com/runningcode/fladle/pull/257">PR</a></li>
+<li>Allow configuring extra parameters on additionalTestApks <a href="https://github.com/runningcode/fladle/pull/257">PR</a></li>
+</ul>
+<h2 id="0151">0.15.1</h2>
+<ul>
+<li>Allow Flank snapshot usage <a href="https://github.com/runningcode/fladle/pull/238">PR</a> Thanks <a href="https://github.com/AndrewReitz">AndrewReitz</a></li>
+<li>Fix incorrect task group name. <a href="https://github.com/runningcode/fladle/pull/249">PR</a></li>
+<li>Snapshots are now compatible with java 8 <a href="https://github.com/runningcode/fladle/pull/247">PR</a></li>
+<li>Configuration validation happens at task execution time. <a href="https://github.com/runningcode/fladle/issues/239">Fixes #239</a></li>
+<li>Configure assemble dependency per variant. <a href="https://github.com/runningcode/fladle/issues/233">Fixes #233</a></li>
+<li>Add required <code>smartFlankGcsPath</code> to samples <a href="https://github.com/runningcode/fladle/issues/236">Fixes #236</a></li>
+</ul>
+<h2 id="0150">0.15.0</h2>
+<ul>
+<li>Add support for <a href="https://runningcode.github.io/fladle/configuration/#async"><code>async</code></a> flag. <a href="https://github.com/runningcode/fladle/pull/228">PR</a>.</li>
+<li>Add flag for depending on assembling of debug apk and instrumentation apk automatically. <code>dependOnAssemble</code> <a href="https://github.com/runningcode/fladle/pull/223/files">PR</a> Thanks <a href="https://github.com/asadsalman">asadsalman</a></li>
+<li>Gradle 7.0 Compatibility</li>
+</ul>
+<h2 id="0141">0.14.1</h2>
+<ul>
+<li>Support new Flank options without updating Fladle <a href="https://github.com/runningcode/fladle/issues/146">Fixes #146</a> <a href="https://github.com/runningcode/fladle/pull/214">PR</a> Thanks <a href="https://github.com/piotradamczyk5">piotradamczyk5</a></li>
+</ul>
+<h2 id="0140">0.14.0</h2>
+<ul>
+<li>Bump Flank version to 21.01.1</li>
+<li>Add support for test-targets-for-shard <a href="https://github.com/runningcode/fladle/issues/205">Fixes #205</a></li>
+<li>Add support for new flank options <a href="https://github.com/runningcode/fladle/pull/211">PR#211</a> Thanks <a href="https://github.com/pawelpasterz">pawelpasterz</a></li>
+<li>Deprecate <code>testShards</code> <a href="https://github.com/runningcode/fladle/issues/205">Fixes #204</a> <a href="https://github.com/runningcode/fladle/pull/212">PR#212</a> Thanks <a href="https://github.com/pawelpasterz">pawelpasterz</a></li>
+<li>Write test results into a config-specific directory <a href="https://github.com/runningcode/fladle/pull/194">PR#194</a> Thanks <a href="https://github.com/pawelpasterz">pawelpasterz</a></li>
+</ul>
+<h2 id="0131">0.13.1</h2>
+<ul>
+<li>Fix flankAuth task throwing exception. <a href="https://github.com/runningcode/fladle/issues/195">Fixes #195</a></li>
+<li>Add support for newly added flank options <a href="https://github.com/runningcode/fladle/pull/186">PR#186</a> Thanks <a href="https://github.com/pawelpasterz">pawelpasterz</a>:<ul>
+<li><code>default-test-time</code></li>
+<li><code>default-class-test-time</code></li>
+<li><code>additional-apks</code></li>
+<li><code>use-average-test-time-for-new-tests</code></li>
+<li><code>disable-results-upload</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="0130">0.13.0</h2>
+<ul>
+<li>Add support for sanityRobo tests <a href="https://github.com/runningcode/fladle/issues/165">Fixes #165</a> <a href="https://github.com/runningcode/fladle/pull/177">PR</a> Thanks <a href="https://github.com/pawelpasterz">pawelpasterz</a></li>
+<li>Add support for <a href="../authentication">user authentication</a>.</li>
+<li>Bump Flank to <a href="https://github.com/Flank/flank/releases/tag/v20.09.3">20.09.3</a></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Breaking API Change</p>
+<p>Use lazy properties <a href="https://github.com/runningcode/fladle/issues/92">Fixes #92</a> <a href="https://github.com/runningcode/fladle/pull/176">PR</a> Thanks <a href="https://github.com/pawelpasterz">pawelpasterz</a></p>
+</div>
+<h2 id="0121">0.12.1</h2>
+<ul>
+<li>Don't override debug or instrumentation apk if already specified. Fixes <a href="https://github.com/runningcode/fladle/issues/172">#172</a>.</li>
+</ul>
+<h2 id="0120">0.12.0</h2>
+<ul>
+<li>Don't override property values in individual configurations. Fixes <a href="https://github.com/runningcode/fladle/issues/158">#158</a>.</li>
+<li>Update <a href="https://github.com/Flank/flank/releases/tag/v20.08.3">Flank to 20.08.3</a>.</li>
+<li>Use Github actions instead of CircleCI</li>
+<li>Write Yaml file to task specific output directory and add up-to-date checks. <a href="https://github.com/runningcode/fladle/pull/159">#159</a> <a href="https://github.com/runningcode/fladle/issues/147">Fixes #147</a> Thanks <a href="https://github.com/CristianGM">CristianGM</a></li>
+<li>Add support for <code>full-junit-result</code> and <code>legacy-junit-result</code>. <a href="https://github.com/runningcode/fladle/pull/170">#170</a> Fixes <a href="https://github.com/runningcode/fladle/issues/157">#157</a>. Thanks <a href="https://github.com/MatthewTPage">MatthewTPage</a></li>
+</ul>
+<h2 id="0110">0.11.0</h2>
+<ul>
+<li>Update <a href="https://github.com/Flank/flank/releases/tag/v20.07.0">Flank to 20.07.0</a>.</li>
+<li>Only add <code>additional-test-apks</code> for modules that have tests. <a href="https://github.com/runningcode/fladle/pull/150">PR</a></li>
+<li>Experimental configuration caching support. <a href="https://github.com/runningcode/fladle/pull/153">PR1</a><a href="https://github.com/runningcode/fladle/pull/154">PR2</a></li>
+</ul>
+<h2 id="0102">0.10.2</h2>
+<ul>
+<li>Update <a href="https://github.com/Flank/flank/releases/tag/v20.06.2">Flank to 20.06.2</a>.</li>
+<li>Fix duplicated status messages in console. <a href="https://github.com/runningcode/fladle/pull/142">PR</a> Thanks <a href="https://github.com/francescocervone">francescocervone</a></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Breaking API change</p>
+<p>Add time units for timeout. <code>timeoutMin</code> has been renamed to <code>testTimeout</code>. <a href="https://github.com/runningcode/fladle/pull/137">PR</a> Thanks <a href="https://github.com/pawelpasterz">pawelpasterz</a></p>
+</div>
+<h2 id="0101">0.10.1</h2>
+<ul>
+<li>[Fix] Allow for specifying roboScript without specifying instrumentationApk. Fixes <a href="https://github.com/runningcode/fladle/issues/128">#128</a>.</li>
+</ul>
+<h2 id="0100">0.10.0</h2>
+<ul>
+<li>Allow for debugging using <a href="/fladle/faq/#debugging">--dump-shards</a></li>
+<li>Fix naming for variant discovery of apk and instrumentation apk. Instead of chocolate-debug, variant must now be set as chocolateDebug.</li>
+<li>Update <a href="https://github.com/Flank/flank/releases/tag/v20.05.2">Flank to 20.05.2</a>.</li>
+<li><a href="/fladle/multi-module-testing">Fulladle Preview</a></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Breaking API Change</p>
+<p><a href="/fladle/configuration/#additionaltestapks">additionalTestApks</a> now uses ListProperty instead of the previous Map. This is to allow for lazy configuration of the provided files.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Minimum supported Gradle version is now 5.4.</p>
+</div>
+<h2 id="094">0.9.4</h2>
+<ul>
+<li>Update <a href="https://github.com/Flank/flank/releases/tag/v20.05.0">Flank to 20.05.1</a>. Huge new release!</li>
+<li>Add support for new flank flags. Thanks <a href="https://github.com/pawelpasterz">pawelpasterz</a> <a href="https://github.com/runningcode/fladle/pull/88">PR</a></li>
+<li>Use compileOnly for AGP version.</li>
+</ul>
+<h2 id="092">0.9.2</h2>
+<div class="admonition warning">
+<p class="admonition-title">Breaking API change</p>
+<p>debugApk and instrumentationApk now use Lazy Property API to avoid resolving at configuration time.</p>
+</div>
+<h2 id="091">0.9.1</h2>
+<ul>
+<li>Bugfix: ability to set flank version. <a href="https://github.com/runningcode/fladle/pull/97">PR</a></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Breaking API Change</p>
+<p>serviceAccountCredentials now uses <a href="https://docs.gradle.org/current/userguide/lazy_configuration.html#working_with_files_in_lazy_properties">Lazy  Property API</a>. See <a href="/configuration#serviceAccountCredentials">Configuration</a> for details on how to set it. <a href="https://github.com/runningcode/fladle/pull/97">PR</a></p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Minimum required Gradle Version is now 5.1.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Dropped support for Flank 7.X and lower.</p>
+</div>
+<h2 id="090">0.9.0</h2>
+<ul>
+<li>Do not add flank maven repo. <a href="https://github.com/runningcode/fladle/pull/94">PR</a></li>
+<li>Allow specifying custom flank coordinates. <a href="https://github.com/runningcode/fladle/pull/94">PR</a></li>
+<li>Change ordering and use file provider. <a href="https://github.com/runningcode/fladle/pull/95">PR</a></li>
+</ul>
+<h2 id="081">0.8.1</h2>
+<ul>
+<li>Add support for <code>additionalTestApks</code>. <a href="https://github.com/runningcode/fladle/pull/83">PR</a> Thanks <a href="https://github.com/japplin">japplin</a>.</li>
+<li>Add support for <code>resultsDir</code>. <a href="https://github.com/runningcode/fladle/pull/80">PR</a></li>
+</ul>
+<h2 id="080">0.8.0</h2>
+<ul>
+<li>BREAKING: devices now takes a <code>List&lt;Map&lt;String, String&gt;&gt;</code> instead of a <code>List&lt;Device&gt;</code>. See the [#README.md] for an example. <a href="https://github.com/runningcode/fladle/pull/76">PR</a> Thanks <a href="https://github.com/zlippard">zlippard</a>.</li>
+<li>Add support for <code>keep-file-path</code>. <a href="https://github.com/runningcode/fladle/pull/77">PR</a> Thanks <a href="https://github.com/tahirhajizada">tahirhajizada</a>.</li>
+</ul>
+<h2 id="070">0.7.0</h2>
+<ul>
+<li>Add support for Flank 8 and bump version. <a href="https://github.com/runningcode/fladle/pull/75">PR</a> Thanks <a href="https://github.com/francescocervone">francescocervone</a></li>
+</ul>
+<h2 id="067">0.6.7</h2>
+<ul>
+<li>Allow using wildcards in debugApk or instrumentationApk path by not checking that file exists. <a href="https://github.com/runningcode/fladle/pull/72">PR</a></li>
+</ul>
+<h2 id="066">0.6.6</h2>
+<ul>
+<li>Bump flank version to 7.0.0</li>
+<li>Publish to mavenCentral()</li>
+</ul>
+<h2 id="065">0.6.5</h2>
+<ul>
+<li>Add support for results-bucket gcloud config option. <a href="https://github.com/runningcode/fladle/pull/62">PR</a> Thanks <a href="https://github.com/c-moss">c-moss</a></li>
+<li>Default flank version 6.2.3</li>
+<li>Lower build logging level</li>
+</ul>
+<h2 id="064">0.6.4</h2>
+<ul>
+<li>Allow setting android version number as string to allow for preview versions. <a href="https://github.com/runningcode/fladle/pull/590">PR</a>Thanks <a href="https://github.com/JeroenMols">JeroenMols</a>.</li>
+</ul>
+<h2 id="063">0.6.3</h2>
+<ul>
+<li>Allow service credentials to be set <a href="https://github.com/runningcode/fladle/pull/58">using environment variables</a>. <a href="https://github.com/runningcode/fladle/issues/55">Fixes #55</a></li>
+<li>Fix not being able to <a href="https://github.com/runningcode/fladle/pull/57">set flankVersion</a>. <a href="https://github.com/runningcode/fladle/issues/56">Fixes #56</a></li>
+</ul>
+<h2 id="062">0.6.2</h2>
+<ul>
+<li><a href="https://github.com/runningcode/fladle/pull/53">Fix shardTime config property not written to flank.yml</a> Thanks <a href="https://github.com/nnoel-grubhub">nnoel-grubhub</a></li>
+</ul>
+<h2 id="061">0.6.1</h2>
+<ul>
+<li>Fix project id <a href="https://github.com/runningcode/fladle/issues/49">spacing</a> Thanks <a href="https://github.com/andersu">andersu</a> for reporting.</li>
+</ul>
+<h2 id="060">0.6.0</h2>
+<ul>
+<li>Default flank version 5.0.1</li>
+<li>Rename yaml output to match new flank version.</li>
+<li>Add support for shard time.</li>
+</ul>
+<h2 id="052">0.5.2</h2>
+<ul>
+<li>Improve error messages for missing arguments in the fladle extension.</li>
+</ul>
+<h2 id="051">0.5.1</h2>
+<ul>
+<li>Test multipleconfig to actually write yml Thanks <a href="https://github.com/runningcode/fladle/pull/40/">PR</a> <a href="https://github.com/winterDroid">winterDroid</a>.</li>
+<li>JavaExec uses classpath instead of jar directly. Thanks <a href="https://github.com/runningcode/fladle/pull/37/">PR</a> <a href="https://github.com/winterDroid">winterDroid</a>.</li>
+</ul>
+<h2 id="050">0.5.0</h2>
+<ul>
+<li>Use flank as a maven artifact.</li>
+<li>Group Fladle Tasks</li>
+</ul>
+<h2 id="041">0.4.1</h2>
+<ul>
+<li>Detect AndroidX test orchestrator</li>
+<li>Fix detection of debug and instrumentation apk paths.</li>
+</ul>
+<h2 id="040">0.4.0</h2>
+<ul>
+<li>Add support for all configuration options. Thanks <a href="https://github.com/runningcode/fladle/pull/26/">PR</a> <a href="https://github.com/winterDroid">winterDroid</a>.</li>
+</ul>
+<h3 id="breaking-changes">Breaking Changes:</h3>
+<p>Previous users of <code>clearPackageData = true</code> will now need to use:
+<div class="highlight"><pre><span></span><code>environmentVariables = [
+  &quot;clearPackageData&quot;: &quot;true&quot;
+]
+</code></pre></div></p>
+<h2 id="038">0.3.8</h2>
+<ul>
+<li>Fix broken flakyTestAttempts.</li>
+</ul>
+<h2 id="037">0.3.7</h2>
+<ul>
+<li>Add support for flakyTestAttempts.</li>
+</ul>
+<h2 id="036">0.3.6</h2>
+<ul>
+<li>Add support for environment variable clearPackageData. Thanks @anderssu !</li>
+</ul>
+<h2 id="035">0.3.5</h2>
+<ul>
+<li>Automatically configure the use of test orchestrator.</li>
+</ul>
+<h2 id="034">0.3.4</h2>
+<ul>
+<li>Add support for setting results-history-name.</li>
+<li>Add support for selecting variant to test instead of apk path.</li>
+</ul>
+<h2 id="033">0.3.3</h2>
+<ul>
+<li>Add support for setting smartFlankGcsPath</li>
+<li>Capitalize task names.</li>
+</ul>
+<h2 id="032">0.3.2</h2>
+<ul>
+<li>Actually fix gradle download task bug.</li>
+</ul>
+<h2 id="031">0.3.1</h2>
+<ul>
+<li>Maybe fix bug similar to: https://github.com/michel-kraemer/gradle-download-task/issues/58</li>
+</ul>
+<h2 id="030">0.3.0</h2>
+<ul>
+<li>Add support for multiple test configurations.</li>
+</ul>
+<h2 id="0212">0.2.12</h2>
+<ul>
+<li>Fix broken flankDoctor task.</li>
+</ul>
+<h2 id="0211">0.2.11</h2>
+<ul>
+<li>Add minimum Gradle version check. (4.9 is required because we use the lazy task configuration API))</li>
+</ul>
+<h2 id="0210">0.2.10</h2>
+<ul>
+<li>Add support for specifying Flank snapshot versions. See README for configuration options.</li>
+</ul>
+<h2 id="029">0.2.9</h2>
+<ul>
+<li>Add support for multiple build targets. <a href="https://github.com/runningcode/fladle/pull/9">PR</a>. Thanks <a href="https://github.com/winterDroid">winterDroid</a>.</li>
+<li>Add support for testShards and repeatTests flank options. See README for configuration options.</li>
+</ul>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+    
+  </body>
+</html>
