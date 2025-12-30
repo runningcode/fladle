@@ -17,7 +17,7 @@ agp = { id = "com.android.application", version.ref = "agp-version"}
 
 androidx-appcompat = "1.6.1"
 
-androidx-constraintlayout = "2.1.4"
+androidx-constraintlayout = "2.2.1"
 
 androidx-navigation = "2.3.0"
 
