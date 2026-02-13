@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+* Minimum required JVM version is now 17.
+* Minimum supported Gradle version is now 7.3.
 
 ## 0.18.0
 * Use non-deprecated device models and versions in default config. [PR](https://github.com/runningcode/fladle/pull/446) Thanks [Kaibolay](https://github.com/kaibolay)
