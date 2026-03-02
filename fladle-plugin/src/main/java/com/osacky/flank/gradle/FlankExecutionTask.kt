@@ -8,7 +8,7 @@ import javax.inject.Inject
 @DisableCachingByDefault(
   because = "Flank executions are dependent on resources such as network connection and server and therefore cannot be cached.",
 )
-open class FlankExecutionTask
+abstract class FlankExecutionTask
   @Inject
   constructor(
     projectLayout: ProjectLayout,
@@ -22,7 +22,12 @@ open class FlankExecutionTask
 
     private fun checkFilesExist(base: FladleConfig) {
       if (base.serviceAccountCredentials.isPresent) {
-        check(base.serviceAccountCredentials.get().asFile.exists()) {
+        check(
+          base.serviceAccountCredentials
+            .get()
+            .asFile
+            .exists(),
+        ) {
           "serviceAccountCredential file doesn't exist ${base.serviceAccountCredentials.get()}"
         }
       }

@@ -115,7 +115,7 @@ class ConfigurationCacheTest {
     settings.writeText(
       """
       plugins {
-        id 'com.gradle.enterprise' version '3.7'
+        id 'com.gradle.develocity' version '4.3'
       }
       """.trimIndent(),
     )
@@ -131,11 +131,11 @@ class ConfigurationCacheTest {
     assertThat(secondResult.output).contains("Reusing configuration cache.")
   }
 
-  private fun configCachingRunner(arg: String): GradleRunner {
-    return GradleRunner.create()
+  private fun configCachingRunner(arg: String): GradleRunner =
+    GradleRunner
+      .create()
       .withProjectDir(testProjectRoot.root)
       .withPluginClasspath()
       .forwardOutput()
       .withArguments(arg, "--configuration-cache")
-  }
 }

@@ -7,7 +7,6 @@ buildscript {
 
 plugins {
     alias(libs.plugins.agp) apply false
-    alias(libs.plugins.kgp) apply false
     alias(libs.plugins.ben.manes.versions)
     id "com.osacky.fulladle"
     alias(libs.plugins.kotlinter)
@@ -22,7 +21,7 @@ fladle {
 }
 
 tasks.wrapper.configure {
-    gradleVersion = '8.14.3'
+    gradleVersion = '9.1.0'
 }
 
 def isNonStable = { String version ->

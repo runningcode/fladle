@@ -9,7 +9,9 @@ import javax.inject.Inject
 
 open class FulladleModuleExtension
   @Inject
-  constructor(objects: ObjectFactory) {
+  constructor(
+    objects: ObjectFactory,
+  ) {
     /**
      * When set to false, Fulladle will not automatically add this module to additionalTestApks.
      *
@@ -46,4 +48,10 @@ open class FulladleModuleExtension
      * can be a match.
      */
     val variant: Property<String> = objects.property<String>().convention(null as String?)
+
+    /**
+     * Variant APK info collected during configuration via onVariants callbacks.
+     * Used by FulladlePlugin at execution time to build YAML entries.
+     */
+    internal val variantApks: MutableList<VariantApkInfo> = mutableListOf()
   }

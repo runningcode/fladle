@@ -126,7 +126,8 @@ internal class YamlWriter {
         } else {
           appendListProperty(config.roboDirectives, name = "robo-directives") {
             val value =
-              it.getOrElse(2) { "" }
+              it
+                .getOrElse(2) { "" }
                 .let { stringValue -> if (stringValue.isBlank()) "\"\"" else stringValue }
             appendLine("    ${it[0]}:${it[1]}: $value")
           }
