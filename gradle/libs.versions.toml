@@ -5,13 +5,12 @@ foojay = { id = "org.gradle.toolchains.foojay-resolver-convention", version = "1
 
 ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.51.0" }
 
-kotlinter = { id = "org.jmailen.kotlinter", version = "4.0.0" }
+kotlinter = { id = "org.jmailen.kotlinter", version = "5.4.2" }
 
 gradle-plugin-publish = {id = "com.gradle.plugin-publish", version = "2.0.0" }
 
 vanniktech-publish = { id = "com.vanniktech.maven.publish", version = "0.35.0" }
 
-kgp = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin"}
 agp = { id = "com.android.application", version.ref = "agp-version"}
 
 [versions]
@@ -30,8 +29,7 @@ androidx-test-rules = "1.7.0"
 
 junit-version = "4.13.2"
 
-kotlin = "2.2.21"
-agp-version = "7.4.2"
+agp-version = "9.0.1"
 flank-version = "23.10.1"
 
 [libraries]
@@ -53,8 +51,6 @@ agp = { module = "com.android.tools.build:gradle", version.ref = "agp-version" }
 flank = { module = "com.github.flank:flank", version.ref = "flank-version" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit-version" }
-
-kotlin-stdlib-jdk7 = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version.ref = "kotlin" }
 
 gradle-enterprise = { module = "com.gradle:develocity-gradle-plugin", version = "3.19.2" }
 

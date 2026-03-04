@@ -11,8 +11,8 @@ class FlankGradlePluginIntegrationTest {
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
-  val minSupportGradleVersion = "7.3"
-  val oldVersion = "7.2"
+  val minSupportGradleVersion = "9.1.0"
+  val oldVersion = "9.0.0"
 
   fun writeBuildGradle(build: String) {
     testProjectRoot.writeBuildDotGradle(build)
@@ -27,16 +27,17 @@ class FlankGradlePluginIntegrationTest {
       """.trimMargin(),
     )
     val result =
-      GradleRunner.create()
+      GradleRunner
+        .create()
         .withProjectDir(testProjectRoot.root)
         .withPluginClasspath()
         .withGradleVersion(oldVersion)
         .buildAndFail()
-    assertThat(result.output).contains("Fladle requires at minimum version Gradle 7.3. Detected version Gradle 7.2")
+    assertThat(result.output).contains("Fladle requires at minimum version Gradle 9.1. Detected version Gradle 9.0.0")
   }
 
   @Test
-  fun testGradleEightOh() {
+  fun testGradleNineOne() {
     writeBuildGradle(
       """plugins {
              |  id "com.osacky.fladle"
@@ -44,10 +45,11 @@ class FlankGradlePluginIntegrationTest {
       """.trimMargin(),
     )
     val result =
-      GradleRunner.create()
+      GradleRunner
+        .create()
         .withProjectDir(testProjectRoot.root)
         .withPluginClasspath()
-        .withGradleVersion("8.0")
+        .withGradleVersion("9.1.0")
         .build()
 
     assertThat(result.output).contains("SUCCESS")
@@ -61,7 +63,8 @@ class FlankGradlePluginIntegrationTest {
              |}
       """.trimMargin(),
     )
-    GradleRunner.create()
+    GradleRunner
+      .create()
       .withProjectDir(testProjectRoot.root)
       .withPluginClasspath()
       .withGradleVersion(minSupportGradleVersion)
@@ -82,7 +85,8 @@ class FlankGradlePluginIntegrationTest {
              |}
       """.trimMargin(),
     )
-    GradleRunner.create()
+    GradleRunner
+      .create()
       .withProjectDir(testProjectRoot.root)
       .withPluginClasspath()
       .withGradleVersion(minSupportGradleVersion)
@@ -103,7 +107,8 @@ class FlankGradlePluginIntegrationTest {
       """.trimMargin(),
     )
     val result =
-      GradleRunner.create()
+      GradleRunner
+        .create()
         .withProjectDir(testProjectRoot.root)
         .withPluginClasspath()
         .withGradleVersion(minSupportGradleVersion)
@@ -131,7 +136,8 @@ class FlankGradlePluginIntegrationTest {
     )
     testProjectRoot.newFile("foo").writeText("{}")
     val result =
-      GradleRunner.create()
+      GradleRunner
+        .create()
         .withProjectDir(testProjectRoot.root)
         .withPluginClasspath()
         .withGradleVersion(minSupportGradleVersion)
@@ -155,7 +161,8 @@ class FlankGradlePluginIntegrationTest {
     )
     testProjectRoot.newFile("foo").writeText("{}")
     val result =
-      GradleRunner.create()
+      GradleRunner
+        .create()
         .withProjectDir(testProjectRoot.root)
         .withPluginClasspath()
         .withGradleVersion(minSupportGradleVersion)
@@ -182,7 +189,8 @@ class FlankGradlePluginIntegrationTest {
     )
     testProjectRoot.writeEmptyServiceCredential()
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withGradleVersion(minSupportGradleVersion)
         .withArguments("printYml")
         .buildAndFail()
@@ -209,7 +217,8 @@ class FlankGradlePluginIntegrationTest {
     )
     testProjectRoot.writeEmptyServiceCredential()
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withGradleVersion(minSupportGradleVersion)
         .withArguments("printYml")
         .buildAndFail()
@@ -236,7 +245,8 @@ class FlankGradlePluginIntegrationTest {
     )
     testProjectRoot.writeEmptyServiceCredential()
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withGradleVersion(minSupportGradleVersion)
         .withArguments("printYml")
         .buildAndFail()
@@ -264,7 +274,8 @@ class FlankGradlePluginIntegrationTest {
     )
     testProjectRoot.writeEmptyServiceCredential()
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withGradleVersion(minSupportGradleVersion)
         .withArguments("printYml")
         .buildAndFail()
@@ -291,8 +302,9 @@ class FlankGradlePluginIntegrationTest {
     )
     testProjectRoot.writeEmptyServiceCredential()
     val result =
-      testProjectRoot.gradleRunner()
-        .withGradleVersion("8.0")
+      testProjectRoot
+        .gradleRunner()
+        .withGradleVersion("9.1.0")
         .withArguments("printYmlFooConfig")
         .build()
     assertThat(result.task(":printYmlFooConfig")!!.outcome).isEqualTo(TaskOutcome.SUCCESS)

@@ -1,14 +1,15 @@
 package com.osacky.flank.gradle
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.TestedExtension
-import com.android.build.gradle.internal.tasks.factory.dependsOn
-import com.android.builder.model.TestOptions
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.variant.ApplicationAndroidComponentsExtension
+import com.android.build.api.variant.FilterConfiguration
+import com.android.build.api.variant.HasAndroidTest
 import com.osacky.flank.gradle.validation.checkForExclusionUsage
 import com.osacky.flank.gradle.validation.validateOptionsUsed
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.kotlin.dsl.create
 import org.gradle.util.GradleVersion
@@ -34,7 +35,6 @@ class FladlePluginDelegate {
   }
 
   private fun checkMinimumGradleVersion() {
-    // Gradle 4.9 is required because we use the lazy task configuration API.
     if (GRADLE_MIN_VERSION > GradleVersion.current()) {
       throw GradleException("Fladle requires at minimum version $GRADLE_MIN_VERSION. Detected version ${GradleVersion.current()}.")
     }
@@ -44,23 +44,21 @@ class FladlePluginDelegate {
     project: Project,
     base: FlankGradleExtension,
   ) {
-    if (GradleVersion.current() > GradleVersion.version("6.1")) {
-      base.flankVersion.finalizeValueOnRead()
-      base.flankCoordinates.finalizeValueOnRead()
-      base.serviceAccountCredentials.finalizeValueOnRead()
+    base.flankVersion.finalizeValueOnRead()
+    base.flankCoordinates.finalizeValueOnRead()
+    base.serviceAccountCredentials.finalizeValueOnRead()
+
+    // Register onVariants callbacks before afterEvaluate for APK path detection
+    project.pluginManager.withPlugin("com.android.application") {
+      if (!base.debugApk.isPresent || !base.instrumentationApk.isPresent) {
+        findDebugAndInstrumentationApk(project, base)
+      }
     }
+
     project.afterEvaluate {
       // Add Flank dependency to Fladle Configuration
       // Must be done afterEvaluate otherwise extension values will not be set.
       project.dependencies.add(FLADLE_CONFIG, "${base.flankCoordinates.get()}:${base.flankVersion.get()}")
-
-      // Only use automatic apk path detection for 'com.android.application' projects.
-      project.pluginManager.withPlugin("com.android.application") {
-        // This doesn't work properly for multiple configs since they likely are inheriting the config from root already. See #60 https://github.com/runningcode/fladle/issues/60
-        if (!base.debugApk.isPresent || !base.instrumentationApk.isPresent) {
-          findDebugAndInstrumentationApk(project, base)
-        }
-      }
 
       tasks.apply {
         createTasksForConfig(base, base, project, "")
@@ -95,7 +93,7 @@ class FladlePluginDelegate {
 
     val writeConfigProps = register("writeConfigProps$name", YamlConfigWriterTask::class.java, base, config, name)
 
-    writeConfigProps.dependsOn(validateFladle)
+    writeConfigProps.configure { dependsOn(validateFladle) }
 
     register("printYml$name") {
       description = "Print the flank.yml file to the console."
@@ -136,17 +134,15 @@ class FladlePluginDelegate {
       }
       dependsOn(writeConfigProps)
       if (config.dependOnAssemble.isPresent && config.dependOnAssemble.get()) {
-        val testedExtension =
-          requireNotNull(project.extensions.findByType(TestedExtension::class.java)) { "Could not find TestedExtension in ${project.name}" }
-        testedExtension.testVariants.configureEach {
-          if (testedVariant.isExpectedVariant(config)) {
-            if (testedVariant.assembleProvider.isPresent) {
-              dependsOn(testedVariant.assembleProvider)
-            }
-            if (assembleProvider.isPresent) {
-              dependsOn(assembleProvider)
-            }
-          }
+        // Find assemble tasks by convention name pattern
+        val variantName = config.variant.orNull
+        if (variantName != null) {
+          val capitalizedVariant = variantName.capitalize()
+          dependsOn("assemble$capitalizedVariant")
+          dependsOn("assemble${capitalizedVariant}AndroidTest")
+        } else {
+          dependsOn("assembleDebug")
+          dependsOn("assembleDebugAndroidTest")
         }
       }
       if (config.localResultsDir.hasValue) {
@@ -172,16 +168,17 @@ class FladlePluginDelegate {
   private fun automaticallyConfigureTestOrchestrator(
     project: Project,
     config: FladleConfig,
-    androidExtension: AppExtension,
+    androidExtension: ApplicationExtension,
   ) {
     project.afterEvaluate {
+      val execution = androidExtension.testOptions.execution.uppercase()
       val useOrchestrator =
-        androidExtension.testOptions.getExecutionEnum() == TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR ||
-          androidExtension.testOptions.getExecutionEnum() == TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR
+        execution == "ANDROIDX_TEST_ORCHESTRATOR" ||
+          execution == "ANDROID_TEST_ORCHESTRATOR"
       if (useOrchestrator) {
         log("Automatically detected the use of Android Test Orchestrator")
+        config.useOrchestrator.set(true)
       }
-      config.useOrchestrator.set(useOrchestrator)
     }
   }
 
@@ -189,28 +186,61 @@ class FladlePluginDelegate {
     project: Project,
     config: FladleConfig,
   ) {
-    val baseExtension =
-      requireNotNull(project.extensions.findByType(AppExtension::class.java)) { "Could not find AppExtension in ${project.name}" }
-    automaticallyConfigureTestOrchestrator(project, config, baseExtension)
-    baseExtension.testVariants.configureEach {
-      val appVariant = testedVariant
-      outputs.configureEach test@{
-        appVariant.outputs
-          .matching { it.isExpectedAbiOutput(config) }
-          .configureEach app@{
-            if (appVariant.isExpectedVariant(config)) {
-              if (!config.debugApk.isPresent) {
-                // Don't set debug apk if not already set. #172
-                project.log("Configuring fladle.debugApk from variant ${this@app.name}")
-                config.debugApk.set(this@app.outputFile.absolutePath)
-              }
-              if (!config.roboScript.isPresent && !config.instrumentationApk.isPresent && !config.sanityRobo.get()) {
-                // Don't set instrumentation apk if not already set. #172
-                project.log("Configuring fladle.instrumentationApk from variant ${this@test.name}")
-                config.instrumentationApk.set(this@test.outputFile.absolutePath)
-              }
-            }
+    val androidExtension =
+      requireNotNull(project.extensions.findByType(ApplicationExtension::class.java)) { "Could not find ApplicationExtension in ${project.name}" }
+    automaticallyConfigureTestOrchestrator(project, config, androidExtension)
+
+    val androidComponents =
+      requireNotNull(project.extensions.findByType(ApplicationAndroidComponentsExtension::class.java)) {
+        "Could not find ApplicationAndroidComponentsExtension in ${project.name}"
+      }
+
+    androidComponents.onVariants { variant ->
+      if (!variant.isExpectedVariant(config)) return@onVariants
+      val androidTest = (variant as? HasAndroidTest)?.androidTest ?: return@onVariants
+
+      val buildType = variant.buildType ?: return@onVariants
+      val flavorName = variant.productFlavors.joinToString("") { it.second }
+      val flavorPath = variant.productFlavors.joinToString("/") { it.second }
+      val archivesName = project.extensions.getByType(BasePluginExtension::class.java).archivesName.get()
+      val buildDir = project.layout.buildDirectory
+
+      // Test APK path
+      val testApkDirPath = if (flavorPath.isNotEmpty()) "androidTest/$flavorPath/$buildType" else "androidTest/$buildType"
+      val testApkFileName =
+        if (flavorName.isNotEmpty()) {
+          "$archivesName-$flavorName-$buildType-androidTest.apk"
+        } else {
+          "$archivesName-$buildType-androidTest.apk"
+        }
+      val testApkPath = buildDir.file("outputs/apk/$testApkDirPath/$testApkFileName").get().asFile.absolutePath
+
+      variant.outputs.forEach { output ->
+        if (!output.isExpectedAbiOutput(config)) return@forEach
+
+        val abiFilter = output.filters.firstOrNull { it.filterType == FilterConfiguration.FilterType.ABI }
+        val abiName = abiFilter?.identifier
+
+        val appApkDirPath = if (flavorPath.isNotEmpty()) "$flavorPath/$buildType" else buildType
+        val appApkFileName =
+          buildString {
+            append(archivesName)
+            if (flavorName.isNotEmpty()) append("-$flavorName")
+            if (abiName != null) append("-$abiName")
+            append("-$buildType.apk")
           }
+        val appApkPath = buildDir.file("outputs/apk/$appApkDirPath/$appApkFileName").get().asFile.absolutePath
+
+        if (!config.debugApk.isPresent) {
+          // Don't set debug apk if not already set. #172
+          project.log("Configuring fladle.debugApk from variant ${variant.name}")
+          config.debugApk.set(appApkPath)
+        }
+        if (!config.roboScript.isPresent && !config.instrumentationApk.isPresent && !config.sanityRobo.get()) {
+          // Don't set instrumentation apk if not already set. #172
+          project.log("Configuring fladle.instrumentationApk from variant ${variant.name}")
+          config.instrumentationApk.set(testApkPath)
+        }
       }
     }
   }
@@ -219,7 +249,7 @@ class FladlePluginDelegate {
     get() = configurations.getByName(FLADLE_CONFIG)
 
   companion object {
-    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("7.3")
+    val GRADLE_MIN_VERSION: GradleVersion = GradleVersion.version("9.1")
     const val TASK_GROUP = "fladle"
     const val FLADLE_CONFIG = "fladle"
 

@@ -67,15 +67,13 @@ class VariantTests {
     assertThat(result.output).doesNotContain(":assembleVanillaRelease")
     assertThat(result.output).doesNotContain(":assembleChocolate")
 
-    /**
-     * See #60 https://github.com/runningcode/fladle/issues/60
-     testProjectRoot.writeEmptyServiceCredential()
-     val resultPrint = testProjectRoot.gradleRunner()
-     .withArguments("printYmlVanilla")
-     .build()
-     assertThat(resultPrint.output).contains("build/outputs/apk/vanilla/debug/chocovanilla-vanilla-debug.apk")
-     assertThat(resultPrint.output).contains("build/outputs/apk/androidTest/vanilla/debug/chocovanilla-vanilla-debug-androidTest.apk")
-     **/
+    // See #60 https://github.com/runningcode/fladle/issues/60
+    // testProjectRoot.writeEmptyServiceCredential()
+    // val resultPrint = testProjectRoot.gradleRunner()
+    //   .withArguments("printYmlVanilla")
+    //   .build()
+    // assertThat(resultPrint.output).contains("build/outputs/apk/vanilla/debug/chocovanilla-vanilla-debug.apk")
+    // assertThat(resultPrint.output).contains("build/outputs/apk/androidTest/vanilla/debug/chocovanilla-vanilla-debug-androidTest.apk")
   }
 
   @Test
@@ -106,6 +104,8 @@ class VariantTests {
       |include ':android-project'
       """.trimMargin(),
     )
+    testProjectRoot.newFile("local.properties").writeText("sdk.dir=${androidHome()}\n")
+    testProjectRoot.newFile("gradle.properties").writeText("android.useAndroidX=true")
     testProjectRoot.setupFixture("android-project")
     val flavors =
       if (withFlavors) {
@@ -191,7 +191,8 @@ class VariantTests {
     if (dryRun) {
       arguments.add("--dry-run")
     }
-    return testProjectRoot.gradleRunner()
+    return testProjectRoot
+      .gradleRunner()
       .withArguments(arguments)
       .build()
   }

@@ -10,7 +10,7 @@ class FulladlePluginIntegrationTest {
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
-  val agpDependency: String = "com.android.tools.build:gradle:4.2.1"
+  val agpDependency: String = "com.android.tools.build:gradle:9.0.1"
 
   fun writeBuildGradle(build: String) {
     val file = testProjectRoot.newFile("build.gradle")
@@ -26,7 +26,8 @@ class FulladlePluginIntegrationTest {
       """.trimMargin(),
     )
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments("help")
         .build()
     assertThat(result.output).contains("SUCCESS")
@@ -88,7 +89,8 @@ class FulladlePluginIntegrationTest {
     )
 
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments(":printYml")
         .build()
 
@@ -189,7 +191,8 @@ class FulladlePluginIntegrationTest {
     )
 
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments(":printYml")
         .build()
 
@@ -271,7 +274,8 @@ class FulladlePluginIntegrationTest {
     )
 
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments(":printYml")
         .build()
 
@@ -395,7 +399,8 @@ class FulladlePluginIntegrationTest {
     )
 
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments(":printYml")
         .build()
 
@@ -446,10 +451,9 @@ class FulladlePluginIntegrationTest {
     testProjectRoot.newFile("settings.gradle").writeText(
       """
       include '$appFixture'
-      include '$libraryFixture'
       include '$flavourProject'
       include '$flavourLibrary'
-      
+
       dependencyResolutionManagement {
         repositories {
           mavenCentral()
@@ -468,17 +472,17 @@ class FulladlePluginIntegrationTest {
           repositories {
               google()
           }
-      
+
           dependencies {
               classpath '$agpDependency'
           }
       }
-      
+
       plugins {
         id "com.osacky.fulladle"
       }
-      
-      
+
+
       fladle {
         serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
       }
@@ -486,7 +490,8 @@ class FulladlePluginIntegrationTest {
     )
 
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments(":printYml")
         .build()
 
@@ -576,7 +581,8 @@ class FulladlePluginIntegrationTest {
     )
 
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments(":printYml")
         .build()
     assertThat(result.output).doesNotContain("max-test-shards: 4")
@@ -632,7 +638,8 @@ class FulladlePluginIntegrationTest {
     )
 
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments(":printYml")
         .buildAndFail()
 
@@ -708,7 +715,8 @@ class FulladlePluginIntegrationTest {
     )
 
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments(":printYml")
         .buildAndFail()
 
@@ -797,7 +805,8 @@ class FulladlePluginIntegrationTest {
     )
 
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments(":printYml")
         .build()
 
@@ -881,7 +890,8 @@ class FulladlePluginIntegrationTest {
     )
 
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments(":printYml")
         .build()
 
@@ -967,7 +977,8 @@ class FulladlePluginIntegrationTest {
     )
 
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments(":printYml")
         .build()
 

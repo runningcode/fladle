@@ -39,7 +39,8 @@ class AutoConfigureFladleTest {
     testProjectRoot.setupFixture(fixtureName)
 
     val result =
-      GradleRunner.create()
+      GradleRunner
+        .create()
         .withProjectDir(testProjectRoot.root)
         .withPluginClasspath()
         .withArguments("assembleDebug", "assembleDebugAndroidTest", "printYml", "--stacktrace")

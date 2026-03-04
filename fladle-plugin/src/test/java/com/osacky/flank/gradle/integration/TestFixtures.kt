@@ -5,7 +5,11 @@ import org.junit.rules.TemporaryFolder
 import java.io.File
 
 fun TemporaryFolder.setupFixture(fixtureName: String) {
-  File(this::class.java.classLoader.getResource(fixtureName)!!.file).copyRecursively(newFile(fixtureName), true)
+  File(
+    this::class.java.classLoader
+      .getResource(fixtureName)!!
+      .file,
+  ).copyRecursively(newFile(fixtureName), true)
 }
 
 internal fun TemporaryFolder.writeBuildDotGradle(buildScript: String) =
@@ -13,7 +17,8 @@ internal fun TemporaryFolder.writeBuildDotGradle(buildScript: String) =
     .writeText(buildScript)
 
 fun TemporaryFolder.gradleRunner() =
-  GradleRunner.create()
+  GradleRunner
+    .create()
     .withPluginClasspath()
     .forwardOutput()
     .withProjectDir(root)

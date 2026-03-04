@@ -38,7 +38,8 @@ class MultipleConfigsTest {
     testProjectRoot.newFile("flank-gradle-service.json").writeText("{}")
 
     val result =
-      GradleRunner.create()
+      GradleRunner
+        .create()
         .withPluginClasspath()
         .withArguments("writeConfigPropsOrange", "--stacktrace")
         .forwardOutput()
@@ -76,7 +77,8 @@ class MultipleConfigsTest {
     )
 
     val regularConfig =
-      GradleRunner.create()
+      GradleRunner
+        .create()
         .withPluginClasspath()
         .withArguments("writeConfigProps")
         .forwardOutput()
