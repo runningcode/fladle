@@ -35,7 +35,8 @@ fun <T> StringBuilder.appendListProperty(
 
 fun StringBuilder.appendAdditionalProperty(property: Property<String>) {
   if (property.isPresent) {
-    property.get()
+    property
+      .get()
       .split("\n")
       .map { "  $it" }
       .forEach { appendLine(it) }

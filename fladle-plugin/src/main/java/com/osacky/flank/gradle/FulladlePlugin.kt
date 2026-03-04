@@ -23,18 +23,12 @@ class FulladlePlugin : Plugin<Project> {
     val fulladleConfigureTask =
       root.tasks.register("configureFulladle") {
         var modulesEnabled = false
-        /**
-         * we will first configure all app modules
-         * then configure all library modules
-         * we force this order of configuration because
-         * app modules are better candidates to become
-         * root level test/app APKs, since they produce
-         * app APKs
-         * if no app module had tests or was enabled
-         * we will choose a library module to become
-         * a root level module, in which case we will
-         * have to check if it has its debugApk set
-         */
+        // We first configure all app modules, then configure all library modules.
+        // We force this order because app modules are better candidates to become
+        // root level test/app APKs, since they produce app APKs.
+        // If no app module had tests or was enabled, we will choose a library module
+        // to become a root level module, in which case we will have to check if it
+        // has its debugApk set.
         doLast {
           // first configure all app modules
           root.subprojects {
