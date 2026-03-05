@@ -38,21 +38,18 @@ open class YamlConfigWriterTask
 
     @get:Input
     val additionalTestApks: ListProperty<String> =
-      objects.listProperty(String::class.java)
+      objects
+        .listProperty(String::class.java)
         .convention(config.additionalTestApks)
 
     @OutputFile
     val fladleConfigFile: Provider<RegularFile> = fladleDir.map { it.file("flank.yml") }
 
     @Internal
-    override fun getDescription(): String {
-      return "Writes a flank.yml file based on the current FlankGradleExtension configuration."
-    }
+    override fun getDescription(): String = "Writes a flank.yml file based on the current FlankGradleExtension configuration."
 
     @Internal
-    override fun getGroup(): String {
-      return FladlePluginDelegate.TASK_GROUP
-    }
+    override fun getGroup(): String = FladlePluginDelegate.TASK_GROUP
 
     @TaskAction
     fun writeFile() {

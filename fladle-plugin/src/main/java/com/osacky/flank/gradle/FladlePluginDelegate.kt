@@ -24,7 +24,10 @@ class FladlePluginDelegate {
 
     target.tasks.register("flankAuth", FlankJavaExec::class.java) {
       doFirst {
-        target.layout.fladleDir.get().asFile.mkdirs()
+        target.layout.fladleDir
+          .get()
+          .asFile
+          .mkdirs()
       }
       classpath = project.fladleConfig
       args = listOf("auth", "login")
@@ -34,7 +37,6 @@ class FladlePluginDelegate {
   }
 
   private fun checkMinimumGradleVersion() {
-    // Gradle 4.9 is required because we use the lazy task configuration API.
     if (GRADLE_MIN_VERSION > GradleVersion.current()) {
       throw GradleException("Fladle requires at minimum version $GRADLE_MIN_VERSION. Detected version ${GradleVersion.current()}.")
     }
@@ -102,7 +104,14 @@ class FladlePluginDelegate {
       group = TASK_GROUP
       dependsOn(writeConfigProps)
       doLast {
-        println(writeConfigProps.get().fladleConfigFile.get().asFile.readText())
+        println(
+          writeConfigProps
+            .get()
+            .fladleConfigFile
+            .get()
+            .asFile
+            .readText(),
+        )
       }
     }
 
@@ -110,7 +119,19 @@ class FladlePluginDelegate {
       if (useDefaultDir) setUpWorkingDir(configName)
       description = "Finds problems with the current configuration."
       classpath = project.fladleConfig
-      args = listOf("firebase", "test", "android", "doctor", "-c", writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath)
+      args =
+        listOf(
+          "firebase",
+          "test",
+          "android",
+          "doctor",
+          "-c",
+          writeConfigProps
+            .get()
+            .fladleConfigFile
+            .get()
+            .asFile.absolutePath,
+        )
       dependsOn(writeConfigProps)
     }
 
@@ -122,13 +143,30 @@ class FladlePluginDelegate {
       args =
         if (project.hasProperty("dumpShards")) {
           listOf(
-            "firebase", "test", "android", "run", "-c",
-            writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath, "--dump-shards",
+            "firebase",
+            "test",
+            "android",
+            "run",
+            "-c",
+            writeConfigProps
+              .get()
+              .fladleConfigFile
+              .get()
+              .asFile.absolutePath,
+            "--dump-shards",
           )
         } else {
           listOf(
-            "firebase", "test", "android", "run", "-c",
-            writeConfigProps.get().fladleConfigFile.get().asFile.absolutePath,
+            "firebase",
+            "test",
+            "android",
+            "run",
+            "-c",
+            writeConfigProps
+              .get()
+              .fladleConfigFile
+              .get()
+              .asFile.absolutePath,
           )
         }
       if (config.serviceAccountCredentials.isPresent) {

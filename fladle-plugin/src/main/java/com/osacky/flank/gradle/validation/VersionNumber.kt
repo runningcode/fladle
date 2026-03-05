@@ -40,13 +40,13 @@ class VersionNumber private constructor(
     if (patch != other.patch) {
       return patch - other.patch
     }
-    return qualifier.orEmpty().lowercase()
+    return qualifier
+      .orEmpty()
+      .lowercase()
       .compareTo(other.qualifier.orEmpty().lowercase())
   }
 
-  override fun equals(other: Any?): Boolean {
-    return other is VersionNumber && compareTo(other) == 0
-  }
+  override fun equals(other: Any?): Boolean = other is VersionNumber && compareTo(other) == 0
 
   override fun hashCode(): Int {
     var result = major
@@ -57,9 +57,7 @@ class VersionNumber private constructor(
     return result
   }
 
-  override fun toString(): String {
-    return scheme.format(this)
-  }
+  override fun toString(): String = scheme.format(this)
 
   /**
    * Returns the version number scheme.
@@ -70,7 +68,9 @@ class VersionNumber private constructor(
     fun format(versionNumber: VersionNumber): String
   }
 
-  private abstract class AbstractScheme protected constructor(val depth: Int) : Scheme {
+  private abstract class AbstractScheme protected constructor(
+    val depth: Int,
+  ) : Scheme {
     override fun parse(versionString: String): VersionNumber {
       if (versionString.isEmpty()) {
         return UNKNOWN
@@ -109,16 +109,15 @@ class VersionNumber private constructor(
       return UNKNOWN
     }
 
-    private class Scanner(val str: String) {
+    private class Scanner(
+      val str: String,
+    ) {
       var pos: Int = 0
 
-      fun hasDigit(): Boolean {
-        return pos < str.length && Character.isDigit(str.get(pos))
-      }
+      fun hasDigit(): Boolean = pos < str.length && Character.isDigit(str.get(pos))
 
-      fun isSeparatorAndDigit(vararg separators: Char): Boolean {
-        return pos < str.length - 1 && oneOf(*separators) && Character.isDigit(str.get(pos + 1))
-      }
+      fun isSeparatorAndDigit(vararg separators: Char): Boolean =
+        pos < str.length - 1 && oneOf(*separators) && Character.isDigit(str.get(pos + 1))
 
       fun oneOf(vararg separators: Char): Boolean {
         val current = str.get(pos)
@@ -148,22 +147,19 @@ class VersionNumber private constructor(
         pos++
       }
 
-      fun remainder(): String? {
-        return if (pos == str.length) null else str.substring(pos)
-      }
+      fun remainder(): String? = if (pos == str.length) null else str.substring(pos)
     }
   }
 
   private class DefaultScheme : AbstractScheme(3) {
-    override fun format(versionNumber: VersionNumber): String {
-      return String.format(
+    override fun format(versionNumber: VersionNumber): String =
+      String.format(
         VERSION_TEMPLATE,
         versionNumber.major,
         versionNumber.minor,
         versionNumber.micro,
         if (versionNumber.qualifier == null) "" else "-" + versionNumber.qualifier,
       )
-    }
 
     companion object {
       private const val VERSION_TEMPLATE = "%d.%d.%d%s"
@@ -178,8 +174,8 @@ class VersionNumber private constructor(
     fun version(
       major: Int,
       minor: Int = 0,
-    ): VersionNumber {
-      return VersionNumber(
+    ): VersionNumber =
+      VersionNumber(
         major = major,
         minor = minor,
         micro = 0,
@@ -187,10 +183,7 @@ class VersionNumber private constructor(
         qualifier = null,
         scheme = DEFAULT_SCHEME,
       )
-    }
 
-    fun parse(versionString: String): VersionNumber {
-      return DEFAULT_SCHEME.parse(versionString)
-    }
+    fun parse(versionString: String): VersionNumber = DEFAULT_SCHEME.parse(versionString)
   }
 }

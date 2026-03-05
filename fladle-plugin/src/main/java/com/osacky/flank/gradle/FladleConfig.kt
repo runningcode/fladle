@@ -51,13 +51,11 @@ interface FladleConfig {
   @get:Input
   val testTargets: ListProperty<String>
 
+  // The maximum number of shards. Value will be overwritten by [maxTestShards] if both used in configuration
   @Deprecated(
     message = "testShards is deprecated. Use maxTestShards instead",
     replaceWith = ReplaceWith("maxTestShards"),
   )
-  /**
-   * The maximum number of shards. Value will be overwritten by [maxTestShards] if both used in configuration
-   */
   @get:Input
   @get:Optional
   val testShards: Property<Int>
@@ -473,7 +471,8 @@ interface FladleConfig {
 
   @Internal
   fun getPresentProperties() =
-    this::class.memberProperties
+    this::class
+      .memberProperties
       .filter {
         when (val prop = it.call(this)) {
           is Property<*> -> prop.isPresent

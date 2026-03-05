@@ -22,7 +22,5 @@ class ExampleInstrumentedTest {
   }
 
   @Test
-  fun runAndFail() {
-    throw RuntimeException("Test failed")
-  }
+  fun runAndFail(): Unit = throw RuntimeException("Test failed")
 }
