@@ -6,16 +6,22 @@ import java.lang.IllegalArgumentException
 
 fun checkIfSanityAndValidateConfigs(config: FladleConfig) =
   when (config) {
-    is FlankGradleExtension ->
+    is FlankGradleExtension -> {
       config.checkAndValidateConfig { option, name ->
         "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo."
       }
-    is FladleConfigImpl ->
+    }
+
+    is FladleConfigImpl -> {
       config.checkAndValidateConfig(config.name) { option, name ->
         "Incorrect [$name] configuration. [$option] can't be used together with sanityRobo. " +
           "To configure sanityRobo, add clearPropertiesForSanityRobo() to the [$name] configuration"
       }
-    else -> throw IllegalArgumentException("Unexpected configuration when validating parameters. Did not expect: $config.")
+    }
+
+    else -> {
+      throw IllegalArgumentException("Unexpected configuration when validating parameters. Did not expect: $config.")
+    }
   }
 
 private fun FladleConfig.checkAndValidateConfig(

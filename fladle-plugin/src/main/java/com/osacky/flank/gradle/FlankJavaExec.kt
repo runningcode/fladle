@@ -10,7 +10,9 @@ import javax.inject.Inject
 )
 abstract class FlankJavaExec
   @Inject
-  constructor(projectLayout: ProjectLayout) : JavaExec() {
+  constructor(
+    projectLayout: ProjectLayout,
+  ) : JavaExec() {
     init {
       group = FladlePluginDelegate.TASK_GROUP
       mainClass.set("ftl.Main")

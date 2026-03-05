@@ -22,7 +22,12 @@ abstract class FlankExecutionTask
 
     private fun checkFilesExist(base: FladleConfig) {
       if (base.serviceAccountCredentials.isPresent) {
-        check(base.serviceAccountCredentials.get().asFile.exists()) {
+        check(
+          base.serviceAccountCredentials
+            .get()
+            .asFile
+            .exists(),
+        ) {
           "serviceAccountCredential file doesn't exist ${base.serviceAccountCredentials.get()}"
         }
       }

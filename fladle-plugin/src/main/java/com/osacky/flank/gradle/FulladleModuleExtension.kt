@@ -9,7 +9,9 @@ import javax.inject.Inject
 
 open class FulladleModuleExtension
   @Inject
-  constructor(objects: ObjectFactory) {
+  constructor(
+    objects: ObjectFactory,
+  ) {
     /**
      * When set to false, Fulladle will not automatically add this module to additionalTestApks.
      *
