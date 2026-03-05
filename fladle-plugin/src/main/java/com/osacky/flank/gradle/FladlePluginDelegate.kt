@@ -252,7 +252,12 @@ class FladlePluginDelegate {
         } else {
           "$archivesName-$buildType-androidTest.apk"
         }
-      val testApkPath = buildDir.file("outputs/apk/$testApkDirPath/$testApkFileName").get().asFile.absolutePath
+      val testApkPath =
+        buildDir
+          .file("outputs/apk/$testApkDirPath/$testApkFileName")
+          .get()
+          .asFile
+          .absolutePath
 
       variant.outputs.forEach { output ->
         if (!output.isExpectedAbiOutput(config)) return@forEach
@@ -268,7 +273,12 @@ class FladlePluginDelegate {
             if (abiName != null) append("-$abiName")
             append("-$buildType.apk")
           }
-        val appApkPath = buildDir.file("outputs/apk/$appApkDirPath/$appApkFileName").get().asFile.absolutePath
+        val appApkPath =
+          buildDir
+            .file("outputs/apk/$appApkDirPath/$appApkFileName")
+            .get()
+            .asFile
+            .absolutePath
 
         if (!config.debugApk.isPresent) {
           // Don't set debug apk if not already set. #172
