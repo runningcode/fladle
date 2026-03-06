@@ -226,7 +226,9 @@ class FladlePluginDelegate {
     config: FladleConfig,
   ) {
     val androidExtension =
-      requireNotNull(project.extensions.findByType(ApplicationExtension::class.java)) { "Could not find ApplicationExtension in ${project.name}" }
+      requireNotNull(
+        project.extensions.findByType(ApplicationExtension::class.java),
+      ) { "Could not find ApplicationExtension in ${project.name}" }
     automaticallyConfigureTestOrchestrator(project, config, androidExtension)
 
     val androidComponents =
@@ -241,7 +243,11 @@ class FladlePluginDelegate {
       val buildType = variant.buildType ?: return@onVariants
       val flavorName = variant.productFlavors.joinToString("") { it.second }
       val flavorPath = variant.productFlavors.joinToString("/") { it.second }
-      val archivesName = project.extensions.getByType(BasePluginExtension::class.java).archivesName.get()
+      val archivesName =
+        project.extensions
+          .getByType(BasePluginExtension::class.java)
+          .archivesName
+          .get()
       val buildDir = project.layout.buildDirectory
 
       // Test APK path
