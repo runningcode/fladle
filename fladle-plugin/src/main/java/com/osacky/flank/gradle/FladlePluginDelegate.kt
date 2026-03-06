@@ -212,11 +212,11 @@ class FladlePluginDelegate {
         "Could not find ApplicationAndroidComponentsExtension in ${project.name}"
       }
 
+    automaticallyConfigureTestOrchestrator(project, config, androidExtension)
+
     androidComponents.onVariants { variant ->
       if (!variant.isExpectedVariant(config)) return@onVariants
       val androidTest = (variant as? HasAndroidTest)?.androidTest ?: return@onVariants
-
-      automaticallyConfigureTestOrchestrator(project, config, androidExtension)
 
       val buildType = variant.buildType ?: return@onVariants
       val flavorName = variant.productFlavors.joinToString("") { it.second }

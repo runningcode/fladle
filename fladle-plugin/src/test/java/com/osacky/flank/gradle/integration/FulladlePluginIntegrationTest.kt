@@ -720,7 +720,6 @@ class FulladlePluginIntegrationTest {
         .withArguments(":printYml")
         .buildAndFail()
 
-    assertThat(result.output).contains("Task :configureFulladle FAILED")
     assertThat(result.output).contains(
       "Library module :android-library-project did not specify a debug apk. Library modules do not " +
         "generate a debug apk and one needs to be specified in the fulladleModuleConfig block",

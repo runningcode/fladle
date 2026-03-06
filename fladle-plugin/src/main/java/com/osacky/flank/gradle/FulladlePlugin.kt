@@ -17,28 +17,8 @@ class FulladlePlugin : Plugin<Project> {
 
     val flankGradleExtension = root.extensions.getByType(FlankGradleExtension::class.java)
 
-    // Detect whether the settings plugin is in use by checking if any subproject
-    // has the module plugin applied (which the settings plugin does automatically).
-    // We defer this check to afterEvaluate so that all plugins have been applied.
-    root.afterEvaluate {
-      val settingsPluginActive =
-        root.subprojects.any { sub ->
-          sub.plugins.hasPlugin(FulladleModulePlugin::class.java)
-        }
-
-      if (settingsPluginActive) {
-        configureWithMetadata(root, flankGradleExtension)
-      } else {
-        configureLegacy(root, flankGradleExtension)
-      }
-    }
-  }
-
-  private fun configureWithMetadata(
-    root: Project,
-    flankGradleExtension: FlankGradleExtension,
-  ) {
-    // Create incoming configuration to collect metadata from subprojects
+    // Create incoming configuration eagerly — creating configurations in afterEvaluate
+    // is discouraged and may be disallowed in future Gradle versions.
     val incoming =
       root.configurations.create("fulladleModuleMetadata") {
         isCanBeConsumed = false
@@ -48,25 +28,35 @@ class FulladlePlugin : Plugin<Project> {
         }
       }
 
-    // Add project dependencies for all subprojects
-    root.subprojects.forEach { sub ->
-      incoming.dependencies.add(root.dependencies.project(mapOf("path" to sub.path)))
-    }
+    // Eagerly create module extensions and register variant callbacks on all subprojects.
+    // This must happen during apply() — before subprojects evaluate — so that
+    // fulladleModuleConfig is available in subproject build scripts.
+    setupSubprojectExtensions(root)
 
-    // Wire metadata files into YamlConfigWriterTask
-    root.tasks.withType(YamlConfigWriterTask::class.java).configureEach {
-      moduleMetadataFiles.from(incoming)
-      if (flankGradleExtension.abi.isPresent) {
-        abiFilter.set(flankGradleExtension.abi)
+    // Use gradle.projectsEvaluated so that ALL projects (root + subprojects) have been
+    // fully evaluated before we inspect their plugins and extensions. This avoids needing
+    // evaluationDependsOnChildren() which breaks plugins applied after fulladle that
+    // use afterEvaluate internally.
+    root.gradle.projectsEvaluated {
+      val settingsPluginActive =
+        root.subprojects.any { sub ->
+          sub.plugins.hasPlugin(FulladleModulePlugin::class.java)
+        }
+
+      if (settingsPluginActive) {
+        configureWithMetadata(root, flankGradleExtension, incoming)
+      } else {
+        configureLegacy(root, flankGradleExtension)
       }
     }
   }
 
-  private fun configureLegacy(
-    root: Project,
-    flankGradleExtension: FlankGradleExtension,
-  ) {
-    // Legacy mode: apply module extensions and variant callbacks directly
+  /**
+   * Creates the fulladleModuleConfig extension and registers onVariants callbacks
+   * on each subproject. These run eagerly during apply() so the extension is
+   * available when subproject build scripts are evaluated.
+   */
+  private fun setupSubprojectExtensions(root: Project) {
     root.subprojects {
       if (extensions.findByType(FulladleModuleExtension::class.java) == null) {
         extensions.create("fulladleModuleConfig", FulladleModuleExtension::class.java)
@@ -178,47 +168,76 @@ class FulladlePlugin : Plugin<Project> {
         }
       }
     }
+  }
 
+  private fun configureWithMetadata(
+    root: Project,
+    flankGradleExtension: FlankGradleExtension,
+    incoming: org.gradle.api.artifacts.Configuration,
+  ) {
+    // Add project dependencies for all subprojects
+    root.subprojects.forEach { sub ->
+      incoming.dependencies.add(root.dependencies.project(mapOf("path" to sub.path)))
+    }
+
+    // Wire metadata files into YamlConfigWriterTask
+    root.tasks.withType(YamlConfigWriterTask::class.java).configureEach {
+      moduleMetadataFiles.from(incoming)
+      if (flankGradleExtension.abi.isPresent) {
+        abiFilter.set(flankGradleExtension.abi)
+      }
+    }
+  }
+
+  private fun configureLegacy(
+    root: Project,
+    flankGradleExtension: FlankGradleExtension,
+  ) {
     val fulladleConfigureTask =
       root.tasks.register("configureFulladle") {
-        var modulesEnabled = false
-        doLast {
-          // first configure all app modules
-          root.subprojects {
-            if (!hasAndroidTest) {
-              return@subprojects
-            }
-            modulesEnabled = true
-            if (isAndroidAppModule) {
-              configureModule(this, flankGradleExtension)
-            }
-          }
-          // then configure all library modules
-          root.subprojects {
-            if (!hasAndroidTest) {
-              return@subprojects
-            }
-            modulesEnabled = true
-            if (isAndroidLibraryModule) {
-              configureModule(this, flankGradleExtension)
-            }
-          }
-
-          check(modulesEnabled) {
-            "All modules were disabled for testing in fulladleModuleConfig or the enabled modules had no tests.\n" +
-              "Either re-enable modules for testing or add modules with tests."
-          }
-        }
+        // Validation check is configured below.
+        // Module configuration happens at configuration time (in the projectsEvaluated block)
+        // to avoid capturing Project references in the task action (configuration cache).
       }
 
     root.tasks.withType(YamlConfigWriterTask::class.java).configureEach {
       dependsOn(fulladleConfigureTask)
     }
 
-    root.afterEvaluate {
-      root.tasks.named("printYml").configure {
-        dependsOn(fulladleConfigureTask)
+    var modulesEnabled = false
+    // first configure all app modules
+    root.subprojects {
+      if (!hasAndroidTest) {
+        return@subprojects
       }
+      modulesEnabled = true
+      if (isAndroidAppModule) {
+        configureModule(this, flankGradleExtension)
+      }
+    }
+    // then configure all library modules
+    root.subprojects {
+      if (!hasAndroidTest) {
+        return@subprojects
+      }
+      modulesEnabled = true
+      if (isAndroidLibraryModule) {
+        configureModule(this, flankGradleExtension)
+      }
+    }
+
+    val allModulesEnabled = modulesEnabled
+    fulladleConfigureTask.configure {
+      doLast {
+        check(allModulesEnabled) {
+          "All modules were disabled for testing in fulladleModuleConfig or the enabled modules had no tests.\n" +
+            "Either re-enable modules for testing or add modules with tests."
+        }
+      }
+    }
+
+    root.tasks.named("printYml").configure {
+      dependsOn(fulladleConfigureTask)
     }
   }
 }

@@ -10,6 +10,8 @@ class ConfigurationCacheTest {
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
+  val agpDependency: String = "com.android.tools.build:gradle:9.0.1"
+
   fun writeBuildGradle(build: String) {
     val file = testProjectRoot.newFile("build.gradle")
     file.writeText(build)
@@ -129,6 +131,109 @@ class ConfigurationCacheTest {
 
     assertThat(secondResult.output).contains("Error: Failed to read service account credential.")
     assertThat(secondResult.output).contains("Reusing configuration cache.")
+  }
+
+  @Test
+  fun fulladleMultiModuleWithConfigurationCache() {
+    val appFixture = "android-project"
+    val libraryFixture = "android-library-project"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+      include '$appFixture'
+      include '$libraryFixture'
+
+      dependencyResolutionManagement {
+        repositories {
+          mavenCentral()
+          google()
+        }
+      }
+      """.trimIndent(),
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(libraryFixture)
+
+    writeBuildGradle(
+      """
+      buildscript {
+          repositories {
+              google()
+          }
+          dependencies {
+              classpath '$agpDependency'
+          }
+      }
+      plugins {
+        id "com.osacky.fulladle"
+      }
+      fladle {
+        serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+      }
+      """.trimIndent(),
+    )
+
+    val result = configCachingRunner("printYml").build()
+
+    assertThat(result.output).contains("SUCCESS")
+    assertThat(result.output).contains("additional-app-test-apks:")
+
+    val secondResult = configCachingRunner("printYml").build()
+
+    assertThat(secondResult.output).contains("Reusing configuration cache.")
+    assertThat(secondResult.output).contains("SUCCESS")
+  }
+
+  @Test
+  fun fulladleSettingsPluginMultiModuleWithConfigurationCache() {
+    val appFixture = "android-project"
+    val libraryFixture = "android-library-project"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+      plugins {
+        id "com.osacky.fulladle.settings"
+      }
+      include '$appFixture'
+      include '$libraryFixture'
+
+      dependencyResolutionManagement {
+        repositories {
+          mavenCentral()
+          google()
+        }
+      }
+      """.trimIndent(),
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(libraryFixture)
+
+    writeBuildGradle(
+      """
+      buildscript {
+          repositories {
+              google()
+          }
+          dependencies {
+              classpath '$agpDependency'
+          }
+      }
+      plugins {
+        id "com.osacky.fulladle"
+      }
+      fladle {
+        serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+      }
+      """.trimIndent(),
+    )
+
+    val result = configCachingRunner("printYml").build()
+
+    assertThat(result.output).contains("SUCCESS")
+    assertThat(result.output).contains("additional-app-test-apks:")
+
+    val secondResult = configCachingRunner("printYml").build()
+
+    assertThat(secondResult.output).contains("Reusing configuration cache.")
+    assertThat(secondResult.output).contains("SUCCESS")
   }
 
   private fun configCachingRunner(arg: String): GradleRunner =
