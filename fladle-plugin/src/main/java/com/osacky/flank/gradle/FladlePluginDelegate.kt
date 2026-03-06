@@ -207,7 +207,6 @@ class FladlePluginDelegate {
       requireNotNull(
         project.extensions.findByType(ApplicationExtension::class.java),
       ) { "Could not find ApplicationExtension in ${project.name}" }
-
     val androidComponents =
       requireNotNull(project.extensions.findByType(ApplicationAndroidComponentsExtension::class.java)) {
         "Could not find ApplicationAndroidComponentsExtension in ${project.name}"
