@@ -205,7 +205,12 @@ class FulladlePlugin : Plugin<Project> {
     }
 
     var modulesEnabled = false
-    // first configure all app modules
+    // We first configure all app modules, then configure all library modules.
+    // We force this order because app modules are better candidates to become
+    // root level test/app APKs, since they produce app APKs.
+    // If no app module had tests or was enabled, we will choose a library module
+    // to become a root level module, in which case we will have to check if it
+    // has its debugApk set.
     root.subprojects {
       if (!hasAndroidTest) {
         return@subprojects
@@ -251,6 +256,7 @@ fun configureModule(
     return
   }
 
+  // Only configure the first test variant per module.
   var addedTestsForModule = false
 
   for (variantInfo in fulladleModuleExtension.variantApks) {
@@ -264,6 +270,9 @@ fun configureModule(
     }
 
     val yml = StringBuilder()
+    // If the debugApk isn't yet set, use this module's APK as the root.
+    // App modules produce app APKs directly; library modules must specify one
+    // in their fulladleModuleConfig block (even a dummy APK, since FTL requires it).
     if (!flankGradleExtension.debugApk.isPresent) {
       if (project.isAndroidAppModule && variantInfo.appApkPath != null) {
         flankGradleExtension.debugApk.set(rootProject.provider { variantInfo.appApkPath })
@@ -277,15 +286,18 @@ fun configureModule(
         flankGradleExtension.debugApk.set(rootProject.provider { fulladleModuleExtension.debugApk.get() })
       }
     } else {
+      // debugApk already set — add this module as an additional test APK.
       if (project.isAndroidAppModule && variantInfo.appApkPath != null) {
         yml.appendLine("- app: ${variantInfo.appApkPath}")
       } else if (project.isAndroidLibraryModule) {
+        // app apk is not required for library modules so only use if explicitly specified
         if (fulladleModuleExtension.debugApk.orNull != null) {
           yml.appendLine("- app: ${fulladleModuleExtension.debugApk.get()}")
         }
       }
     }
 
+    // Same pattern for instrumentation APK: first module becomes root, rest are additional.
     if (!flankGradleExtension.instrumentationApk.isPresent) {
       flankGradleExtension.instrumentationApk.set(rootProject.provider { variantInfo.testApkPath })
     } else {
@@ -297,6 +309,8 @@ fun configureModule(
     }
 
     if (yml.isEmpty()) {
+      // This is the root module — not added as additional test APK.
+      // Apply any per-module overrides to the root-level config.
       overrideRootLevelConfigs(flankGradleExtension, fulladleModuleExtension)
     } else {
       yml.appendProperty(fulladleModuleExtension.maxTestShards, "    max-test-shards")
@@ -319,6 +333,7 @@ val Project.isAndroidAppModule
 val Project.isAndroidLibraryModule
   get() = plugins.hasPlugin("com.android.library")
 
+/** Returns false if the module explicitly disabled testing or if it simply had no tests. */
 val Project.hasAndroidTest: Boolean
   get() {
     if (!(isAndroidLibraryModule || isAndroidAppModule)) {
@@ -335,6 +350,7 @@ val Project.hasAndroidTest: Boolean
     return true
   }
 
+/** If the root module overrode any value in its fulladleModuleConfig block, use those values instead. */
 fun overrideRootLevelConfigs(
   flankGradleExtension: FlankGradleExtension,
   fulladleModuleExtension: FulladleModuleExtension,
