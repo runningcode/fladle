@@ -8,7 +8,7 @@ import javax.inject.Inject
 @DisableCachingByDefault(
   because = "Flank executions are dependent on resources such as network connection and server and therefore cannot be cached.",
 )
-open class FlankExecutionTask
+abstract class FlankExecutionTask
   @Inject
   constructor(
     projectLayout: ProjectLayout,

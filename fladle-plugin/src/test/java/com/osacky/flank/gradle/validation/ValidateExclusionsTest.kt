@@ -32,7 +32,8 @@ class ValidateExclusionsTest {
     )
 
     val result =
-      testProjectRoot.gradleRunner()
+      testProjectRoot
+        .gradleRunner()
         .withArguments("printYml")
         .buildAndFail()
 

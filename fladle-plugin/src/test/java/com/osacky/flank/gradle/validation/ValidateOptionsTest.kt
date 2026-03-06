@@ -16,7 +16,12 @@ class ValidateOptionsTest {
   @get:Rule
   var testProjectRoot = TemporaryFolder()
 
-  private val objects = ProjectBuilder.builder().withName("project").build().objects
+  private val objects =
+    ProjectBuilder
+      .builder()
+      .withName("project")
+      .build()
+      .objects
   private lateinit var config: FladleConfig
 
   @Before

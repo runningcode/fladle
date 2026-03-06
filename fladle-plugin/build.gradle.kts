@@ -18,17 +18,17 @@ plugins {
   alias(libs.plugins.vanniktech.publish)
 }
 
-// See https://github.com/slackhq/keeper/pull/11#issuecomment-579544375 for context
-val isReleaseMode : Boolean = hasProperty("fladle.releaseMode")
-
 dependencies {
   compileOnly(gradleApi())
-  if (isReleaseMode) {
-    compileOnly(libs.agp)
-  } else {
-    implementation(libs.agp)
+  compileOnly(libs.agp) {
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-compiler-embeddable")
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-compiler-runner")
   }
   compileOnly(libs.gradle.enterprise)
+
+  // AGP must be on the runtime classpath so GradleTestKit's withPluginClasspath()
+  // can resolve the com.android.application and com.android.library plugins.
+  runtimeOnly(libs.agp)
 
   testImplementation(gradleTestKit())
   testImplementation(libs.junit)
@@ -106,8 +106,8 @@ tasks.withType(ValidatePlugins::class.java).configureEach {
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).configureEach {
   compilerOptions {
     jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
-    languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_7)
-    apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_7)
+    languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+    apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
   }
 }
 
