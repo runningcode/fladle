@@ -4,7 +4,30 @@ Multi module testing can be done by manually specifying [additionalTestApks](/fl
 
 ## Fulladle Plugin
 
-1. Apply the Fulladle plugin at the root of the project.
+There are two ways to set up Fulladle: with or without the settings plugin.
+
+**The settings plugin (`com.osacky.fulladle.settings`) is the recommended approach** for projects using Gradle's [configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html). It avoids cross-project configuration by passing module metadata through Gradle's dependency management system. Without the settings plugin, Fulladle falls back to a legacy approach that uses `subprojects {}` — this still works but is not compatible with future Gradle best practices.
+
+### Setup
+
+1. *(Recommended)* Apply the settings plugin in `settings.gradle`:
+
+    === "Groovy"
+        ``` groovy
+        plugins {
+            id 'com.osacky.fulladle.settings' version '{{ fladle.current_release }}'
+        }
+        ```
+    === "Kotlin"
+        ``` kotlin
+        plugins {
+            id("com.osacky.fulladle.settings") version "{{ fladle.current_release }}"
+        }
+        ```
+
+    The settings plugin automatically applies the module plugin to every subproject, so no per-module setup is needed.
+
+2. Apply the Fulladle plugin at the root of the project.
 
     === "Groovy"
         ``` groovy
@@ -19,7 +42,7 @@ Multi module testing can be done by manually specifying [additionalTestApks](/fl
         }
         ```
 
-2. Configure the Fladle extension.
+3. Configure the Fladle extension.
 
     ===! "Groovy"
         ``` groovy
@@ -37,7 +60,7 @@ Multi module testing can be done by manually specifying [additionalTestApks](/fl
     !!! Warning
         If using buildFlavors or testing against a non default variant, you will need to specify the variant you want to test in the fulladleModuleConfig block.
 
-3. Run the tests.
+4. Run the tests.
     First assemble all your debug apks and test apks.
     ``` bash
     ./gradlew assembleDebug assembleDebugAndroidTest

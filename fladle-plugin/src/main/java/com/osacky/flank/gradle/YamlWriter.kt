@@ -1,11 +1,9 @@
 package com.osacky.flank.gradle
 
-import org.gradle.internal.impldep.com.google.common.annotations.VisibleForTesting
-
 internal class YamlWriter {
   internal fun createConfigProps(
     config: FladleConfig,
-    base: FlankGradleExtension,
+    base: FladleConfig,
   ): String {
     fun Boolean.toInt() = if (this) 1 else 0
 
@@ -145,7 +143,6 @@ internal class YamlWriter {
       appendAdditionalProperty(config.additionalGcloudOptions)
     }
 
-  @VisibleForTesting
   internal fun createDeviceString(devices: List<Map<String, String>>): String =
     buildString {
       appendLine("  device:")
