@@ -1,0 +1,706 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The Gradle Plugin for Firebase Test Lab and Flank">
+      
+      
+        <meta name="author" content="Nelson Osacky">
+      
+      
+        <link rel="canonical" href="https://runningcode.github.io/fladle/multi-module-testing/">
+      
+      
+        <link rel="prev" href="../results/">
+      
+      
+        <link rel="next" href="../faq/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
+    
+    
+      
+        <title>Multi Module Testing - Fladle</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#multi-module-testing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Fladle" class="md-header__button md-logo" aria-label="Fladle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Fladle
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Multi Module Testing
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/runningcode/fladle/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Fladle
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Fladle" class="md-nav__button md-logo" aria-label="Fladle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Fladle
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/runningcode/fladle/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Fladle
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick-start/" class="md-nav__link">
+        Quick Start
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        Authentication
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        Configuration
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/" class="md-nav__link">
+        Recipes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../results/" class="md-nav__link">
+        Results
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Multi Module Testing
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Multi Module Testing
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fulladle-plugin" class="md-nav__link">
+    Fulladle Plugin
+  </a>
+  
+    <nav class="md-nav" aria-label="Fulladle Plugin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overriding-configurations-in-modules" class="md-nav__link">
+    Overriding configurations in modules
+  </a>
+  
+    <nav class="md-nav" aria-label="Overriding configurations in modules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disabling-a-module" class="md-nav__link">
+    Disabling a module
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overriding-root-level-config" class="md-nav__link">
+    Overriding root-level config
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        FAQ
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../snapshots/" class="md-nav__link">
+        Testing Snapshots
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../releasing/" class="md-nav__link">
+        Releasing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fulladle-plugin" class="md-nav__link">
+    Fulladle Plugin
+  </a>
+  
+    <nav class="md-nav" aria-label="Fulladle Plugin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overriding-configurations-in-modules" class="md-nav__link">
+    Overriding configurations in modules
+  </a>
+  
+    <nav class="md-nav" aria-label="Overriding configurations in modules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disabling-a-module" class="md-nav__link">
+    Disabling a module
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overriding-root-level-config" class="md-nav__link">
+    Overriding root-level config
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="multi-module-testing">Multi-module testing</h1>
+<p>Multi module testing can be done by manually specifying <a href="/fladle/configuration/#additionaltestapks">additionalTestApks</a> or applying the Fulladle plugin to automacally gather all the additional test apks. See also <a href="https://proandroiddev.com/android-code-coverage-on-firebase-test-lab-part-3-ci-cd-integration-10f729996c29">this article</a> for a full setup and instructions including integration with CI.</p>
+<h2 id="fulladle-plugin">Fulladle Plugin</h2>
+<ol>
+<li>
+<p>Apply the Fulladle plugin at the root of the project.</p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;com.osacky.fulladle&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;0.19.0&#39;</span>
+<span class="o">}</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">plugins</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">id</span><span class="p">(</span><span class="s">&quot;com.osacky.fulladle&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s">&quot;0.19.0&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+</li>
+<li>
+<p>Configure the Fladle extension.</p>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">fladle</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="n">serviceAccountCredentials</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">project</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">projectDirectory</span><span class="o">.</span><span class="na">file</span><span class="o">(</span><span class="s2">&quot;flank-gradle-service-account.json&quot;</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">fladle</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">serviceAccountCredentials</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">project</span><span class="p">.</span><span class="na">layout</span><span class="p">.</span><span class="na">projectDirectory</span><span class="p">.</span><span class="na">file</span><span class="p">(</span><span class="s">&quot;flank-gradle-service-account.json&quot;</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If using buildFlavors or testing against a non default variant, you will need to specify the variant you want to test in the fulladleModuleConfig block.</p>
+</div>
+</li>
+<li>
+<p>Run the tests.
+    First assemble all your debug apks and test apks.
+    <div class="highlight"><pre><span></span><code>./gradlew<span class="w"> </span>assembleDebug<span class="w"> </span>assembleDebugAndroidTest
+</code></pre></div></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using flavors, make sure to assemble your buildVariants as well.</p>
+<p><code>./gradlew :app:assembleFreeDebug :app:assembleFreeDebugAndroidTest</code></p>
+</div>
+<p>Run Flank!
+<div class="highlight"><pre><span></span><code>./gradlew<span class="w"> </span>runFlank
+</code></pre></div></p>
+</li>
+</ol>
+<h3 id="overriding-configurations-in-modules">Overriding configurations in modules</h3>
+<p>Fulladle will pick Flank configurations from the <code>fladle</code> block in the root <code>build.gradle</code> file. You may want to override some of these configurations for certain modules, you can add the following block to any Android library module to override its configurations:</p>
+<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">fulladleModuleConfig</span><span class="w"> </span><span class="o">{</span>
+<span class="w">  </span><span class="n">clientDetails</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span>
+<span class="w">      </span><span class="s2">&quot;test-type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;PR&quot;</span><span class="o">,</span>
+<span class="w">      </span><span class="s2">&quot;build-number&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;132&quot;</span>
+<span class="w">  </span><span class="o">]</span>
+<span class="w">  </span><span class="n">maxTestShards</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">  </span><span class="n">environmentVariables</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span>
+<span class="w">      </span><span class="s2">&quot;clearPackageData&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span>
+<span class="w">  </span><span class="o">]</span>
+<span class="w">  </span><span class="n">debugApk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;app.apk&quot;</span>
+<span class="w">  </span><span class="n">variant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;vanillaDebug&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">fulladleModuleConfig</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">clientDetails</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">mapOf</span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;test-type&quot;</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="s">&quot;PR&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;build-number&quot;</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="s">&quot;132&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="p">))</span>
+<span class="w">  </span><span class="n">maxTestShards</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="m">3</span><span class="p">)</span>
+<span class="w">  </span><span class="n">environmentVariables</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">mapOf</span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;clearPackageData&quot;</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">  </span><span class="p">))</span>
+<span class="w">  </span><span class="n">debugApk</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="s">&quot;app.apk&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="n">variant</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="s">&quot;vanillaDebug&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<p>All of the above configurations are optional, Flank will default to the top-level configurations if you don't override anything here. For details about these configurations, refer to <a href="../configuration/">configuration docs</a>.</p>
+<h4 id="disabling-a-module">Disabling a module</h4>
+<p>You may want to exclude a library module from testing when using Fulladle. You can do so by setting the <code>enabled</code> configuration in the module's <code>fulladleModuleConfig</code> block like so:</p>
+<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Groovy</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">fulladleModuleConfig</span><span class="w"> </span><span class="o">{</span>
+<span class="w">  </span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="o">}</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Kotlin</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">fulladleModuleConfig</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">enabled</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<h3 id="overriding-root-level-config">Overriding root-level config</h3>
+<p>Fulladle does not provide the ability to control which module ends up as the root-level module or as an additional module. Either one of app modules or library modules can become a root-level module. If a library module ends up as a root-level module, it needs to specify a <code>debugApk</code> in its <code>fladle</code> or <code>fulladleModuleConfig</code> block.</p>
+<p>The root-level configuration (e.g. <code>maxTestShards</code>) can also be overridden in the <code>fulladleModuleConfig</code> block of whatever module gets picked as the root module.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Fulladle might still have some rough edges, but we'd love feedback. Please join us in the <a href="https://firebase.community/">Firebase Community Slack</a> with any feedback you may have.
+You can also file <a href="https://github.com/runningcode/fladle/issues">Fladle Github issues</a>.</p>
+<p>When filing a bug report, please include the Flank version number, the Fladle version number and the output of the following:</p>
+<p><code>./gradlew printYml</code></p>
+<p><code>./gradlew runFlank -PdumpShards</code></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+    
+  </body>
+</html>
