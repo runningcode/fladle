@@ -3,7 +3,6 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:
 
 jobs:
   release:
@@ -13,15 +12,6 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v6
-      - name: Determine release version
-        id: version
-        run: |
-          if [[ "${{ github.ref_type }}" == "tag" ]]; then
-            echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
-          else
-            version=$(grep '^version' fladle-plugin/build.gradle.kts | sed 's/version = "//;s/"//')
-            echo "tag=v${version}" >> "$GITHUB_OUTPUT"
-          fi
       - uses: actions/setup-java@v5
         with:
           java-version: "17"
@@ -43,14 +33,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.GPG_SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_SIGNING_KEY_PASSWORD }}
         run: ./gradlew :fladle-plugin:publishPlugins
-      - name: Create tag if needed
-        run: |
-          tag="${{ steps.version.outputs.tag }}"
-          if ! git rev-parse "$tag" >/dev/null 2>&1; then
-            git tag "$tag"
-            git push origin "$tag"
-          fi
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${{ steps.version.outputs.tag }}" --generate-notes
+        run: gh release create "${{ github.ref_name }}" --generate-notes
