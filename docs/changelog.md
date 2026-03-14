@@ -1,12 +1,13 @@
 # Changelog
 
 ## Unreleased
+
+## 0.21.0 
 * Minimum required Gradle version is now 9.1
 * Fixed support for Android Gradle Plugin version 9.0.1
 
 ## 0.20.0 
-* Minimum required Gradle version is now 9.1
-* Fixed support for Android Gradle Plugin version 9.0.1
+* Botched release. Do not use.
 
 ## 0.19.0
 * Minimum required JVM version is now 17.
