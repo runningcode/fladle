@@ -36,16 +36,11 @@ git tag v{{ fladle.next_release }}
 git push origin v{{ fladle.next_release }}
 ```
 
-* Upload to Maven Central (this must run in three separate commands since they are from three different namespaces)
-``` bash
-./gradlew :fladle-plugin:publishFladlePluginMarkerMavenPublicationToMavenCentralRepository -Pfladle.release 
-./gradlew :fladle-plugin:publishFulladlePluginMarkerMavenPublicationToMavenCentralRepository -Pfladle.release 
-./gradlew :fladle-plugin:publishPluginMavenPublicationToMavenCentralRepository -Pfladle.release
-```
-* Upload to Gradle Plugin Portal
-```bash
-./gradlew :fladle-plugin:publishPlugins -Pfladle.releaseMode -Dorg.gradle.internal.publish.checksums.insecure=true
-```
+Pushing the tag automatically triggers the [release workflow](https://github.com/runningcode/fladle/actions/workflows/gradle-release.yml) which:
+
+1. Publishes to Maven Central
+2. Publishes to Gradle Plugin Portal
+3. Creates a GitHub Release with auto-generated notes
 
 * Release to Maven Central
     * Login to Maven Central Repository: [https://central.sonatype.com/](https://central.sonatype.com/)

@@ -16,9 +16,12 @@ jobs:
       name: Setup Gradle
     - name: Check Fladle
       run: ./gradlew assembleDebug assembleDebugAndroidTest printYml check :fladle-plugin:check
-    - name: Publish Marker Snapshot
+    - name: Publish Snapshot
       if: ${{ github.ref == 'refs/heads/master' && github.event_name != 'pull_request' }}
-      run: ./gradlew :fladle-plugin:publishFladlePluginMarkerMavenPublicationToMavenCentralRepository :fladle-plugin:publishFulladlePluginMarkerMavenPublicationToMavenCentralRepository -Pfladle.releaseMode -PmavenCentralUsername=${{ secrets.SONATYPE_USERNAME }} -PmavenCentralPassword=${{ secrets.SONATYPE_PASSWORD }}
-    - name: Publish Plugin Snapshot
-      if: ${{ github.ref == 'refs/heads/master' && github.event_name != 'pull_request' }}
-      run: ./gradlew :fladle-plugin:publishPluginMavenPublicationToMavenCentralRepository -Pfladle.releaseMode -PmavenCentralUsername=${{ secrets.SONATYPE_USERNAME }} -PmavenCentralPassword=${{ secrets.SONATYPE_PASSWORD }}
+      env:
+        ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_USERNAME }}
+        ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
+        ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SIGNING_KEY }}
+        ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.GPG_SIGNING_KEY_ID }}
+        ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_SIGNING_KEY_PASSWORD }}
+      run: ./gradlew :fladle-plugin:publishToMavenCentral --no-configuration-cache
