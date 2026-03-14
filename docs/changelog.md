@@ -4,6 +4,10 @@
 * Minimum required Gradle version is now 9.1
 * Fixed support for Android Gradle Plugin version 9.0.1
 
+## 0.20.0 
+* Minimum required Gradle version is now 9.1
+* Fixed support for Android Gradle Plugin version 9.0.1
+
 ## 0.19.0
 * Minimum required JVM version is now 17.
 * Minimum supported Gradle version is now 7.3.
