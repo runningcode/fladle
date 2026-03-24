@@ -5,6 +5,7 @@
 ## 0.21.0 
 * Minimum required Gradle version is now 9.1
 * Fixed support for Android Gradle Plugin version 9.0.1
+* Added `com.osacky.fulladle.settings` settings plugin for Gradle configuration cache compatible multi-module testing
 
 ## 0.20.0 
 * Botched release. Do not use.

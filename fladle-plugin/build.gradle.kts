@@ -53,6 +53,20 @@ gradlePlugin {
       implementationClass = "com.osacky.flank.gradle.FulladlePlugin"
       tags.set(listOf("flank", "testing", "android", "fladle"))
     }
+    create("fulladleSettings") {
+      id = "com.osacky.fulladle.settings"
+      displayName = "Fulladle Settings"
+      description = project.description
+      implementationClass = "com.osacky.flank.gradle.FulladleSettingsPlugin"
+      tags.set(listOf("flank", "testing", "android", "fladle"))
+    }
+    create("fulladleModule") {
+      id = "com.osacky.fulladle.module"
+      displayName = "Fulladle Module"
+      description = project.description
+      implementationClass = "com.osacky.flank.gradle.FulladleModulePlugin"
+      tags.set(listOf("flank", "testing", "android", "fladle"))
+    }
   }
 }
 

@@ -13,11 +13,15 @@ abstract class FlankJavaExec
   constructor(
     projectLayout: ProjectLayout,
   ) : JavaExec() {
+    // Store only the build directory Provider, not the whole ProjectLayout
+    // (ProjectLayout may hold a Project reference which is not CC-serializable)
+    private val buildDir = projectLayout.buildDirectory
+
     init {
       group = FladlePluginDelegate.TASK_GROUP
       mainClass.set("ftl.Main")
       workingDir(projectLayout.fladleDir)
     }
 
-    fun setUpWorkingDir(configName: String) = workingDir(project.layout.buildDirectory.dir("fladle/$configName"))
+    fun setUpWorkingDir(configName: String) = workingDir(buildDir.dir("fladle/$configName"))
   }
