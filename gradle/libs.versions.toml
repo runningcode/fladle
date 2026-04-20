@@ -53,6 +53,6 @@ flank = { module = "com.github.flank:flank", version.ref = "flank-version" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit-version" }
 
-gradle-enterprise = { module = "com.gradle:develocity-gradle-plugin", version = "3.19.2" }
+gradle-enterprise = { module = "com.gradle:develocity-gradle-plugin", version = "4.4.1" }
 
 truth = "com.google.truth:truth:1.4.5"
