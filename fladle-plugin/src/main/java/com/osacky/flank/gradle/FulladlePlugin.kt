@@ -30,39 +30,21 @@ class FulladlePlugin : Plugin<Project> {
         androidComponents.onVariants { variant ->
           val androidTest = (variant as? HasAndroidTest)?.androidTest ?: return@onVariants
           val buildType = variant.buildType ?: return@onVariants
-          val flavorName = variant.productFlavors.joinToString("") { it.second }
-          val flavorPath = variant.productFlavors.joinToString("/") { it.second }
           val archivesName = extensions.getByType(BasePluginExtension::class.java).archivesName.get()
 
           variant.outputs.forEach { output ->
             val abiFilter = output.filters.firstOrNull { it.filterType == FilterConfiguration.FilterType.ABI }
             val abiName = abiFilter?.identifier
 
-            val appApkDirPath = if (flavorPath.isNotEmpty()) "$flavorPath/$buildType" else buildType
-            val appApkFileName =
-              buildString {
-                append(archivesName)
-                if (flavorName.isNotEmpty()) append("-$flavorName")
-                if (abiName != null) append("-$abiName")
-                append("-$buildType.apk")
-              }
             val appApkPath =
               layout.buildDirectory
-                .file("outputs/apk/$appApkDirPath/$appApkFileName")
+                .file("outputs/apk/${variant.appApkPath(archivesName, buildType, abiName)}")
                 .get()
                 .asFile.absolutePath
 
-            val testApkDirPath =
-              if (flavorPath.isNotEmpty()) "androidTest/$flavorPath/$buildType" else "androidTest/$buildType"
-            val testApkFileName =
-              if (flavorName.isNotEmpty()) {
-                "$archivesName-$flavorName-$buildType-androidTest.apk"
-              } else {
-                "$archivesName-$buildType-androidTest.apk"
-              }
             val testApkPath =
               layout.buildDirectory
-                .file("outputs/apk/$testApkDirPath/$testApkFileName")
+                .file("outputs/apk/${variant.androidTestApkPath(archivesName, buildType)}")
                 .get()
                 .asFile.absolutePath
 
@@ -84,21 +66,11 @@ class FulladlePlugin : Plugin<Project> {
         androidComponents.onVariants { variant ->
           val androidTest = (variant as? HasAndroidTest)?.androidTest ?: return@onVariants
           val buildType = variant.buildType ?: return@onVariants
-          val flavorName = variant.productFlavors.joinToString("") { it.second }
-          val flavorPath = variant.productFlavors.joinToString("/") { it.second }
           val archivesName = extensions.getByType(BasePluginExtension::class.java).archivesName.get()
 
-          val testApkDirPath =
-            if (flavorPath.isNotEmpty()) "androidTest/$flavorPath/$buildType" else "androidTest/$buildType"
-          val testApkFileName =
-            if (flavorName.isNotEmpty()) {
-              "$archivesName-$flavorName-$buildType-androidTest.apk"
-            } else {
-              "$archivesName-$buildType-androidTest.apk"
-            }
           val testApkPath =
             layout.buildDirectory
-              .file("outputs/apk/$testApkDirPath/$testApkFileName")
+              .file("outputs/apk/${variant.androidTestApkPath(archivesName, buildType)}")
               .get()
               .asFile.absolutePath
 

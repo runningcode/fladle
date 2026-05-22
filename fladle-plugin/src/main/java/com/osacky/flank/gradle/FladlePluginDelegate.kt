@@ -238,11 +238,9 @@ class FladlePluginDelegate {
 
     androidComponents.onVariants { variant ->
       if (!variant.isExpectedVariant(config)) return@onVariants
-      val androidTest = (variant as? HasAndroidTest)?.androidTest ?: return@onVariants
+      if ((variant as? HasAndroidTest)?.androidTest == null) return@onVariants
 
       val buildType = variant.buildType ?: return@onVariants
-      val flavorName = variant.productFlavors.joinToString("") { it.second }
-      val flavorPath = variant.productFlavors.joinToString("/") { it.second }
       val archivesName =
         project.extensions
           .getByType(BasePluginExtension::class.java)
@@ -250,17 +248,9 @@ class FladlePluginDelegate {
           .get()
       val buildDir = project.layout.buildDirectory
 
-      // Test APK path
-      val testApkDirPath = if (flavorPath.isNotEmpty()) "androidTest/$flavorPath/$buildType" else "androidTest/$buildType"
-      val testApkFileName =
-        if (flavorName.isNotEmpty()) {
-          "$archivesName-$flavorName-$buildType-androidTest.apk"
-        } else {
-          "$archivesName-$buildType-androidTest.apk"
-        }
       val testApkPath =
         buildDir
-          .file("outputs/apk/$testApkDirPath/$testApkFileName")
+          .file("outputs/apk/${variant.androidTestApkPath(archivesName, buildType)}")
           .get()
           .asFile
           .absolutePath
@@ -271,17 +261,9 @@ class FladlePluginDelegate {
         val abiFilter = output.filters.firstOrNull { it.filterType == FilterConfiguration.FilterType.ABI }
         val abiName = abiFilter?.identifier
 
-        val appApkDirPath = if (flavorPath.isNotEmpty()) "$flavorPath/$buildType" else buildType
-        val appApkFileName =
-          buildString {
-            append(archivesName)
-            if (flavorName.isNotEmpty()) append("-$flavorName")
-            if (abiName != null) append("-$abiName")
-            append("-$buildType.apk")
-          }
         val appApkPath =
           buildDir
-            .file("outputs/apk/$appApkDirPath/$appApkFileName")
+            .file("outputs/apk/${variant.appApkPath(archivesName, buildType, abiName)}")
             .get()
             .asFile
             .absolutePath

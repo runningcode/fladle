@@ -443,6 +443,88 @@ class FulladlePluginIntegrationTest {
   }
 
   @Test
+  fun fulladleWithMultipleFlavorDimensions() {
+    val appFixture = "android-project"
+    val flavourProject = "android-project-multiple-flavor-dimensions"
+    val flavourLibrary = "android-library-project-multiple-flavor-dimensions"
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+      include '$appFixture'
+      include '$flavourProject'
+      include '$flavourLibrary'
+
+      dependencyResolutionManagement {
+        repositories {
+          mavenCentral()
+          google()
+        }
+      }
+      """.trimIndent(),
+    )
+    testProjectRoot.setupFixture(appFixture)
+    testProjectRoot.setupFixture(flavourProject)
+    testProjectRoot.setupFixture(flavourLibrary)
+
+    writeBuildGradle(
+      """
+      buildscript {
+          repositories {
+              google()
+          }
+
+          dependencies {
+              classpath '$agpDependency'
+          }
+      }
+
+      plugins {
+        id "com.osacky.fulladle"
+      }
+
+      fladle {
+        serviceAccountCredentials = project.layout.projectDirectory.file("android-project/flank-gradle-5cf02dc90531.json")
+      }
+      """.trimIndent(),
+    )
+
+    File(testProjectRoot.root, "$flavourProject/build.gradle").appendText(
+      """
+
+      fulladleModuleConfig {
+        variant = "minApi24DemoDebug"
+      }
+      """.trimIndent(),
+    )
+    File(testProjectRoot.root, "$flavourLibrary/build.gradle").appendText(
+      """
+
+      fulladleModuleConfig {
+        variant = "minApi24DemoDebug"
+      }
+      """.trimIndent(),
+    )
+
+    val result =
+      testProjectRoot
+        .gradleRunner()
+        .withArguments(":printYml")
+        .build()
+
+    assertThat(result.output).contains("SUCCESS")
+    assertThat(result.output).containsMatch(
+      """app: \S*/android-project-multiple-flavor-dimensions/build/outputs/apk/minApi24Demo/debug/android-project-multiple-flavor-dimensions-minApi24-demo-debug\.apk""",
+    )
+    assertThat(result.output).containsMatch(
+      """test: \S*/android-project-multiple-flavor-dimensions/build/outputs/apk/androidTest/minApi24Demo/debug/android-project-multiple-flavor-dimensions-minApi24-demo-debug-androidTest\.apk""",
+    )
+    assertThat(result.output).containsMatch(
+      """test: \S*/android-library-project-multiple-flavor-dimensions/build/outputs/apk/androidTest/minApi24Demo/debug/android-library-project-multiple-flavor-dimensions-minApi24-demo-debug-androidTest\.apk""",
+    )
+    assertThat(result.output).doesNotContain("/minApi24/demo/debug/")
+    assertThat(result.output).doesNotContain("-minApi24demo-debug")
+  }
+
+  @Test
   fun fulladleWithDefaultFlavor() {
     val appFixture = "android-project"
     val libraryFixture = "android-library-project"

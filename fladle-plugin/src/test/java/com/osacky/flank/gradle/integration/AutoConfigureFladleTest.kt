@@ -83,4 +83,50 @@ class AutoConfigureFladleTest {
       """.trimIndent(),
     )
   }
+
+  @Test
+  fun testAndroidProjectWithMultipleFlavorDimensions() {
+    val fixtureName = "android-project-multiple-flavor-dimensions"
+    testProjectRoot.newFile("local.properties").writeText("sdk.dir=${androidHome()}\n")
+    testProjectRoot.newFile("gradle.properties").writeText("android.useAndroidX=true")
+    writeBuildGradle(
+      """
+      allprojects {
+        repositories {
+          google()
+          mavenCentral()
+        }
+      }
+      """.trimIndent(),
+    )
+    testProjectRoot.newFile("settings.gradle").writeText(
+      """
+      include '$fixtureName'
+      """.trimIndent(),
+    )
+
+    testProjectRoot.setupFixture(fixtureName)
+
+    val result =
+      GradleRunner
+        .create()
+        .withProjectDir(testProjectRoot.root)
+        .withPluginClasspath()
+        .withArguments(
+          ":$fixtureName:assembleMinApi24DemoDebug",
+          ":$fixtureName:assembleMinApi24DemoDebugAndroidTest",
+          ":$fixtureName:printYml",
+          "--stacktrace",
+        ).build()
+
+    assertThat(result.output).contains("BUILD SUCCESSFUL")
+    assertThat(result.output).containsMatch(
+      """app: \S*/android-project-multiple-flavor-dimensions/build/outputs/apk/minApi24Demo/debug/android-project-multiple-flavor-dimensions-minApi24-demo-debug\.apk""",
+    )
+    assertThat(result.output).containsMatch(
+      """test: \S*/android-project-multiple-flavor-dimensions/build/outputs/apk/androidTest/minApi24Demo/debug/android-project-multiple-flavor-dimensions-minApi24-demo-debug-androidTest\.apk""",
+    )
+    assertThat(result.output).doesNotContain("/minApi24/demo/debug/")
+    assertThat(result.output).doesNotContain("-minApi24demo-debug")
+  }
 }
