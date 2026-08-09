@@ -5,7 +5,7 @@ foojay = { id = "org.gradle.toolchains.foojay-resolver-convention", version = "1
 
 ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.51.0" }
 
-kotlinter = { id = "org.jmailen.kotlinter", version = "5.4.2" }
+kotlinter = { id = "org.jmailen.kotlinter", version = "5.7.0" }
 
 gradle-plugin-publish = {id = "com.gradle.plugin-publish", version = "2.1.1" }
 
